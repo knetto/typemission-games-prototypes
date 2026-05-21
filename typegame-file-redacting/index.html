@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="nl-BE">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeMission — Redacted File Decryptor (16:9 Fullscreen Game)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Centered 16:9 Cyber Console Game Container -->
+  <div class="game-container" id="gameContainer">
+
+    <!-- Top Header Panel (Spies HUD Bar) -->
+    <header class="game-header">
+      <div class="game-branding">
+        <div class="branding-text">
+          <span class="brand-system">SYSTEM: DECRYPTER_V2.9</span>
+          <h1 class="brand-title">TYPEMISSION // FILE REDACTING</h1>
+        </div>
+      </div>
+
+      <!-- Controls aligned on the header -->
+      <div class="header-controls">
+        <!-- Difficulty Selection Dropdown -->
+        <div class="custom-dropdown" id="difficultyDropdown">
+          <div class="dropdown-header" id="difficultyDropdownHeader">
+            <span id="currentDiffDisplay">Niveau: Basis</span>
+            <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <ul class="dropdown-list">
+            <li data-val="easy" class="selected">Niveau: Basis (Letters)</li>
+            <li data-val="medium">Niveau: Medium (Mix)</li>
+            <li data-val="hard">Niveau: Hard (Speciaal)</li>
+            <li data-val="expert">Niveau: Expert (Encryptie)</li>
+          </ul>
+        </div>
+
+
+      </div>
+    </header>
+
+    <!-- Main Stage Window -->
+    <div class="mission-stage" id="missionStage">
+      <span class="stage-glow" aria-hidden="true"></span>
+      <div class="morph-flash" id="morphFlash" aria-hidden="true"></div>
+
+      <!-- ── VIEW 1: BRIEFING VIEW ── -->
+      <section class="mission-view mission-briefing-card active" id="storyStage" aria-labelledby="storyTitle">
+        <!-- Top decorative banner -->
+        <div class="briefing-top-banner"></div>
+
+        <div class="briefing-panel">
+          <!-- Panel Header -->
+          <div class="briefing-panel-header">
+            <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+            <!-- Pagination Dots -->
+            <div class="briefing-pagination" id="briefingPagination" aria-label="Briefing voortgang">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <div class="briefing-slides-container">
+            <!-- Slide 1: Document Reveal -->
+            <div class="briefing-slide active" data-slide="0">
+              <h2 class="briefing-slide-title" id="storyTitle">Onthul de inhoud van dit geheime document</h2>
+              <div class="briefing-slide-graphic">
+                <div class="css-folder-graphic">
+                  <div class="mini-folder-back">
+                    <div class="mini-folder-tab"></div>
+                  </div>
+                  <div class="mini-folder-paper">
+                    <div class="mini-paper-stamp">TOP SECRET</div>
+                    <div class="mini-paper-line"></div>
+                    <div class="mini-paper-line"></div>
+                    <div class="mini-paper-line short"></div>
+                    <div class="mini-paper-line-container">
+                      <span class="mini-paper-line" style="width: 40%; display: inline-block; margin-bottom: 0;"></span>
+                      <span class="mini-redacted-block active" style="width: 45px;"></span>
+                      <span class="mini-paper-line" style="width: 10%; display: inline-block; margin-bottom: 0;"></span>
+                    </div>
+                    <div class="mini-paper-line"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: Home Position -->
+            <div class="briefing-slide" data-slide="1">
+              <h2 class="briefing-slide-title">Plaats je handen in de basispositie (Home Position)</h2>
+              <div class="briefing-slide-graphic">
+                <svg viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg"
+                  class="keyboard-svg" style="max-width: 440px; width: 100%; height: auto;" aria-label="Toetsenbord vingerplaatsing diagram">
+                  <defs>
+                    <linearGradient id="handGradientLeft" x1="0" y1="0.3" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(240, 240, 240, 0.22)" />
+                      <stop offset="50%" stop-color="rgba(240, 240, 240, 0.12)" />
+                      <stop offset="100%" stop-color="rgba(240, 240, 240, 0.0)" />
+                    </linearGradient>
+                    <linearGradient id="handGradientRight" x1="0" y1="0.3" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(240, 240, 240, 0.22)" />
+                      <stop offset="50%" stop-color="rgba(240, 240, 240, 0.12)" />
+                      <stop offset="100%" stop-color="rgba(240, 240, 240, 0.0)" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Keyboard base -->
+                  <rect x="10" y="10" width="560" height="200" rx="8" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"
+                    fill="rgba(15, 8, 17, 0.6)" />
+
+                  <!-- Row 1 -->
+                  <!-- ~ -->
+                  <rect x="20" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="36" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">`</text>
+
+                  <!-- 1 -->
+                  <rect x="56" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="72" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">1</text>
+
+                  <!-- 2 -->
+                  <rect x="92" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="108" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">2</text>
+
+                  <!-- 3 -->
+                  <rect x="128" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="144" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">3</text>
+
+                  <!-- 4 -->
+                  <rect x="164" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="180" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">4</text>
+
+                  <!-- 5 -->
+                  <rect x="200" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="216" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">5</text>
+
+                  <!-- 6 -->
+                  <rect x="236" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="252" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">6</text>
+
+                  <!-- 7 -->
+                  <rect x="272" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="288" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">7</text>
+
+                  <!-- 8 -->
+                  <rect x="308" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="324" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">8</text>
+
+                  <!-- 9 -->
+                  <rect x="344" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="360" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">9</text>
+
+                  <!-- 0 -->
+                  <rect x="380" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="396" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">0</text>
+
+                  <!-- - -->
+                  <rect x="416" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="432" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">-</text>
+
+                  <!-- = -->
+                  <rect x="452" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="468" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">=</text>
+
+                  <!-- backspace -->
+                  <rect x="488" y="20" width="72" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="524" y="39" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">backspace</text>
+
+                  <!-- Row 2 -->
+                  <!-- tab -->
+                  <rect x="20" y="56" width="48" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="44" y="75" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">tab</text>
+
+                  <!-- Q -->
+                  <rect x="72" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="88" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">Q</text>
+
+                  <!-- W -->
+                  <rect x="108" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="124" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">W</text>
+
+                  <!-- E -->
+                  <rect x="144" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="160" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">E</text>
+
+                  <!-- R -->
+                  <rect x="180" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="196" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">R</text>
+
+                  <!-- T -->
+                  <rect x="216" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="232" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">T</text>
+
+                  <!-- Y -->
+                  <rect x="252" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="268" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">Y</text>
+
+                  <!-- U -->
+                  <rect x="288" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="304" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">U</text>
+
+                  <!-- I -->
+                  <rect x="324" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="340" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">I</text>
+
+                  <!-- O -->
+                  <rect x="360" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="376" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">O</text>
+
+                  <!-- P -->
+                  <rect x="396" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="412" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">P</text>
+
+                  <!-- [ -->
+                  <rect x="432" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="448" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">[</text>
+
+                  <!-- ] -->
+                  <rect x="468" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="484" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">]</text>
+
+                  <!-- \ -->
+                  <rect x="504" y="56" width="56" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="532" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">\</text>
+
+                  <!-- Row 3 -->
+                  <!-- caps lock -->
+                  <rect x="20" y="92" width="58" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="49" y="111" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">caps lock</text>
+
+                  <!-- A -->
+                  <rect x="82" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="98" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">A</text>
+
+                  <!-- S -->
+                  <rect x="118" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="134" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">S</text>
+
+                  <!-- D -->
+                  <rect x="154" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="170" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">D</text>
+
+                  <!-- F (Home Key - Highlighted Green) -->
+                  <rect x="190" y="92" width="32" height="32" rx="4" stroke="var(--green)" stroke-width="1.5" fill="rgba(154, 215, 68, 0.12)" />
+                  <text x="206" y="113" fill="var(--green)" font-family="Roboto, sans-serif" font-size="10" font-weight="700" text-anchor="middle">F</text>
+
+                  <!-- G -->
+                  <rect x="226" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="242" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">G</text>
+
+                  <!-- H -->
+                  <rect x="262" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="278" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">H</text>
+
+                  <!-- J (Home Key - Highlighted Green) -->
+                  <rect x="298" y="92" width="32" height="32" rx="4" stroke="var(--green)" stroke-width="1.5" fill="rgba(154, 215, 68, 0.12)" />
+                  <text x="314" y="113" fill="var(--green)" font-family="Roboto, sans-serif" font-size="10" font-weight="700" text-anchor="middle">J</text>
+
+                  <!-- K -->
+                  <rect x="334" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="350" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">K</text>
+
+                  <!-- L -->
+                  <rect x="370" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="386" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">L</text>
+
+                  <!-- ; -->
+                  <rect x="406" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="422" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">;</text>
+
+                  <!-- ' -->
+                  <rect x="442" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="458" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">'</text>
+
+                  <!-- enter -->
+                  <rect x="478" y="92" width="82" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="519" y="111" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">enter</text>
+
+                  <!-- Row 4 -->
+                  <!-- left shift -->
+                  <rect x="20" y="128" width="72" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="56" y="147" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">shift</text>
+
+                  <!-- Z -->
+                  <rect x="96" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="112" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">Z</text>
+
+                  <!-- X -->
+                  <rect x="132" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="148" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">X</text>
+
+                  <!-- C -->
+                  <rect x="168" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="184" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">C</text>
+
+                  <!-- V -->
+                  <rect x="204" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="220" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">V</text>
+
+                  <!-- B -->
+                  <rect x="240" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="256" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">B</text>
+
+                  <!-- N -->
+                  <rect x="276" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="292" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">N</text>
+
+                  <!-- M -->
+                  <rect x="312" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="328" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">M</text>
+
+                  <!-- , -->
+                  <rect x="348" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="364" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">,</text>
+
+                  <!-- . -->
+                  <rect x="384" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="400" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">.</text>
+
+                  <!-- / -->
+                  <rect x="420" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="436" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">/</text>
+
+                  <!-- right shift -->
+                  <rect x="456" y="128" width="104" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="508" y="147" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">shift</text>
+
+                  <!-- Row 5 -->
+                  <!-- left ctrl -->
+                  <rect x="20" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="42" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">ctrl</text>
+
+                  <!-- left win -->
+                  <rect x="68" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="90" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">win</text>
+
+                  <!-- left alt -->
+                  <rect x="116" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="138" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">alt</text>
+
+                  <!-- spacebar -->
+                  <rect x="164" y="164" width="232" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+
+                  <!-- right alt -->
+                  <rect x="400" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="422" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">alt</text>
+
+                  <!-- blank key / fn -->
+                  <rect x="448" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+
+                  <!-- right ctrl -->
+                  <rect x="496" y="164" width="64" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  <text x="528" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">ctrl</text>
+
+                  <!-- Left Hand silhouette overlay -->
+                  <path
+                    d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z"
+                    transform="translate(15, 80) scale(1.1, 1.1)"
+                    fill="url(#handGradientLeft)" />
+
+                  <!-- Right Hand silhouette overlay -->
+                  <path
+                    d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z"
+                    transform="translate(505, 80) scale(-1.1, 1.1)"
+                    fill="url(#handGradientRight)" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Slide 3: Code Decryption -->
+            <div class="briefing-slide" data-slide="2">
+              <h2 class="briefing-slide-title">Typ de codesleutel om de redacted tekst te kraken</h2>
+              <div class="briefing-slide-graphic">
+                <div class="decrypt-demo-graphic">
+                  <div class="demo-terminal">
+                    <div class="demo-terminal-header">
+                      <span>DECRYPTION CONSOLE</span>
+                      <span class="demo-ping">SECURE</span>
+                    </div>
+                    <div class="demo-terminal-body">
+                      <div class="demo-code-label">CODESLEUTEL:</div>
+                      <div class="demo-code-val" id="demoTerminalCode">
+                        <span class="char">_</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="demo-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </div>
+                  <div class="demo-paper">
+                    <div class="demo-paper-title">STATUS: SECRET</div>
+                    <div class="demo-paper-text">
+                      Codenaam:<br>
+                      <span class="demo-paper-redact redacted" id="demoPaperRedact">NIGHTHAWK</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer: Spacebar Prompt -->
+          <div class="briefing-footer">
+            <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+            <button class="spacebar-btn-visual" id="spacebarAdvanceBtn" type="button">
+              <span class="spacebar-icon-line" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── VIEW 2: GAME ARENA VIEW ── -->
+      <div class="mission-view dossier-game" id="missionLayout" hidden>
+
+        <!-- Left Section: Decryption Terminal Console -->
+        <section class="dossier-console" aria-label="Redactie-kraak console">
+
+
+          <div class="dossier-body" id="dossierBody">
+            <!-- Live Statistics Header Row -->
+            <div class="dossier-stats" aria-label="Live resultaten">
+              <div class="dossier-stat">
+                <span class="stat-value" id="timer">0.0</span>
+                <span class="stat-label">tijd (s)</span>
+              </div>
+              <div class="dossier-stat">
+                <span class="stat-value" id="liveCpm">0</span>
+                <span class="stat-label">CPM</span>
+              </div>
+              <div class="dossier-stat">
+                <span class="stat-value" id="mistakeCount">0</span>
+                <span class="stat-label">fouten</span>
+              </div>
+              <div class="dossier-stat">
+                <span class="stat-value" id="accuracy">100%</span>
+                <span class="stat-label">precisie</span>
+              </div>
+            </div>
+
+            <!-- Typing Hacking Terminal Box -->
+            <div class="terminal-panel" id="dossierCodePanel">
+              <div class="terminal-header">
+                <div class="terminal-header-info">
+                  <span class="terminal-title">DECRYPTION CONSOLE</span>
+                  <span class="terminal-ping">SECURE LINK // 42ms</span>
+                </div>
+                <div class="terminal-win-controls">
+                  <span class="control-btn minimize">
+                    <svg width="10" height="10" viewBox="0 0 10 10">
+                      <line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="1" />
+                    </svg>
+                  </span>
+                  <span class="control-btn maximize">
+                    <svg width="10" height="10" viewBox="0 0 10 10">
+                      <rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1" />
+                    </svg>
+                  </span>
+                  <span class="control-btn close">
+                    <svg width="10" height="10" viewBox="0 0 10 10">
+                      <line x1="1.5" y1="1.5" x2="8.5" y2="8.5" stroke="currentColor" stroke-width="1" />
+                      <line x1="8.5" y1="1.5" x2="1.5" y2="8.5" stroke="currentColor" stroke-width="1" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="screen-body typewriter-body">
+                <div class="code-container">
+                  <div class="code-subheading" id="codeLabel">DOELWIT #1 CODESLEUTEL:</div>
+                  <div class="code-text" id="promptText" aria-live="polite">Druk op start...</div>
+                </div>
+
+                <!-- Success Flash Overlay -->
+                <div class="success-flash-overlay" id="successFlashOverlay" hidden>
+                  <div class="success-flash-content">
+                    <div class="success-flash-title">DECRYPTIE VOLTOOID</div>
+                    <div class="success-flash-subtitle">BYPASSING SECURITY GATE...</div>
+                  </div>
+                </div>
+
+                <!-- Input Lock Overlay -->
+                <div class="code-overlay" id="typingOverlay" hidden>
+                  <div class="overlay-content">
+                    <svg id="lockIcon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <!-- Success checkmark SVG shown on completion -->
+                    <svg id="unlockIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon unlock-icon"
+                      style="display: none;">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <p id="overlayMessage">KLIK OP START DECRYPTIE</p>
+                    <div id="finishSpaceHint" class="finish-space-hint"
+                      style="display: flex; flex-direction: column; align-items: center; gap: 8px;" hidden>
+                      <p class="spacebar-instruction" style="margin-top: 10px;">Druk op de spatiebalk om de uitslag te
+                        bekijken</p>
+                      <button class="spacebar-btn-visual" id="finishButton" type="button" aria-label="Bekijk uitslag">
+                        <span class="spacebar-icon-line" aria-hidden="true"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Input collector -->
+                <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  disabled></textarea>
+              </div>
+            </div>
+
+            <!-- Primary Control Actions -->
+            <div class="actions">
+              <button class="primary-button" id="startButton" type="button" hidden>
+                <span aria-hidden="true">&#9658;</span>
+                Start decryptie
+              </button>
+              <button class="ghost-button" id="resetButton" type="button">
+                <span aria-hidden="true">&#8635;</span>
+                Opnieuw
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Section: Manila Folder & Zoom Viewport -->
+        <div class="dossier-viewport" id="dossierViewport">
+          <!-- Laser Sweep Overlay -->
+          <div class="scanner-hud">
+            <div class="hud-corners">
+              <div class="tl"></div>
+              <div class="tr"></div>
+              <div class="bl"></div>
+              <div class="br"></div>
+            </div>
+            <div class="scan-laser-line"></div>
+            <div class="reticle-target" id="reticleTarget">
+              <div class="reticle-label">TARGET LOCKED</div>
+            </div>
+          </div>
+
+          <!-- Manila Document -->
+          <div class="classified-doc manila-folder" id="classifiedDoc">
+            <div class="folder-tab">FILE NO: RE-D4CT-99</div>
+
+            <div class="folder-paper" id="folderPaper">
+              <!-- Stamp Header -->
+              <div class="paper-header">
+                <div class="paper-meta">STATUS: <span id="missionStatus">STRIKT VERTROUWELIJK</span></div>
+                <div class="paper-stamp" id="docStamp"><span>TOP SECRET</span></div>
+              </div>
+
+              <!-- Content -->
+              <div class="paper-text-content">
+                <h2>INLICHTINGEN RAPPORT: PROJECT VAKANTIE</h2>
+
+                <div id="documentText" class="document-text-paragraphs">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Decrypt Progression indicator -->
+              <div class="paper-footer">
+                <div class="progress-indicator-box">
+                  <span class="progress-title">Ontcijfering:</span>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="decryptFill"></div>
+                  </div>
+                  <span class="progress-value" id="uploadPercent">0/5 gekraakt</span>
+                </div>
+                <span class="paper-signature">Geautoriseerd: <span class="signature-font">Miss J</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── VIEW 3: RESULTS PANEL VIEW ── -->
+      <section class="mission-view result-panel" id="resultPanel" aria-live="polite" hidden>
+        <div class="result-container">
+
+          <header class="result-header">
+            <p class="result-eyebrow">DECRYPTIE EVALUATIE // SYSTEM REPORT</p>
+            <h2 id="resultTitle">DOSSIER VOLLEDIG HERSTELD!</h2>
+            <div class="result-rank-bar">
+              <span>EVALUATIE RANG:</span>
+              <strong id="rankBadge" class="rank-badge-text">Master Cyber-Spion</strong>
+            </div>
+          </header>
+
+          <!-- 6-Card Stats Dashboard Grid -->
+          <div class="result-dashboard-grid">
+
+            <!-- Card 1: Speed (CPM) -->
+            <div class="dashboard-card">
+              <span class="card-title">CHARACTERS PER MINUTE</span>
+              <div class="card-value-container">
+                <span class="card-main-value" id="completeCpm">0</span>
+              </div>
+              <div class="card-footer-reward" id="cpmCoinsReward">
+                +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+              </div>
+            </div>
+
+            <!-- Card 2: Difficult Key -->
+            <div class="dashboard-card">
+              <span class="card-title">DIFFICULT KEYS</span>
+              <div class="card-value-container">
+                <span class="difficult-key-badge" id="completeDifficultKey">-</span>
+              </div>
+              <span class="card-footer-label">MEESTE TYPFOUTEN</span>
+            </div>
+
+            <!-- Card 3: Accuracy -->
+            <div class="dashboard-card">
+              <span class="card-title">ACCURACY</span>
+              <div class="card-value-container">
+                <span class="card-main-value highlight-green" id="completeAccuracy">100%</span>
+              </div>
+              <div class="card-footer-reward" id="precisionCoinsReward">
+                +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+              </div>
+            </div>
+
+            <!-- Card 4: Flawless Streak -->
+            <div class="dashboard-card">
+              <span class="card-title">FLAWLESS STREAK</span>
+              <div class="card-value-container">
+                <span class="streak-circle-value" id="completeStreak">0</span>
+              </div>
+              <div class="card-footer-reward" id="streakCoinsReward">
+                +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+              </div>
+            </div>
+
+            <!-- Card 5: Mission Status -->
+            <div class="dashboard-card">
+              <span class="card-title">MISSION STATUS</span>
+              <div class="card-value-container">
+                <span class="status-success-badge">GESLAAGD</span>
+              </div>
+              <div class="card-footer-reward" id="completionCoinsReward">
+                +50 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+              </div>
+            </div>
+
+            <!-- Card 6: Total Credits -->
+            <div class="dashboard-card highlight-glow">
+              <span class="card-title">TOTAL CREDITS</span>
+              <div class="card-value-container credits-container">
+                <img src="coin.svg" alt="" aria-hidden="true" class="coin-total-img">
+                <span class="card-main-value" id="completeCoins">0</span>
+              </div>
+              <span class="card-footer-label">SUPER SPY SCHOOL MUNTEN</span>
+            </div>
+
+          </div>
+
+          <!-- Bottom CTA & Actions Row -->
+          <div class="results-actions">
+            <p class="spacebar-instruction">Druk op de spatiebalk om door te gaan</p>
+            <button class="spacebar-btn-visual" id="retryResultButton" type="button" aria-label="Doorgaan">
+              <span class="spacebar-icon-line" aria-hidden="true"></span>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
