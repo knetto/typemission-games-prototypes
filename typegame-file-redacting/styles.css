@@ -756,7 +756,6 @@ body::before {
   margin: 0;
   letter-spacing: 0.5px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  animation: blinkText 1.5s infinite alternate ease-in-out;
   text-align: center;
 }
 
@@ -1112,7 +1111,6 @@ body::before {
   font-family: 'Orbitron', sans-serif;
   font-weight: 700;
   letter-spacing: 1px;
-  animation: blinkText 1.5s infinite alternate ease-in-out;
 }
 
 .code-overlay.overlay-complete {
