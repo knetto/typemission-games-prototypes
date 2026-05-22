@@ -134,6 +134,7 @@ body::before {
   color: var(--text);
   letter-spacing: 0.5px;
   background: linear-gradient(90deg, #ffffff, #e48e35);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
