@@ -367,13 +367,15 @@ const DIFFICULTY_POOLS = {
 function updateLockpickPosition() {
   const activeIndex = Math.min(codeCursor, HACK_CODE_LENGTH - 1);
   const activeChamber = document.getElementById(`chamber${activeIndex}`);
-  if (activeChamber && lockpickTool) {
-    const cylinderRect = lockCylinder.getBoundingClientRect();
+  if (activeChamber && lockpickTool && lockCylinderContainer) {
+    const containerRect = lockCylinderContainer.getBoundingClientRect();
     const chamberRect = activeChamber.getBoundingClientRect();
     
-    // Relative coordinates
-    const pickLead = lockpickTool.offsetWidth * 0.86;
-    const targetX = (chamberRect.left - cylinderRect.left) + (chamberRect.width / 2) - pickLead;
+    // The tip ends at x=571 out of a 600px width viewBox, so ratio is 571/600 = 0.9517
+    const pickLead = lockpickTool.offsetWidth * 0.9517;
+    const toolCSSLeft = parseFloat(window.getComputedStyle(lockpickTool).left) || 0;
+    const targetX = (chamberRect.left + chamberRect.width / 2) - pickLead - (containerRect.left + toolCSSLeft);
+    
     lockpickTool.style.transform = `translateX(${targetX}px)`;
     lockpickTool.style.setProperty('--pick-x', `${targetX}px`);
   }
@@ -509,7 +511,7 @@ function renderPrompt() {
         chamber.classList.add("picked");
         chamber.classList.remove("wiggle");
       } else {
-        chamber.classList.remove("picked", "wiggle");
+        chamber.classList.remove("picked", "wiggle", "decrypted");
       }
     }
   }
@@ -693,7 +695,7 @@ function startDecryptionSequence() {
       if (chamber) {
         chamber.classList.remove("wiggle");
         chamber.offsetHeight;
-        chamber.classList.add("wiggle");
+        chamber.classList.add("wiggle", "decrypted");
       }
     }
 
@@ -996,6 +998,32 @@ function calculateScores() {
   });
 }
 
+function randomizePins() {
+  const pinTypes = ["pin-standard", "pin-spool", "pin-serrated"];
+  for (let i = 0; i < HACK_CODE_LENGTH; i++) {
+    const chamber = document.getElementById(`chamber${i}`);
+    if (chamber) {
+      // Remove existing pin types
+      chamber.classList.remove("pin-standard", "pin-spool", "pin-serrated");
+      const randomType = pinTypes[Math.floor(Math.random() * pinTypes.length)];
+      chamber.classList.add(randomType);
+
+      // Randomize heights
+      const keyHeight = Math.floor(Math.random() * 31) + 40; // 40 to 70px
+      const driverHeight = 110 - keyHeight;
+      const pickedSpringHeight = Math.max(0, 50 - driverHeight);
+      const pinLift = Math.min(0, 50 - driverHeight);
+      const turnDepth = Math.round(38 - keyHeight * 0.38);
+
+      chamber.style.setProperty("--key-height", `${keyHeight}px`);
+      chamber.style.setProperty("--driver-height", `${driverHeight}px`);
+      chamber.style.setProperty("--picked-spring-height", `${pickedSpringHeight}px`);
+      chamber.style.setProperty("--pin-lift", `${pinLift}px`);
+      chamber.style.setProperty("--turn-depth", `${turnDepth}px`);
+    }
+  }
+}
+
 // ── RESET & START ──
 function resetTest() {
   running = false;
@@ -1035,6 +1063,7 @@ function resetTest() {
 
   // Setup first hack code
   currentCode = generateHackCode();
+  randomizePins();
   codeLabelEl.textContent = "BINDING PINS:";
   
   addTerminalLog("INITIEER CILINDERSLOT DECRYPTION RIG...", "info");
@@ -1119,6 +1148,7 @@ difficultyOptions.forEach(opt => {
       addTerminalLog("LOCKPICK INGEVOERD. START INTERCEPTIE.", "info");
 
       currentCode = generateHackCode();
+      randomizePins();
       updateActiveChamberHighlight();
       updateLockpickPosition();
       renderPrompt();
@@ -1340,6 +1370,7 @@ function startOnboardingDemoAnimation() {
   let step = 0;
 
   const pins = demoCylinder.querySelectorAll(".mini-pin");
+  const miniLockpick = demoCylinder.querySelector(".mini-lockpick");
 
   function clearAllDemoPins() {
     pins.forEach(pin => {
@@ -1359,15 +1390,40 @@ function startOnboardingDemoAnimation() {
       demoDoorStatus.className = "mini-door-status-demo";
       demoDoorStatus.innerHTML = '<span class="status-dot"></span><span>VERGRENDELD</span>';
       clearAllDemoPins();
+      if (miniLockpick) {
+        miniLockpick.style.transform = "translate(0px, 0px)";
+      }
 
       step = 1;
       demoAnimationTimeout = setTimeout(nextStep, 1000);
     } else if (step >= 1 && step <= 6) {
       const pinIdx = step - 1;
 
-      // Simulate keypress and pick pin
-      if (pins[pinIdx]) {
-        pins[pinIdx].classList.add("picked-demo");
+      if (miniLockpick) {
+        // 1. Move to pin horizontally (each pin center is spaced by 17.3px)
+        miniLockpick.style.transform = `translate(${pinIdx * 17.3}px, 0px)`;
+
+        // 2. Lift up after 180ms
+        setTimeout(() => {
+          if (!onboardingComplete) {
+            miniLockpick.style.transform = `translate(${pinIdx * 17.3}px, -9px)`;
+          }
+        }, 180);
+
+        // 3. Set the pin and drop back after 320ms
+        setTimeout(() => {
+          if (!onboardingComplete) {
+            if (pins[pinIdx]) {
+              pins[pinIdx].classList.add("picked-demo");
+            }
+            miniLockpick.style.transform = `translate(${pinIdx * 17.3}px, 0px)`;
+          }
+        }, 320);
+      } else {
+        // Fallback if miniLockpick is missing
+        if (pins[pinIdx]) {
+          pins[pinIdx].classList.add("picked-demo");
+        }
       }
 
       // Render typed chars
@@ -1410,6 +1466,10 @@ function resetOnboardingDemoAnimation() {
   if (demoCylinder) {
     const pins = demoCylinder.querySelectorAll(".mini-pin");
     pins.forEach(pin => pin.classList.remove("picked-demo"));
+    const miniLockpick = demoCylinder.querySelector(".mini-lockpick");
+    if (miniLockpick) {
+      miniLockpick.style.transform = "translate(0px, 0px)";
+    }
   }
   if (demoDoorStatus) {
     demoDoorStatus.className = "mini-door-status-demo";

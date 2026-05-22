@@ -13,6 +13,8 @@
   --orange-soft: #f5b05f;
   --green: #9ad744;
   --green-glow: rgba(154, 215, 68, 0.4);
+  --cyber-blue: #00d2ff;
+  --cyber-blue-glow: rgba(0, 210, 255, 0.35);
   --red: #ff3b30;
   --red-glow: rgba(255, 59, 48, 0.4);
   --crimson: #e43535;
@@ -28,7 +30,7 @@
   --door-metal-dark: #1b1c1e;
   --lock-cylinder-bg: #0f0a0a;
   --cylinder-width: clamp(500px, 58vw, 660px);
-  --bench-width: clamp(720px, 92%, 1020px);
+  --bench-width: clamp(420px, 92%, 540px);
 }
 
 * {
@@ -473,6 +475,7 @@ body::before {
   padding: 12px;
   gap: 8px;
   position: relative;
+  overflow: hidden;
 }
 
 .mini-door-screen {
@@ -606,6 +609,24 @@ body::before {
 .mini-door-status-demo.unlocked-demo .status-dot {
   background: var(--green);
   box-shadow: 0 0 4px var(--green-glow);
+}
+
+.mini-lockpick {
+  position: absolute;
+  top: 52px; /* Rest vertical position under the pins */
+  left: -198px; /* Starting position aligned to first pin */
+  width: 220px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 8;
+  transform: translate(0px, 0px);
+  transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.mini-lockpick-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
 }
 
 /* Footer & Spacebar styles */
@@ -744,7 +765,7 @@ body::before {
 .security-door {
   position: relative;
   z-index: 3;
-  width: clamp(720px, 88%, 1020px);
+  width: clamp(480px, 88%, 620px);
   height: fit-content;
   max-height: clamp(520px, 95%, 720px);
   top: clamp(20px, 4vh, 40px);
@@ -1209,10 +1230,10 @@ body::before {
 }
 
 .char-box.correct {
-  border-color: var(--green);
-  color: var(--green);
-  box-shadow: 0 0 10px var(--green-glow), inset 0 0 6px var(--green-glow);
-  text-shadow: 0 0 5px var(--green);
+  border-color: var(--cyber-blue);
+  color: var(--cyber-blue);
+  box-shadow: 0 0 10px var(--cyber-blue-glow), inset 0 0 6px var(--cyber-blue-glow);
+  text-shadow: 0 0 5px var(--cyber-blue);
 }
 
 .char-box.current {
@@ -1235,10 +1256,10 @@ body::before {
 }
 
 .char-box.decrypting {
-  border-color: var(--sky);
-  color: var(--sky);
-  box-shadow: 0 0 15px rgba(253, 139, 139, 0.6), inset 0 0 8px rgba(253, 139, 139, 0.4);
-  text-shadow: 0 0 8px var(--sky);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 15px var(--green-glow), inset 0 0 8px var(--green-glow);
+  text-shadow: 0 0 8px var(--green);
   animation: decryptScanPulse 0.15s infinite alternate ease-in-out;
   opacity: 1 !important;
 }
@@ -1342,26 +1363,44 @@ body::before {
 
 /* ── LOCK CYLINDER AREA ── */
 .lock-cylinder-container {
-  --shear-line-y: 80px;
+  --shear-line-y: 82px;
+  --pin-slot-width: clamp(40px, 5.4vw, 56px);
+  --pin-gap: clamp(4px, 0.7vw, 8px);
   flex: 1;
   position: relative;
   perspective: 780px;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.72), rgba(14, 5, 5, 0.9)),
-    radial-gradient(circle at 50% 72%, rgba(228, 142, 53, 0.08), transparent 42%);
-  border: 1.5px solid rgba(253, 139, 139, 0.18);
-  border-radius: 4px;
+    linear-gradient(180deg, rgba(14, 15, 18, 0.98), rgba(6, 7, 10, 0.99)),
+    radial-gradient(circle at 50% 84%, rgba(228, 142, 53, 0.06), transparent 44%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 22px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
   height: clamp(245px, 36vh, 345px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   overflow: hidden;
-  padding: 12px 14px 42px;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+  padding: 12px clamp(14px, 2vw, 22px) 46px;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 18px rgba(0,0,0,0.92);
 }
 
-
+.lock-cylinder-container::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 8px;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 6px;
+  background:
+    linear-gradient(rgba(8, 16, 32, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+  background-size: 100% 3px;
+  opacity: 0.7;
+}
 
 .shear-line-indicator {
   position: absolute;
@@ -1369,35 +1408,25 @@ body::before {
   right: 0;
   top: var(--shear-line-y);
   height: 2px;
-  background: repeating-linear-gradient(90deg, var(--red) 0px, var(--red) 6px, transparent 6px, transparent 12px);
+  background: repeating-linear-gradient(90deg, var(--orange) 0px, var(--orange) 7px, transparent 7px, transparent 13px);
+  box-shadow: 0 0 10px rgba(228, 142, 53, 0.3);
   z-index: 10;
   display: flex;
   align-items: center;
   pointer-events: none;
 }
 
-.shear-line-indicator span {
-  position: absolute;
-  right: 8px;
-  top: -8px;
-  font-family: "Orbitron", sans-serif;
-  font-size: 0.45rem;
-  font-weight: 800;
-  color: var(--red);
-  letter-spacing: 0.5px;
-  background: rgba(0,0,0,0.85);
-  padding: 1px 4px;
-  border-radius: 2px;
-  border: 0.8px solid var(--purple-soft);
-}
+
 
 .lock-cylinder {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: clamp(12px, 3%, 18px);
+  grid-template-columns: repeat(6, var(--pin-slot-width));
+  justify-content: center;
+  gap: var(--pin-gap);
   width: min(95%, 720px);
+  max-width: 100%;
   height: 190px;
-  margin-top: 18px;
+  margin-top: 16px;
   position: relative;
   z-index: 4;
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
@@ -1418,107 +1447,211 @@ body::before {
   position: relative;
   height: 100%;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)),
-    rgba(255, 255, 255, 0.01);
-  border-left: 1px solid rgba(255, 255, 255, 0.045);
-  border-right: 1px solid rgba(255, 255, 255, 0.045);
-  border-radius: 999px 999px 4px 4px;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)),
+    rgba(255, 255, 255, 0.025);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  transition: border-color 0.3s;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.72),
+    0 5px 14px rgba(0, 0, 0, 0.22);
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
   transform-style: preserve-3d;
 }
 
 .pin-chamber:nth-child(1) {
   --driver-height: 62px;
   --key-height: 48px;
-  --pin-lift: -32px;
+  --picked-spring-height: 0px;
+  --pin-lift: -12px;
   --turn-depth: 20px;
 }
 
 .pin-chamber:nth-child(2) {
   --driver-height: 47px;
   --key-height: 63px;
-  --pin-lift: -17px;
+  --picked-spring-height: 3px;
+  --pin-lift: 0px;
   --turn-depth: 14px;
 }
 
 .pin-chamber:nth-child(3) {
   --driver-height: 55px;
   --key-height: 54px;
-  --pin-lift: -25px;
+  --picked-spring-height: 0px;
+  --pin-lift: -5px;
   --turn-depth: 18px;
 }
 
 .pin-chamber:nth-child(4) {
   --driver-height: 68px;
   --key-height: 44px;
-  --pin-lift: -38px;
+  --picked-spring-height: 0px;
+  --pin-lift: -18px;
   --turn-depth: 23px;
 }
 
 .pin-chamber:nth-child(5) {
   --driver-height: 43px;
   --key-height: 66px;
-  --pin-lift: -13px;
+  --picked-spring-height: 7px;
+  --pin-lift: 0px;
   --turn-depth: 16px;
 }
 
 .pin-chamber:nth-child(6) {
   --driver-height: 58px;
   --key-height: 50px;
-  --pin-lift: -28px;
+  --picked-spring-height: 0px;
+  --pin-lift: -8px;
   --turn-depth: 21px;
 }
 
 .pin-chamber.active-chamber {
-  background: rgba(255, 59, 48, 0.04);
-  border-left-color: rgba(255, 59, 48, 0.32);
-  border-right-color: rgba(255, 59, 48, 0.32);
-  box-shadow: inset 0 0 14px rgba(255, 59, 48, 0.06), 0 0 12px rgba(255, 59, 48, 0.08);
+  background: rgba(228, 142, 53, 0.1);
+  border-color: var(--orange);
+  box-shadow:
+    0 0 14px rgba(228, 142, 53, 0.36),
+    inset 0 0 10px rgba(228, 142, 53, 0.2);
 }
 
 /* Springs */
 .spring-container {
-  width: 16px;
-  height: 40px;
+  width: 18px;
+  height: 42px;
   position: relative;
-  margin-bottom: 0;
+  margin: 2px 0 0;
   transition: height 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .spring-coil {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(135deg, transparent, transparent 2px, #666 2px, #666 4px, transparent 4px);
-  border-left: 1px solid #777;
-  border-right: 1px solid #777;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transition: filter 0.25s ease;
+}
+
+.spring-coil path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.spring-coil .spring-back {
+  stroke: #23262c;
+  stroke-width: 1.8px;
+}
+
+.spring-coil .spring-front {
+  stroke: url(#springGrad);
+  stroke-width: 2.8px;
+  filter: drop-shadow(0 1.5px 2px rgba(0, 0, 0, 0.65));
 }
 
 /* Driver Pin */
 .driver-pin {
-  width: clamp(24px, 80%, 36px);
+  width: clamp(24px, 68%, 32px);
   height: var(--driver-height);
-  background: linear-gradient(90deg, #444, #8a8f98, #2a2d32);
-  border: 1px solid #54575d;
+  background:
+    linear-gradient(180deg, #414852, #2a3038);
+  border: 1px solid rgba(207, 212, 220, 0.18);
   border-radius: 2px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09), 0 2px 5px rgba(0,0,0,0.48);
   transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 5;
   flex-shrink: 0;
 }
 
+/* Spool Driver Pin (Hourglass Shape) */
+.pin-spool .driver-pin {
+  width: clamp(12px, 34%, 16px);
+  background: linear-gradient(180deg, #30363e, #1a1e24);
+  border-left: 1px solid rgba(207, 212, 220, 0.18);
+  border-right: 1px solid rgba(207, 212, 220, 0.18);
+  border-top: none;
+  border-bottom: none;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+
+.pin-spool .driver-pin::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(24px, 200%, 32px);
+  height: 22%;
+  background: linear-gradient(180deg, #414852, #30363e);
+  border: 1px solid rgba(207, 212, 220, 0.18);
+  border-radius: 2px 2px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.09);
+}
+
+.pin-spool .driver-pin::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(24px, 200%, 32px);
+  height: 22%;
+  background: linear-gradient(180deg, #2a3038, #1a1e24);
+  border: 1px solid rgba(207, 212, 220, 0.18);
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.48);
+}
+
+/* Serrated Driver Pin (Grooved Shape) */
+.pin-serrated .driver-pin {
+  background: 
+    repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 6px,
+      rgba(0, 0, 0, 0.65) 6px,
+      rgba(0, 0, 0, 0.65) 8px,
+      rgba(255, 255, 255, 0.12) 8px,
+      rgba(255, 255, 255, 0.12) 9px
+    ),
+    linear-gradient(180deg, #414852, #2a3038);
+}
+
+/* Key Pin Active Chamber Highlight */
+.pin-chamber.active-chamber .key-pin {
+  border-color: var(--orange);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 12px rgba(228, 142, 53, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.52);
+  background: linear-gradient(180deg, #f5b05f, #a95e20);
+}
+
+.pin-chamber.active-chamber .pin-char {
+  color: #ffffff;
+  text-shadow: 0 0 6px var(--orange);
+}
+
 /* Key Pin */
 .key-pin {
-  width: clamp(24px, 80%, 36px);
+  width: clamp(24px, 68%, 32px);
   height: var(--key-height);
-  background: linear-gradient(90deg, #8a6f27, #ffd700, #4e3f14);
-  border: 1px solid #a88a38;
-  border-radius: 2px 2px 6px 6px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 2px 6px rgba(0,0,0,0.6);
+  background:
+    linear-gradient(180deg, #d48735, #8f4d18);
+  border: 1px solid rgba(245, 176, 95, 0.38);
+  border-radius: 2px 2px 5px 5px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 2px 6px rgba(0,0,0,0.52);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1532,7 +1665,7 @@ body::before {
   font-family: "Roboto Mono", monospace;
   font-size: clamp(0.85rem, 1.8vh, 1.15rem);
   font-weight: 700;
-  color: #1a0808;
+  color: #160a03;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   text-transform: uppercase;
 }
@@ -1540,23 +1673,37 @@ body::before {
 /* Locked & Picked States */
 /* Picked positions align the driver/key-pin boundary to --shear-line-y. */
 .pin-chamber.picked .spring-container {
-  height: 20px;
+  height: var(--picked-spring-height, 20px);
 }
 
-.pin-chamber.picked .driver-pin,
 .pin-chamber.picked .key-pin {
   transform: translateY(var(--pin-lift));
 }
 
+.pin-chamber.picked .driver-pin {
+  transform: translateY(var(--pin-lift)) translateX(-2px) rotate(-1.5deg);
+  transform-origin: 50% 100%;
+}
+
 .pin-chamber.picked .key-pin {
-  background: linear-gradient(90deg, #5a9415, #9ad744, #2a5203);
-  border-color: #6da21a;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 0 8px rgba(154, 215, 68, 0.4);
+  background: linear-gradient(180deg, #00d2ff, #0066b2);
+  border-color: #0088cc;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 0 8px rgba(0, 210, 255, 0.32);
 }
 
 .pin-chamber.picked .pin-char {
-  color: #0b1a03;
+  color: #002244;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.pin-chamber.decrypted .key-pin {
+  background: linear-gradient(180deg, #9ad744, #527f18) !important;
+  border-color: #6da21a !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 8px rgba(154, 215, 68, 0.32) !important;
+}
+
+.pin-chamber.decrypted .pin-char {
+  color: #0b1a03 !important;
 }
 
 /* Wiggle animation when active pin is picked */
@@ -1565,9 +1712,12 @@ body::before {
   animation: pin-wiggle 0.15s ease-out;
 }
 
-.pin-chamber.picked.wiggle .driver-pin,
 .pin-chamber.picked.wiggle .key-pin {
   animation: pin-wiggle-picked 0.15s ease-out;
+}
+
+.pin-chamber.picked.wiggle .driver-pin {
+  animation: driver-pin-wiggle-picked 0.15s ease-out;
 }
 
 @keyframes pin-wiggle {
@@ -1580,6 +1730,12 @@ body::before {
   0% { transform: translateY(var(--pin-lift)); }
   50% { transform: translateY(calc(var(--pin-lift) - 6px)); }
   100% { transform: translateY(var(--pin-lift)); }
+}
+
+@keyframes driver-pin-wiggle-picked {
+  0% { transform: translateY(var(--pin-lift)) translateX(-2px) rotate(-1.5deg); }
+  50% { transform: translateY(calc(var(--pin-lift) - 6px)) translateX(-2px) rotate(-1.5deg); }
+  100% { transform: translateY(var(--pin-lift)) translateX(-2px) rotate(-1.5deg); }
 }
 
 .lock-cylinder.rotating .pin-chamber.picked .key-pin {
@@ -1616,10 +1772,10 @@ body::before {
 /* Lockpick Tool Visual */
 .lockpick-tool {
   position: absolute;
-  top: 164px;
-  left: 14px;
-  width: 210px;
-  height: 38px;
+  top: 168px;
+  left: -370px;
+  width: 600px;
+  height: 40px;
   pointer-events: none;
   z-index: 8;
   transform: translateX(0px);
@@ -1629,7 +1785,7 @@ body::before {
 .lockpick-svg {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.72));
 }
 
 .lockpick-tool.lifting {
@@ -1664,9 +1820,9 @@ body::before {
 
 /* Decrypting green glow */
 .lock-cylinder.hacked-green .pin-chamber .key-pin {
-  background: linear-gradient(90deg, #5a9415, #9ad744, #2a5203) !important;
+  background: linear-gradient(180deg, #9ad744, #527f18) !important;
   border-color: #6da21a !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 0 12px rgba(154, 215, 68, 0.6) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 0 10px rgba(154, 215, 68, 0.45) !important;
 }
 
 .lock-cylinder.hacked-green .pin-chamber .pin-char {
