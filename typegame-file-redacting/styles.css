@@ -653,7 +653,7 @@ body::before {
 }
 
 .demo-code-val .char {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .demo-code-val .char.correct {
@@ -1054,7 +1054,7 @@ body::before {
 }
 
 .code-text .char {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .code-text .char.correct {

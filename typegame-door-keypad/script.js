@@ -1122,7 +1122,7 @@ function initDottedWaveBackground() {
   window.addEventListener("touchend", () => { mouse.active = false; });
 
   function draw() {
-    ctx.fillStyle = "#050206";
+    ctx.fillStyle = "#050512";
     ctx.fillRect(0, 0, width, height);
     time += 0.02;
 

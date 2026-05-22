@@ -2,13 +2,13 @@
 
 :root {
   color-scheme: dark;
-  --purple: #1a0819;
-  --purple-dark: #0b030b;
-  --purple-soft: #4d1c44;
-  --blue: #88a4ec;
-  --panel-blue: #283754;
-  --sky: #6dcdef;
-  --ice: #141c27;
+  --purple: #0f102b;
+  --purple-dark: #050512;
+  --purple-soft: #1e224e;
+  --blue: #888bec;
+  --panel-blue: #1b1e3c;
+  --sky: #8b9dfd;
+  --ice: #0e101f;
   --orange: #e48e35;
   --orange-soft: #f5b05f;
   --green: #9ad744;
@@ -16,11 +16,11 @@
   --red: #ff3b30;
   --red-glow: rgba(255, 59, 48, 0.4);
   --text: #ffffff;
-  --text-dark: #e5deea;
-  --muted: #a092a7;
-  --line: #3b283f;
+  --text-dark: #e0e2ed;
+  --muted: #9296a8;
+  --line: #1f213d;
   --shadow: rgba(0, 0, 0, 0.6);
-  --terminal-bg: #0a050d;
+  --terminal-bg: #060714;
   --door-metal: #3a3d42;
   --door-metal-light: #5a5e65;
   --door-metal-dark: #1e2024;
@@ -45,7 +45,7 @@ body {
   color: var(--text);
   font-family: "Roboto", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
-  background-color: #050206;
+  background-color: var(--purple-dark);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,7 +55,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(77, 28, 68, 0.05) 0%, rgba(5, 2, 6, 0.85) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(30, 27, 93, 0.12) 0%, rgba(5, 5, 18, 0.95) 100%);
   z-index: -1;
   pointer-events: none;
 }
@@ -98,7 +98,7 @@ body::before {
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--purple-soft);
-  background: rgba(26, 8, 25, 0.95);
+  background: rgba(15, 16, 43, 0.95);
   z-index: 10;
   flex-shrink: 0;
 }
@@ -175,7 +175,7 @@ body::before {
 }
 
 .ghost-button:hover {
-  background: rgba(77, 28, 68, 0.2);
+  background: rgba(30, 34, 78, 0.2);
   border-color: var(--orange);
   color: #fff;
 }
@@ -315,7 +315,7 @@ body::before {
   height: 100%;
   padding: 40px 20px;
   background:
-    radial-gradient(circle at center, rgba(30, 9, 29, 0.95) 0%, rgba(8, 3, 9, 0.98) 100%),
+    radial-gradient(circle at center, rgba(11, 12, 35, 0.95) 0%, rgba(4, 4, 11, 0.98) 100%),
     radial-gradient(rgba(228, 142, 53, 0.04) 1px, transparent 1px);
   background-size: 100% 100%, 24px 24px;
   position: relative;
@@ -329,7 +329,7 @@ body::before {
 
 .briefing-top-banner {
   height: 38px;
-  background: #180d19;
+  background: #0c172d;
   border-bottom: 2px solid var(--orange);
   width: 100%;
   position: absolute;
@@ -341,7 +341,7 @@ body::before {
 .briefing-panel {
   max-width: 580px;
   width: 95%;
-  background: rgba(26, 8, 25, 0.4);
+  background: rgba(15, 16, 43, 0.4);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1.5px solid var(--purple-soft);
@@ -352,7 +352,7 @@ body::before {
   align-items: center;
   box-shadow:
     0 15px 35px rgba(0, 0, 0, 0.5),
-    inset 0 0 15px rgba(186, 104, 200, 0.05);
+    inset 0 0 15px rgba(139, 141, 253, 0.05);
   z-index: 5;
   margin-top: 15px;
 }
@@ -443,98 +443,7 @@ body::before {
   width: 100%;
 }
 
-/* Slide 1 — Mini Door Graphic */
-.css-door-graphic {
-  position: relative;
-  width: 160px;
-  height: 180px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.mini-door-frame {
-  position: absolute;
-  width: 140px;
-  height: 170px;
-  background: linear-gradient(180deg, #4a4d52, #2a2d32);
-  border-radius: 6px;
-  border: 2px solid #5a5e65;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.08);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.mini-door-handle {
-  width: 12px;
-  height: 28px;
-  background: linear-gradient(180deg, #888, #555);
-  border-radius: 3px;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-}
-
-.mini-keypad-box {
-  width: 50px;
-  height: 60px;
-  background: var(--keypad-bg);
-  border: 1.5px solid rgba(255,255,255,0.1);
-  border-radius: 4px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 2px;
-  padding: 4px;
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.mini-keypad-btn {
-  background: rgba(255,255,255,0.06);
-  border-radius: 1.5px;
-  border: 0.5px solid rgba(255,255,255,0.08);
-}
-
-.mini-keypad-btn.active {
-  background: var(--orange);
-  box-shadow: 0 0 4px var(--orange);
-}
-
-.mini-digit-display {
-  display: flex;
-  gap: 4px;
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.mini-digit {
-  width: 16px;
-  height: 20px;
-  background: rgba(0,0,0,0.6);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Orbitron", sans-serif;
-  font-size: 0.55rem;
-  font-weight: 700;
-  color: var(--orange);
-}
-
-.mini-digit.locked {
-  color: rgba(255,255,255,0.2);
-}
+/* Slide 1 — Old Door Graphic styles removed (replaced by .hack-demo-graphic-centered) */
 
 /* Slide 2 Keyboard Graphics */
 .keyboard-svg {
@@ -615,7 +524,8 @@ body::before {
 }
 
 .mini-screen-slots .demo-char-box.faded {
-  opacity: 0.25;
+  opacity: 0.6;
+  color: var(--text-dark);
 }
 
 .mini-keypad-box-demo {
@@ -713,10 +623,10 @@ body::before {
   justify-content: center;
   width: clamp(100px, 20vw, 130px);
   height: clamp(28px, 5.5vh, 32px);
-  background: #1c0d1e;
+  background: #0f172a;
   border: 1.5px solid var(--purple-soft);
   border-radius: 6px;
-  box-shadow: 0 3px 0 #3b283f, 0 5px 12px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 3px 0 #202359, 0 5px 12px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   position: relative;
   transition: all 0.08s ease;
@@ -726,7 +636,7 @@ body::before {
 .spacebar-btn-visual:active,
 .spacebar-btn-visual.pressed {
   transform: translateY(2.5px);
-  box-shadow: 0 0.5px 0 #3b283f, 0 2px 6px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0.5px 0 #202359, 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .spacebar-icon-line {
@@ -748,7 +658,7 @@ body::before {
 /* ── CENTERED SECURITY DOOR VIEWPORT ── */
 .door-viewport {
   position: relative;
-  background: #060308;
+  background: #02050f;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -772,9 +682,9 @@ body::before {
 .hud-stat {
   text-align: center;
   min-width: clamp(120px, 15vw, 150px); /* Larger stats blocks */
-  background: rgba(26, 8, 25, 0.85);
+  background: rgba(15, 16, 43, 0.85);
   border: 1px solid var(--purple-soft);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(186, 104, 200, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(139, 141, 253, 0.15);
   border-radius: 10px; /* Larger border-radius for larger blocks */
   padding: 12px 24px; /* Extra padding */
 }
@@ -974,7 +884,7 @@ body::before {
   border-radius: 8px;
   padding: clamp(6px, 1.2vh, 10px) 10px; /* Slightly smaller padding */
   width: 100%;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(186, 104, 200, 0.15);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(109, 205, 239, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1154,7 +1064,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
-    rgba(18, 10, 20, 0) 50%, 
+    rgba(8, 16, 32, 0) 50%, 
     rgba(0, 0, 0, 0.25) 50%
   );
   background-size: 100% 3px;
@@ -1347,7 +1257,7 @@ body::before {
 }
 
 @keyframes lockoutFlash {
-  0%, 100% { background: #060308; }
+  0%, 100% { background: var(--purple-dark); }
   50% { background: rgba(255, 20, 20, 0.06); }
 }
 
@@ -1356,7 +1266,7 @@ body::before {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: rgba(11, 3, 11, 0.4);
+  background: rgba(4, 8, 20, 0.4);
 }
 
 .hack-body {
@@ -1376,7 +1286,7 @@ body::before {
 }
 
 .hack-stat {
-  background: rgba(26, 8, 25, 0.6);
+  background: rgba(9, 17, 36, 0.6);
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: clamp(5px, 1vh, 10px) 4px;
@@ -1408,7 +1318,7 @@ body::before {
   overflow: hidden;
   box-shadow:
     inset 0 2px 10px rgba(0, 0, 0, 0.95),
-    0 0 15px rgba(186, 104, 200, 0.12),
+    0 0 15px rgba(109, 205, 239, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
@@ -1449,7 +1359,7 @@ body::before {
 }
 
 .terminal-header {
-  background: #09040c;
+  background: #040918;
   height: 38px;
   padding-left: 16px;
   padding-right: 0;
@@ -1527,7 +1437,7 @@ body::before {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, transparent 30%, rgba(9, 4, 12, 0.55) 100%),
+    radial-gradient(circle at center, transparent 30%, rgba(4, 8, 20, 0.55) 100%),
     repeating-linear-gradient(0deg, rgba(154, 215, 68, 0.02) 0px, rgba(154, 215, 68, 0.02) 1px, transparent 1px, transparent 3px);
   pointer-events: none;
   z-index: 3;
@@ -1596,7 +1506,8 @@ body::before {
 }
 
 .char-box.faded {
-  opacity: 0.3;
+  opacity: 0.6;
+  color: var(--text-dark);
 }
 
 .char-box.decrypting {
@@ -1666,7 +1577,7 @@ body::before {
 .code-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(10, 5, 13, 0.96);
+  background: rgba(4, 8, 20, 0.96);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1678,7 +1589,7 @@ body::before {
 }
 
 .code-overlay.overlay-complete {
-  background: rgba(10, 5, 13, 0.98);
+  background: rgba(4, 8, 20, 0.98);
   border-color: var(--green);
   box-shadow: inset 0 0 30px rgba(154, 215, 68, 0.15);
 }
@@ -1811,7 +1722,7 @@ body::before {
   align-items: center;
   justify-content: flex-start;
   padding: clamp(24px, 4vh, 48px) clamp(20px, 4vw, 40px);
-  background: rgba(8, 3, 9, 0.985);
+  background: rgba(4, 8, 20, 0.985);
   height: 100%;
   width: 100%;
   overflow-y: auto;
@@ -1920,8 +1831,8 @@ body::before {
   font-family: "Orbitron", sans-serif;
   font-size: clamp(0.68rem, 1.2vh, 0.8rem);
   color: var(--text);
-  background: rgba(186, 104, 200, 0.1);
-  border: 1px solid rgba(186, 104, 200, 0.3);
+  background: rgba(109, 205, 239, 0.1);
+  border: 1px solid rgba(109, 205, 239, 0.3);
   padding: 4px 16px;
   border-radius: 20px;
   display: inline-flex;
@@ -1946,7 +1857,7 @@ body::before {
 }
 
 .dashboard-card {
-  background: linear-gradient(135deg, rgba(26, 8, 25, 0.7) 0%, rgba(14, 4, 13, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(9, 17, 36, 0.7) 0%, rgba(4, 8, 20, 0.85) 100%);
   border: 1px solid var(--purple-soft);
   border-radius: 12px;
   padding: clamp(14px, 2vh, 20px) clamp(10px, 1.5vw, 16px);
@@ -1958,7 +1869,7 @@ body::before {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   box-shadow:
-    inset 0 0 15px rgba(186, 104, 200, 0.05),
+    inset 0 0 15px rgba(109, 205, 239, 0.05),
     0 4px 20px rgba(0, 0, 0, 0.3);
   min-height: clamp(110px, 16vh, 140px);
   opacity: 0;
@@ -1966,10 +1877,10 @@ body::before {
 
 .dashboard-card:hover {
   border-color: var(--purple-soft);
-  background: rgba(35, 12, 34, 0.75);
+  background: rgba(16, 32, 64, 0.75);
   transform: translateY(-2px);
   box-shadow:
-    inset 0 0 20px rgba(186, 104, 200, 0.1),
+    inset 0 0 20px rgba(109, 205, 239, 0.1),
     0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -2049,7 +1960,7 @@ body::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(186, 104, 200, 0.15);
+  background: rgba(109, 205, 239, 0.15);
   border: 2px solid var(--purple-soft);
   color: #fff;
   font-family: "Orbitron", sans-serif;
@@ -2058,7 +1969,7 @@ body::before {
   width: clamp(40px, 7.5vh, 48px);
   height: clamp(40px, 7.5vh, 48px);
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(186, 104, 200, 0.3);
+  box-shadow: 0 0 12px rgba(109, 205, 239, 0.3);
 }
 
 .status-success-badge {
