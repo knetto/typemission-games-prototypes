@@ -799,12 +799,19 @@ body::before {
 /* Door label */
 .door-label {
   font-family: "Orbitron", sans-serif;
-  font-size: clamp(0.5rem, 0.9vh, 0.6rem);
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.35);
-  letter-spacing: 2px;
+  font-size: clamp(0.55rem, 1.1vh, 0.65rem);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: clamp(6px, 1.2vh, 10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px 14px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+  margin-bottom: clamp(8px, 1.5vh, 12px);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+  z-index: 7;
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -1016,11 +1023,11 @@ body::before {
 }
 
 .panel-hardware-header .rig-label {
-  font-family: "Roboto Mono", monospace;
+  font-family: "Orbitron", sans-serif;
   font-size: clamp(0.55rem, 1vh, 0.65rem);
   font-weight: 700;
   color: var(--muted);
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
 
 .hardware-leds {

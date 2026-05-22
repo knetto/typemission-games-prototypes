@@ -748,12 +748,9 @@ body::before {
   height: fit-content;
   max-height: clamp(520px, 95%, 720px);
   top: clamp(20px, 4vh, 40px);
-  background:
-    linear-gradient(105deg, rgba(255,255,255,0.06) 0 12%, transparent 12% 88%, rgba(0,0,0,0.28) 88%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 42px),
-    linear-gradient(180deg, #414246 0%, #2a2b2e 44%, #1d1e20 100%);
+  background: linear-gradient(180deg, #4a4d52 0%, #33363b 40%, #2a2d32 100%);
   border-radius: 8px;
-  border: 2.5px solid #54575d;
+  border: 2.5px solid #5a5e65;
   box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.7),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -767,17 +764,8 @@ body::before {
 
 .security-door::before,
 .security-door::after {
-  content: "";
-  position: absolute;
-  top: 54px;
-  bottom: 54px;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(253, 139, 139, 0.18), transparent);
-  pointer-events: none;
+  display: none;
 }
-
-.security-door::before { left: 16%; }
-.security-door::after { right: 14%; }
 
 .door-rivets {
   position: absolute;
@@ -805,6 +793,7 @@ body::before {
   font-weight: 900;
   color: rgba(255, 255, 255, 0.25);
   letter-spacing: 3px;
+  text-transform: uppercase;
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 3px 14px;
   border-radius: 3px;
@@ -881,14 +870,27 @@ body::before {
 
 .cable-path {
   fill: none;
-  stroke-width: 1.5;
+  stroke-width: 16px;
   stroke-linecap: round;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 4px var(--shadow-color));
+  transition: d 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.cable-path.red-wire { stroke: #ff3b30; }
-.cable-path.darkred-wire { stroke: #801212; }
-.cable-path.orange-wire { stroke: #ff9f0a; }
+.cable-path.green-wire {
+  stroke: var(--green);
+  --shadow-color: var(--green-glow);
+}
+
+.cable-path.orange-wire {
+  stroke: var(--orange);
+  --shadow-color: rgba(228, 142, 53, 0.5);
+}
+
+.cable-path.red-wire {
+  stroke: var(--red);
+  --shadow-color: var(--red-glow);
+}
 
 .lock-workbench {
   position: relative;
@@ -1094,8 +1096,16 @@ body::before {
   transition: all 0.3s;
 }
 
-.led.datalink { background: var(--crimson); box-shadow: 0 0 6px var(--crimson-glow); }
-.led.signal { background: var(--orange); box-shadow: 0 0 6px rgba(228, 142, 53, 0.5); }
+.led.datalink { 
+  background: var(--crimson); 
+  box-shadow: 0 0 6px var(--crimson-glow); 
+  animation: datalinkBlink 0.3s infinite alternate;
+}
+.led.signal { 
+  background: var(--orange); 
+  box-shadow: 0 0 6px rgba(228, 142, 53, 0.5); 
+  animation: signalPulse 1.2s infinite ease-in-out;
+}
 
 /* Diagnostic Screen */
 .door-screen {
@@ -1683,16 +1693,17 @@ body::before {
 
 .signal-bar {
   width: 3px;
-  background: #3a1a1a;
-  height: 100%;
+  background: var(--crimson);
   border-radius: 1px;
+  transform-origin: bottom;
+  animation: signalBarGrowth 0.8s infinite ease-in-out alternate;
 }
 
-.signal-bar:nth-child(1) { height: 30%; background: var(--crimson); }
-.signal-bar:nth-child(2) { height: 50%; background: var(--crimson); }
-.signal-bar:nth-child(3) { height: 70%; background: var(--crimson); }
-.signal-bar:nth-child(4) { height: 90%; background: var(--crimson); }
-.signal-bar:nth-child(5) { height: 10%; }
+.signal-bar:nth-child(1) { height: 30%; animation-delay: 0.1s; }
+.signal-bar:nth-child(2) { height: 50%; animation-delay: 0.3s; }
+.signal-bar:nth-child(3) { height: 70%; animation-delay: 0.2s; }
+.signal-bar:nth-child(4) { height: 90%; animation-delay: 0.5s; }
+.signal-bar:nth-child(5) { height: 40%; animation-delay: 0.4s; }
 
 .bypass-ports {
   display: flex;
@@ -2268,6 +2279,21 @@ body::before {
 }
 
 /* ── ANIMATION KEYFRAMES ── */
+@keyframes datalinkBlink {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+@keyframes signalPulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes signalBarGrowth {
+  0% { transform: scaleY(0.4); opacity: 0.5; }
+  100% { transform: scaleY(1.2); opacity: 1; }
+}
+
 @keyframes lockPulse {
   0% { transform: scale(1); opacity: 0.7; }
   50% { transform: scale(1.15); opacity: 1; }
@@ -2334,20 +2360,20 @@ body::before {
 }
 
 /* Cables path updates when expanded */
-.security-door.won-layout .left-cable.red-wire {
+.security-door.won-layout .left-cable.green-wire {
   d: path("M -2,38 C 1,48 3.5,58 9,50");
 }
-.security-door.won-layout .left-cable.darkred-wire {
+.security-door.won-layout .left-cable.orange-wire {
   d: path("M -2,45 C 0.5,57 3,67 9,56");
 }
-.security-door.won-layout .left-cable.orange-wire {
+.security-door.won-layout .left-cable.red-wire {
   d: path("M -2,52 C 0,66 2,76 9,62");
 }
 
 .security-door.won-layout .right-cable.orange-wire {
   d: path("M 59,50 C 80,58 89,48 102,38");
 }
-.security-door.won-layout .right-cable.darkred-wire {
+.security-door.won-layout .right-cable.green-wire {
   d: path("M 59,56 C 81,67 90,57 102,45");
 }
 .security-door.won-layout .right-cable.red-wire {
