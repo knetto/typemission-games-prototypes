@@ -28,6 +28,9 @@ let mistakesPerKey = {};
 let activeBriefingSlide = 0;
 let onboardingComplete = false;
 let isDecryptingAnimation = false;
+let decryptTimeout = null;
+let decryptCycleInterval = null;
+
 
 // Audio
 let audioCtx = null;
@@ -124,6 +127,15 @@ function playSynthSound(type, stepIndex = 0) {
       gain.gain.setValueAtTime(0.06, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
       osc.start(now); osc.stop(now + 0.12);
+    } else if (type === "decrypt-cycle") {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(1000 + Math.random() * 400, now);
+      gain.gain.setValueAtTime(0.015, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+      osc.start(now); osc.stop(now + 0.03);
     } else if (type === "error") {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -581,6 +593,25 @@ function startDecryptionSequence() {
   const charBoxes = promptTextEl.children;
   let index = 0;
 
+  function cycleBox(box, targetValue, duration, onComplete) {
+    const startTime = Date.now();
+    box.classList.remove("correct", "faded", "current", "wrong");
+    box.classList.add("decrypting");
+
+    decryptCycleInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      if (elapsed >= duration) {
+        clearInterval(decryptCycleInterval);
+        decryptCycleInterval = null;
+        box.textContent = targetValue;
+        onComplete();
+      } else {
+        box.textContent = Math.floor(Math.random() * 10);
+        playSynthSound("decrypt-cycle");
+      }
+    }, 45);
+  }
+
   function decryptNext() {
     if (index >= HACK_CODE_LENGTH) {
       // Completed decryption! Turn code text and all keys green at the same time
@@ -589,7 +620,7 @@ function startDecryptionSequence() {
       allBtns.forEach(btn => btn.classList.add("hacked-green"));
 
       // Wait a bit and trigger success
-      setTimeout(() => {
+      decryptTimeout = setTimeout(() => {
         finishGame(true);
       }, 600);
       return;
@@ -599,30 +630,30 @@ function startDecryptionSequence() {
     if (box) {
       const char = currentCode[index];
       const keypadDigit = getKeypadNumForChar(char);
+      const targetValue = keypadDigit !== null ? keypadDigit : char;
 
-      // Play rising beep sound
-      playSynthSound("decrypt-step", index);
+      cycleBox(box, targetValue, 250, () => {
+        // Play rising beep sound when it locks in
+        playSynthSound("decrypt-step", index);
 
-      // Change text content to the mapped digit
-      box.textContent = keypadDigit !== null ? keypadDigit : char;
+        // Flash corresponding keypad button green when it locks in
+        if (keypadDigit !== null) {
+          flashKeypadButton(keypadDigit, "success");
+        }
 
-      // Swap class to decrypting
-      box.classList.remove("correct", "faded", "current", "wrong");
-      box.classList.add("decrypting");
-
-      // Flash corresponding keypad button green
-      if (keypadDigit !== null) {
-        flashKeypadButton(keypadDigit, "success");
-      }
+        // Proceed to next character box
+        index++;
+        const nextDelay = (index === HACK_CODE_LENGTH) ? 400 : 80;
+        decryptTimeout = setTimeout(decryptNext, nextDelay);
+      });
+    } else {
+      index++;
+      decryptNext();
     }
-
-    index++;
-    const nextDelay = (index === HACK_CODE_LENGTH) ? 800 : 300;
-    setTimeout(decryptNext, nextDelay);
   }
 
   // Start sequence with a 1000ms delay
-  setTimeout(decryptNext, 1000);
+  decryptTimeout = setTimeout(decryptNext, 1000);
 }
 
 function triggerSuccessFlash() {
@@ -912,6 +943,15 @@ function resetTest() {
   gameWon = false;
   isDecryptingAnimation = false;
   clearInterval(timerInterval);
+
+  if (decryptTimeout) {
+    clearTimeout(decryptTimeout);
+    decryptTimeout = null;
+  }
+  if (decryptCycleInterval) {
+    clearInterval(decryptCycleInterval);
+    decryptCycleInterval = null;
+  }
 
   accumulatedTime = 0;
   currentWordStartedAt = 0;

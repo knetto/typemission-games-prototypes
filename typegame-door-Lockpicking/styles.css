@@ -1230,10 +1230,10 @@ body::before {
 }
 
 .char-box.correct {
-  border-color: var(--cyber-blue);
-  color: var(--cyber-blue);
-  box-shadow: 0 0 10px var(--cyber-blue-glow), inset 0 0 6px var(--cyber-blue-glow);
-  text-shadow: 0 0 5px var(--cyber-blue);
+  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: 0 0 10px rgba(228, 142, 53, 0.4), inset 0 0 6px rgba(228, 142, 53, 0.4);
+  text-shadow: 0 0 5px var(--orange);
 }
 
 .char-box.current {
@@ -1686,13 +1686,13 @@ body::before {
 }
 
 .pin-chamber.picked .key-pin {
-  background: linear-gradient(180deg, #00d2ff, #0066b2);
-  border-color: #0088cc;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 0 8px rgba(0, 210, 255, 0.32);
+  background: linear-gradient(180deg, var(--orange-soft), var(--orange));
+  border-color: #c67520;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 0 8px rgba(228, 142, 53, 0.32);
 }
 
 .pin-chamber.picked .pin-char {
-  color: #002244;
+  color: #160a03;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
