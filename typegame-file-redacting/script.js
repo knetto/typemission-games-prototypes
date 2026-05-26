@@ -136,6 +136,7 @@ const retryResultButton = document.getElementById("retryResultButton");
 const soundToggle = document.getElementById("soundToggle");
 const couponCode = document.getElementById("couponCode");
 const finishSpaceHint = document.getElementById("finishSpaceHint");
+const terminalPing = document.getElementById("terminalPing");
 
 // ── NATIVE WEB AUDIO FX SYNTHESIZER ──
 function getAudioContext() {
@@ -748,6 +749,13 @@ function renderPrompt() {
   promptTextEl.replaceChildren(fragment);
 }
 
+function updatePing() {
+  const pingVal = Math.floor(Math.random() * 66) + 15; // Random ping between 15ms and 80ms
+  if (terminalPing) {
+    terminalPing.textContent = `SECURE LINK // ${pingVal}ms`;
+  }
+}
+
 function updateLiveStats() {
   if (!running) return;
   const currentElapsed = Date.now() - currentWordStartedAt;
@@ -767,6 +775,11 @@ function updateLiveStats() {
 
   // Mistake count
   mistakeCountEl.textContent = mistakeCount;
+
+  // Randomly fluctuate ping
+  if (Math.random() < 0.08) {
+    updatePing();
+  }
 }
 
 function handleKeystroke(e) {
@@ -1233,6 +1246,9 @@ function resetTest() {
   accuracyEl.textContent = "100%";
 
   difficultyDropdown.classList.remove("disabled");
+
+  // Set initial random ping
+  updatePing();
 
   // Select random dossier from database
   activeDossier = DOSSIERS[Math.floor(Math.random() * DOSSIERS.length)];
