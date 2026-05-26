@@ -843,10 +843,17 @@ body::before {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  height: 1px;
-  background: var(--red);
-  opacity: 0.4;
+  top: calc(50% - 1.5px);
+  height: 3px;
+  background: linear-gradient(180deg, 
+    rgba(5, 6, 8, 0.98) 0%, 
+    rgba(0, 0, 0, 1) 40%, 
+    rgba(30, 33, 40, 0.95) 60%, 
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  border-top: 0.5px solid rgba(0, 0, 0, 0.9);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+  opacity: 0.85;
   z-index: 2;
 }
 
@@ -1696,6 +1703,16 @@ body::before {
   position: relative;
   perspective: 780px;
   background:
+    /* Background seam split (aligning behind chambers) */
+    linear-gradient(180deg, 
+      transparent 0px, 
+      transparent 79px, 
+      rgba(5, 6, 8, 0.98) 79px, 
+      rgba(0, 0, 0, 1) 81px, 
+      rgba(30, 33, 40, 0.95) 83px, 
+      rgba(255, 255, 255, 0.06) 85px, 
+      transparent 85px
+    ),
     linear-gradient(180deg, rgba(14, 15, 18, 0.98), rgba(6, 7, 10, 0.99)),
     radial-gradient(circle at 50% 84%, rgba(228, 142, 53, 0.06), transparent 44%),
     repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 22px);
@@ -1733,12 +1750,40 @@ body::before {
   left: 0;
   right: 0;
   top: var(--shear-line-y);
-  height: 2px;
-  background: repeating-linear-gradient(90deg, var(--orange) 0px, var(--orange) 7px, transparent 7px, transparent 13px);
-  box-shadow: 0 0 10px rgba(228, 142, 53, 0.3);
-  z-index: 10;
-  display: flex;
-  align-items: center;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, 
+    var(--orange) 0px, 
+    var(--orange) 4px, 
+    transparent 4px, 
+    transparent 10px
+  );
+  box-shadow: 
+    0 0 5px var(--orange),
+    0 0 10px rgba(228, 142, 53, 0.4);
+  opacity: 0.65;
+  z-index: 10; /* Render on top of everything (pins and chambers) as an alignment HUD helper */
+  pointer-events: none;
+}
+
+.pin-chamber::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--shear-line-y) - 32.5px);
+  height: 6px;
+  background: linear-gradient(180deg, 
+    rgba(5, 6, 8, 0.98) 0%, 
+    rgba(0, 0, 0, 1) 40%, 
+    rgba(30, 33, 40, 0.95) 60%, 
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  border-top: 1px solid rgba(0, 0, 0, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 -1px 3px rgba(0, 0, 0, 0.7),
+    inset 0 1px 2px rgba(0, 0, 0, 0.7);
+  z-index: 3; /* Positioned in front of chamber background, but behind pins (z-index 5, 6) */
   pointer-events: none;
 }
 
