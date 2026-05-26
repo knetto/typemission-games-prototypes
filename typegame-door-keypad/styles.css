@@ -3,7 +3,7 @@
 :root {
   color-scheme: dark;
   --purple: #0f102b;
-  --purple-dark: #050512;
+  --purple-dark: #050206;
   --purple-soft: #1e224e;
   --blue: #888bec;
   --panel-blue: #1b1e3c;
@@ -55,7 +55,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(30, 27, 93, 0.12) 0%, rgba(5, 5, 18, 0.95) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(77, 28, 68, 0.05) 0%, rgba(5, 2, 6, 0.85) 100%);
   z-index: -1;
   pointer-events: none;
 }

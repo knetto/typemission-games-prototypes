@@ -1217,7 +1217,7 @@ window.addEventListener("resize", () => {
   }
 });
 
-// ── RED DOTTED WAVE BACKGROUND ──
+// ── DOTTED WAVE BACKGROUND ──
 function initDottedWaveBackground() {
   const canvas = document.getElementById("matrix-canvas");
   if (!canvas) return;
@@ -1253,7 +1253,7 @@ function initDottedWaveBackground() {
   window.addEventListener("touchend", () => { mouse.active = false; });
 
   function draw() {
-    ctx.fillStyle = "#050000"; // Deep red/black
+    ctx.fillStyle = "#050206";
     ctx.fillRect(0, 0, width, height);
     time += 0.02;
 
@@ -1307,8 +1307,7 @@ function initDottedWaveBackground() {
           }
         }
 
-        // RED theme dots color
-        ctx.fillStyle = `rgba(255, 59, 48, ${opacity})`;
+        ctx.fillStyle = `rgba(154, 215, 68, ${opacity})`;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);
         ctx.fill();

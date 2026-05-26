@@ -3,7 +3,7 @@
 :root {
   color-scheme: dark;
   --purple: #120505;
-  --purple-dark: #050000;
+  --purple-dark: #050206;
   --purple-soft: #300f0f;
   --blue: #ec8888;
   --panel-blue: #3c1b1b;
@@ -61,7 +61,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(93, 27, 27, 0.12) 0%, rgba(18, 5, 5, 0.95) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(77, 28, 68, 0.05) 0%, rgba(5, 2, 6, 0.85) 100%);
   z-index: -1;
   pointer-events: none;
 }
@@ -126,7 +126,7 @@ body::before {
   font-family: "Orbitron", sans-serif;
   font-size: clamp(0.55rem, 1vh, 0.65rem);
   font-weight: 700;
-  color: var(--crimson);
+  color: var(--green);
   letter-spacing: 1px;
 }
 
@@ -137,7 +137,7 @@ body::before {
   margin: 0;
   color: var(--text);
   letter-spacing: 0.5px;
-  background: linear-gradient(90deg, #ffffff, #ff3b30);
+  background: linear-gradient(90deg, #ffffff, #e48e35);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
