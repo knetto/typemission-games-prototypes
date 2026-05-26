@@ -88,6 +88,8 @@ body::before {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  container-type: size;
+  container-name: gameContainer;
 }
 
 /* ── HEADER PANEL ── */
@@ -668,12 +670,22 @@ body::before {
   justify-content: center;
 }
 
+.viewport-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 /* Floating Live HUD stats */
 .door-hud-stats {
-  position: absolute;
-  top: clamp(10px, 2.5vh, 20px);
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  margin-bottom: clamp(16px, 3.5vh, 28px); /* Responsive gap between stats and door */
   display: flex;
   gap: 20px; /* Larger gap */
   z-index: 10;
@@ -728,8 +740,9 @@ body::before {
   position: relative;
   z-index: 3;
   width: clamp(340px, 85%, 460px); /* Slightly wider door */
-  height: clamp(520px, 95%, 720px); /* Slightly smaller height */
-  top: clamp(20px, 4vh, 40px); /* Shift down to create spacing from HUD stats */
+  height: fit-content;
+  max-height: none;
+  top: 0; /* Reset top offset as vertical flow is handled by flex container */
   background: linear-gradient(180deg, #4a4d52 0%, #33363b 40%, #2a2d32 100%);
   border-radius: 8px;
   border: 2.5px solid #5a5e65;
@@ -740,7 +753,7 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: clamp(12px, 2.5vh, 20px) 14px; /* Reduced side padding */
+  padding: 24px 14px 20px; /* Consistent top/bottom padding to prevent compression */
   transition: all 0.6s ease;
 }
 
@@ -2159,12 +2172,105 @@ body::before {
   pointer-events: none;
 }
 
-/* Small viewport adaptations */
-@media (max-height: 600px) {
-  .game-header { height: 52px; }
-  .hack-body { padding: 10px 16px 12px; }
-  .result-panel { padding: 12px 24px; gap: 12px; }
-  .results-actions { gap: 8px; }
+/* ── CONTAINER-BASED UNIFORM SCALING FOR SMALL HEIGHTS ── */
+/* Queries are based on the actual height of .game-container, ensuring perfect fit everywhere */
+
+@container gameContainer (max-height: 820px) {
+  .viewport-content {
+    transform: scale(0.85);
+  }
+}
+
+@container gameContainer (max-height: 760px) {
+  .viewport-content {
+    transform: scale(0.76);
+  }
+}
+
+@container gameContainer (max-height: 700px) {
+  .game-header {
+    height: 48px;
+  }
+  .hack-body {
+    padding: 10px 16px 12px;
+  }
+  .viewport-content {
+    transform: scale(0.68);
+  }
+
+  /* Briefing slideshow & Results */
+  .briefing-panel {
+    transform: scale(0.88);
+    transform-origin: center center;
+    margin-top: 5px;
+  }
+  .result-panel {
+    transform: scale(0.88);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 640px) {
+  .viewport-content {
+    transform: scale(0.60);
+  }
+}
+
+@container gameContainer (max-height: 580px) {
+  .game-header {
+    height: 42px;
+  }
+  .viewport-content {
+    transform: scale(0.52);
+  }
+  .briefing-panel {
+    transform: scale(0.78);
+    transform-origin: center center;
+    margin-top: 0;
+  }
+  .result-panel {
+    transform: scale(0.76);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 520px) {
+  .viewport-content {
+    transform: scale(0.46);
+  }
+}
+
+@container gameContainer (max-height: 460px) {
+  .game-header {
+    height: 38px;
+  }
+  .viewport-content {
+    transform: scale(0.40);
+  }
+  .briefing-panel {
+    transform: scale(0.66);
+    transform-origin: center center;
+    margin-top: -10px;
+  }
+  .result-panel {
+    transform: scale(0.62);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 400px) {
+  .viewport-content {
+    transform: scale(0.34);
+  }
+  .briefing-panel {
+    transform: scale(0.56);
+    transform-origin: center center;
+    margin-top: -20px;
+  }
+  .result-panel {
+    transform: scale(0.5);
+    transform-origin: center center;
+  }
 }
 
 /* ── SUCCESS STATE (WON LAYOUT) ── */

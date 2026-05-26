@@ -367,16 +367,15 @@ const DIFFICULTY_POOLS = {
 function updateLockpickPosition() {
   const activeIndex = Math.min(codeCursor, HACK_CODE_LENGTH - 1);
   const activeChamber = document.getElementById(`chamber${activeIndex}`);
-  if (activeChamber && lockpickTool && lockCylinderContainer) {
-    const containerRect = lockCylinderContainer.getBoundingClientRect();
-    const chamberRect = activeChamber.getBoundingClientRect();
-    
+  if (activeChamber && lockpickTool && lockCylinderContainer && lockCylinder) {
+    // Calculate chamber center relative to lockCylinderContainer using layout offsets
+    const chamberCenter = activeChamber.offsetLeft + activeChamber.offsetWidth / 2 + lockCylinder.offsetLeft;
     // The tip ends at x=571 out of a 600px width viewBox, so ratio is 571/600 = 0.9517
     const pickLead = lockpickTool.offsetWidth * 0.9517;
     const toolCSSLeft = parseFloat(window.getComputedStyle(lockpickTool).left) || 0;
-    const targetX = (chamberRect.left + chamberRect.width / 2) - pickLead - (containerRect.left + toolCSSLeft);
+    const targetX = chamberCenter - pickLead - toolCSSLeft;
     
-    lockpickTool.style.transform = `translateX(${targetX}px)`;
+    lockpickTool.style.transform = `translateX(${targetX}px) scale(var(--pick-scale, 1))`;
     lockpickTool.style.setProperty('--pick-x', `${targetX}px`);
   }
 }
