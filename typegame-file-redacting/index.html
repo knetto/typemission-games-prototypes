@@ -47,7 +47,6 @@
           </ul>
         </div>
 
-
       </div>
     </header>
 
@@ -531,10 +530,6 @@
                 <span aria-hidden="true">&#9658;</span>
                 Start decryptie
               </button>
-              <button class="ghost-button" id="resetButton" type="button">
-                <span aria-hidden="true">&#8635;</span>
-                Opnieuw
-              </button>
             </div>
           </div>
         </section>
@@ -554,6 +549,11 @@
               <div class="reticle-label">TARGET LOCKED</div>
             </div>
           </div>
+
+          <!-- Figma-style Rulers -->
+          <canvas id="ruler-horizontal" class="figma-ruler ruler-horizontal"></canvas>
+          <canvas id="ruler-vertical" class="figma-ruler ruler-vertical"></canvas>
+          <div class="ruler-corner"></div>
 
           <!-- Manila Document -->
           <div class="classified-doc manila-folder" id="classifiedDoc">

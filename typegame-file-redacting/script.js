@@ -76,7 +76,7 @@ let currentCameraScale = 1.0;
 
 // Audio
 let audioCtx = null;
-let soundEnabled = false;
+let soundEnabled = true;
 
 // ── DOM SELECTORS ──
 const timerEl = document.getElementById("timer");
@@ -327,6 +327,7 @@ function transitionToView(nextView, onComplete) {
     children.forEach(el => el.removeAttribute("style"));
 
     if (onComplete) onComplete();
+    drawRulers();
   };
 }
 
@@ -417,6 +418,152 @@ function getWordPosition(wordElement) {
   };
 }
 
+// ── FIGMA-STYLE CANVASES RULERS DRAWING ──
+function drawRulers() {
+  const canvasH = document.getElementById("ruler-horizontal");
+  const canvasV = document.getElementById("ruler-vertical");
+  if (!canvasH || !canvasV) return;
+
+  const ctxH = canvasH.getContext("2d");
+  const ctxV = canvasV.getContext("2d");
+
+  const viewportWidth = dossierViewport.clientWidth;
+  const viewportHeight = dossierViewport.clientHeight;
+  if (viewportWidth === 0 || viewportHeight === 0) return;
+
+  const rulerSize = 16;
+  const dpr = window.devicePixelRatio || 1;
+
+  // Sync canvas width and height with browser devicePixelRatio
+  if (canvasH.width !== viewportWidth * dpr || canvasH.height !== rulerSize * dpr) {
+    canvasH.width = viewportWidth * dpr;
+    canvasH.height = rulerSize * dpr;
+    canvasH.style.width = viewportWidth + "px";
+    canvasH.style.height = rulerSize + "px";
+  }
+  if (canvasV.width !== rulerSize * dpr || canvasV.height !== viewportHeight * dpr) {
+    canvasV.width = rulerSize * dpr;
+    canvasV.height = viewportHeight * dpr;
+    canvasV.style.width = rulerSize + "px";
+    canvasV.style.height = viewportHeight + "px";
+  }
+
+  // Scale contexts
+  ctxH.setTransform(1, 0, 0, 1, 0, 0);
+  ctxH.scale(dpr, dpr);
+  ctxV.setTransform(1, 0, 0, 1, 0, 0);
+  ctxV.scale(dpr, dpr);
+
+  // Background colors
+  ctxH.fillStyle = "#18111d";
+  ctxH.fillRect(0, 0, viewportWidth, rulerSize);
+  ctxV.fillStyle = "#18111d";
+  ctxV.fillRect(0, 0, rulerSize, viewportHeight);
+
+  // Border lines
+  ctxH.strokeStyle = "#2e2235";
+  ctxH.lineWidth = 1;
+  ctxH.beginPath();
+  ctxH.moveTo(0, rulerSize - 0.5);
+  ctxH.lineTo(viewportWidth, rulerSize - 0.5);
+  ctxH.stroke();
+
+  ctxV.strokeStyle = "#2e2235";
+  ctxV.lineWidth = 1;
+  ctxV.beginPath();
+  ctxV.moveTo(rulerSize - 0.5, 0);
+  ctxV.lineTo(rulerSize - 0.5, viewportHeight);
+  ctxV.stroke();
+
+  const scale = currentCameraScale;
+  const docLeft = classifiedDoc.offsetLeft;
+  const docTop = classifiedDoc.offsetTop;
+  const tx = currentCameraX;
+  const ty = currentCameraY;
+
+  // Choose interval steps based on scale zoom level
+  let step = 100;
+  if (scale > 3.0) step = 20;
+  else if (scale > 1.5) step = 50;
+  else if (scale > 0.8) step = 100;
+  else if (scale > 0.4) step = 200;
+  else step = 500;
+
+  const subStep = step / 10;
+
+  // Render Horizontal Ruler Ticks & Labels
+  ctxH.font = "9px 'Roboto Mono', monospace";
+  ctxH.fillStyle = "#a092a7";
+  ctxH.textAlign = "center";
+  ctxH.textBaseline = "middle";
+  ctxH.strokeStyle = "#503f59";
+
+  const x_doc_start = (rulerSize - docLeft - tx) / scale;
+  const x_doc_end = (viewportWidth - docLeft - tx) / scale;
+  const firstTickX = Math.floor(x_doc_start / subStep) * subStep;
+  const lastTickX = Math.ceil(x_doc_end / subStep) * subStep;
+
+  for (let x_doc = firstTickX; x_doc <= lastTickX; x_doc += subStep) {
+    const x_view = docLeft + tx + x_doc * scale;
+    if (x_view < rulerSize) continue;
+
+    const roundedX = Math.round(x_doc);
+    const isMajor = roundedX % step === 0;
+    const isMedium = roundedX % (step / 2) === 0;
+
+    let tickHeight = 3;
+    if (isMajor) tickHeight = 10;
+    else if (isMedium) tickHeight = 6;
+
+    ctxH.beginPath();
+    ctxH.moveTo(x_view, rulerSize - tickHeight);
+    ctxH.lineTo(x_view, rulerSize);
+    ctxH.stroke();
+
+    if (isMajor) {
+      ctxH.fillText(roundedX.toString(), x_view, 5);
+    }
+  }
+
+  // Render Vertical Ruler Ticks & Labels
+  ctxV.font = "9px 'Roboto Mono', monospace";
+  ctxV.fillStyle = "#a092a7";
+  ctxV.textAlign = "center";
+  ctxV.textBaseline = "middle";
+  ctxV.strokeStyle = "#503f59";
+
+  const y_doc_start = (rulerSize - docTop - ty) / scale;
+  const y_doc_end = (viewportHeight - docTop - ty) / scale;
+  const firstTickY = Math.floor(y_doc_start / subStep) * subStep;
+  const lastTickY = Math.ceil(y_doc_end / subStep) * subStep;
+
+  for (let y_doc = firstTickY; y_doc <= lastTickY; y_doc += subStep) {
+    const y_view = docTop + ty + y_doc * scale;
+    if (y_view < rulerSize) continue;
+
+    const roundedY = Math.round(y_doc);
+    const isMajor = roundedY % step === 0;
+    const isMedium = roundedY % (step / 2) === 0;
+
+    let tickWidth = 3;
+    if (isMajor) tickWidth = 10;
+    else if (isMedium) tickWidth = 6;
+
+    ctxV.beginPath();
+    ctxV.moveTo(rulerSize - tickWidth, y_view);
+    ctxV.lineTo(rulerSize, y_view);
+    ctxV.stroke();
+
+    if (isMajor) {
+      ctxV.save();
+      ctxV.translate(5, y_view);
+      ctxV.rotate(-Math.PI / 2);
+      ctxV.fillText(roundedY.toString(), 0, 0);
+      ctxV.restore();
+    }
+  }
+}
+
 function setCameraInstant(x, y, scale) {
   if (cameraAnimationId) {
     cancelAnimationFrame(cameraAnimationId);
@@ -426,6 +573,7 @@ function setCameraInstant(x, y, scale) {
   currentCameraX = x;
   currentCameraY = y;
   currentCameraScale = scale;
+  drawRulers();
 }
 
 function animateCameraTo(targetX, targetY, targetScale, duration = 900) {
@@ -437,6 +585,18 @@ function animateCameraTo(targetX, targetY, targetScale, duration = 900) {
   const startY = currentCameraY;
   const startScale = currentCameraScale;
   const startTime = performance.now();
+
+  const viewportWidth = dossierViewport.clientWidth;
+  const viewportHeight = dossierViewport.clientHeight;
+  const docLeft = classifiedDoc.offsetLeft;
+  const docTop = classifiedDoc.offsetTop;
+
+  // Calculate start and target focal points in document space
+  const x_doc_start = (viewportWidth / 2 - docLeft - startX) / startScale;
+  const y_doc_start = (viewportHeight / 2 - docTop - startY) / startScale;
+
+  const x_doc_target = (viewportWidth / 2 - docLeft - targetX) / targetScale;
+  const y_doc_target = (viewportHeight / 2 - docTop - targetY) / targetScale;
 
   const dist = Math.hypot(targetX - startX, targetY - startY);
   // Swoop out and back in only if we are already zoomed in and moving to another zoomed-in target
@@ -451,22 +611,29 @@ function animateCameraTo(targetX, targetY, targetScale, duration = 900) {
       ? 4 * progress * progress * progress
       : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-    const x = startX + (targetX - startX) * p;
-    const y = startY + (targetY - startY) * p;
+    // Interpolate focal point in document space (creates straight line movement)
+    const x_doc = x_doc_start + (x_doc_target - x_doc_start) * p;
+    const y_doc = y_doc_start + (y_doc_target - y_doc_start) * p;
 
+    // Interpolate scale
     let scale = startScale + (targetScale - startScale) * p;
     if (isTargetToTarget) {
       // Zoom out smoothly in the middle of transition (creating the swoop effect)
-      const maxDip = 0.55;
+      const maxDip = 0.7; // Deepen the swoop slightly for a more satisfying feel
       const dip = maxDip * Math.sin(p * Math.PI);
       scale = Math.max(1.0, scale - dip);
     }
+
+    // Calculate translation required to keep (x_doc, y_doc) in the center of the viewport
+    const x = viewportWidth / 2 - docLeft - x_doc * scale;
+    const y = viewportHeight / 2 - docTop - y_doc * scale;
 
     classifiedDoc.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
 
     currentCameraX = x;
     currentCameraY = y;
     currentCameraScale = scale;
+    drawRulers();
 
     if (progress < 1) {
       cameraAnimationId = requestAnimationFrame(step);
@@ -1125,7 +1292,10 @@ function startDecryption() {
 document.addEventListener("click", (e) => {
   if (!testFinished && !typingInput.disabled) {
     // If user clicks in game console area, focus back on terminal input
-    if (missionLayout.contains(e.target) && !difficultyDropdown.contains(e.target) && (!soundToggle || !soundToggle.contains(e.target)) && !resetButton.contains(e.target)) {
+    const isDropdown = difficultyDropdown && difficultyDropdown.contains(e.target);
+    const isSound = soundToggle && soundToggle.contains(e.target);
+    const isReset = resetButton && resetButton.contains(e.target);
+    if (missionLayout.contains(e.target) && !isDropdown && !isSound && !isReset) {
       typingInput.focus();
     }
   }
@@ -1175,10 +1345,12 @@ finishButton.addEventListener("click", () => {
   calculateScores();
 });
 
-resetButton.addEventListener("click", () => {
-  resetTest();
-  startButton.disabled = false;
-});
+if (resetButton) {
+  resetButton.addEventListener("click", () => {
+    resetTest();
+    startButton.disabled = false;
+  });
+}
 
 retryResultButton.addEventListener("click", () => {
   transitionToView(missionLayout, () => {
@@ -1534,3 +1706,10 @@ if (document.readyState === "loading") {
 } else {
   initBriefing();
 }
+
+// Global window resize listener to redraw rulers
+window.addEventListener("resize", () => {
+  if (typeof drawRulers === "function") {
+    drawRulers();
+  }
+});
