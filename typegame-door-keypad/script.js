@@ -1055,7 +1055,7 @@ function startHack() {
 // ── EVENT LISTENERS ──
 document.addEventListener("click", (e) => {
   if (!testFinished && !typingInput.disabled) {
-    if (missionLayout.contains(e.target) && !difficultyDropdown.contains(e.target) && !resetButton.contains(e.target)) {
+    if (missionLayout.contains(e.target) && !difficultyDropdown.contains(e.target) && (!resetButton || !resetButton.contains(e.target))) {
       typingInput.focus();
     }
   }
@@ -1102,9 +1102,11 @@ finishButton.addEventListener("click", () => {
   calculateScores();
 });
 
-resetButton.addEventListener("click", () => {
-  resetTest();
-});
+if (resetButton) {
+  resetButton.addEventListener("click", () => {
+    resetTest();
+  });
+}
 
 retryResultButton.addEventListener("click", () => {
   transitionToView(missionLayout, () => {
