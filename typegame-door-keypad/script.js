@@ -34,7 +34,7 @@ let decryptCycleInterval = null;
 
 // Audio
 let audioCtx = null;
-let soundEnabled = false;
+let soundEnabled = true;
 
 // ── DOM SELECTORS ──
 const timerEl = document.getElementById("timer");
