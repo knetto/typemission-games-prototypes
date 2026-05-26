@@ -592,6 +592,7 @@ function startDecryptionSequence() {
 
   const charBoxes = promptTextEl.children;
   let index = 0;
+  let greenIndex = 0;
 
   function cycleBox(box, targetValue, duration, onComplete) {
     const startTime = Date.now();
@@ -612,8 +613,8 @@ function startDecryptionSequence() {
     }, 45);
   }
 
-  function decryptNext() {
-    if (index >= HACK_CODE_LENGTH) {
+  function turnGreenOneByOne() {
+    if (greenIndex >= HACK_CODE_LENGTH) {
       // Completed decryption! Turn code text and all keys green at the same time
       promptTextEl.classList.add("cracked");
       const allBtns = keypadGrid.querySelectorAll(".keypad-btn");
@@ -622,7 +623,27 @@ function startDecryptionSequence() {
       // Wait a bit and trigger success
       decryptTimeout = setTimeout(() => {
         finishGame(true);
-      }, 600);
+      }, 800);
+      return;
+    }
+
+    const box = charBoxes[greenIndex];
+    if (box) {
+      box.classList.remove("decrypting");
+      box.classList.add("correct");
+
+      // Play a rising lock-in pitch as they turn green one by one
+      playSynthSound("decrypt-step", greenIndex + HACK_CODE_LENGTH);
+    }
+
+    greenIndex++;
+    decryptTimeout = setTimeout(turnGreenOneByOne, 150);
+  }
+
+  function decryptNext() {
+    if (index >= HACK_CODE_LENGTH) {
+      // All digits are decrypted and currently blue. Wait a short moment then turn them green one by one
+      decryptTimeout = setTimeout(turnGreenOneByOne, 1000);
       return;
     }
 
@@ -633,7 +654,7 @@ function startDecryptionSequence() {
       const targetValue = keypadDigit !== null ? keypadDigit : char;
 
       cycleBox(box, targetValue, 250, () => {
-        // Play rising beep sound when it locks in
+        // Play rising beep sound when it locks in (remaining blue)
         playSynthSound("decrypt-step", index);
 
         // Flash corresponding keypad button green when it locks in
@@ -643,7 +664,7 @@ function startDecryptionSequence() {
 
         // Proceed to next character box
         index++;
-        const nextDelay = (index === HACK_CODE_LENGTH) ? 400 : 80;
+        const nextDelay = 150;
         decryptTimeout = setTimeout(decryptNext, nextDelay);
       });
     } else {

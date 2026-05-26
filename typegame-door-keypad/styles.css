@@ -1533,9 +1533,9 @@ body::before {
 }
 
 @keyframes decryptScanPulse {
-  0% { transform: scale(1.0); filter: brightness(1); }
-  50% { transform: scale(1.06); filter: brightness(1.2); }
-  100% { transform: scale(1.02); filter: brightness(1.1); }
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+  100% { filter: brightness(1.1); }
 }
 
 .code-text.cracked .char-box {
@@ -2290,14 +2290,17 @@ body::before {
   background: rgba(154, 215, 68, 0.12) !important;
   border-color: var(--green) !important;
   box-shadow: 0 0 12px rgba(154, 215, 68, 0.4), inset 0 0 6px rgba(154, 215, 68, 0.2) !important;
+  transition: background 0.8s ease, border-color 0.8s ease, box-shadow 0.8s ease !important;
 }
 
 .keypad-btn.hacked-green .btn-num {
   color: var(--green) !important;
   text-shadow: 0 0 5px rgba(154, 215, 68, 0.4) !important;
+  transition: color 0.8s ease, text-shadow 0.8s ease !important;
 }
 
 .keypad-btn.hacked-green .btn-char {
   color: var(--green) !important;
   text-shadow: 0 0 5px rgba(154, 215, 68, 0.4) !important;
+  transition: color 0.8s ease, text-shadow 0.8s ease !important;
 }
