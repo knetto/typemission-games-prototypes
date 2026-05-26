@@ -1413,7 +1413,10 @@ body::before {
 
 .scanner-hud {
   position: absolute;
-  inset: 0;
+  top: 16px;
+  left: 16px;
+  right: 0;
+  bottom: 0;
   pointer-events: none;
   z-index: 6;
 }
@@ -1425,34 +1428,75 @@ body::before {
   border: 2.5px solid var(--green);
   opacity: 0.85;
   filter: drop-shadow(0 0 3px var(--green-glow));
+  transition: transform 0.15s ease-out, border-color 0.15s ease-out;
 }
 
 .hud-corners .tl {
-  top: 24px;
-  left: 24px;
+  top: 12px;
+  left: 12px;
   border-right: none;
   border-bottom: none;
+  --dx: -1;
+  --dy: -1;
 }
 
 .hud-corners .tr {
-  top: 24px;
-  right: 24px;
+  top: 12px;
+  right: 12px;
   border-left: none;
   border-bottom: none;
+  --dx: 1;
+  --dy: -1;
 }
 
 .hud-corners .bl {
-  bottom: 24px;
-  left: 24px;
+  bottom: 12px;
+  left: 12px;
   border-right: none;
   border-top: none;
+  --dx: -1;
+  --dy: 1;
 }
 
 .hud-corners .br {
-  bottom: 24px;
-  right: 24px;
+  bottom: 12px;
+  right: 12px;
   border-left: none;
   border-top: none;
+  --dx: 1;
+  --dy: 1;
+}
+
+.hud-corners.calibrating div {
+  animation: cornerTarget 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes cornerTarget {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.85;
+  }
+  20% {
+    transform: translate(calc(var(--dx) * 12px), calc(var(--dy) * 12px));
+    border-color: var(--orange);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px var(--orange));
+  }
+  50% {
+    transform: translate(calc(var(--dx) * -3px), calc(var(--dy) * -3px));
+    border-color: var(--green);
+    opacity: 0.7;
+  }
+  80% {
+    transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px));
+    border-color: var(--green);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0, 0);
+    border-color: var(--green);
+    opacity: 0.85;
+  }
 }
 
 .scan-laser-line {

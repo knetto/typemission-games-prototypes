@@ -591,12 +591,12 @@ function animateCameraTo(targetX, targetY, targetScale, duration = 900) {
   const docLeft = classifiedDoc.offsetLeft;
   const docTop = classifiedDoc.offsetTop;
 
-  // Calculate start and target focal points in document space
-  const x_doc_start = (viewportWidth / 2 - docLeft - startX) / startScale;
-  const y_doc_start = (viewportHeight / 2 - docTop - startY) / startScale;
+  // Calculate start and target focal points in document space (centered on visible area, offset by 16px rulers)
+  const x_doc_start = ((viewportWidth + 16) / 2 - docLeft - startX) / startScale;
+  const y_doc_start = ((viewportHeight + 16) / 2 - docTop - startY) / startScale;
 
-  const x_doc_target = (viewportWidth / 2 - docLeft - targetX) / targetScale;
-  const y_doc_target = (viewportHeight / 2 - docTop - targetY) / targetScale;
+  const x_doc_target = ((viewportWidth + 16) / 2 - docLeft - targetX) / targetScale;
+  const y_doc_target = ((viewportHeight + 16) / 2 - docTop - targetY) / targetScale;
 
   const dist = Math.hypot(targetX - startX, targetY - startY);
   // Swoop out and back in only if we are already zoomed in and moving to another zoomed-in target
@@ -624,9 +624,9 @@ function animateCameraTo(targetX, targetY, targetScale, duration = 900) {
       scale = Math.max(1.0, scale - dip);
     }
 
-    // Calculate translation required to keep (x_doc, y_doc) in the center of the viewport
-    const x = viewportWidth / 2 - docLeft - x_doc * scale;
-    const y = viewportHeight / 2 - docTop - y_doc * scale;
+    // Calculate translation required to keep (x_doc, y_doc) in the center of the visible area
+    const x = (viewportWidth + 16) / 2 - docLeft - x_doc * scale;
+    const y = (viewportHeight + 16) / 2 - docTop - y_doc * scale;
 
     classifiedDoc.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
 
@@ -667,12 +667,20 @@ function focusOnRedactedWord(index) {
   const docLeft = classifiedDoc.offsetLeft;
   const docTop = classifiedDoc.offsetTop;
 
-  // Pan values to align (x, y) to the center of the viewport, correcting for document offset
-  const translateX = (viewportWidth / 2) - (x * S) - docLeft;
-  const translateY = (viewportHeight / 2) - (y * S) - docTop;
+  // Pan values to align (x, y) to the center of the visible area, correcting for document offset
+  const translateX = (viewportWidth + 16) / 2 - (x * S) - docLeft;
+  const translateY = (viewportHeight + 16) / 2 - (y * S) - docTop;
 
   // Animate transform using our custom swoop-pan function
   animateCameraTo(translateX, translateY, S, 900);
+
+  // Trigger HUD corner calibration animation
+  const hudCorners = document.querySelector(".hud-corners");
+  if (hudCorners) {
+    hudCorners.classList.remove("calibrating");
+    void hudCorners.offsetWidth; // Force reflow
+    hudCorners.classList.add("calibrating");
+  }
 
   // Align reticle box overlay
   reticleTarget.style.width = (pos.width * S + 20) + "px";
@@ -695,11 +703,18 @@ function resetCamera(animate = true) {
   const docTop = classifiedDoc.offsetTop;
 
   const S = 0.97;
-  const translateX = (viewportWidth - docWidth * S) / 2 - docLeft;
-  const translateY = (viewportHeight - docHeight * S) / 2 - docTop;
+  const translateX = (viewportWidth + 16 - docWidth * S) / 2 - docLeft;
+  const translateY = (viewportHeight + 16 - docHeight * S) / 2 - docTop;
 
   if (animate) {
     animateCameraTo(translateX, translateY, S, 900);
+    // Trigger HUD corner calibration animation
+    const hudCorners = document.querySelector(".hud-corners");
+    if (hudCorners) {
+      hudCorners.classList.remove("calibrating");
+      void hudCorners.offsetWidth; // Force reflow
+      hudCorners.classList.add("calibrating");
+    }
   } else {
     setCameraInstant(translateX, translateY, S);
   }
