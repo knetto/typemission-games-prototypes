@@ -1638,16 +1638,6 @@ body::before {
   z-index: 2;
 }
 
-.pin-progress-strip::before {
-  content: "";
-  position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 50%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(253, 139, 139, 0.22), transparent);
-  pointer-events: none;
-}
 
 .pin-progress-node {
   position: relative;
