@@ -508,7 +508,6 @@ function renderPrompt() {
       // Sync pin alignment state
       if (i < codeCursor) {
         chamber.classList.add("picked");
-        chamber.classList.remove("wiggle");
       } else {
         chamber.classList.remove("picked", "wiggle", "decrypted");
       }
@@ -585,6 +584,9 @@ function handleKeystroke(e) {
     const chamber = document.getElementById(`chamber${codeCursor}`);
     if (chamber) {
       chamber.classList.add("wiggle");
+      setTimeout(() => {
+        chamber.classList.remove("wiggle");
+      }, 160);
       setTimeout(() => {
         playSynthSound("pin-set");
       }, 50);
@@ -1014,11 +1016,16 @@ function randomizePins() {
       const pinLift = Math.min(0, 50 - driverHeight);
       const turnDepth = Math.round(38 - keyHeight * 0.38);
 
+      const randomRot = (Math.random() > 0.5 ? 1 : -1) * (Math.random() * 1.2 + 0.8);
+      const randomX = (randomRot > 0 ? 1 : -1) * (Math.random() * 1.2 + 1.0);
+
       chamber.style.setProperty("--key-height", `${keyHeight}px`);
       chamber.style.setProperty("--driver-height", `${driverHeight}px`);
       chamber.style.setProperty("--picked-spring-height", `${pickedSpringHeight}px`);
       chamber.style.setProperty("--pin-lift", `${pinLift}px`);
       chamber.style.setProperty("--turn-depth", `${turnDepth}px`);
+      chamber.style.setProperty("--picked-driver-rot", `${randomRot.toFixed(2)}deg`);
+      chamber.style.setProperty("--picked-driver-x", `${randomX.toFixed(2)}px`);
     }
   }
 }
@@ -1340,7 +1347,7 @@ function initDottedWaveBackground() {
 // ── ONBOARDING DEMO ANIMATION (Slide 3) ──
 let demoAnimationTimeout = null;
 
-function renderDemoTerminal(typedLen) {
+function renderDemoScreenSlots(typedLen) {
   const targetCode = "kalfjp";
   let html = "";
   for (let i = 0; i < 6; i++) {
@@ -1359,15 +1366,15 @@ function renderDemoTerminal(typedLen) {
 }
 
 function startOnboardingDemoAnimation() {
-  const demoCodeEl = document.getElementById("demoTerminalCode");
+  const demoSlotsEl = document.getElementById("demoScreenSlots");
   const demoCylinder = document.getElementById("demoCylinder");
   const demoDoorStatus = document.getElementById("demoDoorStatus");
-  if (!demoCodeEl || !demoCylinder || !demoDoorStatus) return;
+  if (!demoSlotsEl || !demoCylinder || !demoDoorStatus) return;
 
   const targetCode = "kalfjp";
   let step = 0;
 
-  const pins = demoCylinder.querySelectorAll(".mini-pin");
+  const pins = demoCylinder.querySelectorAll(".mini-pin-slot");
   const miniLockpick = demoCylinder.querySelector(".mini-lockpick");
 
   function clearAllDemoPins() {
@@ -1384,7 +1391,7 @@ function startOnboardingDemoAnimation() {
 
     if (step === 0) {
       // Initial state
-      demoCodeEl.innerHTML = renderDemoTerminal(0);
+      demoSlotsEl.innerHTML = renderDemoScreenSlots(0);
       demoDoorStatus.className = "mini-door-status-demo";
       demoDoorStatus.innerHTML = '<span class="status-dot"></span><span>VERGRENDELD</span>';
       clearAllDemoPins();
@@ -1424,8 +1431,8 @@ function startOnboardingDemoAnimation() {
         }
       }
 
-      // Render typed chars
-      demoCodeEl.innerHTML = renderDemoTerminal(step);
+      // Render typed chars in slots
+      demoSlotsEl.innerHTML = renderDemoScreenSlots(step);
 
       step++;
       demoAnimationTimeout = setTimeout(nextStep, 500);
@@ -1455,14 +1462,14 @@ function stopOnboardingDemoAnimation() {
 
 function resetOnboardingDemoAnimation() {
   stopOnboardingDemoAnimation();
-  const demoCodeEl = document.getElementById("demoTerminalCode");
+  const demoSlotsEl = document.getElementById("demoScreenSlots");
   const demoCylinder = document.getElementById("demoCylinder");
   const demoDoorStatus = document.getElementById("demoDoorStatus");
-  if (demoCodeEl) {
-    demoCodeEl.innerHTML = renderDemoTerminal(0);
+  if (demoSlotsEl) {
+    demoSlotsEl.innerHTML = renderDemoScreenSlots(0);
   }
   if (demoCylinder) {
-    const pins = demoCylinder.querySelectorAll(".mini-pin");
+    const pins = demoCylinder.querySelectorAll(".mini-pin-slot");
     pins.forEach(pin => pin.classList.remove("picked-demo"));
     const miniLockpick = demoCylinder.querySelector(".mini-lockpick");
     if (miniLockpick) {

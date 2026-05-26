@@ -76,63 +76,26 @@
           <div class="briefing-slides-container">
             <!-- Slide 1: Lockpicking Introduction -->
             <div class="briefing-slide active" data-slide="0">
-              <h2 class="briefing-slide-title" id="storyTitle">Lijn de cilinderpinnen uit om de deur te openen</h2>
+              <h2 class="briefing-slide-title" id="storyTitle">Duw alle pinnen in het slot omhoog om de deur te openen</h2>
               <div class="briefing-slide-graphic">
-                <div class="hack-demo-graphic-centered">
-                  <div class="mini-door-frame">
-                    <div class="mini-door-screen">
-                      <div class="mini-screen-label">SLOT STATUS:</div>
-                      <div class="mini-screen-slots">
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
+                <div class="css-lock-graphic">
+                  <div class="mini-lock-outer">
+                    <div class="mini-lock-inner">
+                      <div class="mini-leds-row">
+                        <span class="mini-led-light datalink-glow"></span>
+                        <span class="mini-led-light signal-glow"></span>
                       </div>
-                    </div>
-                    <div class="mini-cylinder-box-demo">
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-lockpick">
-                        <svg viewBox="0 0 200 20" class="mini-lockpick-svg">
-                          <defs>
-                            <linearGradient id="miniPickStrokeGradient1" x1="0" y1="0" x2="1" y2="0">
-                              <stop offset="0%" stop-color="#343943" />
-                              <stop offset="62%" stop-color="#7f8793" />
-                              <stop offset="100%" stop-color="#b7bec9" />
-                            </linearGradient>
-                          </defs>
-                          <rect x="0" y="12" width="160" height="6" rx="2" fill="#15181d" stroke="rgba(255,255,255,0.16)" stroke-width="0.8" />
-                          <path d="M6.5 15 H153.5" fill="none" stroke="rgba(245,176,95,0.32)" stroke-width="0.6" stroke-linecap="round" />
-                          <circle cx="10" cy="15" r="0.8" fill="rgba(255,255,255,0.22)" />
-                          <circle cx="20" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="30" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="40" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="50" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="60" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="70" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="80" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="90" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="100" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="110" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="120" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="130" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="140" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="150" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <path d="M162 15 H179 C184 15 187 13 190 9" fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="3" stroke-linecap="round" />
-                          <path d="M162 14.5 H179 C184 14.5 186 12.5 189 8.5" fill="none" stroke="url(#miniPickStrokeGradient1)" stroke-width="1.8" stroke-linecap="round" />
-                          <path d="M187 8.5 L190.5 7.5" fill="none" stroke="#e48e35" stroke-width="1.4" stroke-linecap="round" />
-                        </svg>
+                      <div class="mini-cylinder-display">
+                        <div class="mini-cylinder-core">
+                          <div class="mini-keyhole-slit"></div>
+                        </div>
+                        <div class="mini-pins-glow-flow">
+                          <span class="pin-glow-dot active"></span>
+                          <span class="pin-glow-dot active" style="animation-delay: 0.3s;"></span>
+                          <span class="pin-glow-dot active" style="animation-delay: 0.6s;"></span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="mini-door-status-demo">
-                      <span class="status-dot"></span>
-                      <span>VERGRENDELD</span>
+                      <div class="mini-lock-meta">SECURE CORE v2.1</div>
                     </div>
                   </div>
                 </div>
@@ -421,52 +384,92 @@
 
             <!-- Slide 3: Gameplay Demo -->
             <div class="briefing-slide" data-slide="2">
-              <h2 class="briefing-slide-title">Typ de letters om de cilinderpinnen op te tillen</h2>
+              <h2 class="briefing-slide-title">Typ de juiste letters om de pinnen omhoog te duwen</h2>
               <div class="briefing-slide-graphic">
                 <div class="hack-demo-graphic-centered">
-                  <div class="mini-door-frame">
+                  <div class="demo-lock-card">
+                    <!-- Hardware Header -->
+                    <div class="mini-panel-hardware-header">
+                      <span class="mini-rig-label">PICK RIG v2.10</span>
+                      <div class="mini-hardware-leds">
+                        <span class="mini-led datalink"></span>
+                        <span class="mini-led signal"></span>
+                      </div>
+                    </div>
+
                     <div class="mini-door-screen">
                       <div class="mini-screen-label">SLOT STATUS:</div>
-                      <div class="mini-screen-slots" id="demoTerminalCode">
-                        <span class="char current">_</span>
+                      <div class="mini-screen-slots" id="demoScreenSlots">
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
                       </div>
                     </div>
                     <div class="mini-cylinder-box-demo" id="demoCylinder">
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
-                      <div class="mini-pin-slot"><div class="mini-pin"></div></div>
+                      <div class="mini-pin-slot">
+                        <div class="mini-driver-pin"></div>
+                        <div class="mini-pin">K</div>
+                      </div>
+                      <div class="mini-pin-slot">
+                        <div class="mini-driver-pin"></div>
+                        <div class="mini-pin">A</div>
+                      </div>
+                      <div class="mini-pin-slot">
+                        <div class="mini-driver-pin"></div>
+                        <div class="mini-pin">L</div>
+                      </div>
+                      <div class="mini-pin-slot">
+                        <div class="mini-driver-pin"></div>
+                        <div class="mini-pin">F</div>
+                      </div>
+                      <div class="mini-pin-slot">
+                        <div class="mini-driver-pin"></div>
+                        <div class="mini-pin">J</div>
+                      </div>
+                      <div class="mini-pin-slot">
+                        <div class="mini-driver-pin"></div>
+                        <div class="mini-pin">P</div>
+                      </div>
                       <div class="mini-lockpick">
-                        <svg viewBox="0 0 200 20" class="mini-lockpick-svg">
+                        <svg viewBox="0 0 600 60" class="mini-lockpick-svg">
                           <defs>
-                            <linearGradient id="miniPickStrokeGradient2" x1="0" y1="0" x2="1" y2="0">
-                              <stop offset="0%" stop-color="#343943" />
-                              <stop offset="62%" stop-color="#7f8793" />
-                              <stop offset="100%" stop-color="#b7bec9" />
+                            <linearGradient id="miniHandleMetalGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="#8f95a0" />
+                              <stop offset="20%" stop-color="#dce1eb" />
+                              <stop offset="50%" stop-color="#6b717d" />
+                              <stop offset="80%" stop-color="#3b3f47" />
+                              <stop offset="100%" stop-color="#1f2126" />
+                            </linearGradient>
+                            <linearGradient id="miniPickMetalGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="#cfd4dc" />
+                              <stop offset="25%" stop-color="#ffffff" />
+                              <stop offset="50%" stop-color="#7f8590" />
+                              <stop offset="85%" stop-color="#3e434c" />
+                              <stop offset="100%" stop-color="#24272c" />
+                            </linearGradient>
+                            <linearGradient id="miniHandleInsertGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stop-color="#15171a" />
+                              <stop offset="50%" stop-color="#252930" />
+                              <stop offset="100%" stop-color="#0b0c0d" />
                             </linearGradient>
                           </defs>
-                          <rect x="0" y="12" width="160" height="6" rx="2" fill="#15181d" stroke="rgba(255,255,255,0.16)" stroke-width="0.8" />
-                          <path d="M6.5 15 H153.5" fill="none" stroke="rgba(245,176,95,0.32)" stroke-width="0.6" stroke-linecap="round" />
-                          <circle cx="10" cy="15" r="0.8" fill="rgba(255,255,255,0.22)" />
-                          <circle cx="20" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="30" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="40" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="50" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="60" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="70" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="80" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="90" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="100" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="110" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="120" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="130" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="140" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <circle cx="150" cy="15" r="0.8" fill="rgba(255,255,255,0.15)" />
-                          <path d="M162 15 H179 C184 15 187 13 190 9" fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="3" stroke-linecap="round" />
-                          <path d="M162 14.5 H179 C184 14.5 186 12.5 189 8.5" fill="none" stroke="url(#miniPickStrokeGradient2)" stroke-width="1.8" stroke-linecap="round" />
-                          <path d="M187 8.5 L190.5 7.5" fill="none" stroke="#e48e35" stroke-width="1.4" stroke-linecap="round" />
+                          <!-- Shadow -->
+                          <path d="M455 31 H528 C545 31 556 26 573 12" fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="12" stroke-linecap="round" />
+                          <!-- Blade -->
+                          <path d="M455 30 H528 C544 30 555 25 571 11" fill="none" stroke="url(#miniPickMetalGrad)" stroke-width="7" stroke-linecap="round" />
+                          <!-- Handle -->
+                          <rect x="0" y="20" width="460" height="20" rx="6" fill="url(#miniHandleMetalGrad)" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+                          <!-- Grip Insert -->
+                          <rect x="25" y="24" width="410" height="12" rx="4" fill="url(#miniHandleInsertGrad)" stroke="rgba(0,0,0,0.4)" stroke-width="1" />
+                          <!-- Grip Texture lines -->
+                          <path d="M120 26 v8 M140 26 v8 M160 26 v8 M180 26 v8 M280 26 v8 M300 26 v8 M320 26 v8 M340 26 v8" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" stroke-linecap="round" />
+                          <!-- Rivets -->
+                          <circle cx="50" cy="30" r="3" fill="url(#miniPickMetalGrad)" stroke="rgba(0,0,0,0.4)" stroke-width="0.5" />
+                          <circle cx="230" cy="30" r="3" fill="url(#miniPickMetalGrad)" stroke="rgba(0,0,0,0.4)" stroke-width="0.5" />
+                          <circle cx="410" cy="30" r="3" fill="url(#miniPickMetalGrad)" stroke="rgba(0,0,0,0.4)" stroke-width="0.5" />
                         </svg>
                       </div>
                     </div>

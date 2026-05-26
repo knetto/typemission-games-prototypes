@@ -78,36 +78,28 @@
             <div class="briefing-slide active" data-slide="0">
               <h2 class="briefing-slide-title" id="storyTitle">Kraak de keypad code van de beveiligde deur</h2>
               <div class="briefing-slide-graphic">
-                <div class="hack-demo-graphic-centered">
-                  <div class="mini-door-frame">
-                    <div class="mini-door-screen">
-                      <div class="mini-screen-label">HACKCODE:</div>
-                      <div class="mini-screen-slots">
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
-                        <div class="demo-char-box faded">?</div>
+                <div class="css-keypad-graphic">
+                  <div class="mini-keypad-outer">
+                    <div class="mini-keypad-inner">
+                      <div class="mini-leds-row">
+                        <span class="mini-led-light datalink-glow"></span>
+                        <span class="mini-led-light signal-glow"></span>
                       </div>
-                    </div>
-                    <div class="mini-keypad-box-demo">
-                      <div class="mini-keypad-btn-demo">1</div>
-                      <div class="mini-keypad-btn-demo">2</div>
-                      <div class="mini-keypad-btn-demo">3</div>
-                      <div class="mini-keypad-btn-demo">4</div>
-                      <div class="mini-keypad-btn-demo">5</div>
-                      <div class="mini-keypad-btn-demo">6</div>
-                      <div class="mini-keypad-btn-demo">7</div>
-                      <div class="mini-keypad-btn-demo">8</div>
-                      <div class="mini-keypad-btn-demo">9</div>
-                      <div class="mini-keypad-btn-demo">*</div>
-                      <div class="mini-keypad-btn-demo">0</div>
-                      <div class="mini-keypad-btn-demo">#</div>
-                    </div>
-                    <div class="mini-door-status-demo">
-                      <span class="status-dot"></span>
-                      <span>VERGRENDELD</span>
+                      <div class="mini-screen-display">
+                        <div class="mini-screen-title">BYPASS READY</div>
+                        <div class="mini-screen-dots-flow">
+                          <span class="slot-dot pulsing"></span>
+                          <span class="slot-dot pulsing" style="animation-delay: 0.2s;"></span>
+                          <span class="slot-dot pulsing" style="animation-delay: 0.4s;"></span>
+                          <span class="slot-dot pulsing" style="animation-delay: 0.6s;"></span>
+                        </div>
+                      </div>
+                      <div class="mini-keypad-buttons-grid">
+                        <span class="key-btn">1</span><span class="key-btn">2</span><span class="key-btn">3</span>
+                        <span class="key-btn">4</span><span class="key-btn">5</span><span class="key-btn">6</span>
+                        <span class="key-btn">7</span><span class="key-btn">8</span><span class="key-btn">9</span>
+                        <span class="key-btn special">*</span><span class="key-btn">0</span><span class="key-btn special">#</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -399,11 +391,16 @@
               <h2 class="briefing-slide-title">Typ de letters op het scherm om het slot te kraken</h2>
               <div class="briefing-slide-graphic">
                 <div class="hack-demo-graphic-centered">
-                  <div class="mini-door-frame">
+                  <div class="demo-keypad-card">
                     <div class="mini-door-screen">
                       <div class="mini-screen-label">HACKCODE:</div>
-                      <div class="mini-screen-slots" id="demoTerminalCode">
-                        <span class="char current">_</span>
+                      <div class="mini-screen-slots" id="demoScreenSlots">
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
+                        <div class="demo-char-box faded"></div>
                       </div>
                     </div>
                     <div class="mini-keypad-box-demo" id="demoKeypad">

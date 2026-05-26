@@ -1270,18 +1270,21 @@ function initDottedWaveBackground() {
 // ── ONBOARDING DEMO ANIMATION (Slide 3) ──
 let demoAnimationTimeout = null;
 
-function renderDemoTerminal(typedLen) {
+function renderDemoScreenSlots(typedLen) {
   const targetCode = "kalfjp";
   let html = "";
   for (let i = 0; i < 6; i++) {
     let cls = "demo-char-box";
-    let content = targetCode[i];
+    let content = "";
     if (i < typedLen) {
       cls += " correct";
+      content = targetCode[i];
     } else if (i === typedLen) {
       cls += " current";
+      content = "_";
     } else {
       cls += " faded";
+      content = "";
     }
     html += `<div class="${cls}">${content}</div>`;
   }
@@ -1289,12 +1292,13 @@ function renderDemoTerminal(typedLen) {
 }
 
 function startOnboardingDemoAnimation() {
-  const demoCodeEl = document.getElementById("demoTerminalCode");
+  const demoSlotsEl = document.getElementById("demoScreenSlots");
   const demoKeypad = document.getElementById("demoKeypad");
   const demoDoorStatus = document.getElementById("demoDoorStatus");
-  if (!demoCodeEl || !demoKeypad || !demoDoorStatus) return;
+  if (!demoSlotsEl || !demoKeypad || !demoDoorStatus) return;
 
   const targetCode = "kalfjp";
+  const targetNumbers = "542861";
   const keySequence = [7, 0, 8, 3, 6, 11]; // Keypad indices to highlight/type
   let step = 0;
 
@@ -1314,7 +1318,7 @@ function startOnboardingDemoAnimation() {
 
     if (step === 0) {
       // Initial state
-      demoCodeEl.innerHTML = renderDemoTerminal(0);
+      demoSlotsEl.innerHTML = renderDemoScreenSlots(0);
       demoDoorStatus.className = "mini-door-status-demo";
       demoDoorStatus.innerHTML = '<span class="status-dot"></span><span>VERGRENDELD</span>';
       clearAllKeypadHighlights();
@@ -1341,8 +1345,8 @@ function startOnboardingDemoAnimation() {
         }, 150);
       }
 
-      // Render typed chars
-      demoCodeEl.innerHTML = renderDemoTerminal(step);
+      // Render typed letters in slots
+      demoSlotsEl.innerHTML = renderDemoScreenSlots(step);
 
       // Highlight next target button
       if (step < 6 && btns[nextBtnIndex]) {
@@ -1352,15 +1356,47 @@ function startOnboardingDemoAnimation() {
       step++;
       demoAnimationTimeout = setTimeout(nextStep, 500);
     } else if (step === 7) {
-      // Unlock status
-      demoDoorStatus.className = "mini-door-status-demo unlocked-demo";
-      demoDoorStatus.innerHTML = '<span class="status-dot"></span><span>ONTGRENDELD</span>';
+      // Cycle letters to numbers
+      let ticks = 0;
+      const maxTicks = 8;
+      const cycleInterval = setInterval(() => {
+        if (onboardingComplete) {
+          clearInterval(cycleInterval);
+          return;
+        }
+        let html = "";
+        for (let i = 0; i < 6; i++) {
+          const randNum = Math.floor(Math.random() * 10);
+          html += `<div class="demo-char-box correct">${randNum}</div>`;
+        }
+        demoSlotsEl.innerHTML = html;
+        ticks++;
+        if (ticks >= maxTicks) {
+          clearInterval(cycleInterval);
+          showUnlockedState();
+        }
+      }, 80);
 
-      // Flash all keys green
-      btns.forEach(btn => btn.classList.add("success-demo"));
+      function showUnlockedState() {
+        if (onboardingComplete) return;
+        
+        // Show final numbers
+        let html = "";
+        for (let i = 0; i < 6; i++) {
+          html += `<div class="demo-char-box correct">${targetNumbers[i]}</div>`;
+        }
+        demoSlotsEl.innerHTML = html;
 
-      step = 8;
-      demoAnimationTimeout = setTimeout(nextStep, 2500);
+        // Unlock status
+        demoDoorStatus.className = "mini-door-status-demo unlocked-demo";
+        demoDoorStatus.innerHTML = '<span class="status-dot"></span><span>ONTGRENDELD</span>';
+
+        // Flash all keys green
+        btns.forEach(btn => btn.classList.add("success-demo"));
+
+        step = 8;
+        demoAnimationTimeout = setTimeout(nextStep, 2500);
+      }
     } else if (step === 8) {
       // Loop
       step = 0;
@@ -1380,11 +1416,11 @@ function stopOnboardingDemoAnimation() {
 
 function resetOnboardingDemoAnimation() {
   stopOnboardingDemoAnimation();
-  const demoCodeEl = document.getElementById("demoTerminalCode");
+  const demoSlotsEl = document.getElementById("demoScreenSlots");
   const demoKeypad = document.getElementById("demoKeypad");
   const demoDoorStatus = document.getElementById("demoDoorStatus");
-  if (demoCodeEl) {
-    demoCodeEl.innerHTML = renderDemoTerminal(0);
+  if (demoSlotsEl) {
+    demoSlotsEl.innerHTML = renderDemoScreenSlots(0);
   }
   if (demoKeypad) {
     const btns = demoKeypad.querySelectorAll(".mini-keypad-btn-demo");
