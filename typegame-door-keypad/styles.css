@@ -1185,9 +1185,9 @@ body::before {
 .keypad-btn .btn-char {
   font-size: clamp(0.8rem, 2vh, 1.2rem); /* Scaled slightly down */
   font-weight: 600;
-  color: var(--orange);
+  color: #8e92a2; /* Light grey */
   margin-top: 2px;
-  text-shadow: 0 0 5px rgba(228, 142, 53, 0.4);
+  text-shadow: -1px -1px 0px rgba(0, 0, 0, 0.8), 1px 1px 0px rgba(255, 255, 255, 0.15); /* Etched look */
   line-height: 1;
 }
 
@@ -1379,12 +1379,14 @@ body::before {
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
 }
 
+/*
 .keypad-btn.active-target {
   border-color: var(--orange) !important;
   color: var(--orange) !important;
   box-shadow: 0 0 12px rgba(228, 142, 53, 0.5), inset 0 0 6px rgba(228, 142, 53, 0.3) !important;
   animation: targetBtnPulse 0.8s infinite alternate ease-in-out;
 }
+*/
 
 @keyframes targetBtnPulse {
   0% { box-shadow: 0 0 4px rgba(228, 142, 53, 0.2); opacity: 0.8; }
