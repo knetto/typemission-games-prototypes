@@ -433,27 +433,7 @@ function updateFingerprintRidges() {
 }
 
 function updateActiveNodeHighlight() {
-  const activeStage = Math.floor(codeCursor / 2);
-
-  // Update node progress indicators on strip (01 - 03)
-  for (let i = 0; i < 3; i++) {
-    const nodeEl = document.getElementById(`pinProgress${i}`);
-    if (nodeEl) {
-      nodeEl.classList.remove("active-node", "correct-node", "wrong-node");
-      if (i < activeStage) {
-        nodeEl.classList.add("correct-node");
-      } else if (i === activeStage) {
-        const hasMistakeInStage = typedStates[i * 2] === "wrong" || typedStates[i * 2 + 1] === "wrong";
-        if (hasMistakeInStage) {
-          nodeEl.classList.add("wrong-node");
-        } else {
-          nodeEl.classList.add("active-node");
-        }
-      }
-    }
-  }
-
-  // Note: Signal bars are now continuously animated in CSS to match other games.
+  // Active node highlight indicators removed as per user request
 }
 
 function updateLiveStats() {
@@ -716,11 +696,7 @@ function finishGame(won) {
     laserScannerGlow.style.animation = "";
   }
 
-  // Clear indicators
-  for (let i = 0; i < 3; i++) {
-    const nodeEl = document.getElementById(`pinProgress${i}`);
-    if (nodeEl) nodeEl.classList.remove("active-node");
-  }
+  // Clear indicators removed as per user request
 
   if (running) {
     accumulatedTime += (Date.now() - currentWordStartedAt);

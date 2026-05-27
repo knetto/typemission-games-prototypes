@@ -1417,14 +1417,6 @@ body::before {
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.lock-panel::before {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 8px;
-  pointer-events: none;
-}
 
 .panel-hardware-header {
   display: flex;
