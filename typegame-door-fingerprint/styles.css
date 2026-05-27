@@ -511,14 +511,14 @@ body::before {
 }
 
 .mini-led-light.datalink-glow {
-  background: var(--cyan);
-  box-shadow: 0 0 4px var(--cyan);
+  background: var(--green);
+  box-shadow: 0 0 4px var(--green);
   animation: miniLedBlink 1s infinite alternate;
 }
 
 .mini-led-light.signal-glow {
-  background: var(--green);
-  box-shadow: 0 0 4px var(--green-glow);
+  background: var(--orange);
+  box-shadow: 0 0 4px rgba(228, 142, 53, 0.4);
   animation: miniLedBlink 0.7s infinite alternate;
 }
 
@@ -1108,20 +1108,25 @@ body::before {
 }
 
 .led.datalink {
-  background: var(--cyan);
-  box-shadow: 0 0 6px var(--cyan);
-  animation: ledPulse 0.9s infinite alternate ease-in-out;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: datalinkBlink 0.3s infinite alternate;
 }
 
 .led.signal {
-  background: var(--green);
-  box-shadow: 0 0 5px var(--green-glow);
-  animation: ledPulse 1.4s infinite alternate ease-in-out;
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange);
+  animation: signalPulse 1.2s infinite ease-in-out;
 }
 
-@keyframes ledPulse {
-  0% { opacity: 0.35; }
+@keyframes datalinkBlink {
+  0% { opacity: 0.3; }
   100% { opacity: 1; }
+}
+
+@keyframes signalPulse {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 1; }
 }
 
 /* Integrated Digit/Character Screen */
@@ -1493,7 +1498,7 @@ body::before {
 
 .signal-bar {
   width: 3px;
-  background: var(--cyan);
+  background: var(--orange);
   border-radius: 1px;
   transform-origin: bottom;
   animation: signalBarGrowth 0.8s infinite ease-in-out alternate;
