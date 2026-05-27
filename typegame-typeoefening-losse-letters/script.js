@@ -1,0 +1,1107 @@
+// ── LESSON LIBRARY ──
+const LESSONS = [
+  {
+    title: "Basispositie (f, j, d, k)",
+    lines: [
+      "fff jjj ddd kkk fff jjj ddd kkk",
+      "fd jk df kj fd jk df kj fd jk df kj",
+      "fjf jfj kdk kdk fdf jkj dfj kdk fjd",
+      "ddd fff ddd fff ddd ff fdf fdf fdf fdf",
+      "ff jj dd kk df jk fd kj dk fj f j d k"
+    ]
+  },
+  {
+    title: "Home row uitbreiding (a, s, l, g, h)",
+    lines: [
+      "aaa sss lll ggg hhh aaa sss lll ggg hhh",
+      "asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
+      "fga jhk dsl fga jhk dsl fga jhk dsl",
+      "sall lash flag glad half slag fash gash",
+      "as df gh jk la as df gh jk la a s d f"
+    ]
+  },
+  {
+    title: "Top row links (e, r, t, q, w)",
+    lines: [
+      "eee rrr ttt qqq www eee rrr ttt qqq www",
+      "de ed fr rf gt tg aq qa sw ws de ed fr",
+      "we red wet try tea raw war ear era err",
+      "deer reef tree west stew free ward draw",
+      "qwert asdfg qwert asdfg qwert asdfg"
+    ]
+  },
+  {
+    title: "Top row rechts (u, i, o, p, y)",
+    lines: [
+      "uuu iii ooo ppp yyy uuu iii ooo ppp yyy",
+      "ju uj ki ik lo ol jp pj jy yj ju uj ki",
+      "you out pit pot toy tip lip pin hip joy",
+      "your port trip plot tool pool iron loop",
+      "yuiop hjkl; yuiop hjkl; yuiop hjkl;"
+    ]
+  },
+  {
+    title: "Bottom row (z, x, c, v, b, n, m)",
+    lines: [
+      "zzz xxx ccc vvv bbb nnn mmm zzz xxx ccc",
+      "za az xc cx vb bv nm mn za az xc cx vb",
+      "can van ban man cab cat dog zip fox box",
+      "zinc zoom verb born norm comb many calm",
+      "zxcvb nm,./ zxcvb nm,./ zxcvb nm,./"
+    ]
+  },
+  {
+    title: "Gemengde zinnen (Volledige alfabet)",
+    lines: [
+      "the quick brown fox jumps over the lazy dog",
+      "blind typen is een handige vaardigheid",
+      "oefening baart kunst typen is een missie",
+      "typ deze letters rustig in een vast ritme",
+      "super spy school typeoefening voltooid"
+    ]
+  }
+];
+
+// ── KEYBOARD LAYOUT DEFINITIONS ──
+const KEYBOARD_LAYOUTS = {
+  qwerty: [
+    [
+      { label: "esc", key: "escape" },
+      { label: "1", char: "1", key: "1" },
+      { label: "2", char: "2", key: "2" },
+      { label: "3", char: "3", key: "3" },
+      { label: "4", char: "4", key: "4" },
+      { label: "5", char: "5", key: "5" },
+      { label: "6", char: "6", key: "6" },
+      { label: "7", char: "7", key: "7" },
+      { label: "8", char: "8", key: "8" },
+      { label: "9", char: "9", key: "9" },
+      { label: "0", char: "0", key: "0" },
+      { label: "-", char: "-", key: "-" },
+      { label: "=", char: "=", key: "=" },
+      { label: "backspace", key: "backspace", class: "key-wide-3" }
+    ],
+    [
+      { label: "tab", key: "tab", class: "key-wide-2" },
+      { label: "Q", char: "q", key: "q" },
+      { label: "W", char: "w", key: "w" },
+      { label: "E", char: "e", key: "e" },
+      { label: "R", char: "r", key: "r" },
+      { label: "T", char: "t", key: "t" },
+      { label: "Y", char: "y", key: "y" },
+      { label: "U", char: "u", key: "u" },
+      { label: "I", char: "i", key: "i" },
+      { label: "O", char: "o", key: "o" },
+      { label: "P", char: "p", key: "p" },
+      { label: "[", char: "[", key: "[" },
+      { label: "]", char: "]", key: "]" },
+      { label: "\\", char: "\\", key: "\\" }
+    ],
+    [
+      { label: "caps", key: "capslock", class: "key-wide-2" },
+      { label: "A", char: "a", key: "a" },
+      { label: "S", char: "s", key: "s" },
+      { label: "D", char: "d", key: "d" },
+      { label: "F", char: "f", key: "f", class: "left-home" },
+      { label: "G", char: "g", key: "g" },
+      { label: "H", char: "h", key: "h" },
+      { label: "J", char: "j", key: "j", class: "right-home" },
+      { label: "K", char: "k", key: "k" },
+      { label: "L", char: "l", key: "l" },
+      { label: ";", char: ";", key: ";" },
+      { label: "'", char: "'", key: "'" },
+      { label: "enter", key: "enter", class: "key-wide-3" }
+    ],
+    [
+      { label: "shift", key: "shift", class: "key-wide-4" },
+      { label: "Z", char: "z", key: "z" },
+      { label: "X", char: "x", key: "x" },
+      { label: "C", char: "c", key: "c" },
+      { label: "V", char: "v", key: "v" },
+      { label: "B", char: "b", key: "b" },
+      { label: "N", char: "n", key: "n" },
+      { label: "M", char: "m", key: "m" },
+      { label: ",", char: ",", key: "," },
+      { label: ".", char: ".", key: "." },
+      { label: "/", char: "/", key: "/" },
+      { label: "shift", key: "shift", class: "key-wide-4" }
+    ],
+    [
+      { label: "ctrl", key: "ctrl", class: "key-wide-1" },
+      { label: "win", key: "meta", class: "key-wide-1" },
+      { label: "alt", key: "alt", class: "key-wide-1" },
+      { label: "space", char: " ", key: "space", class: "key-space" },
+      { label: "alt", key: "alt", class: "key-wide-1" },
+      { label: "fn", key: "fn", class: "key-wide-1" },
+      { label: "ctrl", key: "ctrl", class: "key-wide-1" }
+    ]
+  ],
+  azerty: [
+    [
+      { label: "esc", key: "escape" },
+      { label: "&", char: "&", key: "&" },
+      { label: "É", char: "é", key: "é" },
+      { label: "\"", char: "\"", key: "\"" },
+      { label: "'", char: "'", key: "'" },
+      { label: "(", char: "(", key: "(" },
+      { label: "§", char: "§", key: "§" },
+      { label: "È", char: "è", key: "è" },
+      { label: "!", char: "!", key: "!" },
+      { label: "Ç", char: "ç", key: "ç" },
+      { label: "À", char: "à", key: "à" },
+      { label: ")", char: ")", key: ")" },
+      { label: "-", char: "-", key: "-" },
+      { label: "backspace", key: "backspace", class: "key-wide-3" }
+    ],
+    [
+      { label: "tab", key: "tab", class: "key-wide-2" },
+      { label: "A", char: "a", key: "a" },
+      { label: "Z", char: "z", key: "z" },
+      { label: "E", char: "e", key: "e" },
+      { label: "R", char: "r", key: "r" },
+      { label: "T", char: "t", key: "t" },
+      { label: "Y", char: "y", key: "y" },
+      { label: "U", char: "u", key: "u" },
+      { label: "I", char: "i", key: "i" },
+      { label: "O", char: "o", key: "o" },
+      { label: "P", char: "p", key: "p" },
+      { label: "^", char: "^", key: "^" },
+      { label: "$", char: "$", key: "$" },
+      { label: "enter", key: "enter", class: "key-wide-3" }
+    ],
+    [
+      { label: "caps", key: "capslock", class: "key-wide-2" },
+      { label: "Q", char: "q", key: "q" },
+      { label: "S", char: "s", key: "s" },
+      { label: "D", char: "d", key: "d" },
+      { label: "F", char: "f", key: "f", class: "left-home" },
+      { label: "G", char: "g", key: "g" },
+      { label: "H", char: "h", key: "h" },
+      { label: "J", char: "j", key: "j", class: "right-home" },
+      { label: "K", char: "k", key: "k" },
+      { label: "L", char: "l", key: "l" },
+      { label: "M", char: "m", key: "m" },
+      { label: "Ù", char: "ù", key: "ù" },
+      { label: "%", char: "%", key: "%" }
+    ],
+    [
+      { label: "shift", key: "shift", class: "key-wide-3" },
+      { label: "<", char: "<", key: "<" },
+      { label: "W", char: "w", key: "w" },
+      { label: "X", char: "x", key: "x" },
+      { label: "C", char: "c", key: "c" },
+      { label: "V", char: "v", key: "v" },
+      { label: "B", char: "b", key: "b" },
+      { label: "N", char: "n", key: "n" },
+      { label: ",", char: ",", key: "," },
+      { label: ";", char: ";", key: ";" },
+      { label: ":", char: ":", key: ":" },
+      { label: "=", char: "=", key: "=" },
+      { label: "shift", key: "shift", class: "key-wide-4" }
+    ],
+    [
+      { label: "ctrl", key: "ctrl", class: "key-wide-1" },
+      { label: "win", key: "meta", class: "key-wide-1" },
+      { label: "alt", key: "alt", class: "key-wide-1" },
+      { label: "space", char: " ", key: "space", class: "key-space" },
+      { label: "alt", key: "alt", class: "key-wide-1" },
+      { label: "fn", key: "fn", class: "key-wide-1" },
+      { label: "ctrl", key: "ctrl", class: "key-wide-1" }
+    ]
+  ]
+};
+
+// ── STATE VARIABLES ──
+let currentLessonIndex = 0;
+let keyboardLayout = "azerty"; // Default Belgian AZERTY
+let keyboardVisible = true;
+let lettersVisible = false; // Blind mode active by default
+let isInteracting = false; // Flag to track when user is clicking controls/dropdowns
+
+// Timing & evaluation
+let running = false;
+let testFinished = false;
+let lessonStartTime = 0;
+let accumulatedTime = 0;
+let timerInterval = null;
+
+// Stats tracking
+let totalKeystrokes = 0;
+let correctKeystrokes = 0;
+let mistakeCount = 0;
+let currentStreak = 0;
+let maxStreak = 0;
+let mistakesPerKey = {};
+let totalCoins = 0;
+
+// Lesson progression
+let currentLineIndex = 0;
+let currentTextLine = "";
+let cursorIndex = 0;
+let typedStates = []; // 'correct', 'wrong', or null
+
+// Metronome engine
+let metronomePlaying = false;
+let bpm = 40;
+let metronomeInterval = null;
+let lastTickTime = 0;
+
+// Audio context
+let audioCtx = null;
+let soundEnabled = true;
+
+// ── DOM ELEMENTS ──
+const timerEl = document.getElementById("timer");
+const liveCpmEl = document.getElementById("liveCpm");
+const mistakeCountEl = document.getElementById("mistakeCount");
+const accuracyEl = document.getElementById("accuracy");
+const lineIndicatorEl = document.getElementById("lineIndicator");
+const typingTextLineEl = document.getElementById("typingTextLine");
+const progressBarFillEl = document.getElementById("progressBarFill");
+const progressRingBarEl = document.getElementById("progressRingBar");
+const progressRingTextEl = document.getElementById("progressRingText");
+
+// Inputs & overlays
+const typingInput = document.getElementById("typingInput");
+const focusOverlay = document.getElementById("focusOverlay");
+const keyboardContainer = document.getElementById("keyboardContainer");
+const keyboardSection = document.getElementById("keyboardSection");
+
+// Buttons & labels
+const currentLessonDisplay = document.getElementById("currentLessonDisplay");
+
+const metronomeToggle = document.getElementById("metronomeToggle");
+const metronomePlayIcon = document.getElementById("metronomePlayIcon");
+const metronomePauseIcon = document.getElementById("metronomePauseIcon");
+const bpmValueEl = document.getElementById("bpmValue");
+const bpmDecrease = document.getElementById("bpmDecrease");
+const bpmIncrease = document.getElementById("bpmIncrease");
+const keyboardToggleBtn = document.getElementById("keyboardToggleBtn");
+const keyboardLettersBtn = document.getElementById("keyboardLettersBtn");
+
+// Results modal & stats dashboard selectors
+const resultsOverlay = document.getElementById("resultsOverlay");
+const resultTitle = document.getElementById("resultTitle");
+const rankBadge = document.getElementById("rankBadge");
+const completeCpm = document.getElementById("completeCpm");
+const completeDifficultKey = document.getElementById("completeDifficultKey");
+const completeAccuracy = document.getElementById("completeAccuracy");
+const completeStreak = document.getElementById("completeStreak");
+const missionStatusContainer = document.getElementById("missionStatusContainer");
+const completeCoins = document.getElementById("completeCoins");
+
+const cpmCoinsReward = document.getElementById("cpmCoinsReward");
+const precisionCoinsReward = document.getElementById("precisionCoinsReward");
+const streakCoinsReward = document.getElementById("streakCoinsReward");
+const completionCoinsReward = document.getElementById("completionCoinsReward");
+
+const retryLessonBtn = document.getElementById("retryLessonBtn");
+const nextLessonBtn = document.getElementById("nextLessonBtn");
+
+// ── INITIALIZATION ──
+window.addEventListener("DOMContentLoaded", () => {
+  renderKeyboard();
+  loadLesson(0);
+
+  // Setup click-to-focus triggers
+  focusOverlay.addEventListener("click", () => {
+    typingInput.focus();
+  });
+  document.getElementById("textBoxContainer").addEventListener("click", () => {
+    typingInput.focus();
+  });
+
+  typingInput.addEventListener("focus", () => {
+    focusOverlay.classList.remove("visible");
+  });
+  typingInput.addEventListener("blur", () => {
+    // Clear all pressed keys on blur to prevent stuck keys
+    document.querySelectorAll(".key.pressed").forEach(k => k.classList.remove("pressed"));
+    
+    // Only show focus overlay if we're not finished and not currently interacting with controls
+    setTimeout(() => {
+      if (!testFinished && !isInteracting) {
+        focusOverlay.classList.add("visible");
+      }
+    }, 120);
+  });
+
+  // Handle typing inputs
+  typingInput.addEventListener("keydown", handleKeystroke);
+  typingInput.addEventListener("keyup", handleKeyRelease);
+
+  // Layout is statically AZERTY
+
+  // Metronome buttons
+  metronomeToggle.addEventListener("click", toggleMetronome);
+  bpmDecrease.addEventListener("click", () => adjustBpm(-5));
+  bpmIncrease.addEventListener("click", () => adjustBpm(5));
+
+  // Keyboard toggle
+  keyboardToggleBtn.addEventListener("click", () => {
+    keyboardVisible = !keyboardVisible;
+    keyboardSection.classList.toggle("hidden", !keyboardVisible);
+    keyboardToggleBtn.classList.toggle("ghost-button", keyboardVisible);
+    keyboardToggleBtn.style.border = keyboardVisible ? "" : "1.5px solid rgba(255, 255, 255, 0.15)";
+    keyboardToggleBtn.style.color = keyboardVisible ? "" : "rgba(255,255,255,0.4)";
+    typingInput.focus();
+  });
+
+  // Letters show/hide toggle
+  keyboardLettersBtn.style.border = "1.5px solid rgba(255, 255, 255, 0.15)";
+  keyboardLettersBtn.style.color = "rgba(255,255,255,0.4)";
+  keyboardLettersBtn.addEventListener("click", () => {
+    lettersVisible = !lettersVisible;
+    keyboardContainer.classList.toggle("blind-keyboard", !lettersVisible);
+    keyboardLettersBtn.textContent = lettersVisible ? "LETTERS: AAN" : "LETTERS: UIT";
+    keyboardLettersBtn.classList.toggle("ghost-button", !lettersVisible);
+    keyboardLettersBtn.style.border = lettersVisible ? "" : "1.5px solid rgba(255, 255, 255, 0.15)";
+    keyboardLettersBtn.style.color = lettersVisible ? "" : "rgba(255,255,255,0.4)";
+    typingInput.focus();
+  });
+
+  // Modal actions
+  retryLessonBtn.addEventListener("click", () => {
+    resultsOverlay.hidden = true;
+    loadLesson(currentLessonIndex);
+  });
+
+  nextLessonBtn.addEventListener("click", () => {
+    resultsOverlay.hidden = true;
+    const nextIdx = (currentLessonIndex + 1) % LESSONS.length;
+    loadLesson(nextIdx);
+  });
+
+  // Track if clicking controls or header to prevent immediate blur lock overlay
+  window.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".game-header") || e.target.closest(".bottom-controls-bar") || e.target.closest(".results-overlay")) {
+      isInteracting = true;
+    }
+  });
+  window.addEventListener("mouseup", () => {
+    setTimeout(() => {
+      isInteracting = false;
+    }, 100);
+  });
+
+  // Start subtle Matrix background animation
+  initMatrix();
+});
+
+// ── KEYBOARD FINGER MAPPING HELPERS ──
+function getFingerClass(char) {
+  if (!char) return "";
+  const c = char.toLowerCase();
+
+  // Spacebar is pressed by thumbs
+  if (c === " ") return "finger-t";
+
+  if (keyboardLayout === "qwerty") {
+    if (["`", "1", "q", "a", "z"].includes(c)) return "finger-lp"; // Left Pinky
+    if (["2", "w", "s", "x"].includes(c)) return "finger-lr";      // Left Ring
+    if (["3", "e", "d", "c"].includes(c)) return "finger-lm";      // Left Middle
+    if (["4", "5", "r", "t", "f", "g", "v", "b"].includes(c)) return "finger-li"; // Left Index
+    if (["6", "7", "y", "u", "h", "j", "n", "m"].includes(c)) return "finger-ri"; // Right Index
+    if (["8", "i", "k", ","].includes(c)) return "finger-rm";      // Right Middle
+    if (["9", "o", "l", "."].includes(c)) return "finger-rr";      // Right Ring
+    if (["0", "-", "=", "p", "[", "]", ";", "'", "\\", "/"].includes(c)) return "finger-rp"; // Right Pinky
+  } else {
+    // AZERTY (Belgian Layout)
+    if (["&", "a", "q", "w", "<"].includes(c)) return "finger-lp"; // Left Pinky (² is neutral/modifiers style)
+    if (["é", "z", "s", "x"].includes(c)) return "finger-lr";      // Left Ring
+    if (['"', "e", "d", "c"].includes(c)) return "finger-lm";      // Left Middle
+    if (["'", "(", "r", "t", "f", "g", "v", "b"].includes(c)) return "finger-li"; // Left Index
+    if (["§", "è", "y", "u", "h", "j", "n"].includes(c)) return "finger-ri"; // Right Index
+    if (["!", "i", "k", ","].includes(c)) return "finger-rm";      // Right Middle
+    if (["ç", "o", "l", ";"].includes(c)) return "finger-rr";      // Right Ring
+    if (["à", ")", "-", "p", "^", "$", "m", "ù", "%", ":", "=", "µ"].includes(c)) return "finger-rp"; // Right Pinky
+  }
+  return "";
+}
+
+function getActiveLessonFingers() {
+  const lesson = LESSONS[currentLessonIndex];
+  const allText = lesson.lines.join("");
+  const activeFingers = new Set();
+  
+  for (let i = 0; i < allText.length; i++) {
+    const fingerClass = getFingerClass(allText[i]);
+    if (fingerClass) {
+      activeFingers.add(fingerClass);
+    }
+  }
+  return activeFingers;
+}
+
+// ── KEYBOARD DYNAMIC RENDERING ──
+function renderKeyboard() {
+  keyboardContainer.innerHTML = "";
+  keyboardContainer.classList.toggle("blind-keyboard", !lettersVisible);
+  const layout = KEYBOARD_LAYOUTS[keyboardLayout];
+  const activeFingers = getActiveLessonFingers();
+
+  layout.forEach(rowKeys => {
+    const rowEl = document.createElement("div");
+    rowEl.className = "keyboard-row";
+
+    rowKeys.forEach(k => {
+      const keyEl = document.createElement("div");
+      keyEl.className = "key";
+      if (k.class) {
+        keyEl.className += ` ${k.class}`;
+      }
+
+      // Store character mapping for lookup
+      if (k.key) {
+        keyEl.dataset.key = k.key.toLowerCase();
+      }
+      if (k.char !== undefined) {
+        keyEl.dataset.char = k.char;
+      }
+
+      // Add finger color coding classes
+      const fingerClass = getFingerClass(k.char);
+      if (fingerClass) {
+        keyEl.classList.add(fingerClass);
+        // Dim the key if its finger is not being learned in the current lesson
+        if (!activeFingers.has(fingerClass)) {
+          keyEl.classList.add("dimmed");
+        }
+      }
+
+      const span = document.createElement("span");
+      span.className = "key-code";
+      span.textContent = k.label;
+
+      keyEl.appendChild(span);
+      rowEl.appendChild(keyEl);
+    });
+
+    keyboardContainer.appendChild(rowEl);
+  });
+}
+
+// ── LESSON CONTROLLER ──
+function loadLesson(index) {
+  currentLessonIndex = index;
+  currentLineIndex = 0;
+  totalKeystrokes = 0;
+  correctKeystrokes = 0;
+  mistakeCount = 0;
+  currentStreak = 0;
+  maxStreak = 0;
+  mistakesPerKey = {};
+  accumulatedTime = 0;
+  running = false;
+  testFinished = false;
+  clearInterval(timerInterval);
+
+  // No dropdown items to update
+  const currentTitle = LESSONS[index].title;
+  currentLessonDisplay.textContent = `Les ${index + 1}: ${currentTitle.split(" (")[0]}`;
+
+  // Hide overlay, enable inputs
+  resultsOverlay.hidden = true;
+  resultsOverlay.classList.remove("active");
+  focusOverlay.classList.remove("visible");
+
+  // Reset live stats HUD
+  timerEl.textContent = "0.0";
+  liveCpmEl.textContent = "0";
+  mistakeCountEl.textContent = "0";
+  accuracyEl.textContent = "100%";
+
+  renderKeyboard(); // Dynamically draw keyboard with finger highlights for this lesson
+  loadLine();
+  setTimeout(() => {
+    typingInput.focus();
+  }, 100);
+}
+
+function loadLine() {
+  const lesson = LESSONS[currentLessonIndex];
+  const rawLine = lesson.lines[currentLineIndex];
+  
+  // Append carriage return enter symbol at the end
+  currentTextLine = rawLine + "\n";
+  cursorIndex = 0;
+  typedStates = Array(currentTextLine.length).fill(null);
+
+  renderPrompt();
+  highlightTargetKey();
+  updateProgressVisuals();
+}
+
+function renderPrompt() {
+  typingTextLineEl.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+
+  for (let i = 0; i < currentTextLine.length; i++) {
+    const span = document.createElement("span");
+    span.className = "char";
+    const char = currentTextLine[i];
+
+    if (char === "\n") {
+      span.innerHTML = '<span class="enter-symbol">↵</span>';
+    } else {
+      span.textContent = char;
+    }
+
+    // Apply class based on status
+    if (i < cursorIndex) {
+      span.classList.add("correct");
+    } else if (i === cursorIndex) {
+      span.classList.add("current");
+      if (typedStates[i] === "wrong") {
+        span.classList.add("wrong");
+      }
+    } else {
+      span.classList.add("faded");
+    }
+
+    fragment.appendChild(span);
+  }
+
+  typingTextLineEl.appendChild(fragment);
+}
+
+function highlightTargetKey() {
+  // Clear active target glow (no target highlights as requested)
+  document.querySelectorAll(".key.active-target").forEach(k => {
+    k.classList.remove("active-target");
+  });
+}
+
+// ── KEYSTROKE PROCESSING ──
+function handleKeystroke(e) {
+  if (testFinished) return;
+
+  // Let browser-level control keys pass (reload, close, copy, etc.)
+  if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+  const targetChar = currentTextLine[cursorIndex];
+
+  // Prevent default scrolling/tabbing/actions in general
+  if (e.key === "Tab" || e.key === " " || e.key === "Enter" || e.key === "Backspace" || e.key === "'") {
+    e.preventDefault();
+  }
+
+  // Visual flash on virtual keyboard for user feedback
+  highlightKeyPress(e.key);
+
+  if (!running) {
+    running = true;
+    lessonStartTime = Date.now();
+    timerInterval = setInterval(updateLiveTimer, 100);
+  }
+
+  totalKeystrokes++;
+
+  if (e.key === "Enter") {
+    if (targetChar === "\n") {
+      registerCharSuccess();
+    } else {
+      registerCharFail();
+    }
+  } else if (e.key === " ") {
+    if (targetChar === " ") {
+      registerCharSuccess();
+    } else {
+      registerCharFail();
+    }
+  } else if (e.key.length === 1) {
+    // Normal alphanumeric typed key matching
+    if (e.key === targetChar) {
+      registerCharSuccess();
+    } else {
+      registerCharFail();
+    }
+  }
+}
+
+function highlightKeyPress(keyName) {
+  let keyToFind = keyName.toLowerCase();
+  if (keyToFind === " ") keyToFind = "space";
+  if (keyToFind === "control") keyToFind = "ctrl";
+  
+  const keyEls = keyboardContainer.querySelectorAll(`.key[data-key="${keyToFind}"]`);
+  keyEls.forEach(el => {
+    el.classList.add("pressed");
+  });
+}
+
+function handleKeyRelease(e) {
+  let keyToFind = e.key.toLowerCase();
+  if (keyToFind === " ") keyToFind = "space";
+  if (keyToFind === "control") keyToFind = "ctrl";
+  
+  const keyEls = keyboardContainer.querySelectorAll(`.key[data-key="${keyToFind}"]`);
+  keyEls.forEach(el => {
+    el.classList.remove("pressed");
+  });
+}
+
+function registerCharSuccess() {
+  typedStates[cursorIndex] = "correct";
+  cursorIndex++;
+  correctKeystrokes++;
+  currentStreak++;
+  if (currentStreak > maxStreak) maxStreak = currentStreak;
+
+  playSynthSound("click");
+  updateLiveHUD();
+
+  if (cursorIndex >= currentTextLine.length) {
+    // Line finished!
+    currentLineIndex++;
+    const totalLines = LESSONS[currentLessonIndex].lines.length;
+
+    if (currentLineIndex < totalLines) {
+      loadLine();
+    } else {
+      finishLesson();
+    }
+  } else {
+    renderPrompt();
+    highlightTargetKey();
+    updateProgressVisuals();
+  }
+}
+
+function registerCharFail() {
+  typedStates[cursorIndex] = "wrong";
+  mistakeCount++;
+  currentStreak = 0;
+  
+  const targetChar = currentTextLine[cursorIndex];
+  const k = targetChar === " " ? "spatie" : (targetChar === "\n" ? "enter" : targetChar);
+  mistakesPerKey[k] = (mistakesPerKey[k] || 0) + 1;
+  
+  playSynthSound("error");
+  updateLiveHUD();
+  renderPrompt();
+}
+
+// ── STATISTICS & VISUAL UPDATES ──
+function updateLiveTimer() {
+  if (!running) return;
+  const elapsed = (Date.now() - lessonStartTime + accumulatedTime) / 1000;
+  timerEl.textContent = elapsed.toFixed(1);
+}
+
+function updateLiveHUD() {
+  const elapsed = (Date.now() - lessonStartTime + accumulatedTime) / 1000;
+  const safeElapsed = Math.max(elapsed, 0.5);
+  const cpm = Math.round(correctKeystrokes / (safeElapsed / 60));
+  liveCpmEl.textContent = cpm;
+
+  const accuracy = Math.round((correctKeystrokes / totalKeystrokes) * 100);
+  accuracyEl.textContent = `${accuracy}%`;
+
+  mistakeCountEl.textContent = mistakeCount;
+}
+
+function updateProgressVisuals() {
+  const totalLines = LESSONS[currentLessonIndex].lines.length;
+  
+  // Overall progress based on line index + cursor index relative to line length
+  const lineWeight = 1 / totalLines;
+  const currentLineProgress = cursorIndex / currentTextLine.length;
+  const overallProgress = (currentLineIndex / totalLines + currentLineProgress * lineWeight) * 100;
+
+  // Update Top Progress Bar
+  progressBarFillEl.style.width = `${overallProgress.toFixed(1)}%`;
+
+  // Update Circular Progress Ring
+  const circleRadius = 18;
+  const circumference = 2 * Math.PI * circleRadius; // 113.097
+  const offset = circumference - (overallProgress / 100) * circumference;
+  progressRingBarEl.style.strokeDashoffset = offset;
+  progressRingTextEl.textContent = `${Math.round(overallProgress)}%`;
+
+  // Update line number label
+  lineIndicatorEl.textContent = `Regel ${currentLineIndex + 1} van ${totalLines}`;
+}
+
+// ── LESSON FINISHED ──
+function finishLesson() {
+  testFinished = true;
+  running = false;
+  clearInterval(timerInterval);
+
+  // Stop metronome
+  if (metronomePlaying) {
+    toggleMetronome();
+  }
+
+  // Disable inputs
+  typingInput.blur();
+  focusOverlay.classList.remove("visible");
+
+  const totalTimeSec = (Date.now() - lessonStartTime + accumulatedTime) / 1000;
+  calculateScores(totalTimeSec);
+}
+
+// ── SCORE & REWARD CALCULATIONS ──
+function calculateScores(elapsed) {
+  const safeElapsed = Math.max(elapsed, 1);
+  const cpm = Math.round(correctKeystrokes / (safeElapsed / 60));
+  completeCpm.textContent = "0";
+
+  const acc = totalKeystrokes === 0 ? 100 : Math.round((correctKeystrokes / totalKeystrokes) * 100);
+  completeAccuracy.textContent = "0%";
+  completeStreak.textContent = "0";
+
+  // Difficult key calculation
+  let maxErrors = 0;
+  let diffKey = "Geen (Perfect!)";
+  for (const [key, count] of Object.entries(mistakesPerKey)) {
+    if (count > maxErrors) {
+      maxErrors = count;
+      diffKey = key;
+    }
+  }
+  completeDifficultKey.textContent = diffKey;
+  if (diffKey.length > 1) {
+    completeDifficultKey.classList.add("long-text");
+  } else {
+    completeDifficultKey.classList.remove("long-text");
+  }
+
+  // Coins rewards
+  const cpmCoins = Math.round(cpm * 0.4);
+  const precisionCoins = Math.round(acc * 1.2);
+  const streakCoins = Math.round(maxStreak * 2.0);
+  const completionBonus = 50;
+
+  // Rank badges
+  let rank = "Type Groentje";
+  if (cpm >= 180 && acc >= 96) rank = "Master Typist";
+  else if (cpm >= 120 && acc >= 90) rank = "Elite Typist";
+  else if (cpm >= 80) rank = "Veld Agent";
+  rankBadge.textContent = rank;
+
+  // Results Title & Badge
+  resultTitle.textContent = "OEFENING VOLTOOID!";
+  missionStatusContainer.innerHTML = '<span class="status-success-badge" id="missionBadge">GESLAAGD</span>';
+  completeAccuracy.className = "card-main-value highlight-green";
+
+  // Reset coin displays
+  completeCoins.textContent = totalCoins;
+  cpmCoinsReward.innerHTML = `+0 <img src="coin.svg" width="14" height="14">`;
+  precisionCoinsReward.innerHTML = `+0 <img src="coin.svg" width="14" height="14">`;
+  streakCoinsReward.innerHTML = `+0 <img src="coin.svg" width="14" height="14">`;
+  completionCoinsReward.innerHTML = `+${completionBonus} <img src="coin.svg" width="14" height="14">`;
+
+  // Display results modal and make it active
+  resultsOverlay.hidden = false;
+  resultsOverlay.classList.add("active");
+
+  // Animate counts and tally
+  playSynthSound("complete");
+
+  setTimeout(() => {
+    animateNumberValue(completeCpm, cpm, 1000);
+    animateNumberValue(completeAccuracy, acc, 1000, "%");
+    animateNumberValue(completeStreak, maxStreak, 1000);
+
+    animateCoinsBreakdown({
+      cpm: cpmCoins,
+      precision: precisionCoins,
+      streak: streakCoins,
+      bonus: completionBonus
+    });
+  }, 400);
+}
+
+function animateNumberValue(element, target, duration = 1200, suffix = "") {
+  let start = 0;
+  const startTime = performance.now();
+
+  function updateNumber(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = progress * (2 - progress);
+    const current = Math.round(start + (target - start) * ease);
+    element.textContent = current + suffix;
+
+    if (progress < 1) {
+      requestAnimationFrame(updateNumber);
+    } else {
+      element.textContent = target + suffix;
+    }
+  }
+  requestAnimationFrame(updateNumber);
+}
+
+function animateCoinsBreakdown(breakdownValues) {
+  let totalTally = totalCoins;
+  const targetLabel = document.getElementById("completeCoins");
+  const stepDelay = 600;
+
+  const rows = [
+    { el: cpmCoinsReward, value: breakdownValues.cpm },
+    { el: precisionCoinsReward, value: breakdownValues.precision },
+    { el: streakCoinsReward, value: breakdownValues.streak },
+    { el: completionCoinsReward, value: breakdownValues.bonus }
+  ];
+
+  rows.forEach((row, index) => {
+    setTimeout(() => {
+      let currentVal = 0;
+      const interval = setInterval(() => {
+        if (currentVal < row.value) {
+          currentVal += Math.ceil(row.value / 6);
+          if (currentVal > row.value) currentVal = row.value;
+          row.el.innerHTML = `+${currentVal} <img src="coin.svg" width="14" height="14">`;
+        } else {
+          clearInterval(interval);
+        }
+      }, 50);
+
+      launchCoinParticles(row.el, targetLabel, 5);
+
+      setTimeout(() => {
+        totalTally += row.value;
+        totalCoins = totalTally;
+        targetLabel.textContent = totalTally;
+      }, 500);
+
+    }, index * stepDelay);
+  });
+}
+
+function launchCoinParticles(sourceElement, targetElement, count) {
+  const srcRect = sourceElement.getBoundingClientRect();
+  const destRect = targetElement.getBoundingClientRect();
+
+  for (let i = 0; i < count; i++) {
+    const coin = document.createElement("div");
+    coin.className = "floating-coin";
+    document.body.appendChild(coin);
+
+    const startX = srcRect.left + srcRect.width / 2;
+    const startY = srcRect.top + srcRect.height / 2;
+    const endX = destRect.left + destRect.width / 2;
+    const endY = destRect.top + destRect.height / 2;
+
+    coin.style.left = startX + "px";
+    coin.style.top = startY + "px";
+
+    const midX = startX + (endX - startX) / 2 + (Math.random() - 0.5) * 150;
+    const midY = startY - 80 - Math.random() * 100;
+
+    const duration = 600 + Math.random() * 300;
+    const coinStartTime = performance.now();
+
+    function animateCoin(now) {
+      const elapsed = now - coinStartTime;
+      const t = Math.min(elapsed / duration, 1);
+
+      const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * midX + t * t * endX;
+      const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * midY + t * t * endY;
+      const scale = t < 0.2 ? t / 0.2 : t > 0.8 ? (1 - t) / 0.2 : 1;
+
+      coin.style.transform = `translate(${x - startX}px, ${y - startY}px) scale(${scale})`;
+      coin.style.opacity = 1 - t;
+
+      if (t < 1) {
+        requestAnimationFrame(animateCoin);
+      } else {
+        coin.remove();
+        playSynthSound("coin");
+      }
+    }
+    requestAnimationFrame(animateCoin);
+  }
+}
+
+// ── AUDIO SYNTH ENGINE ──
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
+
+function playSynthSound(type) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (ctx.state === "suspended") ctx.resume();
+    const now = ctx.currentTime;
+
+    if (type === "click") {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(800 + Math.random() * 400, now);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      osc.start(now);
+      osc.stop(now + 0.04);
+    } else if (type === "error") {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(110, now);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.start(now);
+      osc.stop(now + 0.18);
+    } else if (type === "complete") {
+      // Upbeat arpeggio chord sound
+      const frequencies = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98];
+      frequencies.forEach((f, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(f, now + i * 0.07);
+        gain.gain.setValueAtTime(0.06, now + i * 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.35);
+        osc.start(now + i * 0.07);
+        osc.stop(now + i * 0.07 + 0.35);
+      });
+    } else if (type === "coin") {
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      const gain2 = ctx.createGain();
+      osc1.connect(gain1); gain1.connect(ctx.destination);
+      osc2.connect(gain2); gain2.connect(ctx.destination);
+      osc1.type = "sine"; osc1.frequency.setValueAtTime(987.77, now);
+      osc2.type = "sine"; osc2.frequency.setValueAtTime(1318.51, now + 0.04);
+      gain1.gain.setValueAtTime(0.04, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+      gain2.gain.setValueAtTime(0.04, now + 0.04);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc1.start(now); osc1.stop(now + 0.12);
+      osc2.start(now + 0.04); osc2.stop(now + 0.18);
+    }
+  } catch (e) {
+    console.error("Audio Synthesis Error:", e);
+  }
+}
+
+// ── METRONOME LOGIC ──
+function toggleMetronome() {
+  if (metronomePlaying) {
+    // Stop
+    clearInterval(metronomeInterval);
+    metronomeInterval = null;
+    metronomePlaying = false;
+    metronomePlayIcon.style.display = "block";
+    metronomePauseIcon.style.display = "none";
+  } else {
+    // Start metronome timer
+    metronomePlaying = true;
+    metronomePlayIcon.style.display = "none";
+    metronomePauseIcon.style.display = "block";
+    playMetronomeTick(); // Play immediately
+    startMetronomeTimer();
+  }
+  typingInput.focus();
+}
+
+function startMetronomeTimer() {
+  clearInterval(metronomeInterval);
+  const intervalMs = (60 / bpm) * 1000;
+  metronomeInterval = setInterval(playMetronomeTick, intervalMs);
+}
+
+function playMetronomeTick() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (ctx.state === "suspended") ctx.resume();
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    // High pitched short metronome sound (sine decay)
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(1000, now);
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+    osc.start(now);
+    osc.stop(now + 0.03);
+
+    // Visual pulse beat indicator
+    triggerMetronomePulse();
+  } catch (e) {
+    console.error("Metronome audio tick error:", e);
+  }
+}
+
+function triggerMetronomePulse() {
+  const elements = [document.getElementById("metronomeToggle"), bpmValueEl];
+  elements.forEach(el => {
+    if (el) {
+      el.classList.remove("beat-pulse-active");
+      el.offsetHeight; // Trigger layout reflow
+      el.classList.add("beat-pulse-active");
+    }
+  });
+}
+
+function adjustBpm(amount) {
+  bpm = Math.max(20, Math.min(120, bpm + amount));
+  bpmValueEl.textContent = bpm;
+  if (metronomePlaying) {
+    startMetronomeTimer(); // Restart metronome timer with new speed
+  }
+  typingInput.focus();
+}
+
+// ── MATRIX DECORATIVE RAIN ──
+function initMatrix() {
+  const canvas = document.getElementById("matrix-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+
+  const fontSize = 14;
+  const columns = Math.floor(width / fontSize) + 1;
+  const yPositions = Array(columns).fill(0).map(() => Math.random() * -height);
+
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  function draw() {
+    ctx.fillStyle = "rgba(5, 2, 6, 0.08)";
+    ctx.fillRect(0, 0, width, height);
+
+    // Subdued grey/white glow to match metallic dashboard theme
+    ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
+    ctx.font = `${fontSize}px monospace`;
+
+    yPositions.forEach((y, index) => {
+      const char = alphabet[Math.floor(Math.random() * alphabet.length)];
+      const x = index * fontSize;
+      ctx.fillText(char, x, y);
+
+      if (y > height + Math.random() * 10000) {
+        yPositions[index] = 0;
+      } else {
+        yPositions[index] = y + fontSize;
+      }
+    });
+  }
+
+  setInterval(draw, 50);
+}

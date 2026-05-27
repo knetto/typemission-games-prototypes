@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="nl-BE">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeMission — Losse Letters Typeoefening</title>
+  <meta name="description" content="Typeoefening om losse letters blind te leren typen in de TypeMission stijl.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- matrix code canvas background (subtle and dimmed) -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Centered 16:9 Cyber Console Container -->
+  <div class="game-container" id="gameContainer">
+
+    <!-- Top Header Panel -->
+    <header class="game-header">
+      <div class="game-branding">
+        <div class="branding-text">
+          <span class="brand-system">SYSTEM: TYPE_TRAINER_V1.0</span>
+          <h1 class="brand-title">TYPEMISSION // ASSIGNMENT</h1>
+        </div>
+        <span id="currentLessonDisplay" class="brand-lesson-title">Les 1: Basispositie</span>
+      </div>
+    </header>
+
+    <!-- Main Stage Window -->
+    <div class="mission-stage" id="missionStage">
+      <span class="stage-glow" aria-hidden="true"></span>
+      <div class="morph-flash" id="morphFlash" aria-hidden="true"></div>
+
+      <!-- ── TYPING PRACTICE VIEW ── -->
+      <div class="mission-view practice-layout active" id="missionLayout">
+
+        <!-- Top Progress Indicators -->
+        <div class="exercise-progress-container">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Live Statistics HUD -->
+        <div class="hud-stats-container" aria-label="Live statistieken">
+          <div class="hud-stat">
+            <span class="stat-value" id="timer">0.0</span>
+            <span class="stat-label">tijd (s)</span>
+          </div>
+          <div class="hud-stat">
+            <span class="stat-value" id="liveCpm">0</span>
+            <span class="stat-label">CPM</span>
+          </div>
+          <div class="hud-stat">
+            <span class="stat-value" id="mistakeCount">0</span>
+            <span class="stat-label">fouten</span>
+          </div>
+          <div class="hud-stat">
+            <span class="stat-value" id="accuracy">100%</span>
+            <span class="stat-label">precisie</span>
+          </div>
+        </div>
+
+        <!-- The Main Exercise Panel -->
+        <div class="exercise-panel">
+          <div class="panel-header">
+            <span class="panel-tag">EXERCISE</span>
+            <span class="panel-info" id="lineIndicator">Regel 1 van 5</span>
+          </div>
+          <div class="text-box-container" id="textBoxContainer">
+            <div class="text-scanlines"></div>
+            <!-- The text to type is rendered letter-by-letter here -->
+            <div class="typing-text-line" id="typingTextLine">
+              <!-- Dynamically populated, e.g. <span class="char correct">d</span><span class="char current">d</span> -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic On-screen Keyboard -->
+        <div class="keyboard-section" id="keyboardSection">
+          <div class="keyboard-container" id="keyboardContainer">
+            <!-- Dynamically generated keys -->
+          </div>
+        </div>
+
+        <!-- Bottom Controls Bar -->
+        <div class="bottom-controls-bar">
+          <!-- Metronome controls -->
+          <div class="metronome-controls">
+            <button class="control-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="metronomePlayIcon">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="metronomePauseIcon" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+            </button>
+            <button class="control-btn" id="bpmDecrease" type="button" title="BPM verlagen">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <span class="bpm-display"><strong id="bpmValue">40</strong> <span class="bpm-label">BPM</span></span>
+            <button class="control-btn" id="bpmIncrease" type="button" title="BPM verhogen">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Keyboard toggle -->
+          <div class="keyboard-toggle-container" style="display: flex; gap: 8px;">
+            <button class="ghost-button small-btn" id="keyboardLettersBtn" type="button">
+              LETTERS: UIT
+            </button>
+            <button class="ghost-button small-btn" id="keyboardToggleBtn" type="button">
+              KEYBOARD
+            </button>
+          </div>
+
+          <!-- Lesson progress ring -->
+          <div class="progress-ring-container">
+            <svg class="progress-ring-svg" width="44" height="44" viewBox="0 0 44 44">
+              <circle class="ring-bg" cx="22" cy="22" r="18" />
+              <circle class="ring-bar" id="progressRingBar" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
+            </svg>
+            <span class="progress-ring-text" id="progressRingText">0%</span>
+          </div>
+        </div>
+
+        <!-- Hidden input for keyboard focus -->
+        <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Typeveld"></textarea>
+
+        <!-- Tap-to-focus overlay for mobile/focus loss -->
+        <div class="focus-overlay" id="focusOverlay">
+          <div class="focus-overlay-content">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lock-icon">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <p>KLIK HIER OM TE TYPEN</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── RESULTS PANEL MODAL ── -->
+    <div class="results-overlay" id="resultsOverlay" hidden>
+      <div class="result-container">
+
+        <header class="result-header">
+          <p class="result-eyebrow">TYPECURSUS EVALUATIE // SYSTEM REPORT</p>
+          <h2 id="resultTitle">OEFENING VOLTOOID!</h2>
+          <div class="result-rank-bar">
+            <span>EVALUATIE RANG:</span>
+            <strong id="rankBadge" class="rank-badge-text">Master Typist</strong>
+          </div>
+        </header>
+
+        <!-- 6-Card Stats Dashboard Grid -->
+        <div class="result-dashboard-grid">
+
+          <!-- Card 1: Speed (CPM) -->
+          <div class="dashboard-card">
+            <span class="card-title">CHARACTERS PER MINUTE</span>
+            <div class="card-value-container">
+              <span class="card-main-value" id="completeCpm">0</span>
+            </div>
+            <div class="card-footer-reward" id="cpmCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 2: Difficult Key -->
+          <div class="dashboard-card">
+            <span class="card-title">DIFFICULT KEYS</span>
+            <div class="card-value-container">
+              <span class="difficult-key-badge" id="completeDifficultKey">-</span>
+            </div>
+            <span class="card-footer-label">MEESTE TYPFOUTEN</span>
+          </div>
+
+          <!-- Card 3: Accuracy -->
+          <div class="dashboard-card">
+            <span class="card-title">ACCURACY</span>
+            <div class="card-value-container">
+              <span class="card-main-value highlight-green" id="completeAccuracy">100%</span>
+            </div>
+            <div class="card-footer-reward" id="precisionCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 4: Flawless Streak -->
+          <div class="dashboard-card">
+            <span class="card-title">FLAWLESS STREAK</span>
+            <div class="card-value-container">
+              <span class="streak-circle-value" id="completeStreak">0</span>
+            </div>
+            <div class="card-footer-reward" id="streakCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 5: Lesson Status -->
+          <div class="dashboard-card">
+            <span class="card-title">LESSON STATUS</span>
+            <div class="card-value-container" id="missionStatusContainer">
+              <span class="status-success-badge" id="missionBadge">GESLAAGD</span>
+            </div>
+            <div class="card-footer-reward" id="completionCoinsReward">
+              +50 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 6: Total Credits -->
+          <div class="dashboard-card highlight-glow">
+            <span class="card-title">TOTAL CREDITS</span>
+            <div class="card-value-container credits-container">
+              <img src="coin.svg" alt="" aria-hidden="true" class="coin-total-img" width="20" height="20">
+              <span class="card-main-value" id="completeCoins">0</span>
+            </div>
+            <span class="card-footer-label">SUPER SPY SCHOOL MUNTEN</span>
+          </div>
+
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="results-actions" style="flex-direction: row; gap: 16px; justify-content: center; width: 100%;">
+          <button class="ghost-button" id="retryLessonBtn" type="button" style="flex: 1; max-width: 200px;">Opnieuw</button>
+          <button class="primary-button" id="nextLessonBtn" type="button" style="flex: 1; max-width: 200px;">Volgende les</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
