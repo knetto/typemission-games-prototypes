@@ -80,6 +80,8 @@ const ridgeGroup2 = document.getElementById("ridgeGroup2");
 const ridgeGroup3 = document.getElementById("ridgeGroup3");
 const laserLine = document.getElementById("laserLine");
 const laserScannerGlow = document.getElementById("laserScannerGlow");
+const fingerprintSvgGreen = document.getElementById("fingerprintSvgGreen");
+const fingerprintWrapper = document.querySelector(".fingerprint-vector-wrapper");
 
 // Result elements
 const completeCpm = document.getElementById("completeCpm");
@@ -602,6 +604,16 @@ function startDecryptionSequence() {
         laserScannerGlow.style.opacity = Math.random() > 0.15 ? "0.85" : "0.35";
       }
 
+      // Dynamically update green layer clip path to follow the laser line like a printer
+      if (fingerprintSvgGreen && laserLine) {
+        const wrapperRect = fingerprintSvgGreen.getBoundingClientRect();
+        const laserRect = laserLine.getBoundingClientRect();
+        const laserY = laserRect.top + laserRect.height / 2;
+        const relativePos = (laserY - wrapperRect.top) / wrapperRect.height;
+        const clipPercentage = Math.max(0, Math.min(100, relativePos * 100));
+        fingerprintSvgGreen.style.clipPath = `inset(0 0 ${100 - clipPercentage}% 0)`;
+      }
+
       // Play glitch sound periodically
       if (p < 1 && Math.random() < 0.22) {
         playSynthSound("scan-glitch");
@@ -618,6 +630,15 @@ function startDecryptionSequence() {
         if (laserScannerGlow) {
           laserScannerGlow.style.transition = "opacity 0.4s ease";
           laserScannerGlow.style.opacity = "0";
+        }
+
+        if (fingerprintSvgGreen) {
+          fingerprintSvgGreen.style.clipPath = "inset(0 0 0% 0)";
+        }
+
+        // Add glow pulse class to the wrapper
+        if (fingerprintWrapper) {
+          fingerprintWrapper.classList.add("success-pulse");
         }
 
         // Immediately start fading the fingerprint and boxes to green
@@ -712,6 +733,9 @@ function finishGame(won) {
     if (ridgeGroup1) ridgeGroup1.classList.add("cracked");
     if (ridgeGroup2) ridgeGroup2.classList.add("cracked");
     if (ridgeGroup3) ridgeGroup3.classList.add("cracked");
+    if (fingerprintSvgGreen) {
+      fingerprintSvgGreen.style.clipPath = "inset(0 0 0% 0)";
+    }
 
     // Open door animation
     securityDoor.classList.add("door-opened");
@@ -952,6 +976,12 @@ function resetTest() {
   if (ridgeGroup1) ridgeGroup1.classList.remove("active", "cracked");
   if (ridgeGroup2) ridgeGroup2.classList.remove("active", "cracked");
   if (ridgeGroup3) ridgeGroup3.classList.remove("active", "cracked");
+  if (fingerprintSvgGreen) {
+    fingerprintSvgGreen.style.clipPath = "inset(0 0 100% 0)";
+  }
+  if (fingerprintWrapper) {
+    fingerprintWrapper.classList.remove("success-pulse");
+  }
 
   totalKeystrokes = 0;
   correctKeystrokes = 0;
