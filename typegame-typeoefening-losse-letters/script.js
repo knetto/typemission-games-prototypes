@@ -529,47 +529,141 @@ function loadLine() {
 
   renderPrompt();
   highlightTargetKey();
+  highlightTargetFinger();
   updateProgressVisuals();
 }
 
 function renderPrompt() {
   typingTextLineEl.innerHTML = "";
   const fragment = document.createDocumentFragment();
+  const lesson = LESSONS[currentLessonIndex];
 
-  for (let i = 0; i < currentTextLine.length; i++) {
-    const span = document.createElement("span");
-    span.className = "char";
-    const char = currentTextLine[i];
+  for (let l = 0; l < lesson.lines.length; l++) {
+    const lineEl = document.createElement("div");
+    lineEl.className = "typing-text-row";
 
-    if (char === "\n") {
-      span.innerHTML = '<span class="enter-symbol">↵</span>';
-    } else {
-      span.textContent = char;
-    }
+    if (l < currentLineIndex) {
+      // Completed line
+      lineEl.classList.add("completed");
+      const lineText = lesson.lines[l] + "\n";
+      for (let i = 0; i < lineText.length; i++) {
+        const span = document.createElement("span");
+        span.className = "char correct";
+        if (lineText[i] === "\n") {
+          span.innerHTML = '<span class="enter-symbol">↵</span>';
+        } else {
+          span.textContent = lineText[i];
+        }
+        lineEl.appendChild(span);
+      }
+    } else if (l === currentLineIndex) {
+      // Current active line
+      lineEl.classList.add("active");
+      for (let i = 0; i < currentTextLine.length; i++) {
+        const span = document.createElement("span");
+        span.className = "char";
+        const char = currentTextLine[i];
 
-    // Apply class based on status
-    if (i < cursorIndex) {
-      span.classList.add("correct");
-    } else if (i === cursorIndex) {
-      span.classList.add("current");
-      if (typedStates[i] === "wrong") {
-        span.classList.add("wrong");
+        if (char === "\n") {
+          span.innerHTML = '<span class="enter-symbol">↵</span>';
+        } else {
+          span.textContent = char;
+        }
+
+        // Apply class based on status
+        if (i < cursorIndex) {
+          span.classList.add("correct");
+        } else if (i === cursorIndex) {
+          span.classList.add("current");
+          if (typedStates[i] === "wrong") {
+            span.classList.add("wrong");
+          }
+        } else {
+          span.classList.add("faded");
+        }
+        lineEl.appendChild(span);
       }
     } else {
-      span.classList.add("faded");
+      // Upcoming line
+      lineEl.classList.add("upcoming");
+      const lineText = lesson.lines[l] + "\n";
+      for (let i = 0; i < lineText.length; i++) {
+        const span = document.createElement("span");
+        span.className = "char faded";
+        if (lineText[i] === "\n") {
+          span.innerHTML = '<span class="enter-symbol">↵</span>';
+        } else {
+          span.textContent = lineText[i];
+        }
+        lineEl.appendChild(span);
+      }
     }
 
-    fragment.appendChild(span);
+    fragment.appendChild(lineEl);
   }
 
   typingTextLineEl.appendChild(fragment);
+
+  // Smooth scroll active line into view if it overflows
+  const activeRow = typingTextLineEl.querySelector(".typing-text-row.active");
+  if (activeRow) {
+    activeRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
 }
 
 function highlightTargetKey() {
-  // Clear active target glow (no target highlights as requested)
+  // Clear active target glow
   document.querySelectorAll(".key.active-target").forEach(k => {
     k.classList.remove("active-target");
   });
+
+  if (testFinished) return;
+  const targetChar = currentTextLine[cursorIndex];
+  if (!targetChar) return;
+
+  let keyToFind = targetChar;
+  if (keyToFind === "\n") keyToFind = "enter";
+  else if (keyToFind === " ") keyToFind = "space";
+  else keyToFind = keyToFind.toLowerCase();
+
+  // Find and highlight key
+  const keyEls = keyboardContainer.querySelectorAll(`.key[data-char="${keyToFind}"], .key[data-key="${keyToFind}"]`);
+  keyEls.forEach(el => {
+    el.classList.add("active-target");
+  });
+}
+
+function highlightTargetFinger() {
+  // Clear all glowing active finger classes on the hands SVG
+  document.querySelectorAll(".hand-finger.active-finger").forEach(f => {
+    f.classList.remove("active-finger");
+  });
+
+  if (testFinished) return;
+  const targetChar = currentTextLine[cursorIndex];
+  if (!targetChar) return;
+
+  const fingerClass = getFingerClass(targetChar);
+  if (!fingerClass) return;
+
+  if (fingerClass === "finger-t") {
+    // Both thumbs
+    document.querySelectorAll(".hand-finger.finger-t").forEach(f => {
+      f.classList.add("active-finger");
+    });
+  } else {
+    // Find the specific finger group on the left/right hand
+    const leftFingers = ["finger-lp", "finger-lr", "finger-lm", "finger-li"];
+    const rightFingers = ["finger-rp", "finger-rr", "finger-rm", "finger-ri"];
+    
+    if (leftFingers.includes(fingerClass)) {
+      const leftFingerEl = document.querySelector(`#leftHandContainer .hand-finger.${fingerClass}`);
+      if (leftFingerEl) leftFingerEl.classList.add("active-finger");
+    } else if (rightFingers.includes(fingerClass)) {
+      const rightFingerEl = document.querySelector(`#rightHandContainer .hand-finger.${fingerClass}`);
+      if (rightFingerEl) rightFingerEl.classList.add("active-finger");
+    }
+  }
 }
 
 // ── KEYSTROKE PROCESSING ──
@@ -664,6 +758,7 @@ function registerCharSuccess() {
   } else {
     renderPrompt();
     highlightTargetKey();
+    highlightTargetFinger();
     updateProgressVisuals();
   }
 }
@@ -680,6 +775,15 @@ function registerCharFail() {
   playSynthSound("error");
   updateLiveHUD();
   renderPrompt();
+
+  // Glitch shake feedback on error
+  const panel = document.querySelector(".exercise-panel");
+  if (panel) {
+    panel.classList.remove("glitch-shake");
+    panel.offsetHeight; // force reflow
+    panel.classList.add("glitch-shake");
+    setTimeout(() => panel.classList.remove("glitch-shake"), 250);
+  }
 }
 
 // ── STATISTICS & VISUAL UPDATES ──
@@ -998,6 +1102,12 @@ function toggleMetronome() {
     metronomePlaying = false;
     metronomePlayIcon.style.display = "block";
     metronomePauseIcon.style.display = "none";
+    
+    // Stop reactor core pulse
+    const core = document.getElementById("reactorCore");
+    const wave = core ? core.querySelector(".reactor-pulse-wave") : null;
+    if (core) core.classList.remove("active-core");
+    if (wave) wave.classList.remove("pulse");
   } else {
     // Start metronome timer
     metronomePlaying = true;
@@ -1037,6 +1147,7 @@ function playMetronomeTick() {
 
     // Visual pulse beat indicator
     triggerMetronomePulse();
+    triggerReactorCorePulse();
   } catch (e) {
     console.error("Metronome audio tick error:", e);
   }
@@ -1051,6 +1162,22 @@ function triggerMetronomePulse() {
       el.classList.add("beat-pulse-active");
     }
   });
+}
+
+function triggerReactorCorePulse() {
+  const core = document.getElementById("reactorCore");
+  const wave = core ? core.querySelector(".reactor-pulse-wave") : null;
+  if (core && wave) {
+    core.classList.remove("active-core");
+    wave.classList.remove("pulse");
+    core.offsetHeight; // force reflow
+    core.classList.add("active-core");
+    wave.classList.add("pulse");
+    
+    setTimeout(() => {
+      core.classList.remove("active-core");
+    }, 150);
+  }
 }
 
 function adjustBpm(amount) {
