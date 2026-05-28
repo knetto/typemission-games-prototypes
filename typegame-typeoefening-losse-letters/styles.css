@@ -2,27 +2,27 @@
 
 :root {
   color-scheme: dark;
-  --purple: #1e2024;
-  --purple-dark: #0a0c0e;
-  --purple-soft: #3a3e46;
-  --blue: #cbd5e1;
-  --panel-blue: #131619;
-  --sky: #ffffff;
-  --ice: #0e1012;
+  --purple: #141414;
+  --purple-dark: #0a0a0a;
+  --purple-soft: #2a2a2a;
+  --blue: #c8c8c8;
+  --panel-blue: #1a1a1a;
+  --sky: #d0d0d0;
+  --ice: #111111;
   --cyan: #e48e35; /* Orange/Amber to match keypad minigame */
   --cyan-glow: rgba(228, 142, 53, 0.35);
-  --orange: #ffa500;
-  --orange-soft: #ff9f0a;
+  --orange: #e48e35;
+  --orange-soft: #f5b05f;
   --green: #9ad744;
   --green-glow: rgba(154, 215, 68, 0.4);
   --red: #ff3b30;
   --red-glow: rgba(255, 59, 48, 0.4);
   --text: #ffffff;
-  --text-dark: #edebe0;
-  --muted: #94a3b8;
-  --line: #2b2e36;
+  --text-dark: #e0e0e0;
+  --muted: #888888;
+  --line: #2a2a2a;
   --shadow: rgba(0, 0, 0, 0.6);
-  --terminal-bg: #0f1115;
+  --terminal-bg: #0c0c0c;
 }
 
 * {
@@ -50,9 +50,9 @@ body {
 
 body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(77, 28, 68, 0.03) 0%, rgba(5, 2, 6, 0.95) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(77, 28, 68, 0.05) 0%, rgba(5, 2, 6, 0.85) 100%);
   z-index: -1;
   pointer-events: none;
 }
@@ -72,112 +72,29 @@ body::before {
 
 /* ── 16:9 CONTAINER & BEZEL FRAME ── */
 .game-container {
-  width: 85vw;
-  height: 47.8vw;
-  max-width: 151.11vh;
-  max-height: 85vh;
+  width: 80vw;
+  height: 45vw;
+  max-width: 142.22vh;
+  max-height: 80vh;
   position: relative;
   z-index: 10;
-  background: #2a2c31; /* Grey plate bezel background */
-  border: 4px solid #383a3f;
-  padding: 12px;
-  padding-top: 60px; /* Space for status LEDs and Restricted capsule */
+  background: var(--purple-dark);
+  border: 3px solid var(--purple-soft);
   box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.85),
-    0 0 45px rgba(255, 204, 0, 0.03);
-  border-radius: 14px;
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(228, 142, 53, 0.08);
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  container-type: size;
+  container-name: gameContainer;
 }
 
-/* Hardware details (Rivet Screws) */
-.outer-screw {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #5c5f66 0%, #1f2024 100%);
-  box-shadow: 
-    1px 1px 2px rgba(0, 0, 0, 0.6),
-    inset -1px -1px 2.5px rgba(0, 0, 0, 0.9),
-    inset 1px 1px 1.5px rgba(255, 255, 255, 0.25);
-  z-index: 130;
-}
-
-.outer-screw.tl { top: 12px; left: 12px; }
-.outer-screw.tr { top: 12px; right: 12px; }
-.outer-screw.bl { bottom: 12px; left: 12px; }
-.outer-screw.br { bottom: 12px; right: 12px; }
-
-/* Top Bezel Outer Restricted Access Header */
+/* Hardware details (Rivet Screws) - Hidden to match clean console design */
+.outer-screw,
 .outer-restricted-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  z-index: 120;
-  pointer-events: none;
-}
-
-.restricted-capsule {
-  background: #121316;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  color: #7b7d85;
-  font-family: "Orbitron", sans-serif;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  padding: 2px 14px;
-  text-transform: uppercase;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.status-led-circles {
-  display: flex;
-  gap: 12px;
-}
-
-.status-led {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid #5b8723;
-  background: #9ad744;
-  box-shadow: 
-    0 0 10px rgba(154, 215, 68, 0.5),
-    inset 0 1px 4px rgba(255, 255, 255, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.status-led::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid rgba(154, 215, 68, 0.25);
-}
-
-.status-led::after {
-  content: "";
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #fff;
-  opacity: 0.6;
-  position: absolute;
-  top: 2px;
-  left: 2px;
+  display: none !important;
 }
 
 /* ── HEADER PANEL ── */
@@ -187,11 +104,9 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1.5px solid rgba(255, 255, 255, 0.05);
   border-bottom: 2px solid var(--purple-soft);
-  background: #0d0f12; /* Inner black console screen background */
-  border-radius: 6px 6px 0 0; /* Rounded top corners inside the bezel */
-  z-index: 100;
+  background: rgba(15, 16, 43, 0.95);
+  z-index: 10;
   flex-shrink: 0;
 }
 
@@ -250,9 +165,6 @@ body::before {
   position: relative;
   overflow: hidden;
   height: 100%;
-  background: #0d0f12; /* Inner black console screen background */
-  border-left: 1.5px solid rgba(255, 255, 255, 0.05);
-  border-right: 1.5px solid rgba(255, 255, 255, 0.05);
 }
 
 .stage-glow {
@@ -261,7 +173,7 @@ body::before {
   z-index: 0;
   height: 100px;
   border-radius: 50%;
-  background: rgba(255, 204, 0, 0.02);
+  background: rgba(228, 142, 53, 0.05);
   filter: blur(40px);
   pointer-events: none;
 }
@@ -318,8 +230,8 @@ body::before {
   flex-direction: column;
   justify-content: flex-start;
   gap: 16px;
-  background: #0d0f12;
-  border: 1.5px solid var(--purple-soft);
+  background: rgba(15, 16, 43, 0.45);
+  border: 1px solid var(--line);
   border-radius: 8px;
   padding: 14px 16px;
   position: relative;
@@ -376,9 +288,9 @@ body::before {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  background: rgba(15, 17, 28, 0.45);
-  border: 1px solid var(--purple-soft);
-  border-radius: 8px;
+  background: rgba(15, 16, 43, 0.6);
+  border: 1px solid var(--line);
+  border-radius: 6px;
   padding: 18px 12px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
   text-align: center;
@@ -433,10 +345,10 @@ body::before {
   flex: 1;
   min-height: 0;
   max-height: clamp(200px, 32vh, 270px);
-  background: #0c0e12; /* Solid dark background matching images */
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Flat grey border matching sequence container */
+  background: var(--terminal-bg);
+  border: 1.8px solid var(--purple-soft);
   border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(228, 142, 53, 0.08);
   padding: 14px 24px;
   display: flex;
   flex-direction: column;
@@ -684,7 +596,7 @@ body::before {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(0, 240, 255, 0.3);
+  border: 1.5px dashed var(--cyan-glow);
   animation: reactorSpin 12s linear infinite;
   pointer-events: none;
   transition: border-color 0.3s;
@@ -739,7 +651,7 @@ body::before {
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 240, 255, 0.15);
+  border: 1px solid var(--cyan-glow);
   border-radius: 6px;
   padding: 3px 6px;
   box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
@@ -764,7 +676,7 @@ body::before {
 }
 
 .bpm-console-btn:hover {
-  background: rgba(0, 240, 255, 0.15);
+  background: rgba(228, 142, 53, 0.15);
   color: #fff;
   text-shadow: 0 0 6px var(--cyan);
 }
@@ -834,9 +746,9 @@ body::before {
   transform-style: preserve-3d;
   box-shadow:
     0 15px 35px rgba(0, 0, 0, 0.9),
-    inset 0 0 20px rgba(0, 240, 255, 0.05);
-  border: 1.5px solid var(--purple-soft);
-  background: rgba(15, 17, 28, 0.75);
+    inset 0 0 20px rgba(228, 142, 53, 0.04);
+  border: 2px solid var(--purple-soft);
+  background: rgba(15, 16, 43, 0.75);
   border-radius: 8px;
   padding: 6px 8px;
   width: 100%;
@@ -850,7 +762,7 @@ body::before {
 .keyboard-grid-glow {
   position: absolute;
   inset: 0 10%;
-  background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.04) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(228, 142, 53, 0.04) 0%, transparent 70%);
   transform: rotateX(24deg) translateZ(-10px);
   pointer-events: none;
   z-index: -1;
@@ -1304,12 +1216,10 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1.5px solid rgba(255, 255, 255, 0.05);
-  border-top: 2px solid var(--cyan);
-  background: linear-gradient(180deg, rgba(16, 18, 27, 0.95) 0%, rgba(8, 9, 14, 0.98) 100%);
-  backdrop-filter: blur(10px);
+  border-top: 2px solid var(--purple-soft);
+  background: rgba(15, 16, 43, 0.95);
   padding: 0 24px;
-  border-radius: 0 0 6px 6px; /* Inset rounded corners */
+  border-radius: 0 0 12px 12px;
   flex-shrink: 0;
   position: relative;
   box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.8);
@@ -1325,17 +1235,9 @@ body::before {
   justify-content: flex-end;
 }
 
-/* Carbon-fiber style warning stripes along the footer base */
+/* Carbon-fiber style warning stripes along the footer base - Hidden for flat clean styling */
 .bottom-controls-bar::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: repeating-linear-gradient(45deg, var(--cyan) 0px, var(--cyan) 8px, rgba(8, 9, 14, 0.9) 8px, rgba(8, 9, 14, 0.9) 16px);
-  opacity: 0.55;
-  pointer-events: none;
+  display: none !important;
 }
 
 .command-group {
@@ -1344,11 +1246,10 @@ body::before {
 }
 
 .tactical-btn {
-  background: linear-gradient(180deg, #1e2230 0%, #0d0f16 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-bottom: 3.5px solid rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
-  color: var(--text-dark);
+  background: rgba(228, 142, 53, 0.15) !important;
+  border: 2px solid var(--cyan) !important;
+  border-radius: 6px !important;
+  color: #fff !important;
   font-family: "Orbitron", sans-serif;
   font-size: 0.65rem;
   font-weight: 700;
@@ -1358,23 +1259,19 @@ body::before {
   align-items: center;
   gap: 10px;
   letter-spacing: 0.8px;
-  transition: all 0.1s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.15s ease;
   outline: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(228, 142, 53, 0.2) !important;
 }
 
 .tactical-btn:hover {
-  border-color: var(--cyan);
-  color: #fff;
-  box-shadow: 
-    0 4px 12px rgba(0, 240, 255, 0.15),
-    0 0 8px rgba(0, 240, 255, 0.1);
+  background: rgba(228, 142, 53, 0.25) !important;
+  border-color: #ffdd44 !important;
+  box-shadow: 0 0 15px rgba(255, 221, 68, 0.4) !important;
 }
 
 .tactical-btn:active {
-  transform: translateY(2px);
-  border-bottom-width: 1.5px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  transform: translateY(1px);
 }
 
 /* Mechanical LED indicator on switches */
@@ -1382,14 +1279,29 @@ body::before {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #2a1b18; /* dark off-state */
+  background: #1a1c22; /* dark off-state */
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
   transition: all 0.2s;
 }
 
+.tactical-btn.ghost-button {
+  background: transparent !important;
+  border: 2px solid var(--purple-soft) !important;
+  color: var(--text-dark) !important;
+  box-shadow: none !important;
+  opacity: 0.6;
+}
+
+.tactical-btn.ghost-button:hover {
+  background: rgba(30, 34, 78, 0.2) !important;
+  border-color: var(--cyan) !important;
+  color: #fff !important;
+  opacity: 1;
+}
+
 .tactical-btn.ghost-button .tactical-led {
-  background: #2a1b18;
+  background: #1a1c22;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
@@ -1822,7 +1734,7 @@ body::before {
 }
 
 .dashboard-card {
-  background: linear-gradient(135deg, rgba(30, 32, 36, 0.7) 0%, rgba(15, 17, 21, 0.85) 100%);
+  background: linear-gradient(135deg, rgba(15, 16, 43, 0.7) 0%, rgba(5, 6, 15, 0.85) 100%);
   border: 1px solid var(--purple-soft);
   border-radius: 12px;
   padding: clamp(14px, 2vh, 20px) clamp(10px, 1.5vw, 16px);
@@ -1841,7 +1753,7 @@ body::before {
 
 .dashboard-card:hover {
   border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(30, 32, 36, 0.75);
+  background: rgba(15, 16, 43, 0.75);
   transform: translateY(-2px);
   box-shadow:
     inset 0 0 20px rgba(255, 255, 255, 0.05),
@@ -1850,7 +1762,7 @@ body::before {
 
 .dashboard-card.highlight-glow {
   border-color: rgba(255, 255, 255, 0.45);
-  background: linear-gradient(135deg, rgba(40, 42, 48, 0.85) 0%, rgba(20, 22, 26, 0.95) 100%);
+  background: linear-gradient(135deg, rgba(25, 27, 65, 0.85) 0%, rgba(10, 11, 26, 0.95) 100%);
   box-shadow:
     inset 0 0 20px rgba(255, 255, 255, 0.15),
     0 4px 20px rgba(255, 255, 255, 0.08);
