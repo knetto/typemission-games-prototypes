@@ -273,6 +273,7 @@ const currentLessonDisplay = document.getElementById("currentLessonDisplay");
 const metronomeToggle = document.getElementById("metronomeToggle");
 const metronomePlayIcon = document.getElementById("metronomePlayIcon");
 const metronomePauseIcon = document.getElementById("metronomePauseIcon");
+const metronomeStatusText = document.getElementById("metronomeStatusText");
 const bpmValueEl = document.getElementById("bpmValue");
 const bpmDecrease = document.getElementById("bpmDecrease");
 const bpmIncrease = document.getElementById("bpmIncrease");
@@ -338,26 +339,25 @@ window.addEventListener("DOMContentLoaded", () => {
   bpmDecrease.addEventListener("click", () => adjustBpm(-5));
   bpmIncrease.addEventListener("click", () => adjustBpm(5));
 
+  // Set initial button states based on variables
+  keyboardToggleBtn.classList.toggle("active", keyboardVisible);
+  keyboardLettersBtn.classList.toggle("active", lettersVisible);
+  keyboardLettersBtn.textContent = lettersVisible ? "LETTERS: AAN" : "LETTERS: UIT";
+
   // Keyboard toggle
   keyboardToggleBtn.addEventListener("click", () => {
     keyboardVisible = !keyboardVisible;
     keyboardSection.classList.toggle("hidden", !keyboardVisible);
-    keyboardToggleBtn.classList.toggle("ghost-button", keyboardVisible);
-    keyboardToggleBtn.style.border = keyboardVisible ? "" : "1.5px solid rgba(255, 255, 255, 0.15)";
-    keyboardToggleBtn.style.color = keyboardVisible ? "" : "rgba(255,255,255,0.4)";
+    keyboardToggleBtn.classList.toggle("active", keyboardVisible);
     typingInput.focus();
   });
 
   // Letters show/hide toggle
-  keyboardLettersBtn.style.border = "1.5px solid rgba(255, 255, 255, 0.15)";
-  keyboardLettersBtn.style.color = "rgba(255,255,255,0.4)";
   keyboardLettersBtn.addEventListener("click", () => {
     lettersVisible = !lettersVisible;
     keyboardContainer.classList.toggle("blind-keyboard", !lettersVisible);
     keyboardLettersBtn.textContent = lettersVisible ? "LETTERS: AAN" : "LETTERS: UIT";
-    keyboardLettersBtn.classList.toggle("ghost-button", !lettersVisible);
-    keyboardLettersBtn.style.border = lettersVisible ? "" : "1.5px solid rgba(255, 255, 255, 0.15)";
-    keyboardLettersBtn.style.color = lettersVisible ? "" : "rgba(255,255,255,0.4)";
+    keyboardLettersBtn.classList.toggle("active", lettersVisible);
     typingInput.focus();
   });
 
@@ -637,20 +637,8 @@ function highlightTargetKey() {
     k.classList.remove("active-target");
   });
 
-  if (testFinished) return;
-  const targetChar = currentTextLine[cursorIndex];
-  if (!targetChar) return;
-
-  let keyToFind = targetChar;
-  if (keyToFind === "\n") keyToFind = "enter";
-  else if (keyToFind === " ") keyToFind = "space";
-  else keyToFind = keyToFind.toLowerCase();
-
-  // Find and highlight key
-  const keyEls = keyboardContainer.querySelectorAll(`.key[data-char="${keyToFind}"], .key[data-key="${keyToFind}"]`);
-  keyEls.forEach(el => {
-    el.classList.add("active-target");
-  });
+  // To encourage blind touch typing, we no longer highlight the target key on the keyboard.
+  // The key will only animate (sink and glow) when the user actually presses it.
 }
 
 function highlightTargetFinger() {
@@ -1197,6 +1185,7 @@ function toggleMetronome() {
     metronomePlaying = false;
     metronomePlayIcon.style.display = "block";
     metronomePauseIcon.style.display = "none";
+    if (metronomeStatusText) metronomeStatusText.textContent = "OFFLINE";
     
     // Stop reactor core pulse
     const core = document.getElementById("reactorCore");
@@ -1208,6 +1197,7 @@ function toggleMetronome() {
     metronomePlaying = true;
     metronomePlayIcon.style.display = "none";
     metronomePauseIcon.style.display = "block";
+    if (metronomeStatusText) metronomeStatusText.textContent = "ONLINE";
     playMetronomeTick(); // Play immediately
     startMetronomeTimer();
   }
@@ -1249,14 +1239,12 @@ function playMetronomeTick() {
 }
 
 function triggerMetronomePulse() {
-  const elements = [document.getElementById("metronomeToggle"), bpmValueEl];
-  elements.forEach(el => {
-    if (el) {
-      el.classList.remove("beat-pulse-active");
-      el.offsetHeight; // Trigger layout reflow
-      el.classList.add("beat-pulse-active");
-    }
-  });
+  const el = document.getElementById("metronomeToggle");
+  if (el) {
+    el.classList.remove("beat-pulse-active");
+    el.offsetHeight; // Trigger layout reflow
+    el.classList.add("beat-pulse-active");
+  }
 }
 
 function triggerReactorCorePulse() {
@@ -1305,7 +1293,7 @@ function initMatrix() {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   function draw() {
-    ctx.fillStyle = "rgba(5, 2, 6, 0.08)";
+    ctx.fillStyle = "rgba(10, 10, 10, 0.08)";
     ctx.fillRect(0, 0, width, height);
 
     // Subdued grey/white glow to match metallic dashboard theme
