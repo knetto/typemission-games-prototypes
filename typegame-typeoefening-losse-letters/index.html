@@ -20,6 +20,19 @@
 
   <!-- Centered 16:9 Cyber Console Container -->
   <div class="game-container" id="gameContainer">
+    <!-- Outer frame hardware details to match other games -->
+    <div class="outer-screw tl"></div>
+    <div class="outer-screw tr"></div>
+    <div class="outer-screw bl"></div>
+    <div class="outer-screw br"></div>
+    <div class="outer-restricted-header">
+      <div class="restricted-capsule">RESTRICTED ACCESS</div>
+      <div class="status-led-circles">
+        <span class="status-led active"></span>
+        <span class="status-led active"></span>
+        <span class="status-led active"></span>
+      </div>
+    </div>
 
     <!-- Top Header Panel -->
     <header class="game-header">
@@ -30,6 +43,20 @@
         </div>
         <span id="currentLessonDisplay" class="brand-lesson-title">Les 1: Basispositie</span>
       </div>
+
+      <!-- Center: LED Segmented Progress Deck -->
+      <div class="progress-deck">
+        <span class="deck-title">DECRYPTION CALIBRATION</span>
+        <div class="progress-bar-track">
+          <!-- Grid-segmented glowing fill -->
+          <div class="progress-bar-fill-segmented" id="progressBarFill" style="width: 0%;"></div>
+          <div class="progress-segments-grid"></div>
+        </div>
+        <!-- Lesson progress percentage -->
+        <span class="progress-deck-value" id="progressRingText">0%</span>
+      </div>
+
+      <div class="header-right-spacer"></div>
     </header>
 
     <!-- Main Stage Window -->
@@ -40,215 +67,234 @@
       <!-- ── TYPING PRACTICE VIEW ── -->
       <div class="mission-view practice-layout active" id="missionLayout">
 
-        <!-- Top Progress Indicators -->
-        <div class="exercise-progress-container">
-          <div class="progress-bar-track">
-            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
-          </div>
-        </div>
-
-        <!-- Live Statistics HUD -->
-        <div class="hud-stats-container" aria-label="Live statistieken">
-          <div class="hud-stat">
-            <span class="stat-value" id="timer">0.0</span>
-            <span class="stat-label">tijd (s)</span>
-          </div>
-          <div class="hud-stat">
-            <span class="stat-value" id="liveCpm">0</span>
-            <span class="stat-label">CPM</span>
-          </div>
-          <div class="hud-stat">
-            <span class="stat-value" id="mistakeCount">0</span>
-            <span class="stat-label">fouten</span>
-          </div>
-          <div class="hud-stat">
-            <span class="stat-value" id="accuracy">100%</span>
-            <span class="stat-label">precisie</span>
-          </div>
-        </div>
-
-        <!-- The Main Exercise Panel -->
-        <div class="exercise-panel">
-          <!-- Cyber deck corner accents -->
-          <span class="panel-corner tl" aria-hidden="true"></span>
-          <span class="panel-corner tr" aria-hidden="true"></span>
-          <span class="panel-corner bl" aria-hidden="true"></span>
-          <span class="panel-corner br" aria-hidden="true"></span>
+        <!-- Main stage workspace wrapping left column, center column, right column -->
+        <div class="practice-main-workspace">
           
-          <div class="panel-header">
-            <span class="panel-tag">DECRYPTION SCANNER</span>
-            <span class="panel-info" id="lineIndicator">Regel 1 van 5</span>
-          </div>
-          <div class="text-box-container" id="textBoxContainer">
-            <div class="text-scanlines"></div>
-            <div class="text-laser-line"></div>
-            <!-- The text to type is rendered letter-by-letter here -->
-            <div class="typing-text-line" id="typingTextLine">
-              <!-- Dynamically populated, e.g. <span class="char correct">d</span><span class="char current">d</span> -->
+          <!-- Left Telemetry Wing (Time & Speed) -->
+          <div class="hud-wing left-wing">
+            <span class="wing-bracket tl"></span>
+            <span class="wing-bracket bl"></span>
+            <div class="wing-header">
+              <span class="wing-title">DIAGNOSTICS</span>
+              <span class="wing-status">SYS_LINK_OK</span>
             </div>
-          </div>
-        </div>
+            
+            <div class="hud-stat-card time-card">
+              <span class="hud-stat-label">DECRYPT TIME</span>
+              <span class="tel-value" id="timer">0.0s</span>
+            </div>
 
-        <!-- Cyber Input Deck with 3D Keyboard and Wireframe Hands -->
-        <div class="input-deck-section" id="keyboardSection">
-          <!-- Left Biometric Hand -->
-          <div class="hand-container" id="leftHandContainer">
-            <svg class="hand-wireframe" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
-              <!-- Wrist/Palm base grid lines -->
-              <path class="palm-base" d="M60,160 L30,130 L20,100 L40,92 L60,90 L80,95 L92,135 Z" />
-              <path class="palm-base" d="M60,160 L40,92 M60,160 L60,90 M60,160 L80,95" />
-              <!-- Left Pinky Finger -->
-              <g class="hand-finger finger-lp" id="left-finger-lp">
-                <path d="M20,100 L15,75 L12,55 L10,40" />
-                <circle cx="20" cy="100" r="3.5" />
-                <circle cx="15" cy="75" r="3" />
-                <circle cx="12" cy="55" r="3" />
-                <circle cx="10" cy="40" r="4" />
-              </g>
-              <!-- Left Ring Finger -->
-              <g class="hand-finger finger-lr" id="left-finger-lr">
-                <path d="M40,92 L38,62 L36,40 L35,20" />
-                <circle cx="40" cy="92" r="3.5" />
-                <circle cx="38" cy="62" r="3" />
-                <circle cx="36" cy="40" r="3" />
-                <circle cx="35" cy="20" r="4" />
-              </g>
-              <!-- Left Middle Finger -->
-              <g class="hand-finger finger-lm" id="left-finger-lm">
-                <path d="M60,90 L60,58 L60,35 L60,12" />
-                <circle cx="60" cy="90" r="3.5" />
-                <circle cx="60" cy="58" r="3" />
-                <circle cx="60" cy="35" r="3" />
-                <circle cx="60" cy="12" r="4" />
-              </g>
-              <!-- Left Index Finger -->
-              <g class="hand-finger finger-li" id="left-finger-li">
-                <path d="M80,95 L82,65 L84,42 L85,25" />
-                <circle cx="80" cy="95" r="3.5" />
-                <circle cx="82" cy="65" r="3" />
-                <circle cx="84" cy="42" r="3" />
-                <circle cx="85" cy="25" r="4" />
-              </g>
-              <!-- Left Thumb -->
-              <g class="hand-finger finger-t" id="left-finger-t">
-                <path d="M92,135 L108,115 L112,95 L112,80" />
-                <circle cx="92" cy="135" r="3.5" />
-                <circle cx="108" cy="115" r="3" />
-                <circle cx="112" cy="95" r="3" />
-                <circle cx="112" cy="80" r="4" />
-              </g>
-            </svg>
-            <div class="hand-label">LEFT CALIBRATION</div>
-          </div>
-
-          <!-- Keyboard with Perspective Wrapper -->
-          <div class="keyboard-perspective">
-            <div class="keyboard-grid-glow"></div>
-            <div class="keyboard-container" id="keyboardContainer">
-              <!-- Dynamically generated keys -->
+            <div class="hud-stat-card speed-card">
+              <span class="hud-stat-label">DECRYPT SPEED</span>
+              <span class="tel-value"><span id="liveCpm">0</span> CPM</span>
             </div>
           </div>
 
-          <!-- Right Biometric Hand -->
-          <div class="hand-container" id="rightHandContainer">
-            <svg class="hand-wireframe" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
-              <!-- Wrist/Palm base grid lines -->
-              <path class="palm-base" d="M60,160 L30,130 L20,100 L40,92 L60,90 L80,95 L92,135 Z" />
-              <path class="palm-base" d="M60,160 L40,92 M60,160 L60,90 M60,160 L80,95" />
-              <!-- Right Pinky -->
-              <g class="hand-finger finger-rp" id="right-finger-rp">
-                <path d="M20,100 L15,75 L12,55 L10,40" />
-                <circle cx="20" cy="100" r="3.5" />
-                <circle cx="15" cy="75" r="3" />
-                <circle cx="12" cy="55" r="3" />
-                <circle cx="10" cy="40" r="4" />
-              </g>
-              <!-- Right Ring -->
-              <g class="hand-finger finger-rr" id="right-finger-rr">
-                <path d="M40,92 L38,62 L36,40 L35,20" />
-                <circle cx="40" cy="92" r="3.5" />
-                <circle cx="38" cy="62" r="3" />
-                <circle cx="36" cy="40" r="3" />
-                <circle cx="35" cy="20" r="4" />
-              </g>
-              <!-- Right Middle -->
-              <g class="hand-finger finger-rm" id="right-finger-rm">
-                <path d="M60,90 L60,58 L60,35 L60,12" />
-                <circle cx="60" cy="90" r="3.5" />
-                <circle cx="60" cy="58" r="3" />
-                <circle cx="60" cy="35" r="3" />
-                <circle cx="60" cy="12" r="4" />
-              </g>
-              <!-- Right Index -->
-              <g class="hand-finger finger-ri" id="right-finger-ri">
-                <path d="M80,95 L82,65 L84,42 L85,25" />
-                <circle cx="80" cy="95" r="3.5" />
-                <circle cx="82" cy="65" r="3" />
-                <circle cx="84" cy="42" r="3" />
-                <circle cx="85" cy="25" r="4" />
-              </g>
-              <!-- Right Thumb -->
-              <g class="hand-finger finger-t" id="right-finger-t">
-                <path d="M92,135 L108,115 L112,95 L112,80" />
-                <circle cx="92" cy="135" r="3.5" />
-                <circle cx="108" cy="115" r="3" />
-                <circle cx="112" cy="95" r="3" />
-                <circle cx="112" cy="80" r="4" />
-              </g>
-            </svg>
-            <div class="hand-label">RIGHT CALIBRATION</div>
-          </div>
-        </div>
-
-        <!-- Bottom Controls Bar -->
-        <div class="bottom-controls-bar">
-          <!-- Metronome controls -->
-          <div class="metronome-controls">
-            <button class="control-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="metronomePlayIcon">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="metronomePauseIcon" style="display: none;">
-                <rect x="6" y="4" width="4" height="16"></rect>
-                <rect x="14" y="4" width="4" height="16"></rect>
-              </svg>
-            </button>
-            <div class="reactor-core-container">
-              <div class="reactor-core" id="reactorCore">
-                <div class="reactor-core-inner"></div>
-                <div class="reactor-pulse-wave"></div>
+          <!-- Central Main Command Console (Typing area + Keyboard) -->
+          <div class="hud-center-console">
+            
+            <!-- main typing screen -->
+            <div class="exercise-panel">
+              <span class="panel-corner tl" aria-hidden="true"></span>
+              <span class="panel-corner tr" aria-hidden="true"></span>
+              <span class="panel-corner bl" aria-hidden="true"></span>
+              <span class="panel-corner br" aria-hidden="true"></span>
+              
+              <div class="panel-header">
+                <span class="panel-tag">DECRYPTION SCAN VIEWPORT</span>
+                <span class="panel-info" id="lineIndicator">Regel 1 van 5</span>
+              </div>
+              
+              <div class="text-box-container" id="textBoxContainer">
+                <div class="text-scanlines"></div>
+                <div class="text-laser-line"></div>
+                <!-- The text to type is rendered letter-by-letter here -->
+                <div class="typing-text-line" id="typingTextLine"></div>
               </div>
             </div>
-            <button class="control-btn" id="bpmDecrease" type="button" title="BPM verlagen">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
+
+            <!-- Cyber Input Deck with 3D Keyboard and Wireframe Hands -->
+            <div class="input-deck-section" id="keyboardSection">
+              <!-- Left Biometric Hand -->
+              <div class="hand-container" id="leftHandContainer">
+                <svg class="hand-wireframe" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Wrist/Palm base grid lines -->
+                  <path class="palm-base" d="M60,160 L30,130 L20,100 L40,92 L60,90 L80,95 L92,135 Z" />
+                  <path class="palm-base" d="M60,160 L40,92 M60,160 L60,90 M60,160 L80,95" />
+                  <!-- Left Pinky Finger -->
+                  <g class="hand-finger finger-lp" id="left-finger-lp">
+                    <path d="M20,100 L15,75 L12,55 L10,40" />
+                    <circle cx="20" cy="100" r="3.5" />
+                    <circle cx="15" cy="75" r="3" />
+                    <circle cx="12" cy="55" r="3" />
+                    <circle cx="10" cy="40" r="4" />
+                  </g>
+                  <!-- Left Ring Finger -->
+                  <g class="hand-finger finger-lr" id="left-finger-lr">
+                    <path d="M40,92 L38,62 L36,40 L35,20" />
+                    <circle cx="40" cy="92" r="3.5" />
+                    <circle cx="38" cy="62" r="3" />
+                    <circle cx="36" cy="40" r="3" />
+                    <circle cx="35" cy="20" r="4" />
+                  </g>
+                  <!-- Left Middle Finger -->
+                  <g class="hand-finger finger-lm" id="left-finger-lm">
+                    <path d="M60,90 L60,58 L60,35 L60,12" />
+                    <circle cx="60" cy="90" r="3.5" />
+                    <circle cx="60" cy="58" r="3" />
+                    <circle cx="60" cy="35" r="3" />
+                    <circle cx="60" cy="12" r="4" />
+                  </g>
+                  <!-- Left Index Finger -->
+                  <g class="hand-finger finger-li" id="left-finger-li">
+                    <path d="M80,95 L82,65 L84,42 L85,25" />
+                    <circle cx="80" cy="95" r="3.5" />
+                    <circle cx="82" cy="65" r="3" />
+                    <circle cx="84" cy="42" r="3" />
+                    <circle cx="85" cy="25" r="4" />
+                  </g>
+                  <!-- Left Thumb -->
+                  <g class="hand-finger finger-t" id="left-finger-t">
+                    <path d="M92,135 L108,115 L112,95 L112,80" />
+                    <circle cx="92" cy="135" r="3.5" />
+                    <circle cx="108" cy="115" r="3" />
+                    <circle cx="112" cy="95" r="3" />
+                    <circle cx="112" cy="80" r="4" />
+                  </g>
+                </svg>
+                <div class="hand-label">LEFT CALIBRATION</div>
+              </div>
+
+              <!-- Keyboard with Perspective Wrapper -->
+              <div class="keyboard-perspective">
+                <div class="keyboard-grid-glow"></div>
+                <div class="keyboard-container" id="keyboardContainer">
+                  <!-- Dynamically generated keys -->
+                </div>
+              </div>
+
+              <!-- Right Biometric Hand -->
+              <div class="hand-container" id="rightHandContainer">
+                <svg class="hand-wireframe" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Wrist/Palm base grid lines -->
+                  <path class="palm-base" d="M60,160 L30,130 L20,100 L40,92 L60,90 L80,95 L92,135 Z" />
+                  <path class="palm-base" d="M60,160 L40,92 M60,160 L60,90 M60,160 L80,95" />
+                  <!-- Right Pinky -->
+                  <g class="hand-finger finger-rp" id="right-finger-rp">
+                    <path d="M20,100 L15,75 L12,55 L10,40" />
+                    <circle cx="20" cy="100" r="3.5" />
+                    <circle cx="15" cy="75" r="3" />
+                    <circle cx="12" cy="55" r="3" />
+                    <circle cx="10" cy="40" r="4" />
+                  </g>
+                  <!-- Right Ring -->
+                  <g class="hand-finger finger-rr" id="right-finger-rr">
+                    <path d="M40,92 L38,62 L36,40 L35,20" />
+                    <circle cx="40" cy="92" r="3.5" />
+                    <circle cx="38" cy="62" r="3" />
+                    <circle cx="36" cy="40" r="3" />
+                    <circle cx="35" cy="20" r="4" />
+                  </g>
+                  <!-- Right Middle -->
+                  <g class="hand-finger finger-rm" id="right-finger-rm">
+                    <path d="M60,90 L60,58 L60,35 L60,12" />
+                    <circle cx="60" cy="90" r="3.5" />
+                    <circle cx="60" cy="58" r="3" />
+                    <circle cx="60" cy="35" r="3" />
+                    <circle cx="60" cy="12" r="4" />
+                  </g>
+                  <!-- Right Index -->
+                  <g class="hand-finger finger-ri" id="right-finger-ri">
+                    <path d="M80,95 L82,65 L84,42 L85,25" />
+                    <circle cx="80" cy="95" r="3.5" />
+                    <circle cx="82" cy="65" r="3" />
+                    <circle cx="84" cy="42" r="3" />
+                    <circle cx="85" cy="25" r="4" />
+                  </g>
+                  <!-- Right Thumb -->
+                  <g class="hand-finger finger-t" id="right-finger-t">
+                    <path d="M92,135 L108,115 L112,95 L112,80" />
+                    <circle cx="92" cy="135" r="3.5" />
+                    <circle cx="108" cy="115" r="3" />
+                    <circle cx="112" cy="95" r="3" />
+                    <circle cx="112" cy="80" r="4" />
+                  </g>
+                </svg>
+                <div class="hand-label">RIGHT CALIBRATION</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Telemetry Wing (Accuracy & Errors) -->
+          <div class="hud-wing right-wing">
+            <span class="wing-bracket tr"></span>
+            <span class="wing-bracket br"></span>
+            <div class="wing-header">
+              <span class="wing-title">THREAT MONITOR</span>
+              <span class="wing-status">ONLINE</span>
+            </div>
+            
+            <div class="hud-stat-card accuracy-card">
+              <span class="hud-stat-label">SYS ACCURACY</span>
+              <span class="tel-value" id="accuracy">100%</span>
+            </div>
+
+            <div class="hud-stat-card error-card">
+              <span class="hud-stat-label">BUFFER ERROR</span>
+              <span class="tel-value" id="mistakeCount">0</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Cyber Command Bar -->
+        <div class="bottom-controls-bar">
+          <!-- Command Left -->
+          <div class="command-group left" style="gap: 12px;">
+            <button class="tactical-btn" id="keyboardLettersBtn" type="button">
+              <span class="tactical-led"></span>LETTERS: UIT
             </button>
-            <span class="bpm-display"><strong id="bpmValue">40</strong> <span class="bpm-label">BPM</span></span>
-            <button class="control-btn" id="bpmIncrease" type="button" title="BPM verhogen">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+            <button class="tactical-btn" id="keyboardToggleBtn" type="button">
+              <span class="tactical-led active"></span>KEYBOARD VIEW
             </button>
           </div>
 
-          <!-- Keyboard toggle -->
-          <div class="keyboard-toggle-container" style="display: flex; gap: 8px;">
-            <button class="ghost-button small-btn" id="keyboardLettersBtn" type="button">
-              LETTERS: UIT
-            </button>
-            <button class="ghost-button small-btn" id="keyboardToggleBtn" type="button">
-              KEYBOARD
-            </button>
+          <!-- Command Center: Reactor Sync Deck -->
+          <div class="reactor-sync-deck">
+            <div class="reactor-core-wrapper">
+              <button class="reactor-ignite-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
+                <div class="reactor-core" id="reactorCore">
+                  <div class="reactor-core-inner"></div>
+                  <div class="reactor-pulse-wave"></div>
+                </div>
+                <!-- Hidden SVG/icons for script.js compatibility -->
+                <div style="display: none;">
+                  <span id="metronomePlayIcon"></span>
+                  <span id="metronomePauseIcon"></span>
+                </div>
+              </button>
+              <div class="reactor-meta">
+                <span class="reactor-label">CORE SYNC ENGINE</span>
+                <span class="reactor-status-text">STATUS: <span id="metronomeStatusText">OFFLINE</span></span>
+              </div>
+            </div>
+            
+            <div class="bpm-control-console">
+              <button class="bpm-console-btn" id="bpmDecrease" type="button" title="BPM verlagen">-</button>
+              <span class="bpm-console-readout"><strong id="bpmValue">40</strong> <span>BPM</span></span>
+              <button class="bpm-console-btn" id="bpmIncrease" type="button" title="BPM verhogen">+</button>
+            </div>
           </div>
 
-          <!-- Lesson progress ring -->
-          <div class="progress-ring-container">
-            <svg class="progress-ring-svg" width="44" height="44" viewBox="0 0 44 44">
-              <circle class="ring-bg" cx="22" cy="22" r="18" />
+          <!-- Command Right Spacer -->
+          <div class="command-group right"></div>
+          
+          <!-- Hidden SVG for backward compatibility with progressRingBar JS references -->
+          <div style="display: none;">
+            <svg>
               <circle class="ring-bar" id="progressRingBar" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
             </svg>
-            <span class="progress-ring-text" id="progressRingText">0%</span>
           </div>
         </div>
 

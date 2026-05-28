@@ -317,6 +317,7 @@ window.addEventListener("DOMContentLoaded", () => {
   typingInput.addEventListener("blur", () => {
     // Clear all pressed keys on blur to prevent stuck keys
     document.querySelectorAll(".key.pressed").forEach(k => k.classList.remove("pressed"));
+    document.querySelectorAll(".hand-finger.pressed-finger").forEach(f => f.classList.remove("pressed-finger"));
     
     // Only show focus overlay if we're not finished and not currently interacting with controls
     setTimeout(() => {
@@ -384,6 +385,17 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 100);
   });
 
+  // Auto-focus typing input when clicking anywhere on the game stage or background
+  document.addEventListener("click", (e) => {
+    const isInteractive = e.target.closest("button") || 
+                          e.target.closest("textarea") || 
+                          e.target.closest("a") || 
+                          e.target.closest(".results-overlay");
+    if (!isInteractive && !testFinished) {
+      typingInput.focus();
+    }
+  });
+
   // Start subtle Matrix background animation
   initMatrix();
 });
@@ -395,6 +407,8 @@ function getFingerClass(char) {
 
   // Spacebar is pressed by thumbs
   if (c === " ") return "finger-t";
+  // Enter is pressed by right pinky
+  if (c === "\n" || c === "enter") return "finger-rp";
 
   if (keyboardLayout === "qwerty") {
     if (["`", "1", "q", "a", "z"].includes(c)) return "finger-lp"; // Left Pinky
@@ -506,10 +520,16 @@ function loadLesson(index) {
   focusOverlay.classList.remove("visible");
 
   // Reset live stats HUD
-  timerEl.textContent = "0.0";
+  timerEl.textContent = "0.0s";
   liveCpmEl.textContent = "0";
   mistakeCountEl.textContent = "0";
   accuracyEl.textContent = "100%";
+
+  // Reset telemetry bar widths
+  const tf = document.querySelector(".time-fill"); if (tf) tf.style.width = "0%";
+  const sf = document.querySelector(".speed-fill"); if (sf) sf.style.width = "0%";
+  const af = document.querySelector(".accuracy-fill"); if (af) af.style.width = "100%";
+  const ef = document.querySelector(".error-fill"); if (ef) ef.style.width = "0%";
 
   renderKeyboard(); // Dynamically draw keyboard with finger highlights for this lesson
   loadLine();
@@ -680,8 +700,9 @@ function handleKeystroke(e) {
     e.preventDefault();
   }
 
-  // Visual flash on virtual keyboard for user feedback
+  // Visual flash on virtual keyboard and hands for user feedback
   highlightKeyPress(e.key);
+  highlightFingerPress(e.key);
 
   if (!running) {
     running = true;
@@ -733,6 +754,56 @@ function handleKeyRelease(e) {
   keyEls.forEach(el => {
     el.classList.remove("pressed");
   });
+
+  removeFingerPress(e.key);
+}
+
+function highlightFingerPress(keyName) {
+  let keyToFind = keyName.toLowerCase();
+  if (keyToFind === " ") keyToFind = " ";
+  if (keyToFind === "enter") keyToFind = "enter";
+  
+  const fingerClass = getFingerClass(keyToFind);
+  if (fingerClass) {
+    if (fingerClass === "finger-t") {
+      document.querySelectorAll(".hand-finger.finger-t").forEach(f => f.classList.add("pressed-finger"));
+    } else {
+      const leftFingers = ["finger-lp", "finger-lr", "finger-lm", "finger-li"];
+      const rightFingers = ["finger-rp", "finger-rr", "finger-rm", "finger-ri"];
+      
+      if (leftFingers.includes(fingerClass)) {
+        const fEl = document.querySelector(`#leftHandContainer .hand-finger.${fingerClass}`);
+        if (fEl) fEl.classList.add("pressed-finger");
+      } else if (rightFingers.includes(fingerClass)) {
+        const fEl = document.querySelector(`#rightHandContainer .hand-finger.${fingerClass}`);
+        if (fEl) fEl.classList.add("pressed-finger");
+      }
+    }
+  }
+}
+
+function removeFingerPress(keyName) {
+  let keyToFind = keyName.toLowerCase();
+  if (keyToFind === " ") keyToFind = " ";
+  if (keyToFind === "enter") keyToFind = "enter";
+  
+  const fingerClass = getFingerClass(keyToFind);
+  if (fingerClass) {
+    if (fingerClass === "finger-t") {
+      document.querySelectorAll(".hand-finger.finger-t").forEach(f => f.classList.remove("pressed-finger"));
+    } else {
+      const leftFingers = ["finger-lp", "finger-lr", "finger-lm", "finger-li"];
+      const rightFingers = ["finger-rp", "finger-rr", "finger-rm", "finger-ri"];
+      
+      if (leftFingers.includes(fingerClass)) {
+        const fEl = document.querySelector(`#leftHandContainer .hand-finger.${fingerClass}`);
+        if (fEl) fEl.classList.remove("pressed-finger");
+      } else if (rightFingers.includes(fingerClass)) {
+        const fEl = document.querySelector(`#rightHandContainer .hand-finger.${fingerClass}`);
+        if (fEl) fEl.classList.remove("pressed-finger");
+      }
+    }
+  }
 }
 
 function registerCharSuccess() {
@@ -790,7 +861,13 @@ function registerCharFail() {
 function updateLiveTimer() {
   if (!running) return;
   const elapsed = (Date.now() - lessonStartTime + accumulatedTime) / 1000;
-  timerEl.textContent = elapsed.toFixed(1);
+  timerEl.textContent = elapsed.toFixed(1) + "s";
+
+  const timeFill = document.querySelector(".time-fill");
+  if (timeFill) {
+    const timePercent = Math.min(100, (elapsed / 30) * 100);
+    timeFill.style.width = `${timePercent}%`;
+  }
 }
 
 function updateLiveHUD() {
@@ -799,10 +876,28 @@ function updateLiveHUD() {
   const cpm = Math.round(correctKeystrokes / (safeElapsed / 60));
   liveCpmEl.textContent = cpm;
 
-  const accuracy = Math.round((correctKeystrokes / totalKeystrokes) * 100);
+  const accuracy = totalKeystrokes === 0 ? 100 : Math.round((correctKeystrokes / totalKeystrokes) * 100);
   accuracyEl.textContent = `${accuracy}%`;
 
   mistakeCountEl.textContent = mistakeCount;
+
+  // Set speed fill width (max 300 CPM = 100%)
+  const speedFill = document.querySelector(".speed-fill");
+  if (speedFill) {
+    const speedPercent = Math.min(100, (cpm / 300) * 100);
+    speedFill.style.width = `${speedPercent}%`;
+  }
+  // Set accuracy fill width
+  const accuracyFill = document.querySelector(".accuracy-fill");
+  if (accuracyFill) {
+    accuracyFill.style.width = `${accuracy}%`;
+  }
+  // Set error fill width (max 10 errors = 100%)
+  const errorFill = document.querySelector(".error-fill");
+  if (errorFill) {
+    const errorPercent = Math.min(100, (mistakeCount / 10) * 100);
+    errorFill.style.width = `${errorPercent}%`;
+  }
 }
 
 function updateProgressVisuals() {
