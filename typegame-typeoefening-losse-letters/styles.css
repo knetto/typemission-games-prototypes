@@ -814,11 +814,9 @@ body::before {
 
 .hand-silhouette {
   fill: rgba(255, 255, 255, 0.035);
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.15);
   stroke-width: 1.2;
   transition: fill 0.15s ease, stroke 0.15s ease;
-  transform-origin: 60px 120px;
-  transform: scale(1.08) translateY(1.5px);
 }
 
 .finger-silhouette {
@@ -844,15 +842,15 @@ body::before {
 }
 
 /* Precise hand wireframe transform origins mapped to base knuckles */
-#left-finger-lp, #right-finger-rp { transform-origin: 17px 100px; }
-#left-finger-lr, #right-finger-rr { transform-origin: 38px 91px; }
+#left-finger-lp, #right-finger-rp { transform-origin: 20px 100px; }
+#left-finger-lr, #right-finger-rr { transform-origin: 40px 92px; }
 #left-finger-lm, #right-finger-rm { transform-origin: 60px 89px; }
 #left-finger-li, #right-finger-ri { transform-origin: 82px 95px; }
-#left-finger-t,  #right-finger-t  { transform-origin: 95px 138px; }
+#left-finger-t,  #right-finger-t  { transform-origin: 89px 138px; }
 
 .hand-finger {
   fill: rgba(255, 255, 255, 0.05);
-  stroke: rgba(255, 255, 255, 0.28);
+  stroke: rgba(255, 255, 255, 0.15);
   stroke-width: 1.5;
   /* Bouncy spring-back ease out elastic on release */
   transition: transform 0.16s cubic-bezier(0.25, 1.15, 0.45, 1.2), 
@@ -913,9 +911,7 @@ body::before {
   opacity: 1 !important;
 }
 
-.hand-finger:not(.active-finger) {
-  opacity: 0.55;
-}
+
 
 /* Subtle micro-dip on the hand wireframe container when any finger strikes */
 #leftHandContainer .hand-wireframe {
@@ -980,10 +976,7 @@ body::before {
   /* Thumbs: Purple */
 }
 
-/* Non-active state style */
-.hand-finger:not(.active-finger) {
-  opacity: 0.35;
-}
+
 
 
 
