@@ -60,8 +60,11 @@
           
           <!-- Left Telemetry Wing (Time & Speed) -->
           <div class="hud-wing left-wing">
-            <span class="wing-bracket tl"></span>
-            <span class="wing-bracket bl"></span>
+            <!-- rivets -->
+            <div class="rivet tl"></div>
+            <div class="rivet tr"></div>
+            <div class="rivet bl"></div>
+            <div class="rivet br"></div>
             <div class="wing-header">
               <span class="wing-title">DIAGNOSTICS</span>
               <span class="wing-status">SYS_LINK_OK</span>
@@ -142,23 +145,43 @@
           <!-- Central Main Command Console (Typing area + Keyboard) -->
           <div class="hud-center-console">
             
-            <!-- main typing screen -->
-            <div class="exercise-panel">
-              <span class="panel-corner tl" aria-hidden="true"></span>
-              <span class="panel-corner tr" aria-hidden="true"></span>
-              <span class="panel-corner bl" aria-hidden="true"></span>
-              <span class="panel-corner br" aria-hidden="true"></span>
-              
-              <div class="panel-header">
-                <span class="panel-tag">DECRYPTION SCAN VIEWPORT</span>
-                <span class="panel-info" id="lineIndicator">Regel 1 van 5</span>
+            <!-- main typing screen (styled as a terminal panel) -->
+            <div class="exercise-panel terminal-panel">
+              <div class="terminal-header">
+                <div class="terminal-header-info">
+                  <span class="terminal-title">DECRYPTION CONSOLE</span>
+                  <span class="terminal-ping" id="terminalPing">SECURE LINK // 42ms</span>
+                </div>
+                <div class="terminal-win-controls">
+                  <span class="control-btn minimize">
+                    <svg width="10" height="10" viewBox="0 0 10 10">
+                      <line x1="1" y1="5" x2="9" y2="5" stroke="currentColor" stroke-width="1" />
+                    </svg>
+                  </span>
+                  <span class="control-btn maximize">
+                    <svg width="10" height="10" viewBox="0 0 10 10">
+                      <rect x="1.5" y="1.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1" />
+                    </svg>
+                  </span>
+                  <span class="control-btn close">
+                    <svg width="10" height="10" viewBox="0 0 10 10">
+                      <line x1="1.5" y1="1.5" x2="8.5" y2="8.5" stroke="currentColor" stroke-width="1" />
+                      <line x1="8.5" y1="1.5" x2="1.5" y2="8.5" stroke="currentColor" stroke-width="1" />
+                    </svg>
+                  </span>
+                </div>
               </div>
-              
-              <div class="text-box-container" id="textBoxContainer">
-                <div class="text-scanlines"></div>
-                <div class="text-laser-line"></div>
-                <!-- The text to type is rendered letter-by-letter here -->
-                <div class="typing-text-line" id="typingTextLine"></div>
+              <div class="screen-body typewriter-body">
+                <div class="panel-header" style="justify-content: flex-end;">
+                  <span class="panel-info" id="lineIndicator">Regel 1 van 5</span>
+                </div>
+                
+                <div class="text-box-container" id="textBoxContainer">
+                  <div class="text-scanlines"></div>
+                  <div class="text-laser-line"></div>
+                  <!-- The text to type is rendered letter-by-letter here -->
+                  <div class="typing-text-line" id="typingTextLine"></div>
+                </div>
               </div>
             </div>
 
@@ -177,8 +200,11 @@
 
           <!-- Right Telemetry Wing (Accuracy & Errors) -->
           <div class="hud-wing right-wing">
-            <span class="wing-bracket tr"></span>
-            <span class="wing-bracket br"></span>
+            <!-- rivets -->
+            <div class="rivet tl"></div>
+            <div class="rivet tr"></div>
+            <div class="rivet bl"></div>
+            <div class="rivet br"></div>
             <div class="wing-header">
               <span class="wing-title">THREAT MONITOR</span>
               <span class="wing-status">ONLINE</span>
@@ -258,59 +284,6 @@
 
         </div>
 
-        <!-- Bottom Cyber Command Bar -->
-        <div class="bottom-controls-bar">
-          <!-- Command Left -->
-          <div class="command-group left" style="gap: 12px;">
-            <button class="tactical-btn" id="keyboardLettersBtn" type="button">
-              <span class="tactical-led"></span>LETTERS: UIT
-            </button>
-            <button class="tactical-btn active" id="keyboardToggleBtn" type="button">
-              <span class="tactical-led"></span>KEYBOARD VIEW
-            </button>
-          </div>
-
-          <!-- Command Center: Reactor Sync Deck -->
-          <div class="reactor-sync-deck">
-            <div class="reactor-core-wrapper">
-              <button class="reactor-ignite-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
-                <div class="reactor-core" id="reactorCore">
-                  <!-- Play Icon (shown when offline) -->
-                  <svg id="metronomePlayIcon" class="play-svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;">
-                    <polygon points="5,3 19,12 5,21"></polygon>
-                  </svg>
-                  <!-- Pause Icon (shown when online) -->
-                  <svg id="metronomePauseIcon" class="pause-svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                    <rect x="6" y="4" width="4" height="16"></rect>
-                    <rect x="14" y="4" width="4" height="16"></rect>
-                  </svg>
-                  <div class="reactor-pulse-wave"></div>
-                </div>
-              </button>
-              <div class="reactor-meta">
-                <span class="reactor-label">METRONOOM (TYPETEMPO)</span>
-                <span class="reactor-status-text">STATUS: <span id="metronomeStatusText">OFFLINE</span></span>
-              </div>
-            </div>
-            
-            <div class="bpm-control-console">
-              <button class="bpm-console-btn" id="bpmDecrease" type="button" title="BPM verlagen">-</button>
-              <span class="bpm-console-readout"><strong id="bpmValue">40</strong> <span>BPM</span></span>
-              <button class="bpm-console-btn" id="bpmIncrease" type="button" title="BPM verhogen">+</button>
-            </div>
-          </div>
-
-          <!-- Command Right Spacer -->
-          <div class="command-group right"></div>
-          
-          <!-- Hidden SVG for backward compatibility with progressRingBar JS references -->
-          <div style="display: none;">
-            <svg>
-              <circle class="ring-bar" id="progressRingBar" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
-            </svg>
-          </div>
-        </div>
-
         <!-- Hidden input for keyboard focus -->
         <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Typeveld"></textarea>
 
@@ -325,6 +298,59 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- Bottom Cyber Command Bar -->
+    <div class="bottom-controls-bar">
+      <!-- Command Left -->
+      <div class="command-group left" style="gap: 12px;">
+        <button class="tactical-btn" id="keyboardLettersBtn" type="button">
+          <span class="tactical-led"></span>LETTERS: UIT
+        </button>
+        <button class="tactical-btn active" id="keyboardToggleBtn" type="button">
+          <span class="tactical-led"></span>KEYBOARD VIEW
+        </button>
+      </div>
+
+      <!-- Command Center: Reactor Sync Deck -->
+      <div class="reactor-sync-deck">
+        <div class="reactor-core-wrapper">
+          <button class="reactor-ignite-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
+            <div class="reactor-core" id="reactorCore">
+              <!-- Play Icon (shown when offline) -->
+              <svg id="metronomePlayIcon" class="play-svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;">
+                <polygon points="5,3 19,12 5,21"></polygon>
+              </svg>
+              <!-- Pause Icon (shown when online) -->
+              <svg id="metronomePauseIcon" class="pause-svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+              <div class="reactor-pulse-wave"></div>
+            </div>
+          </button>
+          <div class="reactor-meta">
+            <span class="reactor-label">METRONOOM (TYPETEMPO)</span>
+            <span class="reactor-status-text">STATUS: <span id="metronomeStatusText">OFFLINE</span></span>
+          </div>
+        </div>
+        
+        <div class="bpm-control-console">
+          <button class="bpm-console-btn" id="bpmDecrease" type="button" title="BPM verlagen">-</button>
+          <span class="bpm-console-readout"><strong id="bpmValue">40</strong> <span>BPM</span></span>
+          <button class="bpm-console-btn" id="bpmIncrease" type="button" title="BPM verhogen">+</button>
+        </div>
+      </div>
+
+      <!-- Command Right Spacer -->
+      <div class="command-group right"></div>
+      
+      <!-- Hidden SVG for backward compatibility with progressRingBar JS references -->
+      <div style="display: none;">
+        <svg>
+          <circle class="ring-bar" id="progressRingBar" cx="22" cy="22" r="18" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
+        </svg>
       </div>
     </div>
 

@@ -77,10 +77,10 @@ body::before {
   position: relative;
   z-index: 10;
   background: var(--purple-dark);
-  border: 3px solid var(--purple-soft);
+  border: 3px solid #4a4d52;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    0 0 40px rgba(228, 142, 53, 0.08);
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   overflow: hidden;
   display: flex;
@@ -102,10 +102,11 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--purple-soft);
-  background: rgba(20, 20, 20, 0.95);
+  border-bottom: 2px solid #2d2f34;
+  background: linear-gradient(180deg, #2b2d31 0%, #1c1d20 100%);
   z-index: 10;
   flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .game-branding {
@@ -226,7 +227,7 @@ body::before {
   gap: 16px;
   min-height: 0;
   height: 0; /* Let flexbox control the height */
-  margin-bottom: clamp(10px, 1.8vh, 18px);
+  margin-bottom: 0;
 }
 
 .hud-wing {
@@ -235,30 +236,33 @@ body::before {
   flex-direction: column;
   justify-content: flex-start;
   gap: clamp(8px, 1.2vh, 14px);
-  background: rgba(20, 20, 20, 0.45);
-  border: 1px solid var(--line);
+  background: linear-gradient(180deg, #4a4d52 0%, #33363b 40%, #2a2d32 100%);
+  border: 2.5px solid #5a5e65;
   border-radius: 8px;
   padding: clamp(10px, 1.5vh, 16px) 16px;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 10px 25px rgba(0, 0, 0, 0.8);
   height: 100%;
 }
 
-.hud-wing .wing-bracket {
+/* Screws & brackets in standard styleguide colors */
+.rivet {
   position: absolute;
   width: 8px;
   height: 8px;
-  border: 1.5px solid var(--cyan);
-  opacity: 0.85;
-  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, #5e626a 30%, #2e3034 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.4);
   z-index: 5;
-  filter: drop-shadow(0 0 2px var(--cyan-glow));
 }
+.rivet.tl { top: 10px; left: 10px; }
+.rivet.tr { top: 10px; right: 10px; }
+.rivet.bl { bottom: 10px; left: 10px; }
+.rivet.br { bottom: 10px; right: 10px; }
 
-.hud-wing .wing-bracket.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-.hud-wing .wing-bracket.tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
-.hud-wing .wing-bracket.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
-.hud-wing .wing-bracket.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
 .wing-header {
   display: flex;
@@ -293,18 +297,23 @@ body::before {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  background: rgba(20, 20, 20, 0.6);
-  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.6);
   border-radius: 6px;
   padding: clamp(10px, 1.8vh, 15px) 12px;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
   text-align: center;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hud-stat-card:hover {
   border-color: rgba(228, 142, 53, 0.25);
-  box-shadow: 0 0 12px rgba(228, 142, 53, 0.05), inset 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 0 12px rgba(228, 142, 53, 0.05),
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .hud-stat-label {
@@ -356,38 +365,114 @@ body::before {
   min-height: 0;
 }
 
-/* Main Exercise Panel Styled as a clean dark console screen with high legibility */
 .exercise-panel {
   flex: 1;
   min-height: 0;
   max-height: clamp(240px, 36vh, 320px);
   background: var(--terminal-bg);
-  border: 1.8px solid var(--purple-soft);
+  border: 2px solid var(--purple-soft);
   border-radius: 8px;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(228, 142, 53, 0.08);
-  padding: 18px 28px;
+  box-shadow:
+    inset 0 2px 10px rgba(0, 0, 0, 0.95),
+    0 0 15px rgba(228, 142, 53, 0.12),
+    0 4px 16px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
 }
 
-/* Panel Tech Corners */
-.exercise-panel .panel-corner {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 1.5px solid var(--cyan);
-  opacity: 0.65;
-  pointer-events: none;
-  z-index: 5;
+.terminal-header {
+  background: #141414; /* Match our dark header background */
+  height: 36px;
+  padding-left: 16px;
+  padding-right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
 }
 
-.exercise-panel .panel-corner.tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-.exercise-panel .panel-corner.tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
-.exercise-panel .panel-corner.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
-.exercise-panel .panel-corner.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+.terminal-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.terminal-ping {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  color: var(--green);
+  background: rgba(154, 215, 68, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  animation: blinkText 1.5s infinite alternate;
+}
+
+@keyframes blinkText {
+  0% { opacity: 0.45; }
+  100% { opacity: 1; }
+}
+
+.terminal-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.terminal-win-controls {
+  display: flex;
+  height: 100%;
+}
+
+.terminal-win-controls .control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 100%;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.terminal-win-controls .control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+.terminal-win-controls .control-btn.close:hover {
+  background: #e81123;
+  color: #fff;
+}
+
+.typewriter-body {
+  position: relative;
+  flex: 1;
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+/* CRT Phosphor grid and scanlines with a subtle amber/orange tint */
+.typewriter-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, transparent 30%, rgba(9, 4, 12, 0.45) 100%),
+    repeating-linear-gradient(0deg, rgba(228, 142, 53, 0.015) 0px, rgba(228, 142, 53, 0.015) 1px, transparent 1px, transparent 3px);
+  pointer-events: none;
+  z-index: 3;
+}
+
 
 .panel-header {
   display: flex;
@@ -547,13 +632,13 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(12, 10, 5, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   padding: 8px 16px;
   box-shadow: 
-    inset 0 0 12px rgba(0, 0, 0, 0.6),
-    0 4px 15px rgba(0, 0, 0, 0.4);
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
   flex: 0 1 420px; /* Slightly wider for optimal layout */
   gap: 16px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -562,8 +647,9 @@ body::before {
 .reactor-sync-deck:hover {
   border-color: rgba(228, 142, 53, 0.15);
   box-shadow: 
-    inset 0 0 12px rgba(0, 0, 0, 0.6),
-    0 4px 20px rgba(228, 142, 53, 0.03);
+    0 0 12px rgba(228, 142, 53, 0.03),
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .reactor-core-wrapper {
@@ -684,17 +770,17 @@ body::before {
 .bpm-control-console {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 6px;
   padding: 2px 4px;
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
   gap: 4px;
 }
 
 .bpm-console-btn {
-  background: rgba(228, 142, 53, 0.05);
-  border: 1px solid rgba(228, 142, 53, 0.25);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--cyan);
   font-family: "Orbitron", sans-serif;
   font-size: 0.95rem;
@@ -1319,17 +1405,20 @@ body::before {
 /* ── BOTTOM CONTROLS BAR ── */
 /* ── BOTTOM CYBER COMMAND BAR ── */
 .bottom-controls-bar {
-  height: clamp(66px, 9vh, 84px);
+  height: clamp(72px, 9.5vh, 90px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 2px solid var(--purple-soft);
-  background: rgba(20, 20, 20, 0.95);
+  border-top: 2px solid #2d2f34;
+  background: linear-gradient(180deg, #2b2d31 0%, #1c1d20 100%);
   padding: 0 24px;
   border-radius: 0 0 12px 12px;
   flex-shrink: 0;
   position: relative;
-  box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
 .bottom-controls-bar .command-group.left {
@@ -1353,8 +1442,8 @@ body::before {
 }
 
 .tactical-btn {
-  background: rgba(0, 0, 0, 0.25) !important;
-  border: 1.5px solid var(--purple-soft) !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
   border-radius: 6px !important;
   color: var(--muted) !important;
   font-family: "Orbitron", sans-serif;
@@ -1368,25 +1457,27 @@ body::before {
   letter-spacing: 0.8px;
   transition: all 0.2s ease;
   outline: none;
-  box-shadow: none !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.05) !important;
 }
 
 .tactical-btn:hover {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
   color: var(--text-dark) !important;
+  box-shadow: none !important;
 }
 
 .tactical-btn.active {
-  background: rgba(228, 142, 53, 0.06) !important;
+  background: rgba(228, 142, 53, 0.1) !important;
   border-color: rgba(228, 142, 53, 0.4) !important;
   color: #fff !important;
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.15) !important;
 }
 
 .tactical-btn.active:hover {
-  background: rgba(228, 142, 53, 0.12) !important;
+  background: rgba(228, 142, 53, 0.15) !important;
   border-color: var(--cyan) !important;
-  box-shadow: 0 0 10px rgba(228, 142, 53, 0.15) !important;
+  box-shadow: 0 0 12px rgba(228, 142, 53, 0.25) !important;
 }
 
 .tactical-btn:active {
