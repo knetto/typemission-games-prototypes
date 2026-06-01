@@ -66,8 +66,6 @@ body::before {
   height: 100vh;
   z-index: -2;
   pointer-events: none;
-  opacity: 0.12;
-  /* Subdued opacity so it remains serious and non-distracting */
 }
 
 /* ── 16:9 CONTAINER & BEZEL FRAME ── */
@@ -99,7 +97,7 @@ body::before {
 
 /* ── HEADER PANEL ── */
 .game-header {
-  height: clamp(54px, 7.5vh, 72px);
+  height: clamp(72px, 9.5vh, 90px);
   padding: 0 24px;
   display: flex;
   justify-content: space-between;
@@ -115,10 +113,14 @@ body::before {
   align-items: center;
   gap: 12px;
   flex: 1;
+  min-width: max-content;
 }
 
-.header-right-spacer {
+.header-right {
   flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .branding-text {
@@ -132,11 +134,12 @@ body::before {
   font-weight: 700;
   color: var(--green);
   letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 .brand-title {
   font-family: "Orbitron", sans-serif;
-  font-size: clamp(0.95rem, 1.8vh, 1.2rem);
+  font-size: clamp(0.95rem, 1.8vh, 1.25rem);
   font-weight: 900;
   margin: 0;
   color: var(--text);
@@ -145,18 +148,20 @@ body::before {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
 
 .brand-lesson-title {
   font-family: "Orbitron", sans-serif;
-  font-size: clamp(0.72rem, 1.35vh, 0.85rem);
+  font-size: clamp(0.75rem, 1.4vh, 0.95rem);
   font-weight: 700;
   color: var(--muted);
   border-left: 2px solid var(--purple-soft);
   padding-left: 16px;
-  margin-left: 16px;
+  margin-left: 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* ── STAGE AREA ── */
@@ -225,15 +230,15 @@ body::before {
 }
 
 .hud-wing {
-  flex: 0.65;
+  flex: 0.8;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 16px;
+  gap: clamp(8px, 1.2vh, 14px);
   background: rgba(20, 20, 20, 0.45);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: clamp(10px, 1.5vh, 16px) 16px;
   position: relative;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
   height: 100%;
@@ -291,7 +296,7 @@ body::before {
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid var(--line);
   border-radius: 6px;
-  padding: 18px 12px;
+  padding: clamp(10px, 1.8vh, 15px) 12px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
   text-align: center;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -305,7 +310,7 @@ body::before {
 .hud-stat-label {
   color: var(--muted);
   font-family: "Orbitron", sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.8px;
   text-transform: uppercase;
@@ -314,7 +319,7 @@ body::before {
 .tel-value {
   color: var(--text);
   font-family: "Orbitron", sans-serif;
-  font-size: 1.6rem !important;
+  font-size: 2.1rem !important;
   font-weight: 900;
   text-shadow: 0 0 10px var(--cyan-glow);
   line-height: 1.2;
@@ -329,11 +334,22 @@ body::before {
 .error-card .tel-value {
   color: var(--red);
   text-shadow: 0 0 10px var(--red-glow);
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  padding: 4px 10px;
+  background: rgba(255, 59, 48, 0.15);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  min-width: 38px;
+  height: 38px;
+  font-size: 1.6rem !important;
 }
 
 /* Central Console Area */
 .hud-center-console {
-  flex: 2.3;
+  flex: 2.4;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -344,12 +360,12 @@ body::before {
 .exercise-panel {
   flex: 1;
   min-height: 0;
-  max-height: clamp(200px, 32vh, 270px);
+  max-height: clamp(240px, 36vh, 320px);
   background: var(--terminal-bg);
   border: 1.8px solid var(--purple-soft);
   border-radius: 8px;
   box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(228, 142, 53, 0.08);
-  padding: 14px 24px;
+  padding: 18px 28px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -373,9 +389,17 @@ body::before {
 .exercise-panel .panel-corner.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
 .exercise-panel .panel-corner.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
 .panel-tag {
   font-family: "Orbitron", sans-serif;
-  font-size: clamp(0.55rem, 1vh, 0.65rem);
+  font-size: clamp(0.9rem, 1.6vh, 1.1rem);
   font-weight: 700;
   color: var(--cyan);
   letter-spacing: 1.2px;
@@ -383,7 +407,7 @@ body::before {
 
 .panel-info {
   font-family: "Roboto Mono", monospace;
-  font-size: clamp(0.55rem, 1vh, 0.65rem);
+  font-size: clamp(0.9rem, 1.6vh, 1.1rem);
   color: var(--muted);
 }
 
@@ -432,19 +456,18 @@ body::before {
   gap: 8px;
   width: 100%;
   font-family: "Roboto Mono", monospace;
-  font-size: 34px !important; /* Increased for maximum legibility */
+  font-size: 30px !important; /* Adjusted for single-row layout without wrapping */
   font-weight: 700; /* Bold letters for clarity */
-  line-height: 1.4;
+  line-height: 1.5;
   white-space: pre;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
 }
 
 .typing-text-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  display: block;
   width: 100%;
   transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap; /* Keep the entire sentence on a single line */
 }
 
 .typing-text-row.completed {
@@ -468,6 +491,11 @@ body::before {
   color: #888888;
 }
 
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .char.correct {
   color: var(--green) !important;
 }
@@ -483,28 +511,12 @@ body::before {
   color: #666666;
 }
 
-/* Clear vertical blinking cursor style for character current */
 .char.current {
   color: #ffffff !important;
-  background: var(--cyan-glow) !important;
-  border-bottom: 3.5px solid var(--cyan) !important;
-  position: relative;
+  border-bottom-color: var(--cyan);
+  background: rgba(228, 142, 53, 0.06) !important;
   border-radius: 2px;
-  padding: 0 4px;
-  margin: 0 -4px;
-}
-
-.char.current::before {
-  content: "";
-  position: absolute;
-  left: -1px;
-  top: 15%;
-  height: 70%;
-  width: 2.5px;
-  background-color: var(--cyan);
-  box-shadow: 0 0 6px var(--cyan-glow);
-  animation: cursorBlink 0.8s infinite steps(2) !important;
-  z-index: 5;
+  position: relative;
 }
 
 @keyframes cursorBlink {
@@ -535,13 +547,23 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  flex: 0 1 380px;
+  background: rgba(12, 10, 5, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px 16px;
+  box-shadow: 
+    inset 0 0 12px rgba(0, 0, 0, 0.6),
+    0 4px 15px rgba(0, 0, 0, 0.4);
+  flex: 0 1 420px; /* Slightly wider for optimal layout */
   gap: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reactor-sync-deck:hover {
+  border-color: rgba(228, 142, 53, 0.15);
+  box-shadow: 
+    inset 0 0 12px rgba(0, 0, 0, 0.6),
+    0 4px 20px rgba(228, 142, 53, 0.03);
 }
 
 .reactor-core-wrapper {
@@ -561,8 +583,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 34px;
+  height: 34px;
 }
 
 .reactor-ignite-btn:active {
@@ -571,29 +593,38 @@ body::before {
 
 .reactor-core {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 1.5px solid var(--purple-soft);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  background: rgba(0, 0, 0, 0.25);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(0, 0, 0, 0.4);
   color: var(--muted);
 }
 
 .reactor-core:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  color: var(--text-dark);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(228, 142, 53, 0.4);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.15);
+  background: rgba(228, 142, 53, 0.05);
+}
+
+.reactor-core.online-core {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 12px var(--green-glow);
+  background: rgba(154, 215, 68, 0.05);
 }
 
 .reactor-core.active-core {
-  border-color: var(--cyan);
-  color: var(--cyan);
-  box-shadow: 0 0 10px var(--cyan-glow);
-  background: rgba(228, 142, 53, 0.1);
+  border-color: var(--cyan) !important;
+  color: var(--cyan) !important;
+  box-shadow: 0 0 15px var(--cyan-glow) !important;
+  background: rgba(228, 142, 53, 0.2) !important;
+  transform: scale(1.08);
 }
 
 .reactor-core svg {
@@ -606,7 +637,7 @@ body::before {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 1px solid var(--cyan);
+  border: 1.5px solid var(--cyan);
   opacity: 0;
   transform: scale(1);
   pointer-events: none;
@@ -619,18 +650,30 @@ body::before {
 
 .reactor-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 1px;
   color: var(--cyan);
   text-shadow: 0 0 6px var(--cyan-glow);
+  white-space: nowrap; /* Keep metronome and typetempo side-by-side */
 }
 
 .reactor-status-text {
   font-family: "Roboto Mono", monospace;
-  font-size: 0.52rem;
+  font-size: 0.68rem;
   color: var(--muted);
   text-transform: uppercase;
+}
+
+#metronomeStatusText {
+  font-weight: 700;
+  color: var(--muted);
+  transition: all 0.25s ease;
+}
+
+#metronomeStatusText.online {
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
 }
 
 #metronomePauseIcon {
@@ -641,59 +684,82 @@ body::before {
 .bpm-control-console {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1.5px solid var(--purple-soft);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  padding: 3px 6px;
-  box-shadow: none;
+  padding: 2px 4px;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+  gap: 4px;
 }
 
 .bpm-console-btn {
-  background: transparent;
-  border: none;
+  background: rgba(228, 142, 53, 0.05);
+  border: 1px solid rgba(228, 142, 53, 0.25);
   color: var(--cyan);
   font-family: "Orbitron", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
-  transition: all 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 4px;
 }
 
 .bpm-console-btn:hover {
-  background: rgba(228, 142, 53, 0.15);
-  color: #fff;
-  text-shadow: 0 0 6px var(--cyan);
+  background: var(--cyan);
+  color: #000;
+  box-shadow: 0 0 10px var(--cyan-glow);
 }
 
 .bpm-console-btn:active {
-  transform: scale(0.88);
+  transform: scale(0.85);
 }
 
 .bpm-console-readout {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   color: var(--text);
-  min-width: 60px;
+  min-width: 68px;
   text-align: center;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
 }
 
 .bpm-console-readout strong {
   color: var(--cyan);
   text-shadow: 0 0 8px var(--cyan-glow);
+  font-size: 1.2rem;
+  font-weight: 900;
 }
 
 .bpm-console-readout span {
-  font-size: 0.55rem;
+  font-size: 0.65rem;
   color: var(--muted);
   font-weight: 700;
-  margin-left: 2px;
+}
+
+.reactor-pulse-wave.pulse {
+  animation: corePulseAnimation 0.4s cubic-bezier(0.1, 0.8, 0.3, 1);
+}
+
+@keyframes corePulseAnimation {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.95);
+    border-color: var(--cyan);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+    border-color: var(--green);
+  }
 }
 
 /* ── CYBER INPUT DECK (3D KEYBOARD & HANDS) ── */
@@ -704,7 +770,7 @@ body::before {
   width: 100%;
   gap: clamp(32px, 6vw, 64px); /* Slightly narrower gap for smaller deck */
   transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
-  height: clamp(160px, 24vh, 210px);
+  height: clamp(180px, 28vh, 260px);
   margin: auto 0;
   position: relative;
 }
@@ -722,7 +788,7 @@ body::before {
   flex: none;
   /* Do not stretch to fill the screen width */
   width: 100%;
-  max-width: 680px;
+  max-width: 820px;
   /* Lock to keyboard's max width */
   perspective: 800px;
   display: flex;
@@ -761,10 +827,10 @@ body::before {
 
 /* Hand Wireframes Containers */
 .hand-container {
-  flex: none;
-  /* Locked sizing so hands stay close to keyboard deck */
-  width: 110px;
-  height: 100%;
+  flex: 2.2;
+  min-height: 0;
+  width: 100%;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -778,6 +844,7 @@ body::before {
 
 .keyboard-perspective {
   order: 2;
+  perspective: 1000px;
 }
 
 #rightHandContainer {
@@ -792,7 +859,8 @@ body::before {
 
 .hand-wireframe {
   width: 100%;
-  height: 80%;
+  height: 90%;
+  max-height: clamp(190px, 31vh, 260px);
   pointer-events: none;
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
   overflow: visible; /* Prevent glow from being cut off */
@@ -800,15 +868,15 @@ body::before {
 
 .hand-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.58rem;
+  font-size: clamp(0.68rem, 1.2vh, 0.8rem);
   font-weight: 700;
   color: var(--muted);
   letter-spacing: 1px;
-  margin-top: 4px;
+  margin-top: 12px;
   text-align: center;
   opacity: 0.85;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 2px;
+  padding-top: 4px;
   width: 100%;
 }
 
@@ -884,6 +952,12 @@ body::before {
               opacity 0.04s ease;
 }
 
+.hand-finger.pressed-finger.wrong-finger {
+  color: var(--red) !important;
+  opacity: 0.55 !important;
+  filter: brightness(1.1) drop-shadow(0 0 5px var(--red)) !important;
+}
+
 /* Custom 3D perspective finger compressions and rotations (Subtle) */
 #left-finger-lp.pressed-finger, #right-finger-rp.pressed-finger {
   transform: scaleY(0.88) scaleX(0.95) rotate(-1.5deg);
@@ -945,34 +1019,34 @@ body::before {
 /* Specific finger highlight colors matching the keyboard colors */
 .hand-finger.finger-lp,
 .hand-finger.finger-rp {
-  color: #ffd875;
-  /* Amber */
+  color: #a67f33;
+  /* Dark Gold/Brown */
 }
 
 .hand-finger.finger-lr,
 .hand-finger.finger-rr {
-  color: #a8ffb2;
-  /* Soft Green */
+  color: #3ea656;
+  /* Dark Green */
 }
 
 .hand-finger.finger-lm,
 .hand-finger.finger-rm {
-  color: #ff9e9e;
-  /* Soft Red */
+  color: #d95f5f;
+  /* Red/Brown */
 }
 
 .hand-finger.finger-li {
-  color: #a0eeee;
-  /* Left Index: Cyan */
+  color: #2ebbb0;
+  /* Left Index: Teal/Cyan */
 }
 
 .hand-finger.finger-ri {
-  color: #a0c4ff;
-  /* Right Index: Cobalt Blue */
+  color: #4d82eb;
+  /* Right Index: Blue */
 }
 
 .hand-finger.finger-t {
-  color: #e0b0ff;
+  color: #b55feb;
   /* Thumbs: Purple */
 }
 
@@ -1026,7 +1100,7 @@ body::before {
 }
 
 .key {
-  height: clamp(28px, 4.2vh, 36px);
+  height: clamp(34px, 4.8vh, 48px);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1038,8 +1112,15 @@ body::before {
   color: var(--text-dark);
   font-family: "Roboto", sans-serif;
   font-weight: 700; /* Bold characters */
-  font-size: clamp(0.85rem, 1.8vh, 1.05rem);
+  font-size: clamp(1.0rem, 2.0vh, 1.30rem);
   user-select: none;
+  /* 3D Keycap elevation and shadow bevel */
+  transform: translateY(-3px) translateZ(0);
+  transform-style: preserve-3d;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.6);
   /* Smooth elastic return on release */
   transition: transform 0.14s cubic-bezier(0.25, 1.15, 0.5, 1.15),
               background-color 0.14s ease,
@@ -1099,7 +1180,7 @@ body::before {
 .key.key-wide-4 .key-code,
 .key[data-key="escape"] .key-code {
   opacity: 0.55 !important;
-  font-size: 0.58rem !important;
+  font-size: 0.7rem !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -1123,19 +1204,29 @@ body::before {
   color: var(--cyan) !important;
   font-weight: 700;
   box-shadow:
-    0 0 12px rgba(255, 255, 255, 0.25),
-    inset 0 0 8px rgba(255, 255, 255, 0.15) !important;
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(255, 255, 255, 0.25) !important;
   animation: keyTargetPulse 1.2s infinite alternate ease-in-out;
   opacity: 1 !important;
 }
 
 @keyframes keyTargetPulse {
   0% {
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.15), inset 0 0 4px rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 3px 0 rgba(0, 0, 0, 0.85),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      0 4px 10px rgba(0, 0, 0, 0.6),
+      0 0 6px rgba(255, 255, 255, 0.15) !important;
   }
 
   100% {
-    box-shadow: 0 0 16px rgba(255, 255, 255, 0.45), inset 0 0 12px rgba(255, 255, 255, 0.25);
+    box-shadow:
+      0 3px 0 rgba(0, 0, 0, 0.85),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      0 4px 10px rgba(0, 0, 0, 0.6),
+      0 0 18px rgba(255, 255, 255, 0.5) !important;
   }
 }
 
@@ -1147,12 +1238,14 @@ body::before {
 
 .key.pressed {
   /* Sinks into the 3D perspective plane */
-  transform: translateZ(-5px);
+  transform: translateY(0px) translateZ(-4px) !important;
   background: var(--purple-soft) !important;
   color: #ffffff !important;
   border-color: var(--cyan) !important;
   box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.8),
+    0 0.5px 0 rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 1px 3px rgba(0, 0, 0, 0.8),
     0 0 12px var(--cyan-glow) !important;
   /* Instant mechanical strike transition */
   transition: transform 0.04s cubic-bezier(0.1, 0.9, 0.2, 1),
@@ -1170,47 +1263,51 @@ body::before {
 /* Finger colors for touch typing key mapping (vibrant cyber colors matching the example screenshot) */
 .key.finger-lp,
 .key.finger-rp {
-  background: rgba(217, 160, 24, 0.35) !important;
-  /* Amber/Goldish brown */
-  border-color: rgba(217, 160, 24, 0.7) !important;
-  color: #ffd875 !important;
+  background: rgba(166, 127, 51, 0.18) !important;
+  /* Dark Gold/Brown */
+  border-color: rgba(166, 127, 51, 0.55) !important;
+  color: #a67f33 !important;
 }
 
 .key.finger-lr,
 .key.finger-rr {
-  background: rgba(46, 179, 84, 0.35) !important;
-  /* Soft Green */
-  border-color: rgba(46, 179, 84, 0.7) !important;
-  color: #a8ffb2 !important;
+  background: rgba(62, 166, 86, 0.18) !important;
+  /* Dark Green */
+  border-color: rgba(62, 166, 86, 0.55) !important;
+  color: #3ea656 !important;
 }
 
 .key.finger-lm,
 .key.finger-rm {
-  background: rgba(230, 76, 76, 0.35) !important;
-  /* Soft Red/Rose */
-  border-color: rgba(230, 76, 76, 0.7) !important;
-  color: #ff9e9e !important;
+  background: rgba(217, 95, 95, 0.18) !important;
+  /* Red/Brown */
+  border-color: rgba(217, 95, 95, 0.55) !important;
+  color: #d95f5f !important;
 }
 
 .key.finger-li {
-  background: rgba(32, 178, 170, 0.35) !important;
-  /* Left Index: Cyan/Teal */
-  border-color: rgba(32, 178, 170, 0.7) !important;
-  color: #a0eeee !important;
+  background: rgba(46, 187, 176, 0.18) !important;
+  /* Left Index: Teal/Cyan */
+  border-color: rgba(46, 187, 176, 0.55) !important;
+  color: #2ebbb0 !important;
 }
 
 .key.finger-ri {
-  background: rgba(50, 115, 220, 0.35) !important;
-  /* Right Index: Cobalt Blue */
-  border-color: rgba(50, 115, 220, 0.7) !important;
-  color: #a0c4ff !important;
+  background: rgba(77, 130, 235, 0.18) !important;
+  /* Right Index: Blue */
+  border-color: rgba(77, 130, 235, 0.55) !important;
+  color: #4d82eb !important;
 }
 
 .key.finger-t {
-  background: rgba(138, 43, 226, 0.35) !important;
+  background: rgba(138, 43, 226, 0.18) !important;
   /* Thumbs: Purple */
-  border-color: rgba(138, 43, 226, 0.7) !important;
-  color: #e0b0ff !important;
+  border-color: rgba(138, 43, 226, 0.55) !important;
+  color: #b55feb !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 10px rgba(0, 0, 0, 0.6) !important;
 }
 
 /* Dimmed keys (not in the current lesson - faded but keeps finger color) */
@@ -1222,7 +1319,7 @@ body::before {
 /* ── BOTTOM CONTROLS BAR ── */
 /* ── BOTTOM CYBER COMMAND BAR ── */
 .bottom-controls-bar {
-  height: 58px;
+  height: clamp(66px, 9vh, 84px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1261,9 +1358,9 @@ body::before {
   border-radius: 6px !important;
   color: var(--muted) !important;
   font-family: "Orbitron", sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  padding: 8px 16px;
+  padding: 10px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1298,8 +1395,8 @@ body::before {
 
 /* Mechanical LED indicator on switches */
 .tactical-led {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #1e1e1e; /* dark off-state */
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1321,14 +1418,14 @@ body::before {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 0 1 400px;
+  flex: 0 1 460px;
   padding: 0 10px;
   position: relative;
 }
 
 .deck-title {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.55rem;
+  font-size: 0.9rem;
   font-weight: 900;
   color: var(--muted);
   letter-spacing: 2px;
@@ -1338,10 +1435,10 @@ body::before {
 
 .progress-deck .progress-bar-track {
   width: 100%;
-  height: 10px;
+  height: 14px;
   background: rgba(0, 0, 0, 0.85);
   border: 1px solid var(--cyan-glow);
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
   position: relative;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8);
@@ -1366,10 +1463,10 @@ body::before {
 
 .progress-deck-value {
   position: absolute;
-  right: -32px;
-  bottom: 0px;
+  right: -52px;
+  bottom: -3px;
   font-family: "Orbitron", sans-serif;
-  font-size: 0.72rem;
+  font-size: 1.15rem;
   font-weight: 900;
   color: var(--cyan);
   text-shadow: 0 0 8px var(--cyan-glow);

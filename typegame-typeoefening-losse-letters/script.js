@@ -318,7 +318,10 @@ window.addEventListener("DOMContentLoaded", () => {
   typingInput.addEventListener("blur", () => {
     // Clear all pressed keys on blur to prevent stuck keys
     document.querySelectorAll(".key.pressed").forEach(k => k.classList.remove("pressed"));
-    document.querySelectorAll(".hand-finger.pressed-finger").forEach(f => f.classList.remove("pressed-finger"));
+    document.querySelectorAll(".hand-finger.pressed-finger").forEach(f => {
+      f.classList.remove("pressed-finger");
+      f.classList.remove("wrong-finger");
+    });
     
     // Only show focus overlay if we're not finished and not currently interacting with controls
     setTimeout(() => {
@@ -396,8 +399,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start subtle Matrix background animation
-  initMatrix();
+  // Start subtle dotted wave background animation
+  initDottedWaveBackground();
 });
 
 // ── KEYBOARD FINGER MAPPING HELPERS ──
@@ -562,35 +565,36 @@ function renderPrompt() {
     const lineEl = document.createElement("div");
     lineEl.className = "typing-text-row";
 
-    if (l < currentLineIndex) {
-      // Completed line
+    let lineText;
+    const isActive = (l === currentLineIndex);
+    const isCompleted = (l < currentLineIndex);
+
+    if (isCompleted) {
       lineEl.classList.add("completed");
-      const lineText = lesson.lines[l] + "\n";
-      for (let i = 0; i < lineText.length; i++) {
-        const span = document.createElement("span");
-        span.className = "char correct";
-        if (lineText[i] === "\n") {
-          span.innerHTML = '<span class="enter-symbol">↵</span>';
-        } else {
-          span.textContent = lineText[i];
-        }
-        lineEl.appendChild(span);
-      }
-    } else if (l === currentLineIndex) {
-      // Current active line
+      lineText = lesson.lines[l] + "\n";
+    } else if (isActive) {
       lineEl.classList.add("active");
-      for (let i = 0; i < currentTextLine.length; i++) {
-        const span = document.createElement("span");
-        span.className = "char";
-        const char = currentTextLine[i];
+      lineText = currentTextLine;
+    } else {
+      lineEl.classList.add("upcoming");
+      lineText = lesson.lines[l] + "\n";
+    }
 
-        if (char === "\n") {
-          span.innerHTML = '<span class="enter-symbol">↵</span>';
-        } else {
-          span.textContent = char;
-        }
+    let currentWordEl = null;
 
-        // Apply class based on status
+    for (let i = 0; i < lineText.length; i++) {
+      const char = lineText[i];
+      const span = document.createElement("span");
+      span.className = "char";
+
+      if (char === "\n") {
+        span.innerHTML = '<span class="enter-symbol">↵</span>';
+      } else {
+        span.textContent = char;
+      }
+
+      // Apply class based on status
+      if (isActive) {
         if (i < cursorIndex) {
           span.classList.add("correct");
         } else if (i === cursorIndex) {
@@ -601,22 +605,29 @@ function renderPrompt() {
         } else {
           span.classList.add("faded");
         }
-        lineEl.appendChild(span);
+      } else if (isCompleted) {
+        span.classList.add("correct");
+      } else {
+        span.classList.add("faded");
       }
-    } else {
-      // Upcoming line
-      lineEl.classList.add("upcoming");
-      const lineText = lesson.lines[l] + "\n";
-      for (let i = 0; i < lineText.length; i++) {
-        const span = document.createElement("span");
-        span.className = "char faded";
-        if (lineText[i] === "\n") {
-          span.innerHTML = '<span class="enter-symbol">↵</span>';
-        } else {
-          span.textContent = lineText[i];
+
+      if (char === " ") {
+        if (currentWordEl) {
+          lineEl.appendChild(currentWordEl);
+          currentWordEl = null;
         }
         lineEl.appendChild(span);
+      } else {
+        if (!currentWordEl) {
+          currentWordEl = document.createElement("span");
+          currentWordEl.className = "word";
+        }
+        currentWordEl.appendChild(span);
       }
+    }
+
+    if (currentWordEl) {
+      lineEl.appendChild(currentWordEl);
     }
 
     fragment.appendChild(lineEl);
@@ -753,18 +764,31 @@ function highlightFingerPress(keyName) {
   
   const fingerClass = getFingerClass(keyToFind);
   if (fingerClass) {
+    const targetChar = currentTextLine[cursorIndex];
+    const targetFingerClass = getFingerClass(targetChar);
+    const isWrongFinger = targetFingerClass && (fingerClass !== targetFingerClass);
+
     if (fingerClass === "finger-t") {
-      document.querySelectorAll(".hand-finger.finger-t").forEach(f => f.classList.add("pressed-finger"));
+      document.querySelectorAll(".hand-finger.finger-t").forEach(f => {
+        f.classList.add("pressed-finger");
+        if (isWrongFinger) f.classList.add("wrong-finger");
+      });
     } else {
       const leftFingers = ["finger-lp", "finger-lr", "finger-lm", "finger-li"];
       const rightFingers = ["finger-rp", "finger-rr", "finger-rm", "finger-ri"];
       
       if (leftFingers.includes(fingerClass)) {
         const fEl = document.querySelector(`#leftHandContainer .hand-finger.${fingerClass}`);
-        if (fEl) fEl.classList.add("pressed-finger");
+        if (fEl) {
+          fEl.classList.add("pressed-finger");
+          if (isWrongFinger) fEl.classList.add("wrong-finger");
+        }
       } else if (rightFingers.includes(fingerClass)) {
         const fEl = document.querySelector(`#rightHandContainer .hand-finger.${fingerClass}`);
-        if (fEl) fEl.classList.add("pressed-finger");
+        if (fEl) {
+          fEl.classList.add("pressed-finger");
+          if (isWrongFinger) fEl.classList.add("wrong-finger");
+        }
       }
     }
   }
@@ -778,17 +802,26 @@ function removeFingerPress(keyName) {
   const fingerClass = getFingerClass(keyToFind);
   if (fingerClass) {
     if (fingerClass === "finger-t") {
-      document.querySelectorAll(".hand-finger.finger-t").forEach(f => f.classList.remove("pressed-finger"));
+      document.querySelectorAll(".hand-finger.finger-t").forEach(f => {
+        f.classList.remove("pressed-finger");
+        f.classList.remove("wrong-finger");
+      });
     } else {
       const leftFingers = ["finger-lp", "finger-lr", "finger-lm", "finger-li"];
       const rightFingers = ["finger-rp", "finger-rr", "finger-rm", "finger-ri"];
       
       if (leftFingers.includes(fingerClass)) {
         const fEl = document.querySelector(`#leftHandContainer .hand-finger.${fingerClass}`);
-        if (fEl) fEl.classList.remove("pressed-finger");
+        if (fEl) {
+          fEl.classList.remove("pressed-finger");
+          fEl.classList.remove("wrong-finger");
+        }
       } else if (rightFingers.includes(fingerClass)) {
         const fEl = document.querySelector(`#rightHandContainer .hand-finger.${fingerClass}`);
-        if (fEl) fEl.classList.remove("pressed-finger");
+        if (fEl) {
+          fEl.classList.remove("pressed-finger");
+          fEl.classList.remove("wrong-finger");
+        }
       }
     }
   }
@@ -1178,6 +1211,9 @@ function playSynthSound(type) {
 
 // ── METRONOME LOGIC ──
 function toggleMetronome() {
+  const core = document.getElementById("reactorCore");
+  const wave = core ? core.querySelector(".reactor-pulse-wave") : null;
+
   if (metronomePlaying) {
     // Stop
     clearInterval(metronomeInterval);
@@ -1185,19 +1221,27 @@ function toggleMetronome() {
     metronomePlaying = false;
     metronomePlayIcon.style.display = "block";
     metronomePauseIcon.style.display = "none";
-    if (metronomeStatusText) metronomeStatusText.textContent = "OFFLINE";
-    
-    // Stop reactor core pulse
-    const core = document.getElementById("reactorCore");
-    const wave = core ? core.querySelector(".reactor-pulse-wave") : null;
-    if (core) core.classList.remove("active-core");
+    if (metronomeStatusText) {
+      metronomeStatusText.textContent = "OFFLINE";
+      metronomeStatusText.classList.remove("online");
+    }
+    if (core) {
+      core.classList.remove("active-core");
+      core.classList.remove("online-core");
+    }
     if (wave) wave.classList.remove("pulse");
   } else {
     // Start metronome timer
     metronomePlaying = true;
     metronomePlayIcon.style.display = "none";
     metronomePauseIcon.style.display = "block";
-    if (metronomeStatusText) metronomeStatusText.textContent = "ONLINE";
+    if (metronomeStatusText) {
+      metronomeStatusText.textContent = "ONLINE";
+      metronomeStatusText.classList.add("online");
+    }
+    if (core) {
+      core.classList.add("online-core");
+    }
     playMetronomeTick(); // Play immediately
     startMetronomeTimer();
   }
@@ -1272,46 +1316,122 @@ function adjustBpm(amount) {
   typingInput.focus();
 }
 
-// ── MATRIX DECORATIVE RAIN ──
-function initMatrix() {
+// ── DOTTED WAVE BACKGROUND ──
+function initDottedWaveBackground() {
   const canvas = document.getElementById("matrix-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+
+  const dotSpacing = 28;
+  let cols = Math.floor(width / dotSpacing) + 1;
+  let rows = Math.floor(height / dotSpacing) + 1;
+  let time = 0;
+
+  const mouse = { x: -9999, y: -9999, targetX: -9999, targetY: -9999, active: false };
+  const easeFactor = 0.15;
+
+  window.addEventListener("mousemove", (e) => {
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
+    mouse.active = true;
+  });
+
+  window.addEventListener("mouseleave", () => { mouse.active = false; });
+
+  window.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      mouse.targetX = e.touches[0].clientX;
+      mouse.targetY = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener("touchend", () => { mouse.active = false; });
+
+  function draw() {
+    ctx.fillStyle = "#050206";
+    ctx.fillRect(0, 0, width, height);
+    time += 0.02;
+
+    if (mouse.active) {
+      if (mouse.x === -9999) {
+        mouse.x = mouse.targetX;
+        mouse.y = mouse.targetY;
+      } else {
+        mouse.x += (mouse.targetX - mouse.x) * easeFactor;
+        mouse.y += (mouse.targetY - mouse.y) * easeFactor;
+      }
+    } else {
+      if (mouse.x !== -9999) {
+        mouse.x += (-9999 - mouse.x) * 0.1;
+        mouse.y += (-9999 - mouse.y) * 0.1;
+        if (Math.abs(mouse.x + 9999) < 1) {
+          mouse.x = -9999;
+          mouse.y = -9999;
+        }
+      }
+    }
+
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        const baseX = c * dotSpacing;
+        const baseY = r * dotSpacing;
+        const phase = c * 0.15 + r * 0.15 - time;
+        const waveVal = Math.sin(phase);
+        const dx = Math.cos(phase) * 3;
+        const dy = waveVal * 6;
+
+        let x = baseX + dx;
+        let y = baseY + dy;
+        let radius = 2.0;
+        let opacity = 0.14 + (waveVal + 1) * 0.05;
+
+        if (mouse.x !== -9999) {
+          const dxMouse = x - mouse.x;
+          const dyMouse = y - mouse.y;
+          const dist = Math.hypot(dxMouse, dyMouse);
+          const maxDist = 150;
+
+          if (dist < maxDist) {
+            const force = (maxDist - dist) / maxDist;
+            const pushAngle = Math.atan2(dyMouse, dxMouse);
+            const pushDist = force * 24;
+            x += Math.cos(pushAngle) * pushDist;
+            y += Math.sin(pushAngle) * pushDist;
+            radius += force * 1.5;
+            opacity += force * 0.35;
+          }
+        }
+
+        ctx.fillStyle = `rgba(154, 215, 68, ${opacity})`;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  let lastTime = 0;
+  const fps = 30;
+  const interval = 1000 / fps;
+
+  function animate(now) {
+    requestAnimationFrame(animate);
+    const delta = now - lastTime;
+    if (delta > interval) {
+      lastTime = now - (delta % interval);
+      draw();
+    }
+  }
+  requestAnimationFrame(animate);
 
   window.addEventListener("resize", () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
+    cols = Math.floor(width / dotSpacing) + 1;
+    rows = Math.floor(height / dotSpacing) + 1;
   });
-
-  const fontSize = 14;
-  const columns = Math.floor(width / fontSize) + 1;
-  const yPositions = Array(columns).fill(0).map(() => Math.random() * -height);
-
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  function draw() {
-    ctx.fillStyle = "rgba(10, 10, 10, 0.08)";
-    ctx.fillRect(0, 0, width, height);
-
-    // Subdued grey/white glow to match metallic dashboard theme
-    ctx.fillStyle = "rgba(255, 255, 255, 0.06)";
-    ctx.font = `${fontSize}px monospace`;
-
-    yPositions.forEach((y, index) => {
-      const char = alphabet[Math.floor(Math.random() * alphabet.length)];
-      const x = index * fontSize;
-      ctx.fillText(char, x, y);
-
-      if (y > height + Math.random() * 10000) {
-        yPositions[index] = 0;
-      } else {
-        yPositions[index] = y + fontSize;
-      }
-    });
-  }
-
-  setInterval(draw, 50);
 }
