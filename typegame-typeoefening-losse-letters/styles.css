@@ -239,7 +239,7 @@ body::before {
   background: linear-gradient(180deg, #4a4d52 0%, #33363b 40%, #2a2d32 100%);
   border: 2.5px solid #5a5e65;
   border-radius: 8px;
-  padding: clamp(10px, 1.5vh, 16px) 16px;
+  padding: clamp(20px, 2.8vh, 24px) 16px clamp(10px, 1.5vh, 16px) 16px;
   position: relative;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -1019,7 +1019,7 @@ body::before {
 }
 
 .hand-finger circle {
-  fill: #0c0c0c;
+  fill: #4f5259;
   stroke: inherit;
   stroke-width: inherit;
 }
@@ -1092,32 +1092,32 @@ body::before {
 
 @keyframes fingerGlowPulse {
   0% {
-    opacity: 0.85;
-    filter: drop-shadow(0 0 6px currentColor);
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px currentColor);
   }
 
   100% {
     opacity: 1;
-    filter: drop-shadow(0 0 16px currentColor) drop-shadow(0 0 4px currentColor);
+    filter: drop-shadow(0 0 10px currentColor);
   }
 }
 
 /* Specific finger highlight colors matching the keyboard colors */
 .hand-finger.finger-lp,
 .hand-finger.finger-rp {
-  color: #a67f33;
+  color: #d4a33b;
   /* Dark Gold/Brown */
 }
 
 .hand-finger.finger-lr,
 .hand-finger.finger-rr {
-  color: #3ea656;
+  color: #48b861;
   /* Dark Green */
 }
 
 .hand-finger.finger-lm,
 .hand-finger.finger-rm {
-  color: #d95f5f;
+  color: #e86b6b;
   /* Red/Brown */
 }
 
@@ -1285,15 +1285,10 @@ body::before {
 
 /* Glowing Target key */
 .key.active-target {
-  border-color: var(--cyan) !important;
+  border-color: var(--finger-color, var(--cyan)) !important;
   background: rgba(255, 255, 255, 0.15) !important;
-  color: var(--cyan) !important;
+  color: var(--finger-color, var(--cyan)) !important;
   font-weight: 700;
-  box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(255, 255, 255, 0.25) !important;
   animation: keyTargetPulse 1.2s infinite alternate ease-in-out;
   opacity: 1 !important;
 }
@@ -1304,7 +1299,7 @@ body::before {
       0 3px 0 rgba(0, 0, 0, 0.85),
       inset 0 1px 0 rgba(255, 255, 255, 0.15),
       0 4px 10px rgba(0, 0, 0, 0.6),
-      0 0 6px rgba(255, 255, 255, 0.15) !important;
+      0 0 6px var(--finger-color, var(--cyan)) !important;
   }
 
   100% {
@@ -1312,7 +1307,7 @@ body::before {
       0 3px 0 rgba(0, 0, 0, 0.85),
       inset 0 1px 0 rgba(255, 255, 255, 0.2),
       0 4px 10px rgba(0, 0, 0, 0.6),
-      0 0 18px rgba(255, 255, 255, 0.5) !important;
+      0 0 18px var(--finger-color, var(--cyan)) !important;
   }
 }
 
@@ -1327,12 +1322,12 @@ body::before {
   transform: translateY(0px) translateZ(-4px) !important;
   background: var(--purple-soft) !important;
   color: #ffffff !important;
-  border-color: var(--cyan) !important;
+  border-color: var(--finger-color, var(--cyan)) !important;
   box-shadow: 
     0 0.5px 0 rgba(0, 0, 0, 0.9),
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     0 1px 3px rgba(0, 0, 0, 0.8),
-    0 0 12px var(--cyan-glow) !important;
+    0 0 12px var(--finger-color, var(--cyan)) !important;
   /* Instant mechanical strike transition */
   transition: transform 0.04s cubic-bezier(0.1, 0.9, 0.2, 1),
               background-color 0.04s ease,
@@ -1349,51 +1344,120 @@ body::before {
 /* Finger colors for touch typing key mapping (vibrant cyber colors matching the example screenshot) */
 .key.finger-lp,
 .key.finger-rp {
-  background: rgba(166, 127, 51, 0.18) !important;
+  --finger-color: #d4a33b;
+  background: rgba(212, 163, 59, 0.18) !important;
   /* Dark Gold/Brown */
-  border-color: rgba(166, 127, 51, 0.55) !important;
-  color: #a67f33 !important;
+  border-color: rgba(212, 163, 59, 0.55) !important;
+  color: #d4a33b !important;
+}
+
+.key.finger-lp:not(.dimmed),
+.key.finger-rp:not(.dimmed) {
+  background: rgba(212, 163, 59, 0.28) !important;
+  border-color: #d4a33b !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(212, 163, 59, 0.5) !important;
 }
 
 .key.finger-lr,
 .key.finger-rr {
-  background: rgba(62, 166, 86, 0.18) !important;
+  --finger-color: #48b861;
+  background: rgba(72, 184, 97, 0.18) !important;
   /* Dark Green */
-  border-color: rgba(62, 166, 86, 0.55) !important;
-  color: #3ea656 !important;
+  border-color: rgba(72, 184, 97, 0.55) !important;
+  color: #48b861 !important;
+}
+
+.key.finger-lr:not(.dimmed),
+.key.finger-rr:not(.dimmed) {
+  background: rgba(72, 184, 97, 0.28) !important;
+  border-color: #48b861 !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(72, 184, 97, 0.5) !important;
 }
 
 .key.finger-lm,
 .key.finger-rm {
-  background: rgba(217, 95, 95, 0.18) !important;
+  --finger-color: #e86b6b;
+  background: rgba(232, 107, 107, 0.18) !important;
   /* Red/Brown */
-  border-color: rgba(217, 95, 95, 0.55) !important;
-  color: #d95f5f !important;
+  border-color: rgba(232, 107, 107, 0.55) !important;
+  color: #e86b6b !important;
+}
+
+.key.finger-lm:not(.dimmed),
+.key.finger-rm:not(.dimmed) {
+  background: rgba(232, 107, 107, 0.28) !important;
+  border-color: #e86b6b !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(232, 107, 107, 0.5) !important;
 }
 
 .key.finger-li {
+  --finger-color: #2ebbb0;
   background: rgba(46, 187, 176, 0.18) !important;
   /* Left Index: Teal/Cyan */
   border-color: rgba(46, 187, 176, 0.55) !important;
   color: #2ebbb0 !important;
 }
 
+.key.finger-li:not(.dimmed) {
+  background: rgba(46, 187, 176, 0.28) !important;
+  border-color: #2ebbb0 !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(46, 187, 176, 0.5) !important;
+}
+
 .key.finger-ri {
+  --finger-color: #4d82eb;
   background: rgba(77, 130, 235, 0.18) !important;
   /* Right Index: Blue */
   border-color: rgba(77, 130, 235, 0.55) !important;
   color: #4d82eb !important;
 }
 
+.key.finger-ri:not(.dimmed) {
+  background: rgba(77, 130, 235, 0.28) !important;
+  border-color: #4d82eb !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(77, 130, 235, 0.5) !important;
+}
+
 .key.finger-t {
-  background: rgba(138, 43, 226, 0.18) !important;
+  --finger-color: #b55feb;
+  background: rgba(181, 95, 235, 0.18) !important;
   /* Thumbs: Purple */
-  border-color: rgba(138, 43, 226, 0.55) !important;
+  border-color: rgba(181, 95, 235, 0.55) !important;
   color: #b55feb !important;
   box-shadow:
     0 3px 0 rgba(0, 0, 0, 0.85),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 4px 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+.key.finger-t:not(.dimmed) {
+  background: rgba(181, 95, 235, 0.28) !important;
+  border-color: #b55feb !important;
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(181, 95, 235, 0.5) !important;
 }
 
 /* Dimmed keys (not in the current lesson - faded but keeps finger color) */
