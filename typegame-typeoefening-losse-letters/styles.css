@@ -628,7 +628,7 @@ body::before {
 }
 
 /* Central metronome controls (Simplified flat layout) */
-.reactor-sync-deck {
+.metronome-deck {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -644,7 +644,7 @@ body::before {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.reactor-sync-deck:hover {
+.metronome-deck:hover {
   border-color: rgba(228, 142, 53, 0.15);
   box-shadow: 
     0 0 12px rgba(228, 142, 53, 0.03),
@@ -652,13 +652,13 @@ body::before {
     0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.reactor-core-wrapper {
+.metronome-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.reactor-ignite-btn {
+.metronome-btn {
   background: transparent;
   border: none;
   padding: 0;
@@ -673,11 +673,11 @@ body::before {
   height: 34px;
 }
 
-.reactor-ignite-btn:active {
+.metronome-btn:active {
   transform: scale(0.92);
 }
 
-.reactor-core {
+.metronome-core {
   position: relative;
   width: 34px;
   height: 34px;
@@ -691,21 +691,21 @@ body::before {
   color: var(--muted);
 }
 
-.reactor-core:hover {
+.metronome-core:hover {
   border-color: rgba(228, 142, 53, 0.4);
   color: #fff;
   box-shadow: 0 0 8px rgba(228, 142, 53, 0.15);
   background: rgba(228, 142, 53, 0.05);
 }
 
-.reactor-core.online-core {
+.metronome-core.online-metronome {
   border-color: var(--green);
   color: var(--green);
   box-shadow: 0 0 12px var(--green-glow);
   background: rgba(154, 215, 68, 0.05);
 }
 
-.reactor-core.active-core {
+.metronome-core.active-metronome {
   border-color: var(--cyan) !important;
   color: var(--cyan) !important;
   box-shadow: 0 0 15px var(--cyan-glow) !important;
@@ -713,13 +713,13 @@ body::before {
   transform: scale(1.08);
 }
 
-.reactor-core svg {
+.metronome-core svg {
   display: block;
   pointer-events: none;
   transition: color 0.2s ease;
 }
 
-.reactor-pulse-wave {
+.metronome-pulse-wave {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
@@ -729,12 +729,12 @@ body::before {
   pointer-events: none;
 }
 
-.reactor-meta {
+.metronome-meta {
   display: flex;
   flex-direction: column;
 }
 
-.reactor-label {
+.metronome-label {
   font-family: "Orbitron", sans-serif;
   font-size: 0.8rem;
   font-weight: 900;
@@ -744,7 +744,7 @@ body::before {
   white-space: nowrap; /* Keep metronome and typetempo side-by-side */
 }
 
-.reactor-status-text {
+.metronome-status-text {
   font-family: "Roboto Mono", monospace;
   font-size: 0.68rem;
   color: var(--muted);
@@ -831,7 +831,7 @@ body::before {
   font-weight: 700;
 }
 
-.reactor-pulse-wave.pulse {
+.metronome-pulse-wave.pulse {
   animation: corePulseAnimation 0.4s cubic-bezier(0.1, 0.8, 0.3, 1);
 }
 
@@ -1140,11 +1140,11 @@ body::before {
 
 
 
-.reactor-pulse-wave.pulse {
-  animation: reactorPulseWaveAnim 0.35s ease-out forwards;
+.metronome-pulse-wave.pulse {
+  animation: metronomePulseWaveAnim 0.35s ease-out forwards;
 }
 
-@keyframes reactorPulseWaveAnim {
+@keyframes metronomePulseWaveAnim {
   0% {
     transform: scale(1);
     opacity: 0.55;
@@ -1535,13 +1535,13 @@ body::before {
   background: rgba(228, 142, 53, 0.1) !important;
   border-color: rgba(228, 142, 53, 0.4) !important;
   color: #fff !important;
-  box-shadow: 0 0 8px rgba(228, 142, 53, 0.15) !important;
+  box-shadow: none !important;
 }
 
 .tactical-btn.active:hover {
   background: rgba(228, 142, 53, 0.15) !important;
   border-color: var(--cyan) !important;
-  box-shadow: 0 0 12px rgba(228, 142, 53, 0.25) !important;
+  box-shadow: none !important;
 }
 
 .tactical-btn:active {
@@ -1561,9 +1561,7 @@ body::before {
 
 .tactical-btn.active .tactical-led {
   background: var(--cyan) !important;
-  box-shadow: 
-    0 0 8px var(--cyan),
-    0 0 3px var(--cyan) !important;
+  box-shadow: none !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
 }
 

@@ -1211,8 +1211,8 @@ function playSynthSound(type) {
 
 // ── METRONOME LOGIC ──
 function toggleMetronome() {
-  const core = document.getElementById("reactorCore");
-  const wave = core ? core.querySelector(".reactor-pulse-wave") : null;
+  const core = document.getElementById("metronomeCore");
+  const wave = core ? core.querySelector(".metronome-pulse-wave") : null;
 
   if (metronomePlaying) {
     // Stop
@@ -1226,8 +1226,8 @@ function toggleMetronome() {
       metronomeStatusText.classList.remove("online");
     }
     if (core) {
-      core.classList.remove("active-core");
-      core.classList.remove("online-core");
+      core.classList.remove("active-metronome");
+      core.classList.remove("online-metronome");
     }
     if (wave) wave.classList.remove("pulse");
   } else {
@@ -1240,7 +1240,7 @@ function toggleMetronome() {
       metronomeStatusText.classList.add("online");
     }
     if (core) {
-      core.classList.add("online-core");
+      core.classList.add("online-metronome");
     }
     playMetronomeTick(); // Play immediately
     startMetronomeTimer();
@@ -1276,7 +1276,7 @@ function playMetronomeTick() {
 
     // Visual pulse beat indicator
     triggerMetronomePulse();
-    triggerReactorCorePulse();
+    triggerMetronomeCorePulse();
   } catch (e) {
     console.error("Metronome audio tick error:", e);
   }
@@ -1291,18 +1291,18 @@ function triggerMetronomePulse() {
   }
 }
 
-function triggerReactorCorePulse() {
-  const core = document.getElementById("reactorCore");
-  const wave = core ? core.querySelector(".reactor-pulse-wave") : null;
+function triggerMetronomeCorePulse() {
+  const core = document.getElementById("metronomeCore");
+  const wave = core ? core.querySelector(".metronome-pulse-wave") : null;
   if (core && wave) {
-    core.classList.remove("active-core");
+    core.classList.remove("active-metronome");
     wave.classList.remove("pulse");
     core.offsetHeight; // force reflow
-    core.classList.add("active-core");
+    core.classList.add("active-metronome");
     wave.classList.add("pulse");
     
     setTimeout(() => {
-      core.classList.remove("active-core");
+      core.classList.remove("active-metronome");
     }, 150);
   }
 }

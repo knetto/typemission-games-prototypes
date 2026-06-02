@@ -26,14 +26,14 @@
     <header class="game-header">
       <div class="game-branding">
         <div class="branding-text">
-          <span class="brand-system">SYSTEM: TYPE_TRAINER_V1.0</span>
-          <h1 class="brand-title">TYPEMISSION // ASSIGNMENT</h1>
+          <span class="brand-system">TYPEMISSION // TYPE TRAINING</span>
+          <h1 class="brand-title">TYPEMISSION // LOSSE LETTERS</h1>
         </div>
       </div>
 
       <!-- Center: LED Segmented Progress Deck -->
       <div class="progress-deck">
-        <span class="deck-title">DECRYPTION CALIBRATION</span>
+        <span class="deck-title">VOORTGANG LES</span>
         <div class="progress-bar-track">
           <!-- Grid-segmented glowing fill -->
           <div class="progress-bar-fill-segmented" id="progressBarFill" style="width: 0%;"></div>
@@ -66,8 +66,8 @@
             <div class="rivet bl"></div>
             <div class="rivet br"></div>
             <div class="wing-header">
-              <span class="wing-title">DIAGNOSTICS</span>
-              <span class="wing-status">SYS_LINK_OK</span>
+              <span class="wing-title">PRESTATIES</span>
+              <span class="wing-status">ACTIEF</span>
             </div>
             
             <div class="hud-stat-card time-card">
@@ -137,7 +137,7 @@
                   <circle cx="108" cy="83" r="3" />
                 </g>
               </svg>
-              <div class="hand-label">LEFT CALIBRATION</div>
+              <div class="hand-label">LINKERHAND</div>
             </div>
           </div>
 
@@ -148,8 +148,8 @@
             <div class="exercise-panel terminal-panel">
               <div class="terminal-header">
                 <div class="terminal-header-info">
-                  <span class="terminal-title">DECRYPTION CONSOLE</span>
-                  <span class="terminal-ping" id="terminalPing">SECURE LINK // 42ms</span>
+                  <span class="terminal-title">TYPE CONSOLE</span>
+                  <span class="terminal-ping" id="terminalPing">VERBINDING ACTIEF</span>
                 </div>
                 <div class="terminal-win-controls">
                   <span class="control-btn minimize">
@@ -205,7 +205,7 @@
             <div class="rivet bl"></div>
             <div class="rivet br"></div>
             <div class="wing-header">
-              <span class="wing-title">THREAT MONITOR</span>
+              <span class="wing-title">EVALUATIE</span>
               <span class="wing-status">ONLINE</span>
             </div>
             
@@ -276,7 +276,7 @@
                   <circle cx="108" cy="83" r="3" />
                 </g>
               </svg>
-              <div class="hand-label">RIGHT CALIBRATION</div>
+              <div class="hand-label">RECHTERHAND</div>
             </div>
           </div>
 
@@ -311,11 +311,11 @@
         </button>
       </div>
 
-      <!-- Command Center: Reactor Sync Deck -->
-      <div class="reactor-sync-deck">
-        <div class="reactor-core-wrapper">
-          <button class="reactor-ignite-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
-            <div class="reactor-core" id="reactorCore">
+      <!-- Command Center: Metronome Deck -->
+      <div class="metronome-deck">
+        <div class="metronome-wrapper">
+          <button class="metronome-btn" id="metronomeToggle" type="button" title="Metronoom starten/stoppen" aria-label="Metronoom starten/stoppen">
+            <div class="metronome-core" id="metronomeCore">
               <!-- Play Icon (shown when offline) -->
               <svg id="metronomePlayIcon" class="play-svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;">
                 <polygon points="5,3 19,12 5,21"></polygon>
@@ -325,12 +325,12 @@
                 <rect x="6" y="4" width="4" height="16"></rect>
                 <rect x="14" y="4" width="4" height="16"></rect>
               </svg>
-              <div class="reactor-pulse-wave"></div>
+              <div class="metronome-pulse-wave"></div>
             </div>
           </button>
-          <div class="reactor-meta">
-            <span class="reactor-label">METRONOOM (TYPETEMPO)</span>
-            <span class="reactor-status-text">STATUS: <span id="metronomeStatusText">OFFLINE</span></span>
+          <div class="metronome-meta">
+            <span class="metronome-label">METRONOOM (TYPETEMPO)</span>
+            <span class="metronome-status-text">STATUS: <span id="metronomeStatusText">OFFLINE</span></span>
           </div>
         </div>
         
@@ -357,7 +357,7 @@
       <div class="result-container">
 
         <header class="result-header">
-          <p class="result-eyebrow">TYPECURSUS EVALUATIE // SYSTEM REPORT</p>
+          <p class="result-eyebrow">TYPECURSUS EVALUATIE // RESULTAAT</p>
           <h2 id="resultTitle">OEFENING VOLTOOID!</h2>
           <div class="result-rank-bar">
             <span>EVALUATIE RANG:</span>
@@ -412,7 +412,7 @@
 
           <!-- Card 5: Lesson Status -->
           <div class="dashboard-card">
-            <span class="card-title">LESSON STATUS</span>
+            <span class="card-title">STATUS OEFENING</span>
             <div class="card-value-container" id="missionStatusContainer">
               <span class="status-success-badge" id="missionBadge">GESLAAGD</span>
             </div>
