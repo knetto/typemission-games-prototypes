@@ -1302,9 +1302,6 @@ function playMetronomeTick() {
   // Visual pulse beat indicator
   triggerMetronomePulse();
   triggerMetronomeCorePulse();
-  
-  // Pulse the rhythm wave in sync with the beat
-  triggerVisualizerPulse(false);
 
   if (!soundEnabled) return;
   try {
@@ -1486,6 +1483,7 @@ function initDottedWaveBackground() {
 // ── RHYTHM WAVE VISUALIZER ANIMATION ──
 function animateRhythmWave() {
   const pathEl = document.getElementById("rhythmWavePath");
+  const guidePathEl = document.getElementById("rhythmWaveGuidePath");
   if (!pathEl) {
     requestAnimationFrame(animateRhythmWave);
     return;
@@ -1497,13 +1495,37 @@ function animateRhythmWave() {
   wavePhase += 0.08 * speedFactor;
   
   // Decay amplitude and frequency back to baseline
-  waveAmplitude += (targetAmplitude - waveAmplitude) * 0.1;
-  waveFrequency += (targetFrequency - waveFrequency) * 0.1;
+  waveAmplitude += (targetAmplitude - waveAmplitude) * 0.15;
+  waveFrequency += (targetFrequency - waveFrequency) * 0.15;
   
-  targetAmplitude += (10 - targetAmplitude) * 0.05;
-  targetFrequency += (0.05 - targetFrequency) * 0.05;
+  targetAmplitude += (2 - targetAmplitude) * 0.08;
+  targetFrequency += (0.05 - targetFrequency) * 0.08;
   
-  // Draw wave inside a 200x100 viewBox centered vertically at 50
+  // Render guide wave if metronome is active
+  if (metronomePlaying && lastTickTime > 0) {
+    if (guidePathEl) guidePathEl.style.display = "block";
+    
+    // Calculate progress through current beat
+    const timeSinceTick = Date.now() - lastTickTime;
+    const intervalMs = (60 / bpm) * 1000;
+    const beatProgress = Math.min(1, timeSinceTick / intervalMs);
+    
+    // Metronome beat pulse decay: peaks on tick and decays back to base (baseline of 2)
+    const guideAmp = 2 + 26 * Math.pow(Math.E, -5 * beatProgress);
+    
+    let guideD = "M 0 50";
+    for (let x = 5; x <= 200; x += 5) {
+      const env = Math.pow(Math.sin((x / 200) * Math.PI), 0.15);
+      // Synchronize phase of the guide wave with the metronome timing
+      const y = 50 + Math.sin(x * 0.09 + (beatProgress * Math.PI * 2)) * guideAmp * env;
+      guideD += ` L ${x} ${y}`;
+    }
+    if (guidePathEl) guidePathEl.setAttribute("d", guideD);
+  } else {
+    if (guidePathEl) guidePathEl.style.display = "none";
+  }
+
+  // Draw user wave inside a 200x100 viewBox centered vertically at 50
   let pathD = "M 0 50";
   for (let x = 5; x <= 200; x += 5) {
     const env = Math.pow(Math.sin((x / 200) * Math.PI), 0.15);

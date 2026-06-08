@@ -955,6 +955,15 @@ body::before {
   overflow: visible;
 }
 
+.rhythm-wave-guide-path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
 .rhythm-wave-path {
   fill: none;
   stroke: var(--cyan);
