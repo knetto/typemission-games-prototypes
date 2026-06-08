@@ -246,6 +246,13 @@ let bpm = 40;
 let metronomeInterval = null;
 let lastTickTime = 0;
 
+// Rhythm visualizer wave animation state
+let wavePhase = 0;
+let waveAmplitude = 10;
+let targetAmplitude = 10;
+let waveFrequency = 0.05;
+let targetFrequency = 0.05;
+
 // Audio context
 let audioCtx = null;
 let soundEnabled = true;
@@ -401,6 +408,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Start subtle dotted wave background animation
   initDottedWaveBackground();
+
+  // Start the rhythm visualizer wave loop
+  animateRhythmWave();
 });
 
 // ── KEYBOARD FINGER MAPPING HELPERS ──
@@ -435,7 +445,6 @@ function getFingerClass(char) {
   }
   return "";
 }
-
 function getActiveLessonFingers() {
   const lesson = LESSONS[currentLessonIndex];
   const allText = lesson.lines.join("");
@@ -658,11 +667,26 @@ function highlightTargetFinger() {
     f.classList.remove("active-finger");
   });
 
-  if (testFinished) return;
+  const reticleCharEl = document.getElementById("reticleChar");
+
+  if (testFinished) {
+    if (reticleCharEl) reticleCharEl.textContent = "-";
+    return;
+  }
+  
   const targetChar = currentTextLine[cursorIndex];
-  if (!targetChar) return;
+  if (!targetChar) {
+    if (reticleCharEl) reticleCharEl.textContent = "-";
+    return;
+  }
+
+  // Update target scanner text values
+  if (reticleCharEl) {
+    reticleCharEl.textContent = targetChar === " " ? "␣" : (targetChar === "\n" ? "↵" : targetChar.toUpperCase());
+  }
 
   const fingerClass = getFingerClass(targetChar);
+
   if (!fingerClass) return;
 
   if (fingerClass === "finger-t") {
@@ -835,6 +859,21 @@ function registerCharSuccess() {
   if (currentStreak > maxStreak) maxStreak = currentStreak;
 
   playSynthSound("click");
+  
+  // Calculate if the typing timing is in sync with the metronome beat
+  let isOffBeat = false;
+  if (metronomePlaying && lastTickTime > 0) {
+    const timeSinceTick = Date.now() - lastTickTime;
+    const intervalMs = (60 / bpm) * 1000;
+    const timeUntilNextTick = intervalMs - timeSinceTick;
+    const deviation = Math.min(timeSinceTick, timeUntilNextTick);
+    // 160ms window around the beat (80ms before and 80ms after)
+    if (deviation > 80) {
+      isOffBeat = true;
+    }
+  }
+  triggerVisualizerPulse(false, isOffBeat);
+  
   updateLiveHUD();
 
   if (cursorIndex >= currentTextLine.length) {
@@ -865,8 +904,10 @@ function registerCharFail() {
   mistakesPerKey[k] = (mistakesPerKey[k] || 0) + 1;
   
   playSynthSound("error");
+  triggerVisualizerPulse(true);
   updateLiveHUD();
   renderPrompt();
+  highlightTargetFinger();
 
   // Glitch shake feedback on error
   const panel = document.querySelector(".exercise-panel");
@@ -948,6 +989,7 @@ function finishLesson() {
   testFinished = true;
   running = false;
   clearInterval(timerInterval);
+  highlightTargetFinger();
 
   // Stop metronome
   if (metronomePlaying) {
@@ -1255,6 +1297,15 @@ function startMetronomeTimer() {
 }
 
 function playMetronomeTick() {
+  lastTickTime = Date.now();
+
+  // Visual pulse beat indicator
+  triggerMetronomePulse();
+  triggerMetronomeCorePulse();
+  
+  // Pulse the rhythm wave in sync with the beat
+  triggerVisualizerPulse(false);
+
   if (!soundEnabled) return;
   try {
     const ctx = getAudioContext();
@@ -1273,10 +1324,6 @@ function playMetronomeTick() {
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
     osc.start(now);
     osc.stop(now + 0.03);
-
-    // Visual pulse beat indicator
-    triggerMetronomePulse();
-    triggerMetronomeCorePulse();
   } catch (e) {
     console.error("Metronome audio tick error:", e);
   }
@@ -1352,7 +1399,7 @@ function initDottedWaveBackground() {
   window.addEventListener("touchend", () => { mouse.active = false; });
 
   function draw() {
-    ctx.fillStyle = "#050206";
+    ctx.fillStyle = "#070707";
     ctx.fillRect(0, 0, width, height);
     time += 0.02;
 
@@ -1435,3 +1482,76 @@ function initDottedWaveBackground() {
     rows = Math.floor(height / dotSpacing) + 1;
   });
 }
+
+// ── RHYTHM WAVE VISUALIZER ANIMATION ──
+function animateRhythmWave() {
+  const pathEl = document.getElementById("rhythmWavePath");
+  if (!pathEl) {
+    requestAnimationFrame(animateRhythmWave);
+    return;
+  }
+  
+  // Wave speed scales slightly with typing speed (live CPM)
+  const currentCpm = parseInt(liveCpmEl.textContent) || 0;
+  const speedFactor = 1 + (currentCpm / 200); // speed up if typing faster!
+  wavePhase += 0.08 * speedFactor;
+  
+  // Decay amplitude and frequency back to baseline
+  waveAmplitude += (targetAmplitude - waveAmplitude) * 0.1;
+  waveFrequency += (targetFrequency - waveFrequency) * 0.1;
+  
+  targetAmplitude += (10 - targetAmplitude) * 0.05;
+  targetFrequency += (0.05 - targetFrequency) * 0.05;
+  
+  // Draw wave inside a 200x100 viewBox centered vertically at 50
+  let pathD = "M 0 50";
+  for (let x = 5; x <= 200; x += 5) {
+    const env = Math.pow(Math.sin((x / 200) * Math.PI), 0.15);
+    const y = 50 + Math.sin(x * waveFrequency + wavePhase) * waveAmplitude * env;
+    pathD += ` L ${x} ${y}`;
+  }
+  pathEl.setAttribute("d", pathD);
+  
+  requestAnimationFrame(animateRhythmWave);
+}
+
+function triggerVisualizerPulse(isError = false, isOffBeat = false) {
+  if (isError) {
+    targetAmplitude = 45;
+    targetFrequency = 0.18;
+    const pathEl = document.getElementById("rhythmWavePath");
+    if (pathEl) {
+      pathEl.classList.add("error-pulse");
+      setTimeout(() => pathEl.classList.remove("error-pulse"), 200);
+    }
+    const statusEl = document.getElementById("rhythmStatusLabel");
+    if (statusEl) {
+      statusEl.textContent = "FOUT GEDETECTEERD";
+      statusEl.style.color = "var(--red)";
+      setTimeout(() => {
+        statusEl.textContent = "VERBINDING ACTIEF";
+        statusEl.style.color = "";
+      }, 1000);
+    }
+  } else if (isOffBeat) {
+    // Off-beat typing creates a slightly faster, lower amplitude visual glitch
+    targetAmplitude = 22;
+    targetFrequency = 0.14;
+    const statusEl = document.getElementById("rhythmStatusLabel");
+    if (statusEl) {
+      statusEl.textContent = "RITME AFWIJKING";
+      statusEl.style.color = "var(--orange)";
+      setTimeout(() => {
+        if (statusEl.textContent === "RITME AFWIJKING") {
+          statusEl.textContent = "VERBINDING ACTIEF";
+          statusEl.style.color = "";
+        }
+      }, 800);
+    }
+  } else {
+    // Perfect sync or metronome tick
+    targetAmplitude = 28;
+    targetFrequency = 0.09;
+  }
+}
+

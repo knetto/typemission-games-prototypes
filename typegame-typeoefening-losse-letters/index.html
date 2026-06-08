@@ -70,14 +70,25 @@
               <span class="wing-status">ACTIEF</span>
             </div>
             
-            <div class="hud-stat-card time-card">
-              <span class="hud-stat-label">TIJD</span>
-              <span class="tel-value" id="timer">0.0s</span>
+            <div class="hud-stats-row">
+              <div class="hud-stat-card time-card">
+                <span class="hud-stat-label">TIJD</span>
+                <span class="tel-value" id="timer">0.0s</span>
+              </div>
+
+              <div class="hud-stat-card speed-card">
+                <span class="hud-stat-label">CPM</span>
+                <span class="tel-value"><span id="liveCpm">0</span> CPM</span>
+              </div>
             </div>
 
-            <div class="hud-stat-card speed-card">
-              <span class="hud-stat-label">CPM</span>
-              <span class="tel-value"><span id="liveCpm">0</span> CPM</span>
+            <!-- Rhythm Visualizer Card -->
+            <div class="hud-stat-card rhythm-visualizer-card">
+              <span class="hud-stat-label">RITME ANALYZER</span>
+              <svg class="rhythm-wave-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path class="rhythm-wave-path" id="rhythmWavePath" d="M 0 50 Q 25 50, 50 50 T 100 50 T 150 50 T 200 50" />
+              </svg>
+              <div class="rhythm-status-label" id="rhythmStatusLabel">VERBINDING ACTIEF</div>
             </div>
 
             <!-- Left Biometric Hand -->
@@ -209,14 +220,26 @@
               <span class="wing-status">ONLINE</span>
             </div>
             
-            <div class="hud-stat-card accuracy-card">
-              <span class="hud-stat-label">PRECISIE</span>
-              <span class="tel-value" id="accuracy">100%</span>
+            <div class="hud-stats-row">
+              <div class="hud-stat-card accuracy-card">
+                <span class="hud-stat-label">PRECISIE</span>
+                <span class="tel-value" id="accuracy">100%</span>
+              </div>
+
+              <div class="hud-stat-card error-card">
+                <span class="hud-stat-label">FOUTEN</span>
+                <span class="tel-value" id="mistakeCount">0</span>
+              </div>
             </div>
 
-            <div class="hud-stat-card error-card">
-              <span class="hud-stat-label">FOUTEN</span>
-              <span class="tel-value" id="mistakeCount">0</span>
+            <!-- Target Scanner Card -->
+            <div class="hud-stat-card target-scanner-card">
+              <span class="hud-stat-label">DOEL SCANNER</span>
+              <div class="scanner-deck">
+                <div class="reticle-circle"></div>
+                <div class="reticle-ring-outer"></div>
+                <div class="reticle-char" id="reticleChar">-</div>
+              </div>
             </div>
 
             <!-- Right Biometric Hand -->
