@@ -235,14 +235,14 @@ body::before {
   flex-direction: column;
   justify-content: flex-start;
   gap: clamp(8px, 1.2vh, 14px);
-  background: rgba(22, 22, 22, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 2px solid var(--purple-soft);
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.6) 0%, rgba(10, 10, 10, 0.45) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
   padding: clamp(20px, 2.8vh, 24px) 16px clamp(10px, 1.5vh, 16px) 16px;
   position: relative;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   height: 100%;
 }
 
@@ -255,8 +255,8 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--purple-soft);
-  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 5px;
   margin-bottom: 2px;
 }
 
@@ -284,17 +284,20 @@ body::before {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  background: rgba(14, 14, 14, 0.6);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 6px;
   padding: clamp(10px, 1.8vh, 15px) 12px;
   text-align: center;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .hud-stat-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.02);
 }
 
 .hud-stat-label {
@@ -448,10 +451,13 @@ body::before {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.25) 100%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.007) 0px, rgba(255, 255, 255, 0.007) 1px, transparent 1px, transparent 3px);
+    /* Curved glass diagonal reflection */
+    linear-gradient(115deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 20%, transparent 20.1%, transparent 100%),
+    /* CRT vignette */
+    radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.35) 100%);
   pointer-events: none;
-  z-index: 3;
+  z-index: 8;
+  opacity: 0.9;
 }
 
 
@@ -596,18 +602,24 @@ body::before {
 }
 
 .char.current {
-  color: #ffffff !important;
-  border-bottom-color: var(--cyan);
-  text-shadow: 0 0 3px var(--cyan-glow);
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-radius: 2px;
+  color: #000000 !important;
+  background: var(--cyan) !important;
+  text-shadow: none !important;
+  border-radius: 1px;
   position: relative;
-  animation: cursorBlink 0.8s infinite steps(2, start);
+  box-shadow: 0 0 8px var(--cyan-glow);
+  animation: cursorBlockBlink 0.8s infinite steps(2, start);
 }
 
-@keyframes cursorBlink {
-  0%, 100% { border-bottom-color: var(--cyan); }
-  50% { border-bottom-color: transparent; }
+@keyframes cursorBlockBlink {
+  0%, 100% {
+    background: var(--cyan) !important;
+    color: #000000 !important;
+  }
+  50% {
+    background: transparent !important;
+    color: #ffffff !important;
+  }
 }
 
 .enter-symbol {
@@ -628,29 +640,41 @@ body::before {
   opacity: 0.8;
 }
 
-/* Central metronome controls (Simplified flat layout) */
+/* Central metronome controls (Unified hardware console deck) */
 .metronome-deck {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 8px;
-  padding: 8px 16px;
+  background: linear-gradient(180deg, #101012 0%, #0a0a0c 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 6px 14px;
   box-shadow: 
-    inset 0 1.5px 3px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.05);
-  flex: 0 1 420px; /* Slightly wider for optimal layout */
-  gap: 16px;
+    inset 0 2px 4px rgba(0, 0, 0, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.03);
+  flex: 0 1 430px;
+  gap: 12px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metronome-deck::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
 }
 
 .metronome-deck:hover {
-  border-color: rgba(228, 142, 53, 0.15);
+  border-color: rgba(228, 142, 53, 0.25);
   box-shadow: 
-    0 0 12px rgba(228, 142, 53, 0.03),
-    inset 0 1.5px 3px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.05);
+    0 0 12px rgba(228, 142, 53, 0.05),
+    inset 0 2px 4px rgba(0, 0, 0, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .metronome-wrapper {
@@ -688,8 +712,9 @@ body::before {
   align-items: center;
   justify-content: center;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   color: var(--muted);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .metronome-core:hover {
@@ -702,16 +727,16 @@ body::before {
 .metronome-core.online-metronome {
   border-color: var(--green);
   color: var(--green);
-  box-shadow: 0 0 12px var(--green-glow);
+  box-shadow: 0 0 12px var(--green-glow), inset 0 1px 2px rgba(0, 0, 0, 0.4);
   background: rgba(154, 215, 68, 0.05);
 }
 
 .metronome-core.active-metronome {
   border-color: var(--cyan) !important;
   color: var(--cyan) !important;
-  box-shadow: 0 0 15px var(--cyan-glow) !important;
+  box-shadow: 0 0 15px var(--cyan-glow), inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
   background: rgba(228, 142, 53, 0.2) !important;
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .metronome-core svg {
@@ -737,17 +762,17 @@ body::before {
 
 .metronome-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 900;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   color: var(--cyan);
-  text-shadow: 0 0 6px var(--cyan-glow);
-  white-space: nowrap; /* Keep metronome and typetempo side-by-side */
+  text-shadow: 0 0 5px var(--cyan-glow);
+  white-space: nowrap;
 }
 
 .metronome-status-text {
   font-family: "Roboto Mono", monospace;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: var(--muted);
   text-transform: uppercase;
 }
@@ -771,58 +796,67 @@ body::before {
 .bpm-control-console {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 6px;
-  padding: 2px 4px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-  gap: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 1px;
+  gap: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .bpm-console-btn {
-  background: rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, #1c1c1f 0%, #141416 100%);
   border: 1px solid rgba(255, 255, 255, 0.05);
   color: var(--cyan);
   font-family: "Orbitron", sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   outline: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 4px;
+  transition: all 0.15s ease;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .bpm-console-btn:hover {
   background: var(--cyan);
-  color: #000;
-  box-shadow: 0 0 10px var(--cyan-glow);
+  color: #000000;
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan-glow);
 }
 
 .bpm-console-btn:active {
-  transform: scale(0.85);
+  transform: translateY(0.5px);
+  background: var(--orange-soft);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .bpm-console-readout {
   font-family: "Orbitron", sans-serif;
-  font-size: 1.1rem;
-  color: var(--text);
-  min-width: 68px;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  min-width: 76px;
+  height: 28px;
   text-align: center;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
+  background: rgba(228, 142, 53, 0.03);
+  border-left: 1px solid rgba(255, 255, 255, 0.03);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  padding: 0 6px;
 }
 
 .bpm-console-readout strong {
   color: var(--cyan);
   text-shadow: 0 0 8px var(--cyan-glow);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 900;
 }
 
@@ -1082,8 +1116,16 @@ body::before {
   height: 90%;
   max-height: clamp(190px, 31vh, 260px);
   pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.1));
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.05));
   overflow: visible; /* Prevent glow from being cut off */
+  opacity: 0.8;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.hand-container:has(.active-finger) .hand-wireframe,
+.hand-container:has(.pressed-finger) .hand-wireframe {
+  opacity: 0.85;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.25));
 }
 
 .hand-label {
@@ -1153,9 +1195,15 @@ body::before {
 }
 
 .hand-finger circle {
-  fill: #4f5259;
+  fill: #222225;
   stroke: inherit;
   stroke-width: inherit;
+  transition: fill 0.2s ease;
+}
+
+.hand-finger.active-finger circle,
+.hand-finger.pressed-finger circle {
+  fill: #ffffff;
 }
 
 /* Satisfaction Keypress Finger Animation - Base styling */
@@ -1326,27 +1374,29 @@ body::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(14, 14, 14, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
   color: var(--text-dark);
   font-family: "Roboto", sans-serif;
   font-weight: 700; /* Bold characters */
   font-size: clamp(1.0rem, 2.0vh, 1.30rem);
   user-select: none;
-  /* 3D Keycap elevation and shadow bevel */
-  transform: translateY(-3px) translateZ(0);
+  /* Thin Glass Cap - flat-ish modern layout */
+  transform: translateY(0px) translateZ(0);
   transform-style: preserve-3d;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.6);
-  /* Smooth elastic return on release */
-  transition: transform 0.14s cubic-bezier(0.25, 1.15, 0.5, 1.15),
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  /* Smooth elastic transitions */
+  transition: transform 0.1s ease,
               background-color 0.14s ease,
               border-color 0.14s ease,
-              box-shadow 0.14s ease;
+              box-shadow 0.14s ease,
+              color 0.14s ease;
   position: relative;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .key span {
@@ -1386,11 +1436,10 @@ body::before {
 .key[data-key="escape"],
 .key[data-key="²"],
 .key[data-key="`"] {
-  background: rgba(14, 14, 14, 0.4) !important;
-  border-color: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.01) !important;
+  border-color: rgba(255, 255, 255, 0.03) !important;
   box-shadow: none !important;
   opacity: 1 !important;
-  /* Ensure modifier keys are not dimmed */
 }
 
 /* Show labels on modifier keys in small uppercase */
@@ -1399,7 +1448,7 @@ body::before {
 .key.key-wide-3 .key-code,
 .key.key-wide-4 .key-code,
 .key[data-key="escape"] .key-code {
-  opacity: 0.55 !important;
+  opacity: 0.45 !important;
   font-size: 0.7rem !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1420,7 +1469,7 @@ body::before {
 /* Glowing Target key */
 .key.active-target {
   border-color: var(--finger-color, var(--cyan)) !important;
-  background: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
   color: var(--finger-color, var(--cyan)) !important;
   font-weight: 700;
   animation: keyTargetPulse 1.2s infinite alternate ease-in-out;
@@ -1430,38 +1479,37 @@ body::before {
 @keyframes keyTargetPulse {
   0% {
     box-shadow:
-      0 3px 0 rgba(0, 0, 0, 0.85),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15),
-      0 4px 10px rgba(0, 0, 0, 0.6),
-      0 0 6px var(--finger-color, var(--cyan)) !important;
+      0 1.5px 0 rgba(0, 0, 0, 0.85),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 3px 8px rgba(0, 0, 0, 0.5),
+      0 0 6px var(--finger-color-glow, var(--cyan-glow)) !important;
   }
 
   100% {
     box-shadow:
-      0 3px 0 rgba(0, 0, 0, 0.85),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-      0 4px 10px rgba(0, 0, 0, 0.6),
-      0 0 18px var(--finger-color, var(--cyan)) !important;
+      0 1.5px 0 rgba(0, 0, 0, 0.85),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      0 3px 8px rgba(0, 0, 0, 0.5),
+      0 0 18px var(--finger-color-glow, var(--cyan-glow)) !important;
   }
 }
 
 /* Hand highlight styles for touch typists */
 .key.left-home,
 .key.right-home {
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .key.pressed {
-  /* Sinks into the 3D perspective plane */
-  transform: translateY(0px) translateZ(-4px) !important;
-  background: var(--purple-soft) !important;
+  /* Sinks slightly on keypress */
+  transform: translateY(1.2px) translateZ(0) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
   color: #ffffff !important;
   border-color: var(--finger-color, var(--cyan)) !important;
   box-shadow: 
-    0 0.5px 0 rgba(0, 0, 0, 0.9),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 1px 3px rgba(0, 0, 0, 0.8),
-    0 0 12px var(--finger-color, var(--cyan)) !important;
+    0 0px 1px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.01),
+    0 0 12px var(--finger-color-glow, var(--cyan-glow)) !important;
   /* Instant mechanical strike transition */
   transition: transform 0.04s cubic-bezier(0.1, 0.9, 0.2, 1),
               background-color 0.04s ease,
@@ -1475,128 +1523,124 @@ body::before {
   pointer-events: none;
 }
 
-/* Finger colors for touch typing key mapping (vibrant cyber colors matching the example screenshot) */
+/* Finger colors for touch typing key mapping - Glassmorphic outlines */
 .key.finger-lp,
 .key.finger-rp {
   --finger-color: #d4a33b;
-  background: rgba(212, 163, 59, 0.18) !important;
-  /* Dark Gold/Brown */
-  border-color: rgba(212, 163, 59, 0.55) !important;
-  color: #d4a33b !important;
+  --finger-color-glow: rgba(212, 163, 59, 0.3);
+  background: rgba(212, 163, 59, 0.02) !important;
+  border-color: rgba(212, 163, 59, 0.15) !important;
+  color: rgba(212, 163, 59, 0.5) !important;
 }
 
 .key.finger-lp:not(.dimmed),
 .key.finger-rp:not(.dimmed) {
-  background: rgba(212, 163, 59, 0.28) !important;
-  border-color: #d4a33b !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(212, 163, 59, 0.5) !important;
+  color: #d4a33b !important;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(212, 163, 59, 0.5) !important;
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 4px var(--finger-color-glow) !important;
 }
 
 .key.finger-lr,
 .key.finger-rr {
   --finger-color: #48b861;
-  background: rgba(72, 184, 97, 0.18) !important;
-  /* Dark Green */
-  border-color: rgba(72, 184, 97, 0.55) !important;
-  color: #48b861 !important;
+  --finger-color-glow: rgba(72, 184, 97, 0.3);
+  background: rgba(72, 184, 97, 0.02) !important;
+  border-color: rgba(72, 184, 97, 0.15) !important;
+  color: rgba(72, 184, 97, 0.5) !important;
 }
 
 .key.finger-lr:not(.dimmed),
 .key.finger-rr:not(.dimmed) {
-  background: rgba(72, 184, 97, 0.28) !important;
-  border-color: #48b861 !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(72, 184, 97, 0.5) !important;
+  color: #48b861 !important;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(72, 184, 97, 0.5) !important;
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 4px var(--finger-color-glow) !important;
 }
 
 .key.finger-lm,
 .key.finger-rm {
   --finger-color: #e86b6b;
-  background: rgba(232, 107, 107, 0.18) !important;
-  /* Red/Brown */
-  border-color: rgba(232, 107, 107, 0.55) !important;
-  color: #e86b6b !important;
+  --finger-color-glow: rgba(232, 107, 107, 0.3);
+  background: rgba(232, 107, 107, 0.02) !important;
+  border-color: rgba(232, 107, 107, 0.15) !important;
+  color: rgba(232, 107, 107, 0.5) !important;
 }
 
 .key.finger-lm:not(.dimmed),
 .key.finger-rm:not(.dimmed) {
-  background: rgba(232, 107, 107, 0.28) !important;
-  border-color: #e86b6b !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(232, 107, 107, 0.5) !important;
+  color: #e86b6b !important;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(232, 107, 107, 0.5) !important;
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 4px var(--finger-color-glow) !important;
 }
 
 .key.finger-li {
   --finger-color: #2ebbb0;
-  background: rgba(46, 187, 176, 0.18) !important;
-  /* Left Index: Teal/Cyan */
-  border-color: rgba(46, 187, 176, 0.55) !important;
-  color: #2ebbb0 !important;
+  --finger-color-glow: rgba(46, 187, 176, 0.3);
+  background: rgba(46, 187, 176, 0.02) !important;
+  border-color: rgba(46, 187, 176, 0.15) !important;
+  color: rgba(46, 187, 176, 0.5) !important;
 }
 
 .key.finger-li:not(.dimmed) {
-  background: rgba(46, 187, 176, 0.28) !important;
-  border-color: #2ebbb0 !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(46, 187, 176, 0.5) !important;
+  color: #2ebbb0 !important;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(46, 187, 176, 0.5) !important;
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 4px var(--finger-color-glow) !important;
 }
 
 .key.finger-ri {
   --finger-color: #4d82eb;
-  background: rgba(77, 130, 235, 0.18) !important;
-  /* Right Index: Blue */
-  border-color: rgba(77, 130, 235, 0.55) !important;
-  color: #4d82eb !important;
+  --finger-color-glow: rgba(77, 130, 235, 0.3);
+  background: rgba(77, 130, 235, 0.02) !important;
+  border-color: rgba(77, 130, 235, 0.15) !important;
+  color: rgba(77, 130, 235, 0.5) !important;
 }
 
 .key.finger-ri:not(.dimmed) {
-  background: rgba(77, 130, 235, 0.28) !important;
-  border-color: #4d82eb !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(77, 130, 235, 0.5) !important;
+  color: #4d82eb !important;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(77, 130, 235, 0.5) !important;
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 4px var(--finger-color-glow) !important;
 }
 
 .key.finger-t {
   --finger-color: #b55feb;
-  background: rgba(181, 95, 235, 0.18) !important;
-  /* Thumbs: Purple */
-  border-color: rgba(181, 95, 235, 0.55) !important;
-  color: #b55feb !important;
-  box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 4px 10px rgba(0, 0, 0, 0.6) !important;
+  --finger-color-glow: rgba(181, 95, 235, 0.3);
+  background: rgba(181, 95, 235, 0.02) !important;
+  border-color: rgba(181, 95, 235, 0.15) !important;
+  color: rgba(181, 95, 235, 0.5) !important;
 }
 
 .key.finger-t:not(.dimmed) {
-  background: rgba(181, 95, 235, 0.28) !important;
-  border-color: #b55feb !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(181, 95, 235, 0.5) !important;
+  color: #b55feb !important;
   box-shadow:
-    0 3px 0 rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 10px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(181, 95, 235, 0.5) !important;
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 4px var(--finger-color-glow) !important;
 }
 
 /* Dimmed keys (not in the current lesson - faded but keeps finger color) */
 .key.dimmed {
-  opacity: 0.22 !important;
+  opacity: 0.16 !important;
   box-shadow: none !important;
 }
 
