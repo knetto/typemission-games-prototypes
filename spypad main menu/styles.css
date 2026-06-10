@@ -9,7 +9,7 @@
   --font-mono: 'Roboto Mono', monospace;
 
   /* Theme color palettes (Standard Cyberpunk/Spy Colors) */
-  --bg-deep: #050207;
+  --bg-deep: #080808;
   --bg-cyber: rgba(10, 22, 28, 0.82);
   --glass-border: rgba(0, 240, 255, 0.2);
   --glass-glow: rgba(0, 240, 255, 0.25);
@@ -49,6 +49,30 @@
   /* Grid Layout variables */
   --gamepad-width: 1200px;
   --gamepad-height: 620px;
+
+  /* Button Panel Bezel values */
+  --btn-panel-bg: rgba(0, 0, 0, 0.12);
+  --btn-panel-border: 1.5px solid var(--grip-border);
+  --btn-panel-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(255, 255, 255, 0.7);
+
+  /* Oval buttons custom theme values */
+  --btn-face-bg: linear-gradient(180deg, #ff9b53 0%, #ff7f2a 100%);
+  --btn-face-border: 1.5px solid #d15d0d;
+  --btn-face-shadow: 0 3px 0 #b34a06, 0 4px 6px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+
+  /* Trigger button color */
+  --trigger-color: var(--orange-accent);
+  --trigger-color-start: #ff9b53;
+  --trigger-color-end: #ff7f2a;
+
+  /* Joystick Cap dome styling */
+  --joy-cap-bg: radial-gradient(circle at 35% 35%, #ff9e5e 0%, #ff7f2a 65%, #c65c0c 100%);
+  --joy-cap-border: 2px solid rgba(0, 0, 0, 0.35);
+
+  /* Joystick Well styling */
+  --joy-well-bezel: var(--grip-border);
+  --joy-well-bg: #191b1f;
+  --joy-well-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.95), inset 0 -2px 4px rgba(255, 255, 255, 0.08), 0 1px 2px rgba(255, 255, 255, 0.15);
 }
 
 /* ── RESET & BODY ── */
@@ -85,7 +109,7 @@ body {
 .vignette-overlay {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(5, 2, 7, 0.9) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(30, 30, 30, 0.04) 0%, rgba(8, 8, 8, 0.9) 100%);
   z-index: -2;
   pointer-events: none;
 }
@@ -94,7 +118,7 @@ body {
 .audio-auth-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(5, 2, 7, 0.95);
+  background: rgba(8, 8, 8, 0.95);
   z-index: 9999;
   display: flex;
   justify-content: center;
@@ -199,194 +223,296 @@ body {
 /* 1. Classic Light Theme */
 .gamepad-body.theme-light {
   --case-accent: var(--orange-accent);
-  --grip-border: #a9a496;
+  --grip-border: #b1b8c2;
+  --screen-border: #111317;
+
+  /* Buttons Panel Recess values */
+  --btn-panel-bg: #ceced0;
+  --btn-panel-border: 1px solid #b2b2b8;
+  --btn-panel-shadow: inset 2px 2px 5px rgba(0,0,0,0.22), inset -1px -1px 2px rgba(255,255,255,0.7), 0 1px 1px rgba(255,255,255,0.5);
+
+  /* Oval buttons custom theme values */
+  --btn-face-bg: linear-gradient(to bottom, #ff9b53 0%, #ff7214 100%);
+  --btn-face-border: 1px solid #d15100;
+  --btn-face-shadow: 0 3px 5px rgba(0, 0, 0, 0.3), inset 0 1.5px 2px rgba(255, 255, 255, 0.4), inset 0 -1.5px 2px rgba(0,0,0,0.15);
+
+  /* Trigger button color */
+  --trigger-color: #ff6a00;
+  --trigger-color-start: #ffa366;
+  --trigger-color-end: #ff6a00;
+
+  /* Joystick Cap dome styling */
+  --joy-cap-bg: radial-gradient(circle at 35% 35%, #ffa366 0%, #ff771c 60%, #b84f00 100%);
+  --joy-cap-border: 1px solid rgba(0,0,0,0.2);
+
+  /* Joystick Well styling */
+  --joy-well-bezel: #ffffff #dbdbd6 #b8b8b3 #e8e8e3;
+  --joy-well-bg: #14161a;
+  --joy-well-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.85), 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .gamepad-body.theme-light .controller-grip {
-  background: linear-gradient(180deg, #f5f2eb 0%, #ddd8cb 100%);
-  border: 3px solid #a9a496;
-  box-shadow:
-    0 15px 35px rgba(0, 0, 0, 0.5),
-    inset 0 3px 6px rgba(255, 255, 255, 0.85),
-    inset 0 -6px 12px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(180deg, #eaeaea 0%, #dbdbd6 100%);
+  border: 1px solid #c8c8c2;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.9),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.1);
 }
 .gamepad-body.theme-light .grip-left { border-right: none; }
 .gamepad-body.theme-light .grip-right { border-left: none; }
 .gamepad-body.theme-light .spypad-screen-container {
-  border: 3.5px solid #9ca3af;
+  border: 3.5px solid var(--screen-border);
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.4),
     inset 0 0 30px rgba(0, 240, 255, 0.15);
-}
-.gamepad-body.theme-light .grip-accent-top {
-  background: var(--orange-accent);
-  box-shadow: 0 0 8px var(--orange-accent-glow);
 }
 
 /* 2. Stealth Black Theme */
 .gamepad-body.theme-dark {
   --case-accent: var(--neon-cyan);
   --grip-border: #3c4046;
+  --screen-border: #0a0c10;
+
+  /* Buttons Panel Recess values */
+  --btn-panel-bg: #141518;
+  --btn-panel-border: 1px solid #282a30;
+  --btn-panel-shadow: inset 2px 2px 5px rgba(0,0,0,0.65), inset -1px -1px 2px rgba(255,255,255,0.05);
+
+  /* Oval buttons custom theme values */
+  --btn-face-bg: linear-gradient(to bottom, #00f0ff 0%, #0090ff 100%);
+  --btn-face-border: 1px solid #0077d1;
+  --btn-face-shadow: 0 3px 5px rgba(0,0,0,0.45), inset 0 1.5px 2px rgba(255,255,255,0.4), inset 0 -1.5px 2px rgba(0,0,0,0.2);
+
+  /* Trigger button color */
+  --trigger-color: #0090ff;
+  --trigger-color-start: #00f0ff;
+  --trigger-color-end: #0090ff;
+
+  /* Joystick Cap dome styling */
+  --joy-cap-bg: radial-gradient(circle at 35% 35%, #80f7ff 0%, #00b4d8 60%, #007799 100%);
+  --joy-cap-border: 1px solid rgba(0,0,0,0.4);
+
+  /* Joystick Well styling */
+  --joy-well-bezel: #3c4046 #25282e #18191c #2d3036;
+  --joy-well-bg: #0d0e11;
+  --joy-well-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.9), 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 .gamepad-body.theme-dark .controller-grip {
   background: linear-gradient(180deg, #25282e 0%, #0d0e11 100%);
-  border: 3.5px solid #3c4046;
+  border: 1px solid var(--grip-border);
   box-shadow: 
     0 15px 35px rgba(0,0,0,0.65),
-    inset 0 2px 3px rgba(255, 255, 255, 0.08),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+    inset 2px 2px 3px rgba(255, 255, 255, 0.08),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.5);
 }
 .gamepad-body.theme-dark .grip-left { border-right: none; }
 .gamepad-body.theme-dark .grip-right { border-left: none; }
 .gamepad-body.theme-dark .spypad-screen-container {
-  border: 3.5px solid #3c4046;
+  border: 3.5px solid var(--screen-border);
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.55),
     inset 0 0 30px rgba(0, 240, 255, 0.18);
-}
-.gamepad-body.theme-dark .grip-accent-top {
-  background: var(--neon-cyan);
-  box-shadow: 0 0 8px var(--neon-cyan-glow);
 }
 
 /* 3. Toxic Spec-Ops (Green) Theme */
 .gamepad-body.theme-toxic {
   --case-accent: var(--neon-green);
   --grip-border: #4a632c;
+  --screen-border: #080b04;
+
+  /* Buttons Panel Recess values */
+  --btn-panel-bg: #0c1008;
+  --btn-panel-border: 1px solid #283618;
+  --btn-panel-shadow: inset 2px 2px 5px rgba(0,0,0,0.7), inset -1px -1px 2px rgba(255,255,255,0.03);
+
+  /* Oval buttons custom theme values */
+  --btn-face-bg: linear-gradient(to bottom, #aae650 0%, #7db332 100%);
+  --btn-face-border: 1px solid #5d8722;
+  --btn-face-shadow: 0 3px 5px rgba(0,0,0,0.45), inset 0 1.5px 2px rgba(255,255,255,0.4), inset 0 -1.5px 2px rgba(0,0,0,0.2);
+
+  /* Trigger button color */
+  --trigger-color: #7db332;
+  --trigger-color-start: #aae650;
+  --trigger-color-end: #7db332;
+
+  /* Joystick Cap dome styling */
+  --joy-cap-bg: radial-gradient(circle at 35% 35%, #d1f79c 0%, #9ad744 60%, #689922 100%);
+  --joy-cap-border: 1px solid rgba(0,0,0,0.4);
+
+  /* Joystick Well styling */
+  --joy-well-bezel: #4a632c #1f2b13 #070a04 #32441e;
+  --joy-well-bg: #070a04;
+  --joy-well-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.9), 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 .gamepad-body.theme-toxic .controller-grip {
   background: linear-gradient(180deg, #1f2b13 0%, #070a04 100%);
-  border: 3.5px solid #4a632c;
+  border: 1px solid var(--grip-border);
   box-shadow: 
     0 15px 35px rgba(0,0,0,0.65),
-    inset 0 2px 3px rgba(255, 255, 255, 0.08),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+    inset 2px 2px 3px rgba(255, 255, 255, 0.08),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.5);
 }
 .gamepad-body.theme-toxic .grip-left { border-right: none; }
 .gamepad-body.theme-toxic .grip-right { border-left: none; }
 .gamepad-body.theme-toxic .spypad-screen-container {
-  border: 3.5px solid #4a632c;
+  border: 3.5px solid var(--screen-border);
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.55),
     inset 0 0 30px rgba(154, 215, 68, 0.18);
-}
-.gamepad-body.theme-toxic .grip-accent-top {
-  background: var(--neon-green);
-  box-shadow: 0 0 8px var(--neon-green-glow);
 }
 
 /* 4. Retro Sunset (Orange/Pink) Theme */
 .gamepad-body.theme-sunset {
   --case-accent: var(--neon-pink);
   --grip-border: #6f1c5e;
+  --screen-border: #0c0211;
+
+  /* Buttons Panel Recess values */
+  --btn-panel-bg: #180715;
+  --btn-panel-border: 1px solid #4a123f;
+  --btn-panel-shadow: inset 2px 2px 5px rgba(0,0,0,0.7), inset -1px -1px 2px rgba(255,255,255,0.03);
+
+  /* Oval buttons custom theme values */
+  --btn-face-bg: linear-gradient(to bottom, #ff7ab8 0%, #d63c8a 100%);
+  --btn-face-border: 1px solid #b32570;
+  --btn-face-shadow: 0 3px 5px rgba(0,0,0,0.45), inset 0 1.5px 2px rgba(255,255,255,0.4), inset 0 -1.5px 2px rgba(0,0,0,0.2);
+
+  /* Trigger button color */
+  --trigger-color: #d63c8a;
+  --trigger-color-start: #ff7ab8;
+  --trigger-color-end: #d63c8a;
+
+  /* Joystick Cap dome styling */
+  --joy-cap-bg: radial-gradient(circle at 35% 35%, #ffbfe0 0%, #ff62b1 60%, #b83377 100%);
+  --joy-cap-border: 1px solid rgba(0,0,0,0.4);
+
+  /* Joystick Well styling */
+  --joy-well-bezel: #6f1c5e #350f2d #0a010e #501444;
+  --joy-well-bg: #0a010e;
+  --joy-well-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.9), 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 .gamepad-body.theme-sunset .controller-grip {
   background: linear-gradient(180deg, #350f2d 0%, #0a010e 100%);
-  border: 3.5px solid #6f1c5e;
+  border: 1px solid var(--grip-border);
   box-shadow: 
     0 15px 35px rgba(0,0,0,0.65),
-    inset 0 2px 3px rgba(255, 255, 255, 0.08),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+    inset 2px 2px 3px rgba(255, 255, 255, 0.08),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.5);
 }
 .gamepad-body.theme-sunset .grip-left { border-right: none; }
 .gamepad-body.theme-sunset .grip-right { border-left: none; }
 .gamepad-body.theme-sunset .spypad-screen-container {
-  border: 3.5px solid #6f1c5e;
+  border: 3.5px solid var(--screen-border);
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.55),
     inset 0 0 30px rgba(255, 98, 177, 0.18);
 }
-.gamepad-body.theme-sunset .grip-accent-top {
-  background: var(--neon-pink);
-}
 
 /* ── CONTROLLER GRIP PANELS ── */
 .controller-grip {
-  width: 16.5%;
+  width: 10.5%;
   height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  padding: 30px 10px;
+  padding: 24px 6px;
   z-index: 20;
 }
 
 .grip-left {
-  border-radius: 50px 12px 12px 50px;
+  border-radius: 70px 0 0 70px;
 }
 
 .grip-right {
-  border-radius: 12px 50px 50px 12px;
+  border-radius: 0 70px 70px 0;
 }
 
+/* 3D Shoulder Buttons wrap outer corners */
 .grip-accent-top {
-  transition: background 0.3s;
+  position: absolute;
+  top: -15px; /* sit slightly above the grip */
+  width: 130px; /* Fixed width to prevent dynamic aspect-ratio stretching */
+  height: 90px;
+  z-index: 15; /* Behind controller-grip casing (z-index 20) */
+  pointer-events: none;
 }
 
-/* 3D Shoulder Button Wraps */
-.grip-left .grip-accent-top {
-  position: absolute;
-  top: -4px;
-  left: 6px;
-  right: -2px;
-  height: 18px;
-  background: #ff7f2a;
-  border-radius: 40px 14px 0 0;
-  border: 3.5px solid var(--grip-border, #b1b8c2);
-  border-bottom: none;
-  box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.4);
-  z-index: 25;
+.grip-accent-left {
+  left: 0px;
 }
 
-.grip-right .grip-accent-top {
-  position: absolute;
-  top: -4px;
-  right: 6px;
-  left: -2px;
-  height: 18px;
-  background: #ff7f2a;
-  border-radius: 14px 40px 0 0;
-  border: 3.5px solid var(--grip-border, #b1b8c2);
-  border-bottom: none;
-  box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.4);
-  z-index: 25;
+.grip-accent-right {
+  right: 0px;
+}
+
+.trigger-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.trigger-path-left {
+  fill: none;
+  stroke: url(#left-trigger-grad);
+  stroke-width: 18px;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+}
+
+.trigger-path-right {
+  fill: none;
+  stroke: url(#right-trigger-grad);
+  stroke-width: 18px;
+  stroke-linecap: round;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+}
+
+.stop-start {
+  stop-color: var(--trigger-color-start);
+  transition: stop-color 0.3s;
+}
+
+.stop-end {
+  stop-color: var(--trigger-color-end);
+  transition: stop-color 0.3s;
 }
 
 /* ── LEFT GRIP: JOYSTICK ── */
 .analog-container {
-  width: 82px;
-  height: 82px;
+  width: 110px;
+  height: 110px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15px;
+  margin-top: 45px; /* Increased from 15px to push the joystick lower */
 }
 
+/* Raised gray ring around the stick (no dark recess) */
 .analog-well {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: #191b1f;
-  box-shadow: 
-    inset 0 6px 12px rgba(0, 0, 0, 0.95), 
-    inset 0 -2px 4px rgba(255, 255, 255, 0.08),
-    0 1px 2px rgba(255, 255, 255, 0.15);
-  border: 3px solid var(--grip-border, #b1b8c2);
+  background: var(--joy-well-bg);
+  border: 7px solid;
+  border-color: var(--joy-well-bezel);
+  box-shadow: var(--joy-well-shadow);
   position: absolute;
   z-index: 1;
 }
 
+/* Plain orange dome cap sitting in a dark socket */
 .analog-shaft {
-  width: 64px;
-  height: 64px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #ff9e5e 0%, #ff7f2a 65%, #c65c0c 100%);
+  background: var(--joy-cap-bg);
+  border: var(--joy-cap-border);
   box-shadow: 
-    0 6px 10px rgba(0,0,0,0.4),
-    inset 0 3px 5px rgba(255,255,255,0.4);
-  border: 2px solid rgba(0, 0, 0, 0.35);
+    0 4px 6px rgba(0,0,0,0.35),
+    inset 0 2.5px 3px rgba(255,255,255,0.45),
+    inset 0 -2.5px 3px rgba(0,0,0,0.15);
   position: relative;
   z-index: 2;
   cursor: grab;
@@ -401,112 +527,119 @@ body {
 }
 
 .analog-thumb {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #e66a15;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.45), 0 1px 1px rgba(255,255,255,0.25);
-  border: 1px solid rgba(0,0,0,0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: none; /* Smooth 3D dome (no center rings) */
 }
 
 .thumb-indent {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.15);
+  display: none;
 }
 
 /* ── LEFT GRIP: ORANGE BUTTONS PANEL ── */
 .orange-buttons-panel {
-  width: 62px;
-  height: 156px;
-  background: rgba(0, 0, 0, 0.12);
-  border: 2.5px solid var(--grip-border, #b1b8c2);
-  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(255, 255, 255, 0.7);
-  border-radius: 20px;
-  padding: 12px 5px;
+  width: 100px;
+  height: 210px;
+  background: var(--btn-panel-bg);
+  border: var(--btn-panel-border);
+  box-shadow: var(--btn-panel-shadow);
+  border-radius: 0 0 0 36px; /* Top-left, top-right, bottom-right 90deg, bottom-left rounded! */
+  padding: 20px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .orange-buttons-inner {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .oval-btn {
-  width: 44px;
-  height: 20px;
-  border-radius: 6px;
-  border: 1.5px solid #d15d0d;
-  background: linear-gradient(180deg, #ff9b53 0%, #ff7f2a 100%);
-  box-shadow: 
-    0 3px 0 #b34a06,
-    0 4px 6px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  width: 80px;
+  height: 32px;
+  border-radius: 16px;
+  border: var(--btn-face-border);
+  background: var(--btn-face-bg);
+  box-shadow: var(--btn-face-shadow);
   cursor: pointer;
   outline: none;
   transition: transform 0.05s, box-shadow 0.05s;
 }
 
 .oval-btn:active {
-  transform: translateY(3px);
+  transform: translateY(2px);
   box-shadow: 
-    0 1px 0 #b34a06,
-    0 1px 4px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.3),
     inset 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Pinhole Positions */
+/* Sensor/Mic Pinhole */
 .mic-pinhole {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: #111;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1.5px 2px rgba(0,0,0,0.85), 0 1px 0.5px rgba(255,255,255,0.4);
   position: absolute;
-  bottom: 25px;
-  right: 18px;
-}
-
-/* ── RIGHT GRIP: CONSOLE ELEMENTS ── */
-.led-indicator {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #ff3b30;
-  box-shadow: 0 0 5px rgba(255, 59, 48, 0.8);
-  animation: ledFlash 2s infinite ease-in-out;
-  position: absolute;
-  top: 25px;
-  left: 18px;
   z-index: 30;
 }
 
-@keyframes ledFlash {
-  0%, 100% { opacity: 0.3; filter: brightness(0.6); }
-  50% { opacity: 1; filter: brightness(1.2) drop-shadow(0 0 4px #ff3b30); }
+.grip-left .mic-pinhole {
+  bottom: 22px;
+  right: 22px;
 }
 
-/* Right Vertical Status Display */
-.vertical-status-screen {
-  width: 80%;
-  height: 88%;
-  background: #000000;
-  border: 3.5px solid var(--grip-border, #b1b8c2);
+/* ── RIGHT GRIP: CONSOLE ELEMENTS ── */
+
+/* Green LED Indicator at connection top-left */
+.led-indicator {
+  width: 12px;
+  height: 12px;
+}
+.grip-right .led-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #52e034;
   box-shadow: 
-    inset 0 0 20px rgba(0, 0, 0, 0.95),
-    0 1px 1px rgba(255, 255, 255, 0.7);
-  border-radius: 24px;
+    0 0 12px #52e034, 
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  position: absolute;
+  top: 16px;
+  left: -6px; /* Overlaps screen joint */
+  z-index: 35;
+  animation: ledPulseGreen 2.2s infinite ease-in-out;
+}
+.grip-right .led-indicator::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: -4px; right: -4px; bottom: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 6px rgba(82, 224, 52, 0.3);
+  pointer-events: none;
+}
+
+@keyframes ledPulseGreen {
+  0%, 100% { opacity: 0.65; box-shadow: 0 0 6px #52e034; }
+  50% { opacity: 1; box-shadow: 0 0 14px #52e034, 0 0 4px rgba(255,255,255,0.8); }
+}
+
+/* Right Vertical Status Display Slot */
+.vertical-status-screen {
+  width: 82%;
+  height: 88%;
+  background: linear-gradient(135deg, #111111 0%, #000000 100%);
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    inset 0 3px 6px rgba(0,0,0,0.85),
+    inset 2px 2px 4px rgba(0,0,0,0.9),
+    0 1px 2px rgba(255,255,255,0.7);
+  border-radius: 0 35px 35px 0; /* Sharp inner left corners, rounded outer right corners! */
   position: absolute;
   top: 6%;
-  left: 10%;
+  left: 9%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -514,137 +647,70 @@ body {
   z-index: 10;
 }
 
-.vss-scanner-laser {
+.vertical-status-screen::after {
+  content: '';
   position: absolute;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--neon-cyan);
-  box-shadow: 0 0 8px var(--neon-cyan);
-  animation: scanSweep 3.5s infinite ease-in-out;
-  z-index: 10;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%);
+  pointer-events: none;
+  z-index: 15;
 }
 
-@keyframes scanSweep {
-  0% { top: 0; }
-  50% { top: 100%; }
-  100% { top: 0; }
+.vss-scanner-laser {
+  display: none; /* Hidden for 1-to-1 matching */
 }
 
 .vss-inner {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-mono);
-  font-size: 0.52rem;
-  line-height: 1.4;
-  color: #cceeff;
+  display: none; /* Hidden for 1-to-1 matching */
 }
 
-.vss-graph-box {
-  width: 100%;
-  height: 60px;
-  background: rgba(0, 240, 255, 0.03);
-  border: 1px solid rgba(0, 240, 255, 0.1);
-  border-radius: 4px;
-  margin-bottom: 8px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#vss-mini-chart {
-  width: 100%;
-  height: 100%;
-}
-
-.vss-ticker-header {
-  font-family: var(--font-title);
-  font-size: 0.55rem;
-  color: var(--neon-cyan);
-  border-bottom: 1.5px solid rgba(0, 240, 255, 0.25);
-  padding-bottom: 2px;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
-}
-
-.vss-ticker {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.ticker-line {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  animation: slideTickerLine 0.15s ease-out;
-  color: #798ea4;
-}
-
-.ticker-line.text-green { color: var(--neon-green); }
-.ticker-line.text-orange { color: var(--neon-orange); }
-.ticker-line.text-cyan { color: var(--neon-cyan); }
-.ticker-line.text-pink { color: var(--neon-pink); }
-.ticker-line.text-red { color: var(--neon-red); }
-
-@keyframes slideTickerLine {
-  0% { transform: translateY(5px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+/* Right Grip Camera Sensor */
+.grip-right .mic-pinhole {
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* Typemission Yellow Badge inside display */
 .badge-logo-container {
-  width: 58px;
-  height: 58px;
-  margin: auto auto 4px auto;
+  width: 68px;
+  height: 68px;
+  margin: auto auto 15px auto; /* Centered near bottom */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: transform 0.2s;
   flex-shrink: 0;
+  z-index: 20;
 }
 
 .badge-logo-container:hover {
   transform: scale(1.08) rotate(5deg);
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
 }
 
-.badge-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 3.5px solid #ffcc00;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #161719;
-  box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+.badge-logo-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 6px rgba(255, 204, 0, 0.65));
+  transition: filter 0.2s;
 }
 
-.badge-letter {
-  font-family: var(--font-title);
-  font-weight: 900;
-  font-size: 1.5rem;
-  color: #ffcc00;
-  text-shadow: 0 0 6px rgba(255, 204, 0, 0.6);
-  line-height: 1;
-  transform: translateY(-1px);
+.badge-logo-container:hover .badge-logo-svg {
+  filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.95));
 }
 
 /* ── CENTRAL FLOATING SCREEN CONTAINER ── */
 .spypad-screen-container {
   flex: 1;
   height: 100%;
-  background: radial-gradient(ellipse at center, rgba(16, 36, 45, 0.75) 0%, rgba(5, 12, 17, 0.85) 100%);
+  background: radial-gradient(ellipse at center, rgba(10, 22, 28, 0.6) 0%, rgba(5, 12, 17, 0.75) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 3.5px solid #9ca3af;
   box-shadow: 
-    inset 0 0 30px rgba(0, 240, 255, 0.15);
+    inset 0 0 30px rgba(0, 240, 255, 0.25),
+    0 15px 35px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   position: relative;
   overflow: hidden;
@@ -851,18 +917,19 @@ body {
 .apps-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 24px 20px;
-  padding: 10px 8px;
+  gap: 20px 18px;
+  padding: 8px;
 }
 
 /* ── APP TILE CARDS ── */
 .app-card {
-  background: rgba(8, 16, 20, 0.55);
-  backdrop-filter: blur(5px);
-  border: 2px solid rgba(0, 240, 255, 0.15);
-  border-radius: 20px;
-  padding: 16px 12px;
-  height: 124px;
+  background: rgba(10, 20, 28, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 240, 255, 0.18);
+  border-radius: 14px;
+  padding: 18px 12px 14px 12px;
+  height: 138px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -871,14 +938,14 @@ body {
   transition: all 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 
     inset 0 2px 8px rgba(0, 0, 0, 0.6),
-    0 4px 10px rgba(0, 0, 0, 0.4);
+    0 6px 15px rgba(0, 0, 0, 0.5);
 }
 
 .app-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: 14px;
   padding: 1.5px;
   background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent 60%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -888,31 +955,31 @@ body {
 }
 
 .app-icon-wrapper {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
+  width: 68px;
+  height: 68px;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   transition: all 0.25s ease;
   position: relative;
-  border: 2px solid rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .svg-icon {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   transition: transform 0.25s ease;
 }
 
 .app-label {
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #cdd9e5;
+  color: #e2eaf0;
   text-align: center;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   transition: color 0.2s;
   white-space: nowrap;
   overflow: hidden;
@@ -1134,18 +1201,18 @@ body {
 
 .close-pill-btn {
   background: rgba(255, 59, 48, 0.15);
-  border: 2.5px solid var(--neon-red);
+  border: 1.5px solid var(--neon-red);
   border-radius: 99px;
-  min-width: 140px;
-  height: 30px;
+  min-width: 130px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   position: relative;
   transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.35);
-  margin-left: 10px;
+  box-shadow: 0 0 10px rgba(255, 59, 48, 0.25);
+  margin-left: 15px;
 }
 
 .close-pill-btn .btn-text {
@@ -1259,50 +1326,79 @@ body {
 /* 1. Profile Dashboard Layout */
 .profile-dashboard {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   height: 100%;
 }
 
-.profile-left {
-  flex: 1;
+.profile-dossier-card {
+  flex: 0.9;
+  background: rgba(10, 20, 30, 0.35);
+  border: 1.5px solid rgba(0, 240, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
-.profile-avatar-box {
+.profile-avatar-outer {
   position: relative;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  border: 2px solid var(--neon-cyan);
-  box-shadow: 0 0 10px var(--neon-cyan-dim);
+  width: 76px;
+  height: 76px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #09151e;
-  margin-bottom: 10px;
 }
 
-.profile-avatar-box svg {
-  width: 44px;
-  height: 44px;
+.lvl-ring-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.lvl-ring-bg {
+  stroke: rgba(255, 255, 255, 0.05);
+}
+
+.lvl-ring-fill {
+  stroke: var(--neon-cyan);
+  stroke-dasharray: 226; /* 2 * PI * r (r=36) -> 2 * 3.1415 * 36 ≈ 226 */
+  stroke-dashoffset: 40; /* matches 82% */
+  transition: stroke-dashoffset 0.8s ease-out;
+}
+
+.profile-avatar-inner {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: #09151e;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.profile-avatar-inner svg {
+  width: 32px;
+  height: 32px;
   stroke: var(--neon-cyan);
 }
 
-.profile-badge-lvl {
+.dossier-level-badge {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
+  bottom: -2px;
+  right: -2px;
   background: var(--neon-cyan);
   color: #050207;
   font-family: var(--font-title);
-  font-size: 0.55rem;
+  font-size: 0.58rem;
   font-weight: 900;
   width: 20px;
   height: 20px;
@@ -1310,283 +1406,679 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1.5px solid #fff;
+  z-index: 5;
   box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  border: 1px solid #fff;
 }
 
-.profile-username {
+.dossier-username {
   font-family: var(--font-title);
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: #fff;
+  font-weight: 900;
   letter-spacing: 0.5px;
-  margin-bottom: 4px;
 }
 
-.profile-rank {
+.dossier-rank {
   font-size: 0.58rem;
   color: var(--neon-cyan);
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-family: var(--font-title);
+  font-weight: 700;
 }
 
-.profile-right {
-  flex: 2;
+.dossier-details-table {
+  width: 100%;
+  border-top: 1px dashed rgba(0, 240, 255, 0.15);
+  padding-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
-.metric-bar-group {
-  background: rgba(0,0,0,0.25);
-  border-radius: 8px;
-  padding: 8px 12px;
-  border: 1px solid rgba(0, 240, 255, 0.08);
-}
-
-.metric-header {
+.dossier-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.62rem;
-  font-family: var(--font-title);
-  color: #a0b2c6;
-  margin-bottom: 6px;
-  letter-spacing: 0.5px;
-}
-
-.metric-val {
-  color: var(--neon-cyan);
-  font-weight: 700;
+  font-size: 0.58rem;
   font-family: var(--font-mono);
 }
 
-.metric-progress-outer {
-  height: 6px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 3px;
-  overflow: hidden;
+.dossier-row .lbl {
+  color: #6d8ba6;
 }
 
-.metric-progress-fill {
-  height: 100%;
-  background: var(--neon-cyan);
-  box-shadow: 0 0 6px var(--neon-cyan-glow);
-  border-radius: 3px;
+.dossier-row .val {
+  color: #fff;
+  text-align: right;
+  font-weight: 700;
 }
 
-.profile-xp-fill { background: var(--neon-pink); box-shadow: 0 0 6px var(--neon-pink-glow); }
-.profile-wpm-fill { background: var(--neon-green); box-shadow: 0 0 6px var(--neon-green-glow); }
-.profile-acc-fill { background: var(--neon-orange); box-shadow: 0 0 6px var(--neon-orange-glow); }
-
-/* 2. Messages App Layout */
-.messages-container {
+.profile-stats-pane {
+  flex: 1.3;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  height: 100%;
+  gap: 12px;
 }
 
-.msg-item {
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.profile-stat-box {
+  background: rgba(10, 20, 30, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 8px 6px;
+  text-align: center;
   display: flex;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 8px 12px;
+  flex-direction: column;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.profile-stat-num {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.profile-stat-num.cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 6px var(--neon-cyan-glow);
+}
+
+.profile-stat-num.pink {
+  color: var(--neon-pink);
+  text-shadow: 0 0 6px var(--neon-pink-glow);
+}
+
+.profile-stat-num.green {
+  color: var(--neon-green);
+  text-shadow: 0 0 6px var(--neon-green-glow);
+}
+
+.profile-stat-lbl {
+  font-size: 0.54rem;
+  color: #7d96af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  font-weight: 700;
+}
+
+.profile-achievements-header {
+  font-family: var(--font-title);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--neon-pink);
+  margin-top: 4px;
+  border-bottom: 1px dashed rgba(255, 98, 177, 0.25);
+  padding-bottom: 4px;
+  font-weight: 700;
+}
+
+.profile-achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.achievement-card {
+  background: rgba(255, 98, 177, 0.01);
+  border: 1px solid rgba(255, 98, 177, 0.08);
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.22s;
+  backdrop-filter: blur(5px);
+}
+
+.achievement-card.unlocked {
+  background: rgba(154, 215, 68, 0.04);
+  border-color: rgba(154, 215, 68, 0.22);
+}
+
+.achievement-icon {
+  font-size: 1.1rem;
+  opacity: 0.35;
+  filter: grayscale(1);
+}
+
+.achievement-card.unlocked .achievement-icon {
+  opacity: 1;
+  filter: none;
+  text-shadow: 0 0 5px var(--neon-green-glow);
+}
+
+.achievement-details {
+  min-width: 0;
+}
+
+.achievement-title {
+  font-family: var(--font-title);
+  font-size: 0.6rem;
+  color: #8fa0b5;
+  font-weight: 700;
+}
+
+.achievement-card.unlocked .achievement-title {
+  color: #fff;
+}
+
+.achievement-desc {
+  font-size: 0.5rem;
+  color: #6d8ba6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.achievement-card.unlocked .achievement-desc {
+  color: var(--neon-green);
+}
+
+/* 2. Messages App Layout */
+.messages-layout {
+  display: flex;
+  height: 100%;
+  gap: 12px;
+  background: rgba(10, 20, 30, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 240, 255, 0.08);
+}
+
+.messages-sidebar {
+  width: 38%;
+  border-right: 1px solid rgba(0, 240, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  background: rgba(5, 10, 15, 0.35);
+}
+
+.sidebar-header {
+  padding: 8px;
+  font-family: var(--font-title);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--neon-green);
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+  text-align: center;
+  font-weight: 700;
+}
+
+.msg-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.msg-list::-webkit-scrollbar {
+  width: 3px;
+}
+.msg-list::-webkit-scrollbar-thumb {
+  background: rgba(154, 215, 68, 0.2);
+  border-radius: 2px;
+}
+
+.msg-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.01);
+  cursor: pointer;
+  transition: all 0.2s;
   position: relative;
 }
 
-.msg-item.unread {
-  background: rgba(154, 215, 68, 0.04);
+.msg-sidebar-item:hover {
+  background: rgba(0, 240, 255, 0.04);
+  border-color: rgba(0, 240, 255, 0.12);
+}
+
+.msg-sidebar-item.active {
+  background: rgba(154, 215, 68, 0.08);
+  border-color: var(--neon-green);
+}
+
+.msg-sidebar-item.unread {
   border-color: rgba(154, 215, 68, 0.2);
 }
 
-.msg-avatar {
-  width: 26px;
-  height: 26px;
+.msg-item-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--neon-green);
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.msg-item-avatar {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #142a1a;
   border: 1px solid var(--neon-green);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--neon-green);
-  font-weight: bold;
+  font-weight: 900;
+  flex-shrink: 0;
 }
 
-.msg-content {
+.msg-item-info {
   flex: 1;
+  min-width: 0;
 }
 
-.msg-meta {
+.msg-item-sender {
+  font-family: var(--font-title);
+  font-size: 0.62rem;
+  color: #fff;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msg-item-preview {
+  font-size: 0.54rem;
+  color: #8fa0b5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.messages-chat-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: rgba(5, 12, 18, 0.25);
+  position: relative;
+}
+
+.chat-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #5d748c;
+  font-size: 0.65rem;
+  gap: 8px;
+  font-family: var(--font-title);
+  letter-spacing: 0.5px;
+}
+
+.chat-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2px;
+  align-items: center;
+  background: rgba(5, 10, 15, 0.2);
 }
 
-.msg-sender {
+.chat-header-user {
   font-family: var(--font-title);
-  font-size: 0.65rem;
-  font-weight: 700;
+  font-size: 0.7rem;
   color: var(--neon-green);
+  font-weight: 700;
 }
 
-.msg-time {
+.chat-header-status {
   font-family: var(--font-mono);
   font-size: 0.5rem;
-  color: #798ea4;
+  color: #6a7c91;
 }
 
-.msg-text {
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chat-body::-webkit-scrollbar {
+  width: 3px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.15);
+  border-radius: 2px;
+}
+
+.chat-bubble {
+  max-width: 85%;
+  padding: 8px 10px;
+  border-radius: 10px;
   font-size: 0.65rem;
-  color: #ccd4dc;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
-.msg-unread-dot {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 5px;
-  height: 5px;
+.chat-bubble.incoming {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #ccd6e0;
+}
+
+.chat-bubble.outgoing {
+  align-self: flex-end;
+  background: rgba(154, 215, 68, 0.08);
+  border: 1px solid rgba(154, 215, 68, 0.22);
+  color: #e6f7d4;
+}
+
+.chat-bubble-time {
+  font-size: 0.48rem;
+  color: #5d7085;
+  text-align: right;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+}
+
+.chat-footer {
+  padding: 6px;
+  border-top: 1px solid rgba(0, 240, 255, 0.1);
+  display: flex;
+  gap: 6px;
+  background: rgba(5, 10, 15, 0.2);
+}
+
+.chat-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 5px 8px;
+  outline: none;
+  font-family: var(--font-body);
+}
+
+.chat-input:focus {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 5px rgba(154, 215, 68, 0.2);
+}
+
+.chat-send-btn {
+  background: var(--neon-green-dim);
+  border: 1px solid var(--neon-green);
+  color: var(--neon-green);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-family: var(--font-title);
+  font-size: 0.58rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chat-send-btn:hover {
   background: var(--neon-green);
-  border-radius: 50%;
-  box-shadow: 0 0 4px var(--neon-green);
+  color: #050207;
+  box-shadow: 0 0 6px var(--neon-green-glow);
 }
 
 /* 3. Secret Shop Layout */
-.shop-grid {
+.shop-catalog-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.shop-balance-bar {
+  background: rgba(255, 98, 177, 0.08);
+  border: 1px solid rgba(255, 98, 177, 0.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(255, 98, 177, 0.05);
+}
+
+.shop-balance-title {
+  font-family: var(--font-title);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--neon-pink);
+  font-weight: 700;
+}
+
+.shop-balance-coins {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.shop-balance-coins .coin-icon {
+  width: 10px;
+  height: 10px;
+  background: var(--neon-pink);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--neon-pink-glow);
+}
+
+.shop-catalog-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
-.shop-item {
-  background: rgba(255, 98, 177, 0.03);
+.gadget-card {
+  background: rgba(10, 15, 22, 0.35);
   border: 1px solid rgba(255, 98, 177, 0.15);
   border-radius: 10px;
-  padding: 8px 12px;
+  padding: 8px 10px;
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   align-items: center;
-  gap: 8px;
+  transition: all 0.22s ease;
+  position: relative;
+  backdrop-filter: blur(8px);
 }
 
-.shop-info {
+.gadget-card:hover {
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 10px rgba(255, 98, 177, 0.15);
+  transform: translateY(-1px);
+}
+
+.gadget-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(255, 98, 177, 0.08);
+  border: 1px solid rgba(255, 98, 177, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.gadget-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--neon-pink);
+}
+
+.gadget-info {
   flex: 1;
+  min-width: 0;
 }
 
-.shop-name {
+.gadget-name {
   font-family: var(--font-title);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: #fff;
+  font-weight: 700;
   margin-bottom: 2px;
 }
 
-.shop-desc {
-  font-size: 0.55rem;
-  color: #a0b2c6;
-  line-height: 1.2;
+.gadget-desc {
+  font-size: 0.52rem;
+  color: #8fa0b5;
+  line-height: 1.25;
 }
 
-.shop-action {
-  text-align: right;
+.gadget-buy-section {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
 }
 
-.shop-cost {
+.gadget-price {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: var(--neon-pink);
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
 }
 
-.shop-cost-icon {
-  width: 9px;
-  height: 9px;
+.gadget-price-dot {
+  width: 6px;
+  height: 6px;
   background: var(--neon-pink);
   border-radius: 50%;
-  display: inline-block;
+  box-shadow: 0 0 4px var(--neon-pink-glow);
 }
 
-.shop-buy-btn {
+.gadget-btn {
   background: transparent;
   border: 1px solid var(--neon-pink);
-  border-radius: 4px;
   color: var(--neon-pink);
+  border-radius: 4px;
+  padding: 3px 8px;
   font-family: var(--font-title);
   font-size: 0.52rem;
   font-weight: 700;
-  padding: 2px 8px;
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.shop-buy-btn:hover {
+.gadget-btn:hover {
   background: var(--neon-pink);
   color: #050207;
   box-shadow: 0 0 6px var(--neon-pink-glow);
 }
 
-.shop-buy-btn.purchased {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.4);
+.gadget-btn.purchased {
+  background: rgba(154, 215, 68, 0.08);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
   cursor: not-allowed;
 }
 
-.shop-header-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px dashed rgba(255, 98, 177, 0.25);
-  padding-bottom: 4px;
-  margin-bottom: 8px;
-}
-
-.shop-coins-counter {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--neon-pink);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.shop-coins-counter .coin-dot {
-  width: 12px;
-  height: 12px;
-  background: var(--neon-pink);
-  border-radius: 50%;
-  box-shadow: 0 0 6px var(--neon-pink);
-}
-
 /* 4. GPS Radar Scanner Layout */
-.radar-layout {
+.gps-radar-layout {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
   height: 100%;
 }
 
-.radar-scope-wrapper {
+.radar-display-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radar-ring-outer {
   position: relative;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, rgba(0, 0, 0, 0.4) 100%);
-  border: 2px solid var(--neon-cyan);
+  width: 148px;
+  height: 148px;
   border-radius: 50%;
+  border: 2px solid var(--neon-cyan);
   box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.04) 0%, rgba(5, 12, 17, 0.6) 100%);
   overflow: hidden;
+}
+
+.radar-ring-outer::before {
+  content: '0°';
+  position: absolute;
+  top: 3px;
+  font-size: 0.42rem;
+  color: var(--neon-cyan);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+}
+
+.radar-ring-outer::after {
+  content: '180°';
+  position: absolute;
+  bottom: 3px;
+  font-size: 0.42rem;
+  color: var(--neon-cyan);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+}
+
+.radar-ring-east {
+  position: absolute;
+  right: 4px;
+  font-size: 0.42rem;
+  color: var(--neon-cyan);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+}
+
+.radar-ring-west {
+  position: absolute;
+  left: 4px;
+  font-size: 0.42rem;
+  color: var(--neon-cyan);
+  font-family: var(--font-mono);
+  opacity: 0.6;
+}
+
+.radar-grid-line {
+  position: absolute;
+  background: rgba(0, 240, 255, 0.12);
+}
+
+.radar-line-h {
+  width: 100%;
+  height: 1px;
+}
+
+.radar-line-v {
+  width: 1px;
+  height: 100%;
 }
 
 .radar-grid-circle {
@@ -1594,25 +2086,12 @@ body {
   border: 1px dashed rgba(0, 240, 255, 0.15);
   border-radius: 50%;
 }
-.circle-1 { width: 40px; height: 40px; }
-.circle-2 { width: 80px; height: 80px; }
-.circle-3 { width: 110px; height: 110px; }
 
-.radar-crosshair-h {
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background: rgba(0, 240, 255, 0.15);
-}
+.radar-circle-1 { width: 40px; height: 40px; }
+.radar-circle-2 { width: 80px; height: 80px; }
+.radar-circle-3 { width: 114px; height: 114px; }
 
-.radar-crosshair-v {
-  position: absolute;
-  width: 1px;
-  height: 100%;
-  background: rgba(0, 240, 255, 0.15);
-}
-
-.radar-sweep-line {
+.radar-sweep-bar {
   position: absolute;
   top: 0;
   left: 0;
@@ -1624,12 +2103,7 @@ body {
   animation: sweepRotate 4s infinite linear;
 }
 
-@keyframes sweepRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.radar-target-dot {
+.radar-blip {
   position: absolute;
   width: 6px;
   height: 6px;
@@ -1637,38 +2111,75 @@ body {
   background: var(--neon-cyan);
   box-shadow: 0 0 8px var(--neon-cyan-glow);
   transform: translate(-50%, -50%);
-  animation: targetPulse 1s infinite alternate;
+  animation: targetPulse 1.2s infinite alternate;
 }
 
-@keyframes targetPulse {
-  0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
+.radar-target-1 { top: 32%; left: 38%; }
+.radar-target-2 { top: 72%; left: 70%; }
+.radar-target-3 { top: 46%; left: 82%; }
 
-.radar-target-1 { top: 30%; left: 40%; }
-.radar-target-2 { top: 70%; left: 75%; }
-.radar-target-3 { top: 45%; left: 80%; }
-
-.radar-stats {
-  flex: 1;
+.radar-hud-readout {
+  flex: 1.2;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-family: var(--font-mono);
 }
 
-.radar-stat-row {
-  font-size: 0.62rem;
-  color: #8fa0b5;
+.hud-title {
+  font-family: var(--font-title);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  color: var(--neon-cyan);
+  border-bottom: 1px dashed rgba(0, 240, 255, 0.2);
+  padding-bottom: 3px;
+  font-weight: 700;
+}
+
+.hud-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hud-item {
+  background: rgba(0, 240, 255, 0.02);
+  border: 1px solid rgba(0, 240, 255, 0.08);
+  border-radius: 6px;
+  padding: 5px 8px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 240, 255, 0.08);
-  padding-bottom: 4px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
 }
 
-.radar-stat-row span.cyan-text {
-  color: var(--neon-cyan);
+.hud-item-name {
+  color: #fff;
   font-weight: 700;
+}
+
+.hud-item-dist {
+  color: var(--neon-cyan);
+}
+
+.hud-item-state {
+  font-size: 0.48rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #a0b2c6;
+}
+
+.hud-item-state.active {
+  background: var(--neon-green-dim);
+  color: var(--neon-green);
+  border: 1px solid rgba(154, 215, 68, 0.3);
+}
+
+.hud-item-state.moving {
+  background: var(--neon-orange-dim);
+  color: var(--neon-orange);
+  border: 1px solid rgba(228, 142, 53, 0.3);
 }
 
 /* ── SETTINGS COG PANEL ── */
@@ -1895,7 +2406,7 @@ body {
     gap: 10px 8px;
   }
   .controller-grip {
-    width: 15%;
+    width: 10.5%;
   }
 }
 
@@ -1903,7 +2414,8 @@ body {
   .apps-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  .controller-grip {
-    display: none; /* Hide handles on small phones to maximize screen space */
+  .controller-grip,
+  .grip-accent-top {
+    display: none; /* Hide handles and triggers on small phones to maximize screen space */
   }
 }

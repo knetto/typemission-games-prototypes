@@ -58,12 +58,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const vssCtx = vssCanvas.getContext("2d");
 
   // ── INITIALIZATION & AUDIO INITIALIZER ──
-  btnAuthStart.addEventListener("click", () => {
+  const startInitialization = () => {
     initAudio();
-    authPrompt.classList.add("hidden");
     playSynthBeep("success");
     addConsoleLog("SYSTEMEN INITIALISEREN... OK", "green");
-  });
+    if (authPrompt) authPrompt.classList.add("hidden");
+  };
+
+  if (btnAuthStart) {
+    btnAuthStart.addEventListener("click", startInitialization);
+  } else {
+    // Automatically initialize systems on first user click anywhere if overlay is absent
+    document.addEventListener("click", startInitialization, { once: true });
+  }
 
   function initAudio() {
     if (!audioCtx) {
@@ -527,157 +534,291 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ── APP SIMULATOR: 1. MESSAGES APP ──
+  let activeMsgId = 1;
+  const userReplies = {}; // format: { msgId: [ { sender: "AGENT CORNE", time: "13:58", text: "..." } ] }
+
   function renderMessagesApp() {
-    let listHTML = `<div class="messages-container">`;
+    let listHTML = `
+      <div class="messages-layout">
+        <div class="messages-sidebar">
+          <div class="sidebar-header">SECURE INBOX</div>
+          <div class="msg-list">
+    `;
+
     messagesData.forEach(msg => {
       listHTML += `
-        <div class="msg-item ${msg.unread ? 'unread' : ''}" data-msg-id="${msg.id}">
-          <div class="msg-avatar">${msg.sender[0]}</div>
-          <div class="msg-content">
-            <div class="msg-meta">
-              <span class="msg-sender">${msg.sender}</span>
-              <span class="msg-time">${msg.time}</span>
-            </div>
-            <div class="msg-text">${msg.text}</div>
+        <div class="msg-sidebar-item ${msg.id === activeMsgId ? 'active' : ''} ${msg.unread ? 'unread' : ''}" data-msg-id="${msg.id}">
+          <div class="msg-item-avatar">${msg.sender[0]}</div>
+          <div class="msg-item-info">
+            <div class="msg-item-sender">${msg.sender}</div>
+            <div class="msg-item-preview">${msg.text}</div>
           </div>
-          ${msg.unread ? '<div class="msg-unread-dot"></div>' : ''}
+          ${msg.unread ? '<div class="msg-item-dot"></div>' : ''}
         </div>
       `;
     });
-    listHTML += `</div>`;
+
+    listHTML += `
+          </div>
+        </div>
+        <div class="messages-chat-pane" id="active-chat-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    `;
+
     appBodyContent.innerHTML = listHTML;
-    
-    // Bind click reading message
-    document.querySelectorAll(".msg-item").forEach(item => {
+
+    // Attach click events
+    const sidebarItems = appBodyContent.querySelectorAll(".msg-sidebar-item");
+    sidebarItems.forEach(item => {
       item.addEventListener("click", () => {
         const msgId = parseInt(item.getAttribute("data-msg-id"));
-        const msg = messagesData.find(m => m.id === msgId);
+        activeMsgId = msgId;
         
+        sidebarItems.forEach(si => si.classList.remove("active"));
+        item.classList.add("active");
+
+        const msg = messagesData.find(m => m.id === msgId);
         if (msg && msg.unread) {
           msg.unread = false;
           item.classList.remove("unread");
-          const dot = item.querySelector(".msg-unread-dot");
+          const dot = item.querySelector(".msg-item-dot");
           if (dot) dot.remove();
-          
-          // Decrement badges
+
           messagesUnreadCount = Math.max(0, messagesUnreadCount - 1);
           updateAppBadgeCount();
           playSynthBeep("click");
-          addConsoleLog("BERICHT GELEZEN", "cyan");
+          addConsoleLog(`BERICHT GELEZEN VAN ${msg.sender}`, "cyan");
+        } else {
+          playSynthBeep("click");
         }
+
+        renderActiveChatPane(msgId);
       });
     });
+
+    renderActiveChatPane(activeMsgId);
   }
 
-  function updateAppBadgeCount() {
-    const msgCard = document.querySelector('[data-app="messages"]');
-    const badge = msgCard.querySelector(".app-badge");
-    if (badge) {
-      if (messagesUnreadCount > 0) {
-        badge.textContent = messagesUnreadCount;
-        badge.style.display = "flex";
-      } else {
-        badge.style.display = "none";
+  function renderActiveChatPane(msgId) {
+    const chatContainer = document.getElementById("active-chat-container");
+    if (!chatContainer) return;
+
+    const msg = messagesData.find(m => m.id === msgId);
+    if (!msg) {
+      chatContainer.innerHTML = `<div class="chat-placeholder">Selecteer een bericht</div>`;
+      return;
+    }
+
+    let chatHTML = `
+      <div class="chat-header">
+        <span class="chat-header-user">${msg.sender}</span>
+        <span class="chat-header-status">VERBINDING: SECURE AES-256</span>
+      </div>
+      <div class="chat-body" id="chat-body-scroll">
+        <div class="chat-bubble incoming">
+          <div class="msg-text">${msg.text}</div>
+          <div class="chat-bubble-time">${msg.time}</div>
+        </div>
+    `;
+
+    if (userReplies[msgId]) {
+      userReplies[msgId].forEach(reply => {
+        chatHTML += `
+          <div class="chat-bubble outgoing">
+            <div class="msg-text">${reply.text}</div>
+            <div class="chat-bubble-time">${reply.time}</div>
+          </div>
+        `;
+      });
+    }
+
+    chatHTML += `
+      </div>
+      <div class="chat-footer">
+        <input type="text" placeholder="Typ een veilig antwoord..." class="chat-input" id="chat-reply-input">
+        <button class="chat-send-btn" id="btn-send-reply">VERSTUUR</button>
+      </div>
+    `;
+
+    chatContainer.innerHTML = chatHTML;
+
+    const chatBody = document.getElementById("chat-body-scroll");
+    if (chatBody) {
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    const btnSend = document.getElementById("btn-send-reply");
+    const chatInput = document.getElementById("chat-reply-input");
+
+    const sendMessage = () => {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+      if (!userReplies[msgId]) {
+        userReplies[msgId] = [];
       }
+      userReplies[msgId].push({ sender: "AGENT CORNE", time: timeStr, text: text });
+      
+      chatInput.value = "";
+      playSynthBeep("success");
+      addConsoleLog(`ANTWOORD VERSTUURD NAAR ${msg.sender}`, "green");
+
+      renderActiveChatPane(msgId);
+    };
+
+    if (btnSend && chatInput) {
+      btnSend.addEventListener("click", sendMessage);
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
     }
   }
 
   // ── APP SIMULATOR: 2. PROFILE APP ──
   function renderProfileApp() {
+    const speedDemonUnlocked = true;
+    const perfectLockUnlocked = true;
+    const levelUnlocked = true;
+    const shopaholicUnlocked = purchasedItems.size > 0;
+
     appBodyContent.innerHTML = `
       <div class="profile-dashboard">
-        <div class="profile-left">
-          <div class="profile-avatar-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+        <div class="profile-dossier-card">
+          <div class="profile-avatar-outer">
+            <svg class="lvl-ring-svg" viewBox="0 0 80 80">
+              <circle class="lvl-ring-bg" cx="40" cy="40" r="36" fill="none" stroke-width="4"></circle>
+              <circle class="lvl-ring-fill" id="profile-ring-fill" cx="40" cy="40" r="36" fill="none" stroke-width="4" style="stroke-dashoffset: 226;"></circle>
             </svg>
-            <div class="profile-badge-lvl">4</div>
+            <div class="profile-avatar-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+              </svg>
+            </div>
+            <div class="dossier-level-badge">4</div>
           </div>
-          <div class="profile-username">Agent Corne</div>
-          <div class="profile-rank">Elite Decryptor</div>
-        </div>
-        <div class="profile-right">
+          <div class="dossier-username">Agent Corne</div>
+          <div class="dossier-rank">Elite Decryptor</div>
           
-          <div class="metric-bar-group">
-            <div class="metric-header">
-              <span>Missions XP</span>
-              <span class="metric-val">82%</span>
+          <div class="dossier-details-table">
+            <div class="dossier-row">
+              <span class="lbl">Systeem Link:</span>
+              <span class="val" style="color: var(--neon-cyan);">ACTIEF</span>
             </div>
-            <div class="metric-progress-outer">
-              <div class="metric-progress-fill profile-xp-fill" style="width: 0%;"></div>
+            <div class="dossier-row">
+              <span class="lbl">Decryptie IP:</span>
+              <span class="val">192.168.88.4</span>
+            </div>
+            <div class="dossier-row">
+              <span class="lbl">Last Login:</span>
+              <span class="val">Vandaag</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-stats-pane">
+          <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+              <span class="profile-stat-num pink">82%</span>
+              <span class="profile-stat-lbl">Missions XP</span>
+            </div>
+            <div class="profile-stat-box">
+              <span class="profile-stat-num green">84</span>
+              <span class="profile-stat-lbl">WPM Speed</span>
+            </div>
+            <div class="profile-stat-box">
+              <span class="profile-stat-num cyan">98%</span>
+              <span class="profile-stat-lbl">Accuracy</span>
             </div>
           </div>
 
-          <div class="metric-bar-group">
-            <div class="metric-header">
-              <span>Type Snelheid</span>
-              <span class="metric-val">84 WPM</span>
+          <div class="profile-achievements-header">PRESTATIES (ACHIEVEMENTS)</div>
+          <div class="profile-achievements-grid">
+            <div class="achievement-card ${speedDemonUnlocked ? 'unlocked' : ''}">
+              <div class="achievement-icon">⚡</div>
+              <div class="achievement-details">
+                <div class="achievement-title">Speed Demon</div>
+                <div class="achievement-desc">Behaal > 80 WPM</div>
+              </div>
             </div>
-            <div class="metric-progress-outer">
-              <div class="metric-progress-fill profile-wpm-fill" style="width: 0%;"></div>
+            <div class="achievement-card ${perfectLockUnlocked ? 'unlocked' : ''}">
+              <div class="achievement-icon">🎯</div>
+              <div class="achievement-details">
+                <div class="achievement-title">Perfect Lock</div>
+                <div class="achievement-desc">> 95% Nauwkeurigheid</div>
+              </div>
+            </div>
+            <div class="achievement-card ${levelUnlocked ? 'unlocked' : ''}">
+              <div class="achievement-icon">🛡️</div>
+              <div class="achievement-details">
+                <div class="achievement-title">Decryptie Pro</div>
+                <div class="achievement-desc">Behaal niveau 4</div>
+              </div>
+            </div>
+            <div class="achievement-card ${shopaholicUnlocked ? 'unlocked' : ''}">
+              <div class="achievement-icon">🛍️</div>
+              <div class="achievement-details">
+                <div class="achievement-title">Veld Uitrusting</div>
+                <div class="achievement-desc">Koop gadget in de Shop</div>
+              </div>
             </div>
           </div>
-
-          <div class="metric-bar-group">
-            <div class="metric-header">
-              <span>Nauwkeurigheid</span>
-              <span class="metric-val">98%</span>
-            </div>
-            <div class="metric-progress-outer">
-              <div class="metric-progress-fill profile-acc-fill" style="width: 0%;"></div>
-            </div>
-          </div>
-
         </div>
       </div>
     `;
-    
-    // Animate profile bars progress loading up
+
     setTimeout(() => {
-      const bars = appBodyContent.querySelectorAll(".metric-progress-fill");
-      if (bars.length >= 3) {
-        bars[0].style.width = "82%";
-        bars[0].style.transition = "width 0.8s ease-out";
-        bars[1].style.width = "84%";
-        bars[1].style.transition = "width 0.8s ease-out 0.1s";
-        bars[2].style.width = "98%";
-        bars[2].style.transition = "width 0.8s ease-out 0.2s";
+      const ringFill = document.getElementById("profile-ring-fill");
+      if (ringFill) {
+        ringFill.style.strokeDashoffset = "40.68";
+        ringFill.style.transition = "stroke-dashoffset 1s ease-out";
       }
     }, 50);
   }
 
   // ── APP SIMULATOR: 3. SECRET SHOP APP ──
   const shopCatalog = [
-    { id: "laser_pen", name: "Laser Brandpen", desc: "Smelt stalen deursloten en barrières.", cost: 35 },
-    { id: "cloner", name: "Keycard Simulator v3", desc: "Draadloos dupliceren van toegangspassen.", cost: 60 },
-    { id: "tracker", name: "Nano GPS Bugs", desc: "Volg spionnen via RF signalen.", cost: 45 },
-    { id: "goggles", name: "Nachtkijker Mod", desc: "Upgrade nachtvisie classificatie.", cost: 110 }
+    { id: "laser_pen", name: "Laser Brandpen", desc: "Smelt stalen deursloten en barrières.", cost: 35, icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="18" x2="18" y2="6"></line><path d="M12 6h6v6"></path><circle cx="5" cy="19" r="1"></circle><path d="M18 6l3-3"></path><circle cx="21" cy="3" r="1"></circle></svg>` },
+    { id: "cloner", name: "Keycard Simulator v3", desc: "Draadloos dupliceren van toegangspassen.", cost: 60, icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect><line x1="7" y1="8" x2="17" y2="8"></line><line x1="7" y1="12" x2="13" y2="12"></line><rect x="7" y="16" width="3" height="2"></rect></svg>` },
+    { id: "tracker", name: "Nano GPS Bugs", desc: "Volg spionnen via RF signalen.", cost: 45, icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="14" rx="4"></rect><line x1="6" y1="6" x2="8" y2="7"></line><line x1="6" y1="10" x2="8" y2="10"></line><line x1="6" y1="14" x2="8" y2="13"></line><line x1="18" y1="6" x2="16" y2="7"></line><line x1="18" y1="10" x2="16" y2="10"></line><line x1="18" y1="14" x2="16" y2="13"></line><line x1="12" y1="16" x2="12" y2="22"></line></svg>` },
+    { id: "goggles", name: "Nachtkijker Mod", desc: "Upgrade nachtvisie classificatie.", cost: 110, icon: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="4"></circle><circle cx="18" cy="12" r="4"></circle><line x1="10" y1="12" x2="14" y2="12"></line><path d="M6 8a6 6 0 0 1 12 0"></path></svg>` }
   ];
 
   function renderShopApp() {
     let shopHTML = `
-      <div class="shop-header-stats">
-        <span class="shop-desc">Koop gadgets met verdiende Type Coins.</span>
-        <div class="shop-coins-counter">
-          <span id="shop-coins-val">${typingCoins}</span>
-          <div class="coin-dot"></div>
+      <div class="shop-catalog-layout">
+        <div class="shop-balance-bar">
+          <span class="shop-balance-title">GEHEIME UITRUSTINGEN WINKEL</span>
+          <div class="shop-balance-coins">
+            <span id="shop-coins-val">${typingCoins}</span>
+            <div class="coin-icon"></div>
+          </div>
         </div>
-      </div>
-      <div class="shop-grid">
+        <div class="shop-catalog-grid">
     `;
-    
+
     shopCatalog.forEach(item => {
       const isOwned = purchasedItems.has(item.id);
       shopHTML += `
-        <div class="shop-item">
-          <div class="shop-info">
-            <div class="shop-name">${item.name}</div>
-            <div class="shop-desc">${item.desc}</div>
+        <div class="gadget-card">
+          <div class="gadget-icon-wrapper">
+            ${item.icon}
           </div>
-          <div class="shop-action">
-            <span class="shop-cost">${item.cost} <div class="shop-cost-icon"></div></span>
-            <button class="shop-buy-btn ${isOwned ? 'purchased' : ''}" 
+          <div class="gadget-info">
+            <div class="gadget-name">${item.name}</div>
+            <div class="gadget-desc">${item.desc}</div>
+          </div>
+          <div class="gadget-buy-section">
+            <span class="gadget-price">${item.cost} <div class="gadget-price-dot"></div></span>
+            <button class="gadget-btn ${isOwned ? 'purchased' : ''}" 
                     data-shop-id="${item.id}" 
                     data-cost="${item.cost}" 
                     ${isOwned ? 'disabled' : ''}>
@@ -687,12 +828,15 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
     });
-    
-    shopHTML += `</div>`;
+
+    shopHTML += `
+        </div>
+      </div>
+    `;
+
     appBodyContent.innerHTML = shopHTML;
-    
-    // Bind buy event
-    appBodyContent.querySelectorAll(".shop-buy-btn").forEach(btn => {
+
+    appBodyContent.querySelectorAll(".gadget-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const itemId = btn.getAttribute("data-shop-id");
         const cost = parseInt(btn.getAttribute("data-cost"));
@@ -701,26 +845,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (purchasedItems.has(itemId)) return;
 
         if (typingCoins >= cost) {
-          // Process purchase
           typingCoins -= cost;
           purchasedItems.add(itemId);
           
-          // Sound chime
           playSynthBeep("success");
-          
-          // Re-render Shop header coins and button
+
           document.getElementById("shop-coins-val").textContent = typingCoins;
           btn.textContent = "GEKOCHT";
           btn.classList.add("purchased");
           btn.disabled = true;
-          
-          addConsoleLog(`GELUKT: ${item.name.toUpperCase()} GEKOCHT`, "green");
+
+          addConsoleLog(`GELUKT: ${item.name.toUpperCase()} AANGESCHAFT`, "green");
         } else {
-          // Denied
           playSynthBeep("denied");
           btn.classList.add("lock-shake");
           setTimeout(() => btn.classList.remove("lock-shake"), 400);
-          addConsoleLog("Mislukt: Niet genoeg coins", "red");
+          addConsoleLog("Mislukt: Saldo ontoereikend", "red");
         }
       });
     });
@@ -729,77 +869,112 @@ document.addEventListener("DOMContentLoaded", () => {
   // ── APP SIMULATOR: 4. GPS RADAR APP ──
   function renderGPSApp() {
     appBodyContent.innerHTML = `
-      <div class="radar-layout">
-        <div class="radar-scope-wrapper">
-          <div class="radar-grid-circle circle-1"></div>
-          <div class="radar-grid-circle circle-2"></div>
-          <div class="radar-grid-circle circle-3"></div>
-          <div class="radar-crosshair-h"></div>
-          <div class="radar-crosshair-v"></div>
-          <div class="radar-sweep-line"></div>
-          <!-- Scanning Targets -->
-          <div class="radar-target-dot radar-target-1"></div>
-          <div class="radar-target-dot radar-target-2"></div>
-          <div class="radar-target-dot radar-target-3"></div>
+      <div class="gps-radar-layout">
+        <div class="radar-display-panel">
+          <div class="radar-ring-outer" id="radar-ripple-container">
+            <div class="radar-ring-east">90°</div>
+            <div class="radar-ring-west">270°</div>
+            <div class="radar-grid-line radar-line-h"></div>
+            <div class="radar-grid-line radar-line-v"></div>
+            <div class="radar-grid-circle radar-circle-1"></div>
+            <div class="radar-grid-circle radar-circle-2"></div>
+            <div class="radar-grid-circle radar-circle-3"></div>
+            <div class="radar-sweep-bar"></div>
+            <div class="radar-blip radar-target-1" id="blip-1"></div>
+            <div class="radar-blip radar-target-2" id="blip-2"></div>
+            <div class="radar-blip radar-target-3" id="blip-3"></div>
+          </div>
         </div>
-        <div class="radar-stats">
-          <div class="radar-stat-row">
-            <span>Radar status:</span>
-            <span class="cyan-text">ONLINE</span>
+        <div class="radar-hud-readout">
+          <div class="hud-title">TACTISCHE SCANNER v8.2</div>
+          <div class="hud-list">
+            <div class="hud-item">
+              <span class="hud-item-name">TARGET ALPHA</span>
+              <span class="hud-item-dist" id="dist-target-1">142m</span>
+              <span class="hud-item-state active">BEWEEGT</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-item-name">TARGET BETA</span>
+              <span class="hud-item-dist" id="dist-target-2">418m</span>
+              <span class="hud-item-state active">STATISCH</span>
+            </div>
+            <div class="hud-item">
+              <span class="hud-item-name">TARGET GAMMA</span>
+              <span class="hud-item-dist" id="dist-target-3">815m</span>
+              <span class="hud-item-state active">STATIONAIR</span>
+            </div>
           </div>
-          <div class="radar-stat-row">
-            <span>Latitude:</span>
-            <span id="gps-lat">52.37021 °N</span>
-          </div>
-          <div class="radar-stat-row">
-            <span>Longitude:</span>
-            <span id="gps-lng">4.89516 °O</span>
-          </div>
-          <div class="radar-stat-row">
-            <span>Actieve Doelen:</span>
-            <span class="cyan-text">3 VERBINDINGEN</span>
-          </div>
-          <button id="btn-radar-ping" class="settings-action-btn" style="margin-top: 5px;">VERSTUUR PING-SIGNAAL</button>
+          <button id="btn-radar-ping" class="settings-action-btn" style="margin-top: 4px;">VERSTUUR SCAN-PING</button>
         </div>
       </div>
     `;
-    
-    // Animate target dots and GPS coordinate shifts
-    const gpsInterval = setInterval(() => {
-      const latSpan = document.getElementById("gps-lat");
-      const lngSpan = document.getElementById("gps-lng");
-      if (!latSpan || !lngSpan) {
-        clearInterval(gpsInterval);
+
+    const distTarget1 = document.getElementById("dist-target-1");
+    const distTarget2 = document.getElementById("dist-target-2");
+    const distTarget3 = document.getElementById("dist-target-3");
+
+    const driftInterval = setInterval(() => {
+      if (!distTarget1 || !distTarget2 || !distTarget3 || !document.getElementById("btn-radar-ping")) {
+        clearInterval(driftInterval);
         return;
       }
       
-      // Simulate minor noise in coordination measurements
-      const randomNoiseLat = (52.37021 + (Math.random() - 0.5) * 0.001).toFixed(5);
-      const randomNoiseLng = (4.89516 + (Math.random() - 0.5) * 0.0015).toFixed(5);
-      latSpan.textContent = `${randomNoiseLat} °N`;
-      lngSpan.textContent = `${randomNoiseLng} °O`;
-    }, 1500);
+      const val1 = Math.round(140 + (Math.random() - 0.5) * 8);
+      const val2 = Math.round(418 + (Math.random() - 0.5) * 4);
+      const val3 = Math.round(815 + (Math.random() - 0.5) * 6);
 
-    // Active Radar Ping sound & flash effect
+      distTarget1.textContent = `${val1}m`;
+      distTarget2.textContent = `${val2}m`;
+      distTarget3.textContent = `${val3}m`;
+    }, 1800);
+
     const btnPing = document.getElementById("btn-radar-ping");
     btnPing.addEventListener("click", () => {
       playSynthBeep("radar");
-      addConsoleLog("RADAR PING SIGNAL VERSTUURD", "cyan");
-      
-      const dots = appBodyContent.querySelectorAll(".radar-target-dot");
-      dots.forEach(dot => {
-        dot.style.transform = "translate(-50%, -50%) scale(2.5)";
-        dot.style.filter = "brightness(2) drop-shadow(0 0 10px var(--neon-cyan))";
-        dot.style.transition = "transform 0.1s, filter 0.1s";
-        
+      addConsoleLog("TACTISCH SCAN-PINGSIGNAAL EMITTEERT...", "cyan");
+
+      const blips = appBodyContent.querySelectorAll(".radar-blip");
+      blips.forEach(blip => {
+        blip.style.transform = "translate(-50%, -50%) scale(2.8)";
+        blip.style.filter = "brightness(2) drop-shadow(0 0 10px var(--neon-cyan))";
+        blip.style.transition = "transform 0.12s ease-out, filter 0.12s ease-out";
+
         setTimeout(() => {
-          dot.style.transform = "translate(-50%, -50%) scale(1)";
-          dot.style.filter = "none";
-          dot.style.transition = "transform 1.2s ease-out, filter 1.2s ease-out";
-        }, 120);
+          blip.style.transform = "translate(-50%, -50%) scale(1)";
+          blip.style.filter = "none";
+          blip.style.transition = "transform 1.4s ease-out, filter 1.4s ease-out";
+        }, 150);
       });
+
+      const container = document.getElementById("radar-ripple-container");
+      if (container) {
+        const ripple = document.createElement("div");
+        ripple.style.position = "absolute";
+        ripple.style.border = "2px solid var(--neon-cyan)";
+        ripple.style.borderRadius = "50%";
+        ripple.style.width = "0%";
+        ripple.style.height = "0%";
+        ripple.style.top = "50%";
+        ripple.style.left = "50%";
+        ripple.style.transform = "translate(-50%, -50%)";
+        ripple.style.pointerEvents = "none";
+        ripple.style.opacity = "0.8";
+        ripple.style.transition = "width 1.2s ease-out, height 1.2s ease-out, opacity 1.2s ease-out";
+        
+        container.appendChild(ripple);
+        ripple.offsetHeight; // Reflow
+
+        ripple.style.width = "100%";
+        ripple.style.height = "100%";
+        ripple.style.opacity = "0";
+
+        setTimeout(() => {
+          ripple.remove();
+        }, 1300);
+      }
     });
   }
+
 
   // ── APP SIMULATOR: 5. GENERIC MOCKUP PAGE ──
   function renderGenericMockup(key) {
