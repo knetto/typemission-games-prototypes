@@ -467,8 +467,6 @@ body::before {
   position: absolute;
   inset: 0;
   background:
-    /* Curved glass diagonal reflection */
-    linear-gradient(115deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 20%, transparent 20.1%, transparent 100%),
     /* CRT vignette */
     radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.35) 100%);
   pointer-events: none;
