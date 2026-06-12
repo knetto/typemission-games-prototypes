@@ -15,12 +15,72 @@ document.addEventListener("DOMContentLoaded", () => {
   // Simulated purchased item ids
   const purchasedItems = new Set();
   
-  // Simulated messages database
-  const messagesData = [
-    { id: 1, sender: "COMMANDANT HQ", time: "13:42", text: "Agent Corne, uw volgende missie is gereed. Open 'Lessen' om de inbraak-protocollen te bestuderen.", unread: true },
-    { id: 2, sender: "TECH AFDELING", time: "12:15", text: "We hebben de Spypad geüpgraded naar firmware v4.2. De Secret Shop is nu online gezet.", unread: true },
-    { id: 3, sender: "AGENT X", time: "Gisteren", text: "Pas op in Amsterdam Centrum. Codeblaster sleutels zijn gespot bij de coördinaten op uw GPS radar.", unread: true },
-    { id: 4, sender: "INLICHTINGENDIENST", time: "09-06", text: "De Lockpicking tests laten een stijging zien in type-snelheid. Uitstekend werk.", unread: false }
+  // Simulated contacts and messages database (matching original screenshot)
+  const contactsData = [
+    {
+      id: "qwerty",
+      name: "Qwerty",
+      avatar: "./assets/media__1781266267882.png", // Orange cat selfie
+      description: "Professor Qwerty is raketgeleerde, uitvinder, electrotechnicus, programmeur, alchemist en studeerde oosterse filosofie. Hij maakte nooit een studie af, maar noemt zich toch professor.",
+      unread: true,
+      messages: [
+        { sender: "other", type: "text", content: "Hallo Agent Corne! Heb je de inbraak-protocollen al bestudeerd?" },
+        { sender: "other", type: "image", content: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=400&auto=format&fit=crop" }, // Cursed cat with sunglasses
+        { sender: "self", type: "text", content: "Ja, professor. Ik ben momenteel bezig met de decodering." },
+        { sender: "other", type: "video", content: "./assets/video1.mp4" }, // Local video placeholder (Big Buck Bunny)
+        { sender: "other", type: "text", content: "Uitstekend. Hier is een instructievideo die je kan helpen." }
+      ]
+    },
+    {
+      id: "kyra",
+      name: "Kyra",
+      avatar: "./assets/media__1781266332686.png", // Smiling cat
+      description: "Kyra is de tech-expert en hacker van het team. Ze kraakt elk complex beveiligingssysteem in no-time en beheert onze beveiligde netwerkverbindingen.",
+      unread: true,
+      messages: [
+        { sender: "other", type: "text", content: "Ik heb zojuist de firewall van de tegenpartij omzeild. Zie deze screenshot:" },
+        { sender: "other", type: "image", content: "https://images.unsplash.com/photo-1560942485-b2a11cc13456?q=80&w=400&auto=format&fit=crop" }, // Cursed mannequin head
+        { sender: "self", type: "text", content: "Super gedaan Kyra! Stuur me de toegangscodes zodra je ze hebt." },
+        { sender: "other", type: "video", content: "./assets/video2.mp4" }, // Local video placeholder (Bear sliding)
+        { sender: "other", type: "text", content: "Hier is de videostream van hun serverruimte. Succes!" }
+      ]
+    },
+    {
+      id: "missj",
+      name: "Miss J",
+      avatar: "./assets/media__1781266345650.png", // Confused cat
+      description: "Miss J is het hoofd van de inlichtingendienst. Altijd geheimzinnig en zeer professioneel, zij coördineert alle active operaties in het veld.",
+      unread: true,
+      messages: [
+        { sender: "other", type: "text", content: "Agent Corne, we hebben een verdachte activiteit waargenomen in sector 7. Bekijk dit:" },
+        { sender: "other", type: "image", content: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400&auto=format&fit=crop" }, // Cursed glowing jack-o-lantern
+        { sender: "self", type: "text", content: "Ik ga er direct op af, Miss J." },
+        { sender: "other", type: "video", content: "./assets/video1.mp4" } // Local video placeholder
+      ]
+    },
+    {
+      id: "schoolhoofd",
+      name: "Schoolhoofd",
+      avatar: "./assets/media__1781266530662.png", // Cat with tongue out (new)
+      description: "Het Schoolhoofd coördineert de trainingen en oefeningen voor jonge geheim agenten op de HQ academie. Hij tolereert geen fouten en eist absolute perfectie.",
+      unread: false,
+      messages: [
+        { sender: "other", type: "text", content: "Je type-snelheid is uitstekend vooruitgegaan. Blijf oefenen met de losse letters!" },
+        { sender: "self", type: "text", content: "Dank u wel, meneer. Ik doe mijn best." }
+      ]
+    },
+    {
+      id: "mri",
+      name: "Mr. I",
+      avatar: "./assets/media__1781266546244.png", // Close-up cute cat (new)
+      description: "Niemand weet waar de I voor staat in zijn codenaam. Dat is een mysterie. Contact opnemen met Mr. I is onmogelijk. Hij neemt contact met jou op... als hij dat nodig vindt.",
+      unread: false,
+      messages: [
+        { sender: "other", type: "text", content: "De vijand heeft de gecodeerde bestanden verplaatst. Wees op je hoede." },
+        { sender: "self", type: "text", content: "Heb je een locatie?" },
+        { sender: "other", type: "text", content: "Nog niet. Ik neem contact op als ik meer weet." }
+      ]
+    }
   ];
 
   // ── DOM ELEMENTS ──
@@ -563,53 +623,192 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ── APP SIMULATOR: 1. MESSAGES APP ──
   function renderMessagesApp() {
-    let listHTML = `<div class="messages-container">`;
-    messagesData.forEach(msg => {
-      listHTML += `
-        <div class="msg-item ${msg.unread ? 'unread' : ''}" data-msg-id="${msg.id}">
-          <div class="msg-avatar">${msg.sender[0]}</div>
-          <div class="msg-content">
-            <div class="msg-meta">
-              <span class="msg-sender">${msg.sender}</span>
-              <span class="msg-time">${msg.time}</span>
-            </div>
-            <div class="msg-text">${msg.text}</div>
+    let listHTML = `
+      <div class="messages-container">
+        <!-- Left Contacts Panel -->
+        <div class="contacts-panel">
+          <div class="contacts-header">
+            <span class="contacts-status-dot"></span>
+            <span class="contacts-title">CONTACTEN</span>
           </div>
-          ${msg.unread ? '<div class="msg-unread-dot"></div>' : ''}
+          <div class="contacts-list">
+    `;
+
+    contactsData.forEach(contact => {
+      listHTML += `
+        <div class="contact-item ${contact.unread ? 'unread-contact' : ''}" data-contact-id="${contact.id}">
+          <img class="contact-avatar" src="${contact.avatar}" alt="${contact.name}">
+          <span class="contact-name">${contact.name}</span>
+          <span class="contact-chevron">&gt;</span>
         </div>
       `;
     });
-    listHTML += `</div>`;
+
+    listHTML += `
+          </div>
+        </div>
+
+        <!-- Right Conversation Panel -->
+        <div class="conversation-panel" id="conversation-panel-container">
+          <!-- Dynamically populated conversations go here -->
+        </div>
+      </div>
+    `;
+
     appBodyContent.innerHTML = listHTML;
-    
-    // Bind click reading message
-    document.querySelectorAll(".msg-item").forEach(item => {
+
+    // Default load first contact
+    if (contactsData.length > 0) {
+      loadConversation(contactsData[0].id);
+    }
+
+    // Bind contact clicks
+    document.querySelectorAll(".contact-item").forEach(item => {
       item.addEventListener("click", () => {
-        const msgId = parseInt(item.getAttribute("data-msg-id"));
-        const msg = messagesData.find(m => m.id === msgId);
-        
-        if (msg && msg.unread) {
-          msg.unread = false;
-          item.classList.remove("unread");
-          const dot = item.querySelector(".msg-unread-dot");
-          if (dot) dot.remove();
-          
-          // Decrement badges
-          messagesUnreadCount = Math.max(0, messagesUnreadCount - 1);
-          updateAppBadgeCount();
-          playSynthBeep("click");
-          addConsoleLog("BERICHT GELEZEN", "cyan");
+        const contactId = item.getAttribute("data-contact-id");
+        playSynthBeep("click");
+        loadConversation(contactId);
+      });
+    });
+  }
+
+  function loadConversation(contactId) {
+    const contact = contactsData.find(c => c.id === contactId);
+    if (!contact) return;
+
+    // Mark as read
+    if (contact.unread) {
+      contact.unread = false;
+      const item = document.querySelector(`.contact-item[data-contact-id="${contactId}"]`);
+      if (item) item.classList.remove("unread-contact");
+      updateAppBadgeCount();
+      addConsoleLog(`CHAT MET ${contact.name.toUpperCase()} GELEZEN`, "cyan");
+    }
+
+    // Set active item styling
+    document.querySelectorAll(".contact-item").forEach(item => {
+      if (item.getAttribute("data-contact-id") === contactId) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+
+    const panel = document.getElementById("conversation-panel-container");
+    if (!panel) return;
+
+    // Build right panel
+    let chatHTML = `
+      <!-- Profile Header -->
+      <div class="conversation-profile-header">
+        <div class="avatar-container">
+          <img class="conversation-profile-avatar" src="${contact.avatar}" alt="${contact.name}">
+        </div>
+        <div class="conversation-profile-info">
+          <div class="conversation-profile-name">${contact.name}</div>
+          <div class="conversation-profile-desc">${contact.description}</div>
+        </div>
+      </div>
+
+      <!-- Section Divider -->
+      <div class="conversation-section-divider">
+        <span class="conversation-section-title">${contact.name}</span>
+        <span class="conversation-section-line"></span>
+      </div>
+
+      <!-- Conversation History -->
+      <div class="conversation-history">
+    `;
+
+    if (contact.messages.length === 0) {
+      chatHTML += `<div class="conversation-empty">Geen nieuwe berichten...</div>`;
+    } else {
+      contact.messages.forEach(msg => {
+        const alignment = msg.sender === "self" ? "outgoing" : "incoming";
+        chatHTML += `
+          <div class="message-bubble ${alignment}">
+        `;
+
+        if (msg.type === "text") {
+          chatHTML += `<div class="message-text-card">${msg.content}</div>`;
+        } else if (msg.type === "image") {
+          chatHTML += `
+            <div class="message-image-card">
+              <img src="${msg.content}" alt="Gedeelde foto">
+            </div>
+          `;
+        } else if (msg.type === "video") {
+          chatHTML += `
+            <div class="message-video-card video-paused">
+              <video src="${msg.content}" controls style="width: 100%; height: 100%; object-fit: cover;"></video>
+              <div class="video-overlay-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="#ffffff">
+                  <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                  <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                </svg>
+              </div>
+            </div>
+          `;
         }
+
+        chatHTML += `
+          </div>
+        `;
+      });
+    }
+
+    chatHTML += `
+      </div>
+    `;
+
+    panel.innerHTML = chatHTML;
+
+    // Scroll conversation history to bottom
+    const historyContainer = panel.querySelector(".conversation-history");
+    if (historyContainer) {
+      historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+
+    // Bind video play/pause expansion
+    const videos = panel.querySelectorAll(".message-video-card video");
+    videos.forEach(vid => {
+      const card = vid.closest(".message-video-card");
+      if (!card) return;
+      
+      vid.addEventListener("play", () => {
+        card.classList.add("video-expanded");
+        card.classList.add("video-playing");
+        card.classList.remove("video-paused");
+        vid.style.objectFit = "contain";
+        // Delay scroll to allow transition layout to begin so height is calculated correctly
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 150);
+      });
+      
+      vid.addEventListener("pause", () => {
+        card.classList.remove("video-expanded");
+        card.classList.remove("video-playing");
+        card.classList.add("video-paused");
+        vid.style.objectFit = "cover";
+      });
+      
+      vid.addEventListener("ended", () => {
+        card.classList.remove("video-expanded");
+        card.classList.remove("video-playing");
+        card.classList.add("video-paused");
+        vid.style.objectFit = "cover";
       });
     });
   }
 
   function updateAppBadgeCount() {
+    const unreadCount = contactsData.filter(c => c.unread).length;
     const msgCard = document.querySelector('[data-app="messages"]');
     const badge = msgCard.querySelector(".app-badge");
     if (badge) {
-      if (messagesUnreadCount > 0) {
-        badge.textContent = messagesUnreadCount;
+      if (unreadCount > 0) {
+        badge.textContent = unreadCount;
         badge.style.display = "flex";
       } else {
         badge.style.display = "none";
