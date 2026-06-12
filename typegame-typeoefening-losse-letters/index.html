@@ -4,14 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TypeMission — Losse Letters Typeoefening</title>
-  <meta name="description" content="Typeoefening om losse letters blind te leren typen in de TypeMission stijl.">
+  <title>TypeMission — Typetraining</title>
+  <meta name="description" content="Typetraining om blind te leren typen in de TypeMission stijl.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2.5">
 </head>
 
 <body>
@@ -28,7 +28,7 @@
       <div class="game-branding">
         <div class="branding-text">
           <span class="brand-system">TYPEMISSION // TYPE TRAINING</span>
-          <h1 class="brand-title">TYPEMISSION // LOSSE LETTERS</h1>
+          <h1 class="brand-title" id="brandTitle">TYPEMISSION // TYPETRAINING</h1>
         </div>
       </div>
 
@@ -193,6 +193,25 @@
                   <div class="text-laser-line"></div>
                   <!-- The text to type is rendered letter-by-letter here -->
                   <div class="typing-text-line" id="typingTextLine"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── LOOSE LETTERS STAGE ── -->
+            <div class="loose-letters-stage" id="looseLettersStage" style="display: none;">
+              <div class="loose-letters-scanlines"></div>
+              
+              <!-- Stationary cyber scan gate in the exact center -->
+              <div class="scanner-gate">
+                <div class="gate-bracket top"></div>
+                <div class="gate-laser-line"></div>
+                <div class="gate-bracket bottom"></div>
+              </div>
+
+              <!-- Conveyor track of moving blocks -->
+              <div class="loose-letters-track-container">
+                <div class="loose-letters-track" id="looseLettersTrack">
+                  <!-- Dynamically populated character blocks -->
                 </div>
               </div>
             </div>
@@ -367,7 +386,11 @@
       </div>
 
       <!-- Command Right Spacer -->
-      <div class="command-group right"></div>
+      <div class="command-group right">
+        <button class="tactical-btn active" id="panelsToggleBtn" type="button">
+          <span class="tactical-led"></span>ZIJPANELEN: AAN
+        </button>
+      </div>
       
       <!-- Hidden SVG for backward compatibility with progressRingBar JS references -->
       <div style="display: none;">
@@ -437,7 +460,7 @@
 
           <!-- Card 5: Lesson Status -->
           <div class="dashboard-card">
-            <span class="card-title">STATUS OEFENING</span>
+            <span class="card-title" id="statusCardTitle">STATUS OEFENING</span>
             <div class="card-value-container" id="missionStatusContainer">
               <span class="status-success-badge" id="missionBadge">GESLAAGD</span>
             </div>
@@ -467,6 +490,41 @@
       </div>
     </div>
 
+    </div>
+  </div>
+
+  <!-- Version selection dropdown placed fixed in the viewport corner -->
+  <div class="tactical-select-wrapper" id="customVersionWrapper">
+    <select class="tactical-select" id="versionSelector" style="display: none;">
+      <option value="typetraining">VERSIE: TYPETRAINING</option>
+      <option value="typetoets">VERSIE: TYPE TOETS</option>
+      <option value="looseletters">VERSIE: LOSSE LETTER TRAINING</option>
+      <option value="looseletterstoets">VERSIE: LOSSE LETTER TOETS</option>
+    </select>
+
+    <button class="custom-select-trigger" id="customVersionTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+      <span class="custom-select-label" id="customVersionLabel">VERSIE: TYPETRAINING</span>
+      <span class="custom-select-arrow">▼</span>
+    </button>
+
+    <div class="custom-select-menu" id="customVersionMenu" role="listbox">
+      <div class="custom-select-header">[ SYSTEM MODE SELECT ]</div>
+      <div class="custom-select-option active" data-value="typetraining" role="option" aria-selected="true">
+        <span class="option-led"></span>
+        VERSIE: TYPETRAINING
+      </div>
+      <div class="custom-select-option" data-value="typetoets" role="option" aria-selected="false">
+        <span class="option-led"></span>
+        VERSIE: TYPE TOETS
+      </div>
+      <div class="custom-select-option" data-value="looseletters" role="option" aria-selected="false">
+        <span class="option-led"></span>
+        VERSIE: LOSSE LETTER TRAINING
+      </div>
+      <div class="custom-select-option" data-value="looseletterstoets" role="option" aria-selected="false">
+        <span class="option-led"></span>
+        VERSIE: LOSSE LETTER TOETS
+      </div>
     </div>
   </div>
 

@@ -217,6 +217,8 @@ let keyboardLayout = "azerty"; // Default Belgian AZERTY
 let keyboardVisible = true;
 let lettersVisible = false; // Blind mode active by default
 let isInteracting = false; // Flag to track when user is clicking controls/dropdowns
+let currentVersion = "typetraining"; // 'typetraining' or 'typetoets'
+let panelsVisible = true;
 
 // Timing & evaluation
 let running = false;
@@ -273,6 +275,8 @@ const typingInput = document.getElementById("typingInput");
 const focusOverlay = document.getElementById("focusOverlay");
 const keyboardContainer = document.getElementById("keyboardContainer");
 const keyboardSection = document.getElementById("keyboardSection");
+const looseLettersStage = document.getElementById("looseLettersStage");
+const looseLettersTrack = document.getElementById("looseLettersTrack");
 
 // Buttons & labels
 const currentLessonDisplay = document.getElementById("currentLessonDisplay");
@@ -371,6 +375,170 @@ window.addEventListener("DOMContentLoaded", () => {
     typingInput.focus();
   });
 
+  // Version Selector & Side Panels toggle (Oefening / Toets version)
+  const versionSelector = document.getElementById("versionSelector");
+  const brandTitle = document.getElementById("brandTitle");
+  const workspaceEl = document.querySelector(".practice-main-workspace");
+  const panelsToggleBtn = document.getElementById("panelsToggleBtn");
+  const viewportContentEl = document.querySelector(".viewport-content");
+  const terminalTitle = document.querySelector(".terminal-title");
+  const terminalPing = document.getElementById("terminalPing");
+
+  // Custom select elements
+  const customVersionTrigger = document.getElementById("customVersionTrigger");
+  const customVersionMenu = document.getElementById("customVersionMenu");
+  const customVersionLabel = document.getElementById("customVersionLabel");
+  const customOptions = document.querySelectorAll(".custom-select-option");
+
+  function syncCustomDropdown(value) {
+    if (customVersionLabel) {
+      if (value === "looseletterstoets") {
+        customVersionLabel.textContent = "VERSIE: LOSSE LETTER TOETS";
+      } else if (value === "looseletters") {
+        customVersionLabel.textContent = "VERSIE: LOSSE LETTER TRAINING";
+      } else if (value === "typetoets") {
+        customVersionLabel.textContent = "VERSIE: TYPE TOETS";
+      } else {
+        customVersionLabel.textContent = "VERSIE: TYPETRAINING";
+      }
+    }
+    customOptions.forEach(opt => {
+      const active = (opt.dataset.value === value);
+      opt.classList.toggle("active", active);
+      opt.setAttribute("aria-selected", active);
+    });
+  }
+
+  function openDropdown() {
+    if (customVersionMenu) customVersionMenu.classList.add("open");
+    if (customVersionTrigger) {
+      customVersionTrigger.classList.add("expanded");
+      customVersionTrigger.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  function closeDropdown() {
+    if (customVersionMenu) customVersionMenu.classList.remove("open");
+    if (customVersionTrigger) {
+      customVersionTrigger.classList.remove("expanded");
+      customVersionTrigger.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function toggleDropdown() {
+    const isOpen = customVersionMenu && customVersionMenu.classList.contains("open");
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
+  }
+
+  function updateLayout() {
+    const isToets = (currentVersion === "typetoets" || currentVersion === "looseletterstoets");
+    const isLooseLetters = (currentVersion === "looseletters" || currentVersion === "looseletterstoets");
+    
+    // Toggle modes on viewport and workspace
+    if (viewportContentEl) viewportContentEl.classList.toggle("toets-mode", isToets);
+    if (workspaceEl) {
+      workspaceEl.classList.toggle("toets-mode", isToets);
+      workspaceEl.classList.toggle("looseletters-mode", isLooseLetters);
+    }
+    
+    // Toggle panels-hidden on workspace (only in training mode)
+    if (workspaceEl) workspaceEl.classList.toggle("panels-hidden", !isToets && !isLooseLetters && !panelsVisible);
+    
+    // Update labels and contents
+    if (brandTitle) {
+      if (currentVersion === "looseletterstoets") {
+        brandTitle.textContent = "TYPEMISSION // LOSSE LETTER TOETS";
+      } else if (currentVersion === "looseletters") {
+        brandTitle.textContent = "TYPEMISSION // LOSSE LETTER TRAINING";
+      } else if (currentVersion === "typetoets") {
+        brandTitle.textContent = "TYPEMISSION // TYPE TOETS";
+      } else {
+        brandTitle.textContent = "TYPEMISSION // TYPETRAINING";
+      }
+    }
+    
+    // Sync selector value
+    if (versionSelector) versionSelector.value = currentVersion;
+    
+    // Sync custom dropdown
+    syncCustomDropdown(currentVersion);
+    
+    // Sync panels toggle button (only active/visible when panels are on in typetraining)
+    const btnActive = !isToets && !isLooseLetters && panelsVisible;
+    if (panelsToggleBtn) {
+      if (isLooseLetters || isToets) {
+        panelsToggleBtn.style.display = "none";
+      } else {
+        panelsToggleBtn.style.display = "";
+        panelsToggleBtn.classList.toggle("active", btnActive);
+        panelsToggleBtn.innerHTML = `<span class="tactical-led"></span>ZIJPANELEN: ${btnActive ? "AAN" : "UIT"}`;
+      }
+    }
+
+    // Load or switch letter prompt types accordingly
+    if (isLooseLetters) {
+      renderLooseLetters();
+    } else {
+      renderPrompt();
+    }
+  }
+
+  // Initialize layout based on default variables
+  updateLayout();
+
+  // Custom Dropdown Event Listeners
+  if (customVersionTrigger) {
+    customVersionTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+  }
+
+  customOptions.forEach(option => {
+    option.addEventListener("click", (e) => {
+      const val = option.dataset.value;
+      currentVersion = val;
+      updateLayout();
+      closeDropdown();
+      typingInput.focus();
+    });
+  });
+
+  // Close dropdown on click outside
+  document.addEventListener("click", (e) => {
+    if (customVersionTrigger && customVersionMenu && 
+        !customVersionTrigger.contains(e.target) && 
+        !customVersionMenu.contains(e.target)) {
+      closeDropdown();
+    }
+  });
+
+  // Close dropdown on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDropdown();
+    }
+  });
+
+  // Fallback for native select change if it gets triggered programmatically
+  versionSelector.addEventListener("change", () => {
+    currentVersion = versionSelector.value;
+    updateLayout();
+    typingInput.focus();
+  });
+
+  panelsToggleBtn.addEventListener("click", () => {
+    if (currentVersion !== "typetoets" && currentVersion !== "looseletterstoets") {
+      panelsVisible = !panelsVisible;
+      updateLayout();
+    }
+    typingInput.focus();
+  });
+
   // Modal actions
   retryLessonBtn.addEventListener("click", () => {
     resultsOverlay.hidden = true;
@@ -385,7 +553,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Track if clicking controls or header to prevent immediate blur lock overlay
   window.addEventListener("mousedown", (e) => {
-    if (e.target.closest(".game-header") || e.target.closest(".bottom-controls-bar") || e.target.closest(".results-overlay")) {
+    if (e.target.closest(".game-header") || e.target.closest(".bottom-controls-bar") || e.target.closest(".results-overlay") || e.target.closest(".tactical-select-wrapper")) {
       isInteracting = true;
     }
   });
@@ -399,6 +567,8 @@ window.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", (e) => {
     const isInteractive = e.target.closest("button") || 
                           e.target.closest("textarea") || 
+                          e.target.closest("select") || 
+                          e.target.closest("option") || 
                           e.target.closest("a") || 
                           e.target.closest(".results-overlay");
     if (!isInteractive && !testFinished) {
@@ -559,7 +729,11 @@ function loadLine() {
   cursorIndex = 0;
   typedStates = Array(currentTextLine.length).fill(null);
 
-  renderPrompt();
+  if (currentVersion === "looseletters" || currentVersion === "looseletterstoets") {
+    renderLooseLetters();
+  } else {
+    renderPrompt();
+  }
   highlightTargetKey();
   highlightTargetFinger();
   updateProgressVisuals();
@@ -887,7 +1061,11 @@ function registerCharSuccess() {
       finishLesson();
     }
   } else {
-    renderPrompt();
+    if (currentVersion === "looseletters" || currentVersion === "looseletterstoets") {
+      updateLooseLettersVisuals();
+    } else {
+      renderPrompt();
+    }
     highlightTargetKey();
     highlightTargetFinger();
     updateProgressVisuals();
@@ -906,7 +1084,11 @@ function registerCharFail() {
   playSynthSound("error");
   triggerVisualizerPulse(true);
   updateLiveHUD();
-  renderPrompt();
+  if (currentVersion === "looseletters" || currentVersion === "looseletterstoets") {
+    updateLooseLettersVisuals();
+  } else {
+    renderPrompt();
+  }
   highlightTargetFinger();
 
   // Glitch shake feedback on error
@@ -1044,7 +1226,12 @@ function calculateScores(elapsed) {
   rankBadge.textContent = rank;
 
   // Results Title & Badge
-  resultTitle.textContent = "OEFENING VOLTOOID!";
+  const isToets = (currentVersion === "typetoets" || currentVersion === "looseletterstoets");
+  resultTitle.textContent = isToets ? "TOETS VOLTOOID!" : "TRAINING VOLTOOID!";
+  const statusCardTitle = document.getElementById("statusCardTitle");
+  if (statusCardTitle) {
+    statusCardTitle.textContent = isToets ? "STATUS TOETS" : "STATUS TRAINING";
+  }
   missionStatusContainer.innerHTML = '<span class="status-success-badge" id="missionBadge">GESLAAGD</span>';
   completeAccuracy.className = "card-main-value highlight-green";
 
@@ -1575,5 +1762,88 @@ function triggerVisualizerPulse(isError = false, isOffBeat = false) {
     targetAmplitude = 28;
     targetFrequency = 0.09;
   }
+}
+
+// ── LOOSE LETTERS CONVEYOR SYSTEM HELPERS ──
+function getFingerNameDutch(fingerClass) {
+  switch (fingerClass) {
+    case "finger-lp": return "L. Pink";
+    case "finger-lr": return "L. Ring";
+    case "finger-lm": return "L. Middel";
+    case "finger-li": return "L. Wijs";
+    case "finger-rp": return "R. Pink";
+    case "finger-rr": return "R. Ring";
+    case "finger-rm": return "R. Middel";
+    case "finger-ri": return "R. Wijs";
+    case "finger-t": return "Duim";
+    default: return "";
+  }
+}
+
+function renderLooseLetters() {
+  if (!looseLettersTrack) return;
+  looseLettersTrack.innerHTML = "";
+  
+  for (let i = 0; i < currentTextLine.length; i++) {
+    const char = currentTextLine[i];
+    const blockEl = document.createElement("div");
+    blockEl.className = "loose-letter-block";
+    blockEl.dataset.index = i;
+    
+    const fingerClass = getFingerClass(char);
+    if (fingerClass) {
+      blockEl.classList.add(fingerClass);
+    }
+    
+    const led = document.createElement("div");
+    led.className = "block-led";
+    
+    const charSpan = document.createElement("span");
+    charSpan.className = "block-char";
+    if (char === " ") {
+      charSpan.textContent = "␣";
+    } else if (char === "\n") {
+      charSpan.innerHTML = '<span class="enter-symbol">↵</span>';
+    } else {
+      charSpan.textContent = char.toUpperCase();
+    }
+    
+    const hint = document.createElement("div");
+    hint.className = "block-finger-hint";
+    hint.textContent = getFingerNameDutch(fingerClass);
+    
+    blockEl.appendChild(led);
+    blockEl.appendChild(charSpan);
+    blockEl.appendChild(hint);
+    
+    looseLettersTrack.appendChild(blockEl);
+  }
+  
+  updateLooseLettersVisuals();
+}
+
+function updateLooseLettersVisuals() {
+  if (!looseLettersTrack) return;
+  const blocks = looseLettersTrack.querySelectorAll(".loose-letter-block");
+  blocks.forEach((block, idx) => {
+    block.classList.remove("active", "status-correct", "status-wrong");
+    if (idx === cursorIndex) {
+      block.classList.add("active");
+      if (typedStates[idx] === "wrong") {
+        block.classList.remove("status-wrong");
+        block.offsetHeight; // force reflow to trigger CSS shake animation again
+        block.classList.add("status-wrong");
+      }
+    } else if (idx < cursorIndex) {
+      block.classList.add("status-correct");
+    }
+  });
+
+  const blockWidth = 80;
+  const blockGap = 18;
+  const transformX = -1 * (cursorIndex * (blockWidth + blockGap) + (blockWidth / 2));
+  
+  looseLettersTrack.style.left = "50%";
+  looseLettersTrack.style.transform = `translateX(${transformX}px)`;
 }
 
