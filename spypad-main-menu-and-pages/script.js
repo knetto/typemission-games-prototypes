@@ -260,59 +260,123 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 15000);
   }
 
-  // ── BACKGROUND CANVAS (CYBER RAIN GRID) ──
+  // ── BACKGROUND CANVAS (INTERACTIVE DOTTED WAVE) ──
   const bgCanvas = document.getElementById("matrix-canvas");
   const bgCtx = bgCanvas.getContext("2d");
   
   let width = (bgCanvas.width = window.innerWidth);
   let height = (bgCanvas.height = window.innerHeight);
-  
-  window.addEventListener("resize", () => {
-    width = (bgCanvas.width = window.innerWidth);
-    height = (bgCanvas.height = window.innerHeight);
-    columns = Math.floor(width / fontSize);
-    drops.fill(1);
+
+  const dotSpacing = 28;
+  let cols = Math.floor(width / dotSpacing) + 1;
+  let rows = Math.floor(height / dotSpacing) + 1;
+  let time = 0;
+
+  const mouse = { x: -9999, y: -9999, targetX: -9999, targetY: -9999, active: false };
+  const easeFactor = 0.15;
+
+  window.addEventListener("mousemove", (e) => {
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
+    mouse.active = true;
   });
 
-  const columnsStr = "1010101010101010010110100101010110SPYPADTYPEMISSIONCLASSCLASSIFIED01";
-  const fontSize = 14;
-  let columns = Math.floor(width / fontSize);
-  const drops = Array(columns).fill(1);
+  window.addEventListener("mouseleave", () => { mouse.active = false; });
 
-  function drawMatrix() {
-    bgCtx.fillStyle = "rgba(5, 2, 7, 0.06)";
+  window.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      mouse.targetX = e.touches[0].clientX;
+      mouse.targetY = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener("touchend", () => { mouse.active = false; });
+
+  function drawDottedBackground() {
+    bgCtx.fillStyle = "#050206";
     bgCtx.fillRect(0, 0, width, height);
-    
-    bgCtx.font = `${fontSize}px monospace`;
-    
-    // Grid nodes glow based on active theme
-    let dropColor = "rgba(0, 240, 255, 0.18)"; // Light/Dark cyan
-    if (activeTheme === "toxic") dropColor = "rgba(154, 215, 68, 0.18)";
-    if (activeTheme === "sunset") dropColor = "rgba(255, 98, 177, 0.18)";
-    
-    bgCtx.fillStyle = dropColor;
+    time += 0.02;
 
-    for (let i = 0; i < drops.length; i++) {
-      const text = columnsStr[Math.floor(Math.random() * columnsStr.length)];
-      bgCtx.fillText(text, i * fontSize, drops[i] * fontSize);
-      
-      if (drops[i] * fontSize > height && Math.random() > 0.975) {
-        drops[i] = 0;
+    if (mouse.active) {
+      if (mouse.x === -9999) {
+        mouse.x = mouse.targetX;
+        mouse.y = mouse.targetY;
+      } else {
+        mouse.x += (mouse.targetX - mouse.x) * easeFactor;
+        mouse.y += (mouse.targetY - mouse.y) * easeFactor;
       }
-      drops[i]++;
+    } else {
+      if (mouse.x !== -9999) {
+        mouse.x += (-9999 - mouse.x) * 0.1;
+        mouse.y += (-9999 - mouse.y) * 0.1;
+        if (Math.abs(mouse.x + 9999) < 1) {
+          mouse.x = -9999;
+          mouse.y = -9999;
+        }
+      }
+    }
+
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        const baseX = c * dotSpacing;
+        const baseY = r * dotSpacing;
+        const phase = c * 0.15 + r * 0.15 - time;
+        const waveVal = Math.sin(phase);
+        const dx = Math.cos(phase) * 3;
+        const dy = waveVal * 6;
+
+        let x = baseX + dx;
+        let y = baseY + dy;
+        let radius = 2.0;
+        let opacity = 0.14 + (waveVal + 1) * 0.05;
+
+        if (mouse.x !== -9999) {
+          const dxMouse = x - mouse.x;
+          const dyMouse = y - mouse.y;
+          const dist = Math.hypot(dxMouse, dyMouse);
+          const maxDist = 150;
+
+          if (dist < maxDist) {
+            const force = (maxDist - dist) / maxDist;
+            const pushAngle = Math.atan2(dyMouse, dxMouse);
+            const pushDist = force * 24;
+            x += Math.cos(pushAngle) * pushDist;
+            y += Math.sin(pushAngle) * pushDist;
+            radius += force * 1.5;
+            opacity += force * 0.35;
+          }
+        }
+
+        bgCtx.fillStyle = `rgba(154, 215, 68, ${opacity})`;
+        bgCtx.beginPath();
+        bgCtx.arc(x, y, radius, 0, Math.PI * 2);
+        bgCtx.fill();
+      }
     }
   }
-  
-  // Slow down loop for aesthetic matrix rain speed
-  let matrixTimer = 0;
-  function loopMatrix() {
-    requestAnimationFrame(loopMatrix);
-    matrixTimer++;
-    if (matrixTimer % 2 === 0) {
-      drawMatrix();
+
+  let lastTime = 0;
+  const fps = 30;
+  const interval = 1000 / fps;
+
+  function loopDottedBackground(now) {
+    requestAnimationFrame(loopDottedBackground);
+    const delta = now - lastTime;
+    if (delta > interval) {
+      lastTime = now - (delta % interval);
+      drawDottedBackground();
     }
   }
-  loopMatrix();
+  requestAnimationFrame(loopDottedBackground);
+
+  window.addEventListener("resize", () => {
+    width = bgCanvas.width = window.innerWidth;
+    height = bgCanvas.height = window.innerHeight;
+    cols = Math.floor(width / dotSpacing) + 1;
+    rows = Math.floor(height / dotSpacing) + 1;
+  });
+
 
   // ── RIGHT STATUS PANEL DRAWING: OSCILLOSCOPE ──
   vssCanvas.width = 110;
