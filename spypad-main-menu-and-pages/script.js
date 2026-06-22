@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let appState = "dashboard"; // "dashboard" or "app"
   let messagesUnreadCount = 3;
   let activeTheme = "light";
+  let agentCodename = "CORNE";
+  let activeGender = "jongen"; // "meisje" or "jongen"
   
   // Simulated purchased item ids
   const purchasedItems = new Set();
@@ -844,10 +846,19 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.add("video-playing");
         card.classList.remove("video-paused");
         vid.style.objectFit = "contain";
-        // Delay scroll to allow transition layout to begin so height is calculated correctly
-        setTimeout(() => {
-          card.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 150);
+        
+        // Track the card's expansion frame-by-frame to keep it fully in view
+        let elapsed = 0;
+        const intervalTime = 30; // ~33 fps
+        const totalDuration = 500; // covers the 400ms transition + buffer
+        
+        const scrollTracker = setInterval(() => {
+          card.scrollIntoView({ block: "end" });
+          elapsed += intervalTime;
+          if (elapsed >= totalDuration) {
+            clearInterval(scrollTracker);
+          }
+        }, intervalTime);
       });
       
       vid.addEventListener("pause", () => {
@@ -884,65 +895,332 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderProfileApp() {
     appBodyContent.innerHTML = `
       <div class="profile-dashboard">
-        <div class="profile-left">
-          <div class="profile-avatar-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
-            </svg>
-            <div class="profile-badge-lvl">4</div>
+        <!-- Column 1: Progress & Stats (Proces) -->
+        <div class="profile-column profile-col-1">
+          <div class="profile-col-header">DAG 4 - LEVEL 4</div>
+          <div class="profile-col-body">
+            
+            <!-- Golden Badge Shield -->
+            <div class="profile-badge-wrapper">
+              <div class="profile-shield-gold">
+                <!-- Champagne Gold 3D Shield Badge SVG -->
+                <svg viewBox="0 0 100 100" class="shield-svg">
+                  <defs>
+                    <!-- Champagne Gold Gradients -->
+                    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#fff8df" />
+                      <stop offset="20%" stop-color="#e9d39c" />
+                      <stop offset="40%" stop-color="#bc9c4e" />
+                      <stop offset="60%" stop-color="#fdf1c8" />
+                      <stop offset="80%" stop-color="#b89643" />
+                      <stop offset="100%" stop-color="#735c24" />
+                    </linearGradient>
+                    <radialGradient id="shield-body-grad" cx="50%" cy="30%" r="65%">
+                      <stop offset="0%" stop-color="#fefbf2" />
+                      <stop offset="40%" stop-color="#ebdbb2" />
+                      <stop offset="75%" stop-color="#c4ad73" />
+                      <stop offset="95%" stop-color="#8f763a" />
+                      <stop offset="100%" stop-color="#56461f" />
+                    </radialGradient>
+                    <!-- Glossy Reflection Sheen -->
+                    <linearGradient id="sheen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.4)" />
+                      <stop offset="45%" stop-color="rgba(255, 255, 255, 0.08)" />
+                      <stop offset="100%" stop-color="rgba(255, 255, 255, 0)" />
+                    </linearGradient>
+                    <!-- Ribbon Gold Gradient -->
+                    <linearGradient id="ribbon-gold-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#fff8db" />
+                      <stop offset="50%" stop-color="#dec06e" />
+                      <stop offset="100%" stop-color="#93752c" />
+                    </linearGradient>
+                    <linearGradient id="ribbon-dark-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#6e5015" />
+                      <stop offset="100%" stop-color="#3b2b07" />
+                    </linearGradient>
+                    <!-- Hat Gold Gradient -->
+                    <linearGradient id="hat-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#fffcf2" />
+                      <stop offset="30%" stop-color="#f2e2be" />
+                      <stop offset="70%" stop-color="#c8a85c" />
+                      <stop offset="100%" stop-color="#806220" />
+                    </linearGradient>
+                    <linearGradient id="hat-band-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#80621b" />
+                      <stop offset="100%" stop-color="#463409" />
+                    </linearGradient>
+                    <!-- Drop Shadows -->
+                    <filter id="gold-glow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                    <filter id="ribbon-shadow" x="-10%" y="-10%" width="120%" height="120%">
+                      <feDropShadow dx="0" dy="2.5" stdDeviation="1.5" flood-opacity="0.45" />
+                    </filter>
+                  </defs>
+                  
+                  <!-- Outer Shield (3D Bevel Bezel Border) -->
+                  <path d="M 50 12 C 38 4, 25 10, 10 10 C 8 36, 12 62, 26 82 C 38 94, 50 98, 50 98 C 50 98, 62 94, 74 82 C 88 62, 92 36, 90 10 C 75 10, 62 4, 50 12 Z" fill="url(#gold-grad)" stroke="#ffffff" stroke-width="1.2" filter="url(#gold-glow)"/>
+                  
+                  <!-- Inner Shield (Main metallic body inlay) -->
+                  <path d="M 50 18 C 42 14, 28 12, 15 16 C 13 38, 15 62, 28 78 C 36 88, 46 93, 50 93 C 54 93, 64 88, 72 78 C 85 62, 87 38, 85 16 C 72 12, 58 14, 50 18 Z" fill="url(#shield-body-grad)" stroke="#8e7024" stroke-width="1"/>
+                  
+                  <!-- Sheen Highlight overlay (Gloss reflection) -->
+                  <path d="M 50 18 C 38 18, 28 22, 20 28 C 17 38, 17 58, 28 78 C 38 88, 50 93, 50 93 Z" fill="url(#sheen-grad)" opacity="0.8" pointer-events="none"/>
+                  
+                  <!-- Golden Fedora Hat (Agent Symbol) -->
+                  <g id="fedora-hat" filter="url(#ribbon-shadow)">
+                    <!-- Hat Crown -->
+                    <path d="M 32 39 C 32.5 30, 35.5 18, 41 18 C 44 18, 47 21, 50 21 C 53 21, 56 18, 59 18 C 64.5 18, 67.5 30, 68 39 Z" fill="url(#hat-gold-grad)" stroke="#806220" stroke-width="0.75"/>
+                    
+                    <!-- Crown Crease Shadow Overlay -->
+                    <path d="M 41 18 C 44 18, 47 21, 50 21 C 53 21, 56 18, 59 18 C 55 22, 45 22, 41 18 Z" fill="#614a16" opacity="0.4"/>
+                    <path d="M 50 21 C 50 21, 48 27, 48 35 C 48 35, 52 35, 52 21 Z" fill="#ffffff" opacity="0.15"/>
+                    
+                    <!-- Hatband (Bronze/Gold ribbon) -->
+                    <path d="M 32.2 37 C 44 39, 56 39, 67.8 37 L 67.5 39.5 C 56 41.5, 44 41.5, 32.5 39.5 Z" fill="url(#hat-band-grad)" stroke="#463409" stroke-width="0.5"/>
+                    
+                    <!-- Hat Brim -->
+                    <path d="M 18 39 C 28 37, 42 39, 50 39 C 58 39, 72 37, 82 39 C 84 40.5, 83 42.5, 80 43 C 68 42, 58 42.5, 50 42.5 C 42 42.5, 32 42, 20 43 C 17 42.5, 16 40.5, 18 39 Z" fill="url(#hat-gold-grad)" stroke="#806220" stroke-width="0.75"/>
+                    
+                    <!-- Brim Highlight (Top edge reflection) -->
+                    <path d="M 20 39.5 C 29 38, 42 40, 50 40 C 58 40, 71 38, 80 39.5" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.5"/>
+                  </g>
+                  
+                  <!-- 3D Ribbon Banner Group wrapping across the shield -->
+                  <g id="ribbon-banner" filter="url(#ribbon-shadow)">
+                    <!-- Left wing (back tail) -->
+                    <path d="M 20 54 L 10 54 L 14 59 L 10 64 L 20 64 Z" fill="url(#ribbon-gold-grad)" stroke="#9a7a28" stroke-width="0.75"/>
+                    <!-- Left fold shadow -->
+                    <path d="M 20 53 L 20 63 L 15 57 Z" fill="url(#ribbon-dark-grad)"/>
+                    
+                    <!-- Right wing (back tail) -->
+                    <path d="M 80 54 L 90 54 L 86 59 L 90 64 L 80 64 Z" fill="url(#ribbon-gold-grad)" stroke="#9a7a28" stroke-width="0.75"/>
+                    <!-- Right fold shadow -->
+                    <path d="M 80 53 L 80 63 L 85 57 Z" fill="url(#ribbon-dark-grad)"/>
+                    
+                    <!-- Center plaque (arched front banner) -->
+                    <path d="M 16 51 C 33 48, 67 48, 84 51 L 84 62 C 67 59, 33 59, 16 62 Z" fill="url(#ribbon-gold-grad)" stroke="#ffeeb4" stroke-width="1.2"/>
+                    
+                    <!-- Banner text -->
+                    <text x="50" y="58" text-anchor="middle" fill="#ffffff" font-family="'Orbitron', sans-serif" font-size="7" font-weight="900" letter-spacing="0.8" text-shadow="0 1px 2.5px rgba(0,0,0,0.85)">BEGINNER</text>
+                  </g>
+                  
+                  <!-- 3D Metallic Star -->
+                  <g id="star-3d" transform="translate(0, 0)">
+                    <!-- Star Shape -->
+                    <polygon points="50,68 53,74.5 60,74.5 54.5,78.5 56.5,85 50,81 43.5,85 45.5,78.5 40,74.5 47,74.5" fill="url(#gold-grad)" stroke="#8e7024" stroke-width="0.75" />
+                    
+                    <!-- 3D Facets (triangles sharing the center at 50, 76.5) -->
+                    <polygon points="50,76.5 50,68 47,74.5" fill="#ffffff" opacity="0.3" />
+                    <polygon points="50,76.5 50,68 53,74.5" fill="#000000" opacity="0.3" />
+                    
+                    <polygon points="50,76.5 60,74.5 53,74.5" fill="#ffffff" opacity="0.25" />
+                    <polygon points="50,76.5 60,74.5 54.5,78.5" fill="#000000" opacity="0.35" />
+                    
+                    <polygon points="50,76.5 56.5,85 54.5,78.5" fill="#ffffff" opacity="0.2" />
+                    <polygon points="50,76.5 56.5,85 50,81" fill="#000000" opacity="0.4" />
+                    
+                    <polygon points="50,76.5 43.5,85 50,81" fill="#ffffff" opacity="0.35" />
+                    <polygon points="50,76.5 43.5,85 45.5,78.5" fill="#000000" opacity="0.2" />
+                    
+                    <polygon points="50,76.5 40,74.5 45.5,78.5" fill="#ffffff" opacity="0.4" />
+                    <polygon points="50,76.5 40,74.5 47,74.5" fill="#000000" opacity="0.25" />
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="badge-label">BEGINNER</div>
+            
+            <!-- Stats (Proces) -->
+            <div class="proces-stats-box">
+              <div class="proces-title">PROCES</div>
+              <div class="proces-rows">
+                <div class="proces-row text-green">
+                  <span class="stat-label">Score</span>
+                  <span class="stat-value">1920 ★</span>
+                </div>
+                <div class="proces-row text-yellow">
+                  <span class="stat-label">Punten</span>
+                  <span class="stat-value">${typingCoins} 🪙</span>
+                </div>
+                <div class="proces-row text-red">
+                  <span class="stat-label">Aanslagen</span>
+                  <span class="stat-value">120 APM</span>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div class="profile-username">Agent Corne</div>
-          <div class="profile-rank">Elite Decryptor</div>
         </div>
-        <div class="profile-right">
-          
-          <div class="metric-bar-group">
-            <div class="metric-header">
-              <span>Missions XP</span>
-              <span class="metric-val">82%</span>
-            </div>
-            <div class="metric-progress-outer">
-              <div class="metric-progress-fill profile-xp-fill" style="width: 0%;"></div>
+
+        <!-- Column 2: Credentials (Super Spy Data) -->
+        <div class="profile-column profile-col-2">
+          <div class="profile-col-header">SUPER SPY DATA</div>
+          <div class="profile-col-body">
+            <div class="spy-data-form">
+              <div class="form-group">
+                <label for="codename-input">CODENAAM</label>
+                <input type="text" id="codename-input" class="cyber-input" value="${agentCodename}" autocomplete="off" maxlength="15" placeholder="codenaam" />
+              </div>
+              
+              <button id="btn-save-codename" class="profile-outline-btn btn-save">
+                OPSLAAN
+              </button>
             </div>
           </div>
+        </div>
 
-          <div class="metric-bar-group">
-            <div class="metric-header">
-              <span>Type Snelheid</span>
-              <span class="metric-val">84 WPM</span>
+        <!-- Column 3: Avatar Disguise (Vermomming) -->
+        <div class="profile-column profile-col-3">
+          <div class="profile-col-header">VERMOMMING</div>
+          <div class="profile-col-body">
+            
+            <button id="btn-profile-to-shop" class="profile-outline-btn btn-to-shop">
+              NAAR SHOP
+            </button>
+
+            <!-- Silhouette Avatar Preview (Hologram Scan Style) -->
+            <div class="avatar-silhouette-container">
+              
+              <!-- Female Silhouette -->
+              <svg viewBox="0 0 100 100" class="avatar-svg avatar-female ${activeGender === 'meisje' ? 'active' : ''}">
+                <defs>
+                  <linearGradient id="hologram-grad-female" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="rgba(0, 240, 255, 0.25)" />
+                    <stop offset="60%" stop-color="rgba(0, 240, 255, 0.08)" />
+                    <stop offset="100%" stop-color="rgba(0, 240, 255, 0)" />
+                  </linearGradient>
+                </defs>
+                <g class="hologram-group">
+                  <!-- Tactical Grid Background Circles -->
+                  <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(0, 240, 255, 0.08)" stroke-width="1" stroke-dasharray="2 3"/>
+                  <circle cx="50" cy="50" r="28" fill="none" stroke="rgba(0, 240, 255, 0.08)" stroke-width="1" stroke-dasharray="4 2"/>
+                  <!-- HUD crosshairs -->
+                  <line x1="50" y1="3" x2="50" y2="97" stroke="rgba(0, 240, 255, 0.08)" stroke-width="0.75" stroke-dasharray="4 4" />
+                  <!-- Unified Female Spy Silhouette (Hair, Head, Body, Trenchcoat) -->
+                  <path d="M 50 10 C 44 10, 37 14, 37 26 C 37 29, 40 29, 42 27 C 44 23, 47 23, 49 25 L 51 25 C 53 23, 56 23, 58 27 C 60 29, 63 29, 63 26 C 63 14, 56 10, 50 10 Z M 50 18 C 53.31 18, 56 20.69, 56 24 C 56 27.31, 53.31 30, 50 30 C 46.69 30, 44 27.31, 44 24 C 44 20.69, 46.69 18, 50 18 Z M 36 38 C 34 38, 32 40, 32 42 L 28 72 C 28 74, 30 74, 30 72 L 34 48 L 37 60 L 34 82 L 38 82 L 38 95 C 38 97, 42 97, 42 95 L 45 68 L 50 68 L 55 68 L 58 95 C 58 97, 62 97, 62 95 L 62 82 L 66 82 L 63 60 L 66 48 L 70 72 C 70 74, 72 74, 72 72 L 68 42 C 68 40, 66 38, 64 38 L 50 41 L 36 38 Z" fill="url(#hologram-grad-female)" stroke="var(--neon-cyan)" stroke-width="1.5" />
+                  
+                  <!-- Glowing Pink Spy Visor -->
+                  <rect x="44" y="22" width="12" height="3" rx="1.5" fill="var(--neon-pink)" stroke="var(--neon-pink)" stroke-width="1" filter="drop-shadow(0 0 5px var(--neon-pink-glow))" />
+                  
+                  <!-- HUD readouts on body -->
+                  <line x1="45" y1="48" x2="55" y2="48" stroke="var(--neon-cyan)" stroke-width="1" opacity="0.6"/>
+                  <line x1="47" y1="56" x2="53" y2="56" stroke="var(--neon-cyan)" stroke-width="1" opacity="0.6"/>
+                  <line x1="48" y1="64" x2="52" y2="64" stroke="var(--neon-cyan)" stroke-width="1" opacity="0.6"/>
+                </g>
+              </svg>
+ 
+              <!-- Male Silhouette -->
+              <svg viewBox="0 0 100 100" class="avatar-svg avatar-male ${activeGender === 'jongen' ? 'active' : ''}">
+                <defs>
+                  <linearGradient id="hologram-grad-male" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="rgba(0, 240, 255, 0.25)" />
+                    <stop offset="60%" stop-color="rgba(0, 240, 255, 0.08)" />
+                    <stop offset="100%" stop-color="rgba(0, 240, 255, 0)" />
+                  </linearGradient>
+                </defs>
+                <g class="hologram-group">
+                  <!-- Tactical Grid Background Circles -->
+                  <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(0, 240, 255, 0.08)" stroke-width="1" stroke-dasharray="2 3"/>
+                  <circle cx="50" cy="50" r="28" fill="none" stroke="rgba(0, 240, 255, 0.08)" stroke-width="1" stroke-dasharray="4 2"/>
+                  <!-- HUD crosshairs -->
+                  <line x1="50" y1="3" x2="50" y2="97" stroke="rgba(0, 240, 255, 0.08)" stroke-width="0.75" stroke-dasharray="4 4" />
+                  <line x1="3" y1="50" x2="97" y2="50" stroke="rgba(0, 240, 255, 0.08)" stroke-width="0.75" stroke-dasharray="4 4" />
+                  
+                  <!-- Unified Male Spy Silhouette (Fedora, Face, Neck, Shoulders, Arms, Trenchcoat) -->
+                  <path d="M 50 8 C 45 8, 42 11, 41 18 L 26 18 C 25 18, 25 20.5, 26 20.5 L 74 20.5 C 75 20.5, 75 18, 74 18 L 59 18 C 58 11, 55 8, 50 8 Z M 50 19 C 53.86 19, 57 22.14, 57 26 C 57 29.86, 53.86 33, 50 33 C 46.14 33, 43 29.86, 43 26 C 43 22.14, 46.14 19, 50 19 Z M 34 38 C 32 38, 30 40, 30 42 L 26 72 C 26 74, 28 74, 28 72 L 33 48 L 36 60 L 33 82 L 37 82 L 37 95 C 37 97, 41 97, 41 95 L 45 68 L 50 68 L 55 68 L 59 95 C 59 97, 63 97, 63 95 L 63 82 L 67 82 L 64 60 L 67 48 L 72 72 C 72 74, 74 74, 74 72 L 70 42 C 70 40, 68 38, 66 38 L 50 41 L 34 38 Z" fill="url(#hologram-grad-male)" stroke="var(--neon-cyan)" stroke-width="1.5" />
+                  
+                  <!-- Glowing Green Spy Visor -->
+                  <rect x="44" y="22" width="12" height="3" rx="1.5" fill="var(--neon-green)" stroke="var(--neon-green)" stroke-width="1" filter="drop-shadow(0 0 5px var(--neon-green-glow))" />
+                  
+                  <!-- HUD readouts on body -->
+                  <line x1="44" y1="48" x2="56" y2="48" stroke="var(--neon-cyan)" stroke-width="1" opacity="0.6"/>
+                  <line x1="46" y1="56" x2="54" y2="56" stroke="var(--neon-cyan)" stroke-width="1" opacity="0.6"/>
+                  <line x1="48" y1="64" x2="52" y2="64" stroke="var(--neon-cyan)" stroke-width="1" opacity="0.6"/>
+                </g>
+              </svg>
             </div>
-            <div class="metric-progress-outer">
-              <div class="metric-progress-fill profile-wpm-fill" style="width: 0%;"></div>
+
+            <!-- Gender selector buttons -->
+            <div class="disguise-toggles">
+              <button id="btn-toggle-meisje" class="disguise-btn ${activeGender === 'meisje' ? 'active' : ''}">MEISJE</button>
+              <button id="btn-toggle-jongen" class="disguise-btn ${activeGender === 'jongen' ? 'active' : ''}">JONGEN</button>
             </div>
           </div>
-
-          <div class="metric-bar-group">
-            <div class="metric-header">
-              <span>Nauwkeurigheid</span>
-              <span class="metric-val">98%</span>
-            </div>
-            <div class="metric-progress-outer">
-              <div class="metric-progress-fill profile-acc-fill" style="width: 0%;"></div>
-            </div>
-          </div>
-
         </div>
       </div>
     `;
+
+    // ── DOM BINDINGS & EVENT HANDLERS ──
     
-    // Animate profile bars progress loading up
-    setTimeout(() => {
-      const bars = appBodyContent.querySelectorAll(".metric-progress-fill");
-      if (bars.length >= 3) {
-        bars[0].style.width = "82%";
-        bars[0].style.transition = "width 0.8s ease-out";
-        bars[1].style.width = "84%";
-        bars[1].style.transition = "width 0.8s ease-out 0.1s";
-        bars[2].style.width = "98%";
-        bars[2].style.transition = "width 0.8s ease-out 0.2s";
+    // Save Codename
+    const inputCodename = document.getElementById("codename-input");
+    const btnSave = document.getElementById("btn-save-codename");
+    
+    btnSave.addEventListener("click", () => {
+      const newName = inputCodename.value.trim();
+      if (newName) {
+        agentCodename = newName;
+        // Update header UI
+        const agentTagEl = document.querySelector(".agent-tag");
+        if (agentTagEl) {
+          agentTagEl.textContent = `AGENT://${agentCodename.toUpperCase()}`;
+        }
+        playSynthBeep("success");
+        addConsoleLog(`CODENAAM BIJGEWERKT NAAR [${agentCodename.toUpperCase()}]`, "green");
+        
+        // Visual confirmation glow on button
+        btnSave.classList.add("saved-flash");
+        setTimeout(() => btnSave.classList.remove("saved-flash"), 600);
+      } else {
+        playSynthBeep("denied");
+        inputCodename.classList.add("lock-shake");
+        setTimeout(() => inputCodename.classList.remove("lock-shake"), 400);
+        addConsoleLog("MISLUKT: CODENAAM KAN NIET LEEG ZIJN", "red");
       }
-    }, 50);
+    });
+
+    // Naar Shop Button
+    const btnToShop = document.getElementById("btn-profile-to-shop");
+    btnToShop.addEventListener("click", () => {
+      playSynthBeep("slide");
+      loadAppView("shop");
+    });
+
+    // Gender toggles
+    const btnMeisje = document.getElementById("btn-toggle-meisje");
+    const btnJongen = document.getElementById("btn-toggle-jongen");
+    const svgFemale = document.querySelector(".avatar-female");
+    const svgMale = document.querySelector(".avatar-male");
+
+    btnMeisje.addEventListener("click", () => {
+      if (activeGender === "meisje") return;
+      activeGender = "meisje";
+      
+      btnMeisje.classList.add("active");
+      btnJongen.classList.remove("active");
+      
+      svgFemale.classList.add("active");
+      svgMale.classList.remove("active");
+      
+      playSynthBeep("click");
+      addConsoleLog("VERMOMMING: VROUWELIJKE AGENT GEACTIVEERD", "cyan");
+    });
+
+    btnJongen.addEventListener("click", () => {
+      if (activeGender === "jongen") return;
+      activeGender = "jongen";
+      
+      btnJongen.classList.add("active");
+      btnMeisje.classList.remove("active");
+      
+      svgMale.classList.add("active");
+      svgFemale.classList.remove("active");
+      
+      playSynthBeep("click");
+      addConsoleLog("VERMOMMING: MANNELIJKE AGENT GEACTIVEERD", "cyan");
+    });
   }
 
   // ── APP SIMULATOR: 3. SECRET SHOP APP ──
