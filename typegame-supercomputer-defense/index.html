@@ -188,115 +188,172 @@
                   <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(116, 216, 255, 0.012)" stroke-width="0.75" />
                 </pattern>
               </defs>
-              <rect width="100%" height="100%" fill="url(#pcbGrid)" pointer-events="none" />
+              <!-- Motherboard SMD Resistor Networks (fancy layout element) -->
+              <g class="pcb-resistor-networks" opacity="0.4">
+                <!-- Left Side Resistor Packs -->
+                <g>
+                  <!-- Resistor 1 (Y: 60) -->
+                  <rect x="123" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="58" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 2 (Y: 74) -->
+                  <rect x="123" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="72" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 3 (Y: 88) -->
+                  <rect x="123" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="86" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 4 (Y: 272) -->
+                  <rect x="123" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="270" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 5 (Y: 286) -->
+                  <rect x="123" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="284" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 6 (Y: 300) -->
+                  <rect x="123" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="298" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                </g>
+ 
+                <!-- Right Side Resistor Packs -->
+                <g>
+                  <!-- Resistor 1 (Y: 60) -->
+                  <rect x="663" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="58" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 2 (Y: 74) -->
+                  <rect x="663" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="72" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 3 (Y: 88) -->
+                  <rect x="663" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="86" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 4 (Y: 272) -->
+                  <rect x="663" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="270" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 5 (Y: 286) -->
+                  <rect x="663" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="284" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 6 (Y: 300) -->
+                  <rect x="663" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="298" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                </g>
+              </g>
 
               <!-- Focused PCB network: peripheral points route into the CPU socket -->
               <g class="pcb-reference-layer">
                 <!-- Left input bank -->
                 <g class="pcb-cpu-bus">
-                  <path d="M 40,80 H 150 L 234,164 H 330" class="pcb-reference-trace" />
-                  <path d="M 40,92 H 150 L 234,176 H 330" class="pcb-reference-trace" />
-                  <path d="M 40,104 H 150 L 234,188 H 330" class="pcb-reference-trace" />
-                  <path d="M 40,240 H 176 L 208,208 H 330" class="pcb-reference-trace" />
-                  <path d="M 40,252 H 176 L 208,220 H 330" class="pcb-reference-trace" />
-                  <path d="M 40,264 H 176 L 208,232 H 330" class="pcb-reference-trace" />
+                  <path d="M 40,80 H 150 L 234,164 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,92 H 150 L 234,176 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,104 H 150 L 234,188 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,240 H 176 L 208,208 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,252 H 176 L 208,220 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,264 H 176 L 208,232 H 330" class="pcb-reference-trace left-ref-trace" />
                 </g>
 
-                <!-- Secondary left-to-right input bank -->
+                <!-- Right input bank (Mirrored from Left) -->
                 <g class="pcb-cpu-bus">
-                  <path d="M 40,124 H 174 L 306,164 H 470" class="pcb-reference-trace" />
-                  <path d="M 40,136 H 186 L 316,176 H 470" class="pcb-reference-trace" />
-                  <path d="M 40,148 H 198 L 326,188 H 470" class="pcb-reference-trace" />
-                  <path d="M 40,288 H 210 L 292,208 H 470" class="pcb-reference-trace" />
-                  <path d="M 40,300 H 222 L 302,220 H 470" class="pcb-reference-trace" />
-                  <path d="M 40,312 H 234 L 314,232 H 470" class="pcb-reference-trace" />
+                  <path d="M 760,80 H 650 L 566,164 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,92 H 650 L 566,176 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,104 H 650 L 566,188 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,240 H 624 L 592,208 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,252 H 624 L 592,220 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,264 H 624 L 592,232 H 470" class="pcb-reference-trace right-ref-trace" />
                 </g>
 
-                <!-- Left-to-right power and clock routes -->
+                <!-- Top power and clock buses (Clean, parallel lines running edge-to-edge) -->
                 <g class="pcb-cpu-bus pcb-cpu-bus-top">
-                  <path d="M 40,20 H 238 L 366,106 V 164" class="pcb-reference-trace" />
-                  <path d="M 40,32 H 250 L 382,102 V 164" class="pcb-reference-trace" />
-                  <path d="M 40,44 H 276 L 400,164" class="pcb-reference-trace thick" />
-                  <path d="M 40,56 H 292 L 418,102 V 164" class="pcb-reference-trace" />
-                  <path d="M 40,68 H 304 L 434,106 V 164" class="pcb-reference-trace" />
+                  <path d="M 40,20 H 760" class="pcb-reference-trace" />
+                  <path d="M 40,32 H 760" class="pcb-reference-trace" />
+                  <path d="M 40,44 H 760" class="pcb-reference-trace thick" />
+                  <path d="M 40,56 H 760" class="pcb-reference-trace" />
+                  <path d="M 40,68 H 760" class="pcb-reference-trace" />
                 </g>
 
                 <!-- Peripheral source points -->
                 <g class="pcb-source-points">
-                  <circle cx="40" cy="80" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="92" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="104" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="240" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="252" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="264" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="124" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="136" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="148" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="288" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="300" r="5" class="pcb-reference-pad" />
-                  <circle cx="40" cy="312" r="5" class="pcb-reference-pad" />
+                  <!-- Left Edge Pads -->
+                  <circle cx="40" cy="80" r="5" class="pcb-reference-pad left-source" />
+                  <circle cx="40" cy="92" r="5" class="pcb-reference-pad left-source" />
+                  <circle cx="40" cy="104" r="5" class="pcb-reference-pad left-source" />
+                  <circle cx="40" cy="240" r="5" class="pcb-reference-pad left-source" />
+                  <circle cx="40" cy="252" r="5" class="pcb-reference-pad left-source" />
+                  <circle cx="40" cy="264" r="5" class="pcb-reference-pad left-source" />
+                  <!-- Right Edge Pads (Mirrored) -->
+                  <circle cx="760" cy="80" r="5" class="pcb-reference-pad right-source" />
+                  <circle cx="760" cy="92" r="5" class="pcb-reference-pad right-source" />
+                  <circle cx="760" cy="104" r="5" class="pcb-reference-pad right-source" />
+                  <circle cx="760" cy="240" r="5" class="pcb-reference-pad right-source" />
+                  <circle cx="760" cy="252" r="5" class="pcb-reference-pad right-source" />
+                  <circle cx="760" cy="264" r="5" class="pcb-reference-pad right-source" />
+                  <!-- Left Top Clock/Power Pads -->
                   <circle cx="40" cy="20" r="5" class="pcb-reference-pad" />
                   <circle cx="40" cy="32" r="5" class="pcb-reference-pad" />
                   <circle cx="40" cy="44" r="5" class="pcb-reference-pad" />
                   <circle cx="40" cy="56" r="5" class="pcb-reference-pad" />
                   <circle cx="40" cy="68" r="5" class="pcb-reference-pad" />
+                  <!-- Right Top Clock/Power Pads (Mirrored) -->
+                  <circle cx="760" cy="20" r="5" class="pcb-reference-pad" />
+                  <circle cx="760" cy="32" r="5" class="pcb-reference-pad" />
+                  <circle cx="760" cy="44" r="5" class="pcb-reference-pad" />
+                  <circle cx="760" cy="56" r="5" class="pcb-reference-pad" />
+                  <circle cx="760" cy="68" r="5" class="pcb-reference-pad" />
                 </g>
 
                 <!-- Routing vias show the signal path inward -->
                 <g class="pcb-route-vias">
                   <!-- Left Top Bus Bends -->
-                  <circle cx="150" cy="80" r="3.5" class="pcb-reference-via" />
-                  <circle cx="150" cy="92" r="3.5" class="pcb-reference-via" />
-                  <circle cx="150" cy="104" r="3.5" class="pcb-reference-via" />
-                  <circle cx="234" cy="164" r="3.5" class="pcb-reference-via" />
-                  <circle cx="246" cy="176" r="3.5" class="pcb-reference-via" />
-                  <circle cx="258" cy="188" r="3.5" class="pcb-reference-via" />
+                  <circle cx="150" cy="80" r="3.5" class="pcb-reference-via left-via-1" />
+                  <circle cx="150" cy="92" r="3.5" class="pcb-reference-via left-via-1" />
+                  <circle cx="150" cy="104" r="3.5" class="pcb-reference-via left-via-1" />
+                  <circle cx="234" cy="164" r="3.5" class="pcb-reference-via left-via-2" />
+                  <circle cx="234" cy="176" r="3.5" class="pcb-reference-via left-via-2" />
+                  <circle cx="234" cy="188" r="3.5" class="pcb-reference-via left-via-2" />
                   <!-- Left Bottom Bus Bends -->
-                  <circle cx="176" cy="240" r="3.5" class="pcb-reference-via" />
-                  <circle cx="176" cy="252" r="3.5" class="pcb-reference-via" />
-                  <circle cx="176" cy="264" r="3.5" class="pcb-reference-via" />
-                  <circle cx="208" cy="208" r="3.5" class="pcb-reference-via" />
-                  <circle cx="208" cy="220" r="3.5" class="pcb-reference-via" />
-                  <circle cx="208" cy="232" r="3.5" class="pcb-reference-via" />
-                  <!-- Secondary Left-to-Right Bus Bends -->
-                  <circle cx="174" cy="124" r="3.5" class="pcb-reference-via" />
-                  <circle cx="186" cy="136" r="3.5" class="pcb-reference-via" />
-                  <circle cx="198" cy="148" r="3.5" class="pcb-reference-via" />
-                  <circle cx="306" cy="164" r="3.5" class="pcb-reference-via" />
-                  <circle cx="316" cy="176" r="3.5" class="pcb-reference-via" />
-                  <circle cx="326" cy="188" r="3.5" class="pcb-reference-via" />
-                  <circle cx="210" cy="288" r="3.5" class="pcb-reference-via" />
-                  <circle cx="222" cy="300" r="3.5" class="pcb-reference-via" />
-                  <circle cx="234" cy="312" r="3.5" class="pcb-reference-via" />
-                  <circle cx="292" cy="208" r="3.5" class="pcb-reference-via" />
-                  <circle cx="302" cy="220" r="3.5" class="pcb-reference-via" />
-                  <circle cx="314" cy="232" r="3.5" class="pcb-reference-via" />
-                  <!-- Left-to-right power and clock route bends -->
-                  <circle cx="238" cy="20" r="3.5" class="pcb-reference-via" />
-                  <circle cx="250" cy="32" r="3.5" class="pcb-reference-via" />
-                  <circle cx="276" cy="44" r="3.5" class="pcb-reference-via" />
-                  <circle cx="292" cy="56" r="3.5" class="pcb-reference-via" />
-                  <circle cx="304" cy="68" r="3.5" class="pcb-reference-via" />
-                  <circle cx="366" cy="106" r="3.5" class="pcb-reference-via" />
-                  <circle cx="382" cy="102" r="3.5" class="pcb-reference-via" />
-                  <circle cx="418" cy="102" r="3.5" class="pcb-reference-via" />
-                  <circle cx="434" cy="106" r="3.5" class="pcb-reference-via" />
+                  <circle cx="176" cy="240" r="3.5" class="pcb-reference-via left-via-1" />
+                  <circle cx="176" cy="252" r="3.5" class="pcb-reference-via left-via-1" />
+                  <circle cx="176" cy="264" r="3.5" class="pcb-reference-via left-via-1" />
+                  <circle cx="208" cy="208" r="3.5" class="pcb-reference-via left-via-2" />
+                  <circle cx="208" cy="220" r="3.5" class="pcb-reference-via left-via-2" />
+                  <circle cx="208" cy="232" r="3.5" class="pcb-reference-via left-via-2" />
+                  <!-- Right Top Bus Bends (Mirrored) -->
+                  <circle cx="650" cy="80" r="3.5" class="pcb-reference-via right-via-1" />
+                  <circle cx="650" cy="92" r="3.5" class="pcb-reference-via right-via-1" />
+                  <circle cx="650" cy="104" r="3.5" class="pcb-reference-via right-via-1" />
+                  <circle cx="566" cy="164" r="3.5" class="pcb-reference-via right-via-2" />
+                  <circle cx="566" cy="176" r="3.5" class="pcb-reference-via right-via-2" />
+                  <circle cx="566" cy="188" r="3.5" class="pcb-reference-via right-via-2" />
+                  <!-- Right Bottom Bus Bends (Mirrored) -->
+                  <circle cx="624" cy="240" r="3.5" class="pcb-reference-via right-via-1" />
+                  <circle cx="624" cy="252" r="3.5" class="pcb-reference-via right-via-1" />
+                  <circle cx="624" cy="264" r="3.5" class="pcb-reference-via right-via-1" />
+                  <circle cx="592" cy="208" r="3.5" class="pcb-reference-via right-via-2" />
+                  <circle cx="592" cy="220" r="3.5" class="pcb-reference-via right-via-2" />
+                  <circle cx="592" cy="232" r="3.5" class="pcb-reference-via right-via-2" />
                 </g>
 
                 <!-- CPU socket connection points -->
                 <g class="pcb-cpu-points">
-                  <circle cx="330" cy="164" r="4" class="pcb-reference-pad" />
-                  <circle cx="330" cy="176" r="4" class="pcb-reference-pad" />
-                  <circle cx="330" cy="188" r="4" class="pcb-reference-pad" />
-                  <circle cx="330" cy="208" r="4" class="pcb-reference-pad" />
-                  <circle cx="330" cy="220" r="4" class="pcb-reference-pad" />
-                  <circle cx="330" cy="232" r="4" class="pcb-reference-pad" />
-                  <circle cx="470" cy="164" r="4" class="pcb-reference-pad" />
-                  <circle cx="470" cy="176" r="4" class="pcb-reference-pad" />
-                  <circle cx="470" cy="188" r="4" class="pcb-reference-pad" />
-                  <circle cx="470" cy="208" r="4" class="pcb-reference-pad" />
-                  <circle cx="470" cy="220" r="4" class="pcb-reference-pad" />
-                  <circle cx="470" cy="232" r="4" class="pcb-reference-pad" />
+                  <circle cx="330" cy="164" r="4" class="pcb-reference-pad left-cpu-pad" />
+                  <circle cx="330" cy="176" r="4" class="pcb-reference-pad left-cpu-pad" />
+                  <circle cx="330" cy="188" r="4" class="pcb-reference-pad left-cpu-pad" />
+                  <circle cx="330" cy="208" r="4" class="pcb-reference-pad left-cpu-pad" />
+                  <circle cx="330" cy="220" r="4" class="pcb-reference-pad left-cpu-pad" />
+                  <circle cx="330" cy="232" r="4" class="pcb-reference-pad left-cpu-pad" />
+                  <circle cx="470" cy="164" r="4" class="pcb-reference-pad right-cpu-pad" />
+                  <circle cx="470" cy="176" r="4" class="pcb-reference-pad right-cpu-pad" />
+                  <circle cx="470" cy="188" r="4" class="pcb-reference-pad right-cpu-pad" />
+                  <circle cx="470" cy="208" r="4" class="pcb-reference-pad right-cpu-pad" />
+                  <circle cx="470" cy="220" r="4" class="pcb-reference-pad right-cpu-pad" />
+                  <circle cx="470" cy="232" r="4" class="pcb-reference-pad right-cpu-pad" />
                   <circle cx="366" cy="164" r="4" class="pcb-reference-pad" />
                   <circle cx="382" cy="164" r="4" class="pcb-reference-pad" />
                   <circle cx="400" cy="164" r="4" class="pcb-reference-pad" />
@@ -434,35 +491,7 @@
                 <circle cx="420" cy="35" r="1.5" class="pcb-dot" />
               </g>
 
-              <!-- Active Gameplay Traces (Viruses float along these) -->
-              <!-- Left Side Upper-Half Traces -->
-              <path d="M 20,60 H 160 L 280,180 H 330" class="circuit-trace-base" />
-              <path d="M 20,60 H 160 L 280,180 H 330" class="circuit-trace" />
-              
-              <path d="M 20,110 H 190 L 280,200 H 330" class="circuit-trace-base" />
-              <path d="M 20,110 H 190 L 280,200 H 330" class="circuit-trace" />
-              
-              <path d="M 20,150 H 205 L 285,220 H 330" class="circuit-trace-base" />
-              <path d="M 20,150 H 205 L 285,220 H 330" class="circuit-trace" />
-              
-              <!-- Left-to-Right Upper-Half Traces -->
-              <path d="M 20,80 H 210 L 350,180 H 470" class="circuit-trace-base" />
-              <path d="M 20,80 H 210 L 350,180 H 470" class="circuit-trace" />
-              
-              <path d="M 20,130 H 240 L 350,200 H 470" class="circuit-trace-base" />
-              <path d="M 20,130 H 240 L 350,200 H 470" class="circuit-trace" />
-              
-              <path d="M 20,190 H 260 L 350,220 H 470" class="circuit-trace-base" />
-              <path d="M 20,190 H 260 L 350,220 H 470" class="circuit-trace" />
-              
-              <!-- Long left-to-right CPU feed -->
-              <path d="M 20,25 H 260 L 400,164" class="circuit-trace-base" />
-              <path d="M 20,25 H 260 L 400,164" class="circuit-trace" />
-   
               <!-- Decorative Motherboard Traces (Ignore for gameplay, pure aesthetics) -->
-              <path d="M 20,40 H 140 L 250,150 H 330" class="circuit-trace-decor" />
-              <path d="M 20,95 H 230 L 360,150 H 470" class="circuit-trace-decor" />
-              
               <path d="M 350,295 V 320 L 300,370 H 250" class="circuit-trace-decor" />
               <path d="M 450,295 V 320 L 500,370 H 550" class="circuit-trace-decor" />
               <path d="M 380,295 V 340 L 350,370 H 310" class="circuit-trace-decor" />
@@ -478,25 +507,11 @@
                 <path d="M 50,240 L 92,240 L 122,270 L 190,270" class="circuit-trace-decor" />
                 <circle cx="190" cy="270" r="2" class="pcb-dot" />
 
-                <!-- Additional left-to-right CPU bus -->
-                <path d="M 50,280 L 245,280 L 330,240 L 470,240" class="circuit-trace-decor" />
-                <circle cx="470" cy="240" r="2" class="pcb-dot" />
-                <path d="M 50,290 L 255,290 L 338,252 L 470,252" class="circuit-trace-decor" />
-                <circle cx="470" cy="252" r="2" class="pcb-dot" />
-                <path d="M 50,300 L 265,300 L 346,264 L 470,264" class="circuit-trace-decor" />
-                <circle cx="470" cy="264" r="2" class="pcb-dot" />
-
-                <!-- Top Left Bus -->
-                <path d="M 80,0 L 80,50 L 100,70 L 100,100" class="circuit-trace-decor" />
-                <circle cx="100" cy="100" r="2" class="pcb-dot" />
-                <path d="M 90,0 L 90,46 L 110,66 L 110,100" class="circuit-trace-decor" />
-                <circle cx="110" cy="100" r="2" class="pcb-dot" />
-
-                <!-- Additional top left-to-right CPU bus -->
-                <path d="M 50,10 L 220,10 L 350,100 L 470,100" class="circuit-trace-decor" />
-                <circle cx="470" cy="100" r="2" class="pcb-dot" />
-                <path d="M 50,20 L 230,20 L 356,112 L 470,112" class="circuit-trace-decor" />
-                <circle cx="470" cy="112" r="2" class="pcb-dot" />
+                <!-- Top Left Bus (Starts below top buses to avoid crossing) -->
+                <path d="M 80,75 L 80,85 L 100,105 L 100,120" class="circuit-trace-decor" />
+                <circle cx="100" cy="120" r="2" class="pcb-dot" />
+                <path d="M 90,75 L 90,81 L 110,101 L 110,120" class="circuit-trace-decor" />
+                <circle cx="110" cy="120" r="2" class="pcb-dot" />
               </g>
 
               <!-- Concentric test pads -->
@@ -559,38 +574,37 @@
               </g>
  
               <!-- Additional Motherboard Decorative Traces (faint background) -->
-              <!-- Left parallel busses -->
-              <path d="M 50,180 L 120,180 L 160,220 L 220,220" class="circuit-trace-decor" />
-              <path d="M 50,190 L 115,190 L 155,230 L 220,230" class="circuit-trace-decor" />
-              <path d="M 50,200 L 110,200 L 150,240 L 220,240" class="circuit-trace-decor" />
-              <!-- Additional left-to-right parallel busses -->
-              <path d="M 50,155 L 240,155 L 330,180 L 470,180" class="circuit-trace-decor" />
-              <path d="M 50,165 L 250,165 L 338,190 L 470,190" class="circuit-trace-decor" />
-              <path d="M 50,175 L 260,175 L 346,200 L 470,200" class="circuit-trace-decor" />
-              <!-- Long perimeter side traces -->
-              <path d="M 30,0 L 30,120 L 70,160 L 70,300 L 10,360" class="circuit-trace-decor" />
-              <path d="M 30,20 L 180,20 L 270,120 L 430,120 L 470,160" class="circuit-trace-decor" />
-              <!-- Behind CPU Core lines (shifted down) -->
-              <path d="M 300,220 L 300,250 L 330,280 L 470,280 L 500,250 L 500,220" class="circuit-trace-decor" />
-              <path d="M 280,220 L 280,260 L 320,300 L 480,300 L 520,260 L 520,220" class="circuit-trace-decor" />
-              <!-- Lower grid tracks -->
-              <path d="M 150,350 L 300,350 L 350,300 L 450,300 L 500,350 L 650,350" class="circuit-trace-decor" />
-              <path d="M 100,365 L 290,365 L 340,315 L 460,315 L 510,365 L 700,365" class="circuit-trace-decor" />
-              <!-- Corner rings -->
-              <path d="M 40,250 L 100,250 L 130,280 L 130,340" class="circuit-trace-decor" />
-              <path d="M 40,260 L 230,260 L 330,235 L 470,235" class="circuit-trace-decor" />
- 
+              <!-- Left Edge vertical bus -->
+              <path d="M 20,10 V 300 L 40,320 H 200" class="circuit-trace-decor" />
+              <path d="M 28,10 V 295 L 45,312 H 200" class="circuit-trace-decor" />
+              <path d="M 36,10 V 290 L 50,304 H 200" class="circuit-trace-decor" />
+
+              <!-- Right Edge vertical bus -->
+              <path d="M 780,10 V 300 L 760,320 H 600" class="circuit-trace-decor" />
+              <path d="M 772,10 V 295 L 755,312 H 600" class="circuit-trace-decor" />
+              <path d="M 764,10 V 290 L 750,304 H 600" class="circuit-trace-decor" />
+
+              <!-- Bottom horizontal tracks -->
+              <path d="M 80,340 H 720" class="circuit-trace-decor" />
+              <path d="M 100,352 H 700" class="circuit-trace-decor" />
+              <path d="M 120,364 H 680" class="circuit-trace-decor" />
+
+              <!-- Left RAM slot bottom connections -->
+              <path d="M 245,170 V 190 L 210,225 V 270" class="circuit-trace-decor" />
+              <path d="M 257,170 V 185 L 222,220 V 270" class="circuit-trace-decor" />
+
+              <!-- Right RAM slot bottom connections -->
+              <path d="M 549,170 V 190 L 584,225 V 270" class="circuit-trace-decor" />
+              <path d="M 537,170 V 185 L 572,220 V 270" class="circuit-trace-decor" />
+
               <!-- Solder pads at key intersection junctions -->
               <circle cx="160" cy="40" r="2.5" class="pcb-pad" />
-              <circle cx="220" cy="210" r="2.5" class="pcb-pad" />
-              <circle cx="180" cy="110" r="2.5" class="pcb-pad" />
               <circle cx="640" cy="40" r="2.5" class="pcb-pad" />
-              <circle cx="580" cy="210" r="2.5" class="pcb-pad" />
-              <circle cx="620" cy="110" r="2.5" class="pcb-pad" />
               <circle cx="120" cy="80" r="2.5" class="pcb-pad" />
               <circle cx="680" cy="80" r="2.5" class="pcb-pad" />
 
               <!-- Interactive gameplay overlay groups -->
+              <g id="dynamicTraces"></g>
               <g id="svgProjectiles"></g>
               <g id="svgViruses"></g>
               <g id="svgExplosions"></g>

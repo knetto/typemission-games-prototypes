@@ -1055,13 +1055,15 @@ body::before {
 
 .defense-core-visual {
   position: relative;
+  top: -20px;
   z-index: 6;
   width: min(460px, 56%);
   height: clamp(140px, 20vh, 180px);
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  margin-top: 120px; /* Shifting down to center and align with Y:220 in SVG */
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 /* Floating mistakes/shield status panel above CPU */
@@ -1077,7 +1079,12 @@ body::before {
 
 /* Concentric square PCB trace paths around the CPU socket */
 .core-ring {
-  display: none;
+  position: absolute;
+  z-index: 1;
+  border: 1.5px solid rgba(116, 216, 255, 0.12);
+  border-radius: 6px;
+  pointer-events: none;
+  aspect-ratio: 1;
 }
 
 .ring-one {
@@ -1234,21 +1241,6 @@ body::before {
   opacity: 1;
 }
 
-/* Chrome lock lever arm on the side of the socket retention clamp */
-.supercomputer-core::after {
-  content: "";
-  position: absolute;
-  top: 15%;
-  right: -24px;
-  height: 75%;
-  width: 6px;
-  /* Chrome lock bar */
-  background: linear-gradient(90deg, #e2e8f0, #cbd5e1 30%, #94a3b8 70%, #475569 100%);
-  border: 1.5px solid #18181b;
-  border-radius: 3px;
-  box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.6);
-  z-index: -2;
-}
 
 /* Central Silicon Die */
 .core-crystal {
@@ -1325,7 +1317,6 @@ body::before {
   margin-top: 1px;
 }
 
-.defense-core-visual.under-attack .core-ring,
 .defense-core-visual.under-attack .supercomputer-core {
   border-color: var(--red);
   box-shadow:
@@ -1340,7 +1331,7 @@ body::before {
 }
 
 .defense-core-visual.critical {
-  animation: coreAlarmShake 0.32s infinite alternate ease-in-out;
+  /* Disabled CPU shaking to keep positioning perfectly still */
 }
 
 .attack-streams {
@@ -2116,10 +2107,7 @@ body::before {
   pointer-events: none;
 }
 
-.pcb-circuits > :not(#svgProjectiles):not(#svgViruses):not(#svgExplosions),
-.pcb-circuits path {
-  display: none;
-}
+/* Traces and background details are visible */
 
 .pcb-reference-layer {
   opacity: 0.58;
@@ -2177,6 +2165,16 @@ body::before {
   stroke-linejoin: round;
   filter: drop-shadow(0 0 2px rgba(116, 216, 255, 0.25));
   transition: stroke 0.3s, filter 0.3s;
+}
+
+/* Compromised active traces glow red when their key is hacked */
+.circuit-trace.compromised {
+  stroke: var(--red) !important;
+  filter: drop-shadow(0 0 4px var(--red-glow)) !important;
+}
+
+.circuit-trace-base.compromised {
+  stroke: rgba(255, 59, 48, 0.08) !important;
 }
 
 .circuit-trace-decor {
@@ -2327,7 +2325,7 @@ body::before {
     0 10px 30px rgba(255, 59, 48, 0.35),
     0 0 40px var(--red-glow),
     inset 0 0 15px rgba(255, 59, 48, 0.4) !important;
-  animation: coreAlarmShake 0.15s infinite alternate ease-in-out;
+  /* Disabled CPU shaking to keep layout perfectly still */
 }
 
 .supercomputer-core.damaged .cpu-status-led {
@@ -2364,26 +2362,135 @@ body::before {
   animation: miniLedBlink 0.3s infinite alternate;
 }
 
-/* Remove clunky diagnostic overlays */
-.defense-core-visual.under-attack .supercomputer-core::after,
-.supercomputer-core.damaged::after {
-  content: "";
-}
 
 /* SVG Game Elements */
-.virus-blob polygon {
-  stroke: var(--red);
-  stroke-width: 1.5;
-  fill: rgba(80, 8, 10, 0.85);
-  filter: drop-shadow(0 0 6px rgba(255, 59, 48, 0.7));
-  transition: fill 0.15s;
+.virus-graphic {
+  animation: virusGlitch 1.5s infinite linear;
 }
 
-.virus-blob.targeted polygon {
-  stroke: var(--orange);
-  fill: rgba(80, 40, 10, 0.85);
-  filter: drop-shadow(0 0 6px rgba(228, 142, 53, 0.7));
+.virus-blob.targeted .virus-graphic {
+  animation: virusGlitchTargeted 1.5s infinite linear;
 }
+
+.virus-graphic .virus-body-core {
+  stroke: var(--red);
+  stroke-width: 1.6;
+  fill: #ff3b30;
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+  transition: fill 0.15s, stroke 0.15s;
+}
+
+.virus-graphic .virus-spike-line {
+  stroke: var(--red);
+  stroke-width: 1.8;
+  fill: none;
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+  transition: stroke 0.15s;
+}
+
+.virus-graphic .virus-spike-head {
+  stroke: var(--red);
+  stroke-width: 1.2;
+  fill: #ff3b30;
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+  transition: fill 0.15s, stroke 0.15s;
+}
+
+.virus-blob.targeted .virus-graphic .virus-body-core {
+  stroke: var(--orange);
+  fill: #e48e35;
+  filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85));
+}
+
+.virus-blob.targeted .virus-graphic .virus-spike-line {
+  stroke: var(--orange);
+  filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85));
+}
+
+.virus-blob.targeted .virus-graphic .virus-spike-head {
+  stroke: var(--orange);
+  fill: #e48e35;
+  filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85));
+}
+
+@keyframes virusGlitch {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.75)) brightness(1);
+  }
+  10% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.6)) brightness(1.3);
+  }
+  15% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(255, 59, 48, 0.9)) brightness(0.9);
+  }
+  20% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.75)) brightness(1);
+  }
+  48% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.5)) brightness(1.5);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #ff3b30) brightness(2.2);
+  }
+  53% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.6)) brightness(1);
+  }
+  75% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 7px rgba(255, 59, 48, 0.8)) brightness(1.25);
+  }
+  85% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.5)) brightness(0.85);
+  }
+}
+
+@keyframes virusGlitchTargeted {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.75)) brightness(1);
+  }
+  10% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.6)) brightness(1.3);
+  }
+  15% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(228, 142, 53, 0.9)) brightness(0.9);
+  }
+  20% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.75)) brightness(1);
+  }
+  48% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 3px rgba(228, 142, 53, 0.5)) brightness(1.5);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #e48e35) brightness(2.2);
+  }
+  53% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.6)) brightness(1);
+  }
+  75% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 7px rgba(228, 142, 53, 0.8)) brightness(1.25);
+  }
+  85% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 3px rgba(228, 142, 53, 0.5)) brightness(0.85);
+  }
+}
+
 
 .virus-text {
   font-family: "Orbitron", sans-serif;
@@ -2459,4 +2566,17 @@ body::before {
 @keyframes rotateRing {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Resistor Networks styling */
+.pcb-resistor-body {
+  fill: #060e09; /* Matte black/dark green resistor body */
+  stroke: rgba(68, 215, 117, 0.55);
+  stroke-width: 0.75;
+}
+
+.pcb-resistor-contact {
+  fill: #94a3b8; /* Silver metallic caps */
+  stroke: rgba(148, 163, 184, 0.4);
+  stroke-width: 0.5;
 }

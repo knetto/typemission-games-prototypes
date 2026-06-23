@@ -112,6 +112,7 @@ const svgProjectiles = document.getElementById("svgProjectiles");
 const svgViruses = document.getElementById("svgViruses");
 const svgExplosions = document.getElementById("svgExplosions");
 const pcbCircuits = document.querySelector(".pcb-circuits");
+const dynamicTracesEl = document.getElementById("dynamicTraces");
 
 const storyStage = document.getElementById("storyStage");
 const missionLayout = document.getElementById("missionLayout");
@@ -296,12 +297,21 @@ function renderSectorGrid() {
 
     gridCells.push({ index: i, letter: ch, el: cellEl, labelEl: label, fuseEl: fuse, hacked: false });
   }
+  drawPcbTraces();
 }
 
 // Swap letter instantly, show status color briefly (200ms), and revert to healthy.
 function morphCell(cell, mode) {
   cell.hacked = false;
   cell.fuseEl.style.transform = "scaleX(0)";
+  const trace = getTraceForCell(cell.index);
+  if (trace) {
+    trace.hackedCount = Math.max(0, trace.hackedCount - 1);
+    if (trace.hackedCount === 0) {
+      trace.baseEl.classList.remove("compromised");
+      trace.traceEl.classList.remove("compromised");
+    }
+  }
 
   // Swap the letter instantly
   const next = randomLetter(currentPool, cell.letter);
@@ -540,6 +550,294 @@ function getPointOnRoute(route, progress) {
   };
 }
 
+let startYList = [60, 74, 88, 272, 286, 300];
+
+let PCB_ROUTES = {
+  left: [],
+  right: []
+};
+
+function updateDynamicCoordinates() {
+  const cpuEl = document.querySelector(".supercomputer-core");
+
+  // Fallback coordinates based on layout baseline if element is hidden or has 0 dimensions on load/test
+  let cpuLeft = 330;
+  let cpuRight = 470;
+  let cpuTop = 110;
+  let cpuBottom = 290;
+  let cpuHeight = 180;
+
+  if (cpuEl && pcbCircuits) {
+    const cpuRect = cpuEl.getBoundingClientRect();
+    const svgRect = pcbCircuits.getBoundingClientRect();
+    if (svgRect.width && svgRect.height) {
+      cpuLeft = (cpuRect.left - svgRect.left) / svgRect.width * 800;
+      cpuRight = (cpuRect.right - svgRect.left) / svgRect.width * 800;
+      cpuTop = (cpuRect.top - svgRect.top) / svgRect.height * 400;
+      cpuBottom = (cpuRect.bottom - svgRect.top) / svgRect.height * 400;
+      cpuHeight = cpuBottom - cpuTop;
+    }
+  }
+
+  // Calculate startYList dynamically to ensure perfect vertical fanning symmetry relative to the CPU center
+  const cpuCenterY = cpuTop + cpuHeight / 2;
+  const G = 24; // Gap between the inner traces and center
+  const S = 16; // Spacing between adjacent traces in the same group
+  startYList = [
+    cpuCenterY - G - 2 * S,
+    cpuCenterY - G - S,
+    cpuCenterY - G,
+    cpuCenterY + G,
+    cpuCenterY + G + S,
+    cpuCenterY + G + 2 * S
+  ];
+
+  // Calculate endYList dynamically to match the exact same parallel spacing (S) at the CPU pins
+  const G_cpu = 8; // Gap at the CPU connection
+  const endYList = [
+    cpuCenterY - G_cpu - 2 * S,
+    cpuCenterY - G_cpu - S,
+    cpuCenterY - G_cpu,
+    cpuCenterY + G_cpu,
+    cpuCenterY + G_cpu + S,
+    cpuCenterY + G_cpu + 2 * S
+  ];
+
+  PCB_ROUTES.left = [];
+  PCB_ROUTES.right = [];
+
+  for (let i = 0; i < 6; i++) {
+    const startY = startYList[i];
+    const endY = endYList[i];
+
+    const x1Left = 220;
+    const x2Left = x1Left + Math.abs(endY - startY);
+    PCB_ROUTES.left.push([
+      { x: 40, y: startY },
+      { x: x1Left, y: startY },
+      { x: x2Left, y: endY },
+      { x: cpuLeft, y: endY }
+    ]);
+
+    const x1Right = 580;
+    const x2Right = x1Right - Math.abs(endY - startY);
+    PCB_ROUTES.right.push([
+      { x: 760, y: startY },
+      { x: x1Right, y: startY },
+      { x: x2Right, y: endY },
+      { x: cpuRight, y: endY }
+    ]);
+  }
+
+  // Update background reference traces to align perfectly
+  const leftRefTraces = document.querySelectorAll(".pcb-reference-layer .left-ref-trace");
+  const rightRefTraces = document.querySelectorAll(".pcb-reference-layer .right-ref-trace");
+
+  for (let i = 0; i < 6; i++) {
+    const startY = startYList[i];
+    const endY = endYList[i];
+    const x1Left = 220;
+    const x2Left = x1Left + Math.abs(endY - startY);
+    const x1Right = 580;
+    const x2Right = x1Right - Math.abs(endY - startY);
+
+    if (leftRefTraces[i]) {
+      const d = `M 40,${startY} H ${x1Left} L ${x2Left},${endY} H ${cpuLeft}`;
+      leftRefTraces[i].setAttribute("d", d);
+    }
+    if (rightRefTraces[i]) {
+      const d = `M 760,${startY} H ${x1Right} L ${x2Right},${endY} H ${cpuRight}`;
+      rightRefTraces[i].setAttribute("d", d);
+    }
+  }
+
+  // Update CPU socket connection pads
+  const leftCpuPads = document.querySelectorAll(".left-cpu-pad");
+  const rightCpuPads = document.querySelectorAll(".right-cpu-pad");
+  for (let i = 0; i < 6; i++) {
+    const endY = endYList[i];
+    if (leftCpuPads[i]) {
+      leftCpuPads[i].setAttribute("cx", cpuLeft);
+      leftCpuPads[i].setAttribute("cy", endY);
+    }
+    if (rightCpuPads[i]) {
+      rightCpuPads[i].setAttribute("cx", cpuRight);
+      rightCpuPads[i].setAttribute("cy", endY);
+    }
+  }
+
+  // Update source pads
+  const leftSources = document.querySelectorAll(".left-source");
+  const rightSources = document.querySelectorAll(".right-source");
+  for (let i = 0; i < 6; i++) {
+    if (leftSources[i]) leftSources[i].setAttribute("cy", startYList[i]);
+    if (rightSources[i]) rightSources[i].setAttribute("cy", startYList[i]);
+  }
+
+  // Update intermediate vias
+  const leftVia1 = document.querySelectorAll(".left-via-1");
+  const leftVia2 = document.querySelectorAll(".left-via-2");
+  const rightVia1 = document.querySelectorAll(".right-via-1");
+  const rightVia2 = document.querySelectorAll(".right-via-2");
+
+  for (let i = 0; i < 6; i++) {
+    const startY = startYList[i];
+    const endY = endYList[i];
+    const x1Left = 220;
+    const x2Left = x1Left + Math.abs(endY - startY);
+    const x1Right = 580;
+    const x2Right = x1Right - Math.abs(endY - startY);
+
+    if (leftVia1[i]) {
+      leftVia1[i].setAttribute("cx", x1Left);
+      leftVia1[i].setAttribute("cy", startY);
+    }
+    if (leftVia2[i]) {
+      leftVia2[i].setAttribute("cx", x2Left);
+      leftVia2[i].setAttribute("cy", endY);
+    }
+    if (rightVia1[i]) {
+      rightVia1[i].setAttribute("cx", x1Right);
+      rightVia1[i].setAttribute("cy", startY);
+    }
+    if (rightVia2[i]) {
+      rightVia2[i].setAttribute("cx", x2Right);
+      rightVia2[i].setAttribute("cy", endY);
+    }
+  }
+
+  // Update decorative SMD resistor packs to align with dynamic Y positions
+  const resistorBodies = document.querySelectorAll(".pcb-resistor-body");
+  const resistorContacts = document.querySelectorAll(".pcb-resistor-contact");
+
+  for (let i = 0; i < 6; i++) {
+    const y = startYList[i] - 2;
+
+    // Left side
+    if (resistorBodies[i]) resistorBodies[i].setAttribute("y", y);
+    if (resistorContacts[i * 2]) resistorContacts[i * 2].setAttribute("y", y);
+    if (resistorContacts[i * 2 + 1]) resistorContacts[i * 2 + 1].setAttribute("y", y);
+
+    // Right side
+    if (resistorBodies[i + 6]) resistorBodies[i + 6].setAttribute("y", y);
+    if (resistorContacts[(i + 6) * 2]) resistorContacts[(i + 6) * 2].setAttribute("y", y);
+    if (resistorContacts[(i + 6) * 2 + 1]) resistorContacts[(i + 6) * 2 + 1].setAttribute("y", y);
+  }
+}
+
+let traceElements = [];
+
+function getCpuPinForCell(index) {
+  const row = Math.floor(index / GRID_COLS);
+  const col = index % GRID_COLS;
+  const left = col < 3;
+
+  let pinIndex = 0;
+  if (left) {
+    pinIndex = (row * 3 + col) % 6;
+    return { side: "left", index: pinIndex };
+  } else {
+    const rightCol = col - 3;
+    pinIndex = (row * 3 + (2 - rightCol)) % 6;
+    return { side: "right", index: pinIndex };
+  }
+}
+
+function getTraceForCell(cellIndex) {
+  const info = getCpuPinForCell(cellIndex);
+  return traceElements.find(t => t.side === info.side && t.index === info.index);
+}
+
+function getPointOnPcbRoute(points, progress) {
+  const t = clamp(progress, 0, 1);
+  if (!points || points.length === 0) return { x: 400, y: 220 };
+  if (points.length === 1) return points[0];
+
+  let totalLength = 0;
+  const segments = [];
+  for (let i = 0; i < points.length - 1; i++) {
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const len = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+    segments.push({ p1, p2, startLength: totalLength, length: len });
+    totalLength += len;
+  }
+
+  const targetLength = t * totalLength;
+  for (const seg of segments) {
+    if (targetLength <= seg.startLength + seg.length) {
+      const segT = seg.length === 0 ? 0 : (targetLength - seg.startLength) / seg.length;
+      return {
+        x: seg.p1.x + (seg.p2.x - seg.p1.x) * segT,
+        y: seg.p1.y + (seg.p2.y - seg.p1.y) * segT
+      };
+    }
+  }
+  return points[points.length - 1];
+}
+
+function drawPcbTraces() {
+  if (!dynamicTracesEl || !pcbCircuits) return;
+
+  // Update coordinates dynamically first
+  updateDynamicCoordinates();
+
+  dynamicTracesEl.replaceChildren();
+  traceElements = [];
+
+  const createTrace = (side, index, points) => {
+    if (!points) return;
+    const pathData = points.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+
+    const baseEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    baseEl.setAttribute("class", "circuit-trace-base");
+    baseEl.setAttribute("d", pathData);
+
+    const traceEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    traceEl.setAttribute("class", "circuit-trace");
+    traceEl.setAttribute("d", pathData);
+
+    dynamicTracesEl.appendChild(baseEl);
+    dynamicTracesEl.appendChild(traceEl);
+
+    points.slice(0, -1).forEach((point, pointIndex) => {
+      const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      const isTerminal = pointIndex === 0;
+      dot.setAttribute("class", isTerminal ? "pcb-reference-pad" : "pcb-reference-via");
+      dot.setAttribute("cx", point.x);
+      dot.setAttribute("cy", point.y);
+      dot.setAttribute("r", isTerminal ? "4" : "1.85");
+      dynamicTracesEl.appendChild(dot);
+    });
+
+    traceElements.push({
+      side,
+      index,
+      baseEl,
+      traceEl,
+      hackedCount: 0
+    });
+  };
+
+  if (PCB_ROUTES.left && PCB_ROUTES.left.length > 0) {
+    PCB_ROUTES.left.forEach((points, i) => createTrace("left", i, points));
+  }
+  if (PCB_ROUTES.right && PCB_ROUTES.right.length > 0) {
+    PCB_ROUTES.right.forEach((points, i) => createTrace("right", i, points));
+  }
+
+  gridCells.forEach(cell => {
+    if (cell.hacked) {
+      const trace = getTraceForCell(cell.index);
+      if (trace) {
+        trace.hackedCount++;
+        trace.baseEl.classList.add("compromised");
+        trace.traceEl.classList.add("compromised");
+      }
+    }
+  });
+}
+
 function spawnExplosion(x, y) {
   const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   ring.setAttribute("class", "explosion-ring");
@@ -555,7 +853,7 @@ function spawnExplosion(x, y) {
 function cpuHit(letter) {
   playSynthSound("error");
   flashBoardShake();
-  
+
   // Make CPU core flash red visually
   const coreEl = document.querySelector(".supercomputer-core");
   if (coreEl) {
@@ -564,7 +862,7 @@ function cpuHit(letter) {
     coreEl.classList.add("damaged");
     setTimeout(() => coreEl.classList.remove("damaged"), 400);
   }
-  
+
   registerStrike(letter, `INBREUK: Virus [${letter.toUpperCase()}] binnengedrongen in de CPU!`, 15);
 }
 
@@ -703,45 +1001,161 @@ function spawnHack() {
   if (availableLetters.length > 0) {
     for (let i = 0; i < hacksToSpawn; i++) {
       const ch = availableLetters[Math.floor(Math.random() * availableLetters.length)];
-      
+
       // Link to an uncompromised grid cell showing this letter
       const cell = gridCells.find(c => c.letter === ch && !c.hacked);
       if (cell) {
         cell.hacked = true;
         cell.el.className = "sector-cell hacked";
+        const trace = getTraceForCell(cell.index);
+        if (trace) {
+          trace.hackedCount++;
+          trace.baseEl.classList.add("compromised");
+          trace.traceEl.classList.add("compromised");
+        }
       }
 
-      const route = createFloatingRoute();
-      const startPoint = getPointOnRoute(route, 0);
+      // PCB route for the virus (edge to CPU)
+      const traceInfo = getCpuPinForCell(cell ? cell.index : 0);
+      const routePoints = traceInfo.side === "left" ? PCB_ROUTES.left[traceInfo.index] : PCB_ROUTES.right[traceInfo.index];
+      const startPoint = routePoints[0]; // starting at the screen edge (left/right)
 
       // Create SVG group element for virus
       const groupEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
       groupEl.setAttribute("class", "virus-blob");
-      
-      const outerRing = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      outerRing.setAttribute("r", "18");
-      outerRing.setAttribute("class", "virus-outer-ring");
-      
-      const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-      poly.setAttribute("points", "-13,-8 -7,-14 7,-14 13,-8 13,8 7,14 -7,14 -13,8");
-      
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("class", "virus-text");
-      text.setAttribute("y", "1");
-      text.textContent = ch.toUpperCase();
-      
-      groupEl.appendChild(outerRing);
-      groupEl.appendChild(poly);
-      groupEl.appendChild(text);
+
+      const graphicEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      graphicEl.setAttribute("class", "virus-graphic");
+
+      // Core circle
+      const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      core.setAttribute("cx", "0");
+      core.setAttribute("cy", "0");
+      core.setAttribute("r", "8");
+      core.setAttribute("class", "virus-body-core");
+      graphicEl.appendChild(core);
+
+      // Spikes
+      const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+      angles.forEach(angle => {
+        const rad = (angle * Math.PI) / 180;
+        const xSpoke = 12 * Math.cos(rad);
+        const ySpoke = 12 * Math.sin(rad);
+        const xHead = 14.5 * Math.cos(rad);
+        const yHead = 14.5 * Math.sin(rad);
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", "0");
+        line.setAttribute("y1", "0");
+        line.setAttribute("x2", xSpoke.toFixed(2));
+        line.setAttribute("y2", ySpoke.toFixed(2));
+        line.setAttribute("class", "virus-spike-line");
+        graphicEl.appendChild(line);
+
+        const head = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        head.setAttribute("cx", xHead.toFixed(2));
+        head.setAttribute("cy", yHead.toFixed(2));
+        head.setAttribute("r", "2.0");
+        head.setAttribute("class", "virus-spike-head");
+        graphicEl.appendChild(head);
+      });
+
+      // Random face generator (0 to 8)
+      const faceType = Math.floor(Math.random() * 9);
+      const faceGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      faceGroup.setAttribute("class", "virus-face");
+
+      if (faceType === 0) {
+        // Angry Face (Type A)
+        faceGroup.innerHTML = `
+          <path d="M -5.5,-3.5 L -1.5,-2 C -1.5,-0.5 -3.5,0 -5.5,-1.5 Z" fill="#010502" />
+          <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
+          <path d="M 5.5,-3.5 L 1.5,-2 C 1.5,-0.5 3.5,0 5.5,-1.5 Z" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
+          <path d="M -4.5,2.5 L -3,1 L -1.5,2.5 L 0,1 L 1.5,2.5 L 3,1 L 4.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        `;
+      } else if (faceType === 1) {
+        // Cyber Glitch Face (Type B)
+        faceGroup.innerHTML = `
+          <path d="M -5.5,-3.5 L -2.5,-0.5 M -2.5,-3.5 L -5.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M 2.5,-3.5 L 5.5,-0.5 M 5.5,-3.5 L 2.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M -4.5,2 H -2.5 V 3.5 H -0.5 V 2 H 1.5 V 3.5 H 3.5 V 2 H 4.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" />
+        `;
+      } else if (faceType === 2) {
+        // Smirk Face (Type C)
+        faceGroup.innerHTML = `
+          <polygon points="-5.5,-3 -1.5,-1.5 -2.5,-3.5" fill="#010502" />
+          <polygon points="5.5,-3 1.5,-1.5 2.5,-3.5" fill="#010502" />
+          <path d="M -4,2 Q -1.5,5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+        `;
+      } else if (faceType === 3) {
+        // Shocked Face (Type D)
+        faceGroup.innerHTML = `
+          <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
+          <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
+          <circle cx="3.5" cy="-2" r="2.2" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
+          <circle cx="0" cy="3.2" r="1.8" fill="#fff" />
+        `;
+      } else if (faceType === 4) {
+        // Sad Face (Type E)
+        faceGroup.innerHTML = `
+          <line x1="-5.5" y1="-4.5" x2="-2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
+          <circle cx="-4" cy="-1.5" r="1.5" fill="#010502" />
+          <line x1="5.5" y1="-4.5" x2="2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
+          <circle cx="4" cy="-1.5" r="1.5" fill="#010502" />
+          <path d="M -3.5,4 Q 0,1 3.5,4" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+        `;
+      } else if (faceType === 5) {
+        // Crazy Face (Type F)
+        faceGroup.innerHTML = `
+          <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
+          <circle cx="-3.5" cy="-1.5" r="0.8" fill="#fff" />
+          <circle cx="3.5" cy="-2" r="1.2" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="0.5" fill="#fff" />
+          <path d="M -3,2 Q 0,4.5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+          <path d="M 0,2.5 C 0,5 2,5 2,2.5 Z" fill="#ff4b80" stroke="#fff" stroke-width="0.8" />
+        `;
+      } else if (faceType === 6) {
+        // Neutral Face (Type G)
+        faceGroup.innerHTML = `
+          <circle cx="-3.5" cy="-2" r="1.5" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="1.5" fill="#010502" />
+          <line x1="-3.5" y1="2.5" x2="3.5" y2="2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" />
+        `;
+      } else if (faceType === 7) {
+        // Tired Face (Type H)
+        faceGroup.innerHTML = `
+          <path d="M -5.5,-2 H -1.5 C -1.5,-0.2 -5.5,-0.2 -5.5,-2" fill="#010502" />
+          <path d="M 1.5,-2 H 5.5 C 5.5,-0.2 1.5,-0.2 1.5,-2" fill="#010502" />
+          <line x1="-5.5" y1="-2.5" x2="-1.5" y2="-2" stroke="#010502" stroke-width="1" />
+          <line x1="5.5" y1="-2.5" x2="1.5" y2="-2" stroke="#010502" stroke-width="1" />
+          <path d="M -2.5,2.5 Q 0,1.5 2.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+        `;
+      } else {
+        // SUPER Angry Face (Type I)
+        faceGroup.innerHTML = `
+          <polygon points="-6,-5.5 -1.5,-2.5 -2,-3.5" fill="#010502" />
+          <path d="M -5.5,-3 L -1.5,-1 C -1.5,1 -3.5,1.5 -5.5,-0.5 Z" fill="#010502" />
+          <circle cx="-3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
+          <polygon points="6,-5.5 1.5,-2.5 2,-3.5" fill="#010502" />
+          <path d="M 5.5,-3 L 1.5,-1 C 1.5,1 3.5,1.5 5.5,-0.5 Z" fill="#010502" />
+          <circle cx="3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
+          <path d="M -4.5,1.5 L -2.5,3.5 L -0.5,1.5 L 1.5,3.5 L 3.5,1.5 L 2.5,5 L 0,4 L -2.5,5 Z" fill="#fff" />
+        `;
+      }
+
+      graphicEl.appendChild(faceGroup);
+      groupEl.appendChild(graphicEl);
       if (svgViruses) svgViruses.appendChild(groupEl);
       groupEl.setAttribute("transform", `translate(${startPoint.x}, ${startPoint.y})`);
 
       activeViruses.push({
         letter: ch,
         cell: cell || null,
-        route,
+        routePoints: routePoints,
         progress: 0,
-        speed: 0.0032 + (profile.pressure * 0.0038) + Math.random() * 0.0018,
+        speed: 0.004 + (profile.pressure * 0.004) + Math.random() * 0.002,
         el: groupEl,
         targeted: false,
         x: startPoint.x,
@@ -789,25 +1203,33 @@ function gameTick() {
   for (let i = activeViruses.length - 1; i >= 0; i--) {
     const virus = activeViruses[i];
     virus.progress += virus.speed;
-    
+
     if (virus.progress >= 1.0) {
       // Remove element
       if (virus.el && virus.el.parentNode) {
         virus.el.parentNode.removeChild(virus.el);
       }
       activeViruses.splice(i, 1);
-      
+
       // Reset grid key red state and trigger crash visual morph
       if (virus.cell) {
         virus.cell.hacked = false;
+        const trace = getTraceForCell(virus.cell.index);
+        if (trace) {
+          trace.hackedCount = Math.max(0, trace.hackedCount - 1);
+          if (trace.hackedCount === 0) {
+            trace.baseEl.classList.remove("compromised");
+            trace.traceEl.classList.remove("compromised");
+          }
+        }
         morphCell(virus.cell, "crash");
       }
-      
+
       // Damage CPU core
       cpuHit(virus.letter);
       if (testFinished) return;
     } else {
-      const pt = getPointOnRoute(virus.route, virus.progress);
+      const pt = getPointOnPcbRoute(virus.routePoints, virus.progress);
       virus.x = pt.x;
       virus.y = pt.y;
       virus.el.setAttribute("transform", `translate(${pt.x}, ${pt.y})`);
@@ -838,11 +1260,19 @@ function gameTick() {
       if (virus.el && virus.el.parentNode) {
         virus.el.parentNode.removeChild(virus.el);
       }
-      
+
       if (virus.cell) {
         virus.cell.hacked = false;
+        const trace = getTraceForCell(virus.cell.index);
+        if (trace) {
+          trace.hackedCount = Math.max(0, trace.hackedCount - 1);
+          if (trace.hackedCount === 0) {
+            trace.baseEl.classList.remove("compromised");
+            trace.traceEl.classList.remove("compromised");
+          }
+        }
       }
-      
+
       const vIdx = activeViruses.indexOf(virus);
       if (vIdx !== -1) activeViruses.splice(vIdx, 1);
 
@@ -999,20 +1429,15 @@ function handleKeystroke(e) {
       // Create SVG group element for projectile
       const projEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
       projEl.setAttribute("class", "projectile-packet");
-      
-      const outerRing = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      outerRing.setAttribute("r", "10");
-      outerRing.setAttribute("class", "projectile-outer-ring");
 
       const circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       circ.setAttribute("r", "7");
-      
+
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("class", "projectile-text");
       text.setAttribute("y", "2.5");
       text.textContent = typedChar.toUpperCase();
-      
-      projEl.appendChild(outerRing);
+
       projEl.appendChild(circ);
       projEl.appendChild(text);
       projEl.setAttribute("transform", `translate(${localX}, ${localY})`);
@@ -1083,6 +1508,15 @@ function updateDefensePressureVisuals() {
     } else {
       coreReadoutEl.textContent = "STABLE";
     }
+  }
+}
+
+function updateThreatVisuals() {
+  if (defenseBoardEl) {
+    defenseBoardEl.classList.toggle("under-attack", activeViruses.length > 0);
+  }
+  if (defenseCoreEl) {
+    defenseCoreEl.classList.toggle("under-attack", activeViruses.length > 0);
   }
 }
 
@@ -1303,7 +1737,7 @@ function calculateScores() {
     animateNumberValue(completeCpm, cpm, 1000);
     animateNumberValue(completeAccuracy, acc, 1000, "%");
     animateNumberValue(completeSectors, totalRepairs, 1000);
-    
+
     // Float values animate
     let currentTimeVal = 0;
     const timeInterval = setInterval(() => {
@@ -1505,6 +1939,10 @@ function initDottedWaveBackground() {
     height = canvas.height = window.innerHeight;
     cols = Math.floor(width / dotSpacing) + 1;
     rows = Math.floor(height / dotSpacing) + 1;
+
+    // Also update CPU paths dynamically on resize
+    updateDynamicCoordinates();
+    drawPcbTraces();
   });
 }
 
