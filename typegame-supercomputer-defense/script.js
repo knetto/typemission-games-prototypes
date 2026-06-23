@@ -18,12 +18,12 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 3500, // ms between hacks
-    repairTimeout: 5500, // ms to repair a key
+    spawnInterval: 4000, // ms between hacks (was 3500)
+    repairTimeout: 6000, // ms to repair a key (was 5500)
     maxSimultaneous: 2,
     maxBurst: 1,
     minSpawnIntervalMultiplier: 0.7,
-    speedMultiplier: 0.75
+    speedMultiplier: 0.65 // was 0.75
   },
   medium: {
     pool: [
@@ -31,12 +31,12 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ], // All A-Z
-    spawnInterval: 2600,
-    repairTimeout: 4500,
+    spawnInterval: 3000, // was 2600
+    repairTimeout: 5000, // was 4500
     maxSimultaneous: 3,
     maxBurst: 2,
     minSpawnIntervalMultiplier: 0.6,
-    speedMultiplier: 0.95
+    speedMultiplier: 0.85 // was 0.95
   },
   hard: {
     pool: [
@@ -45,12 +45,12 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ], // A-Z + 0-9
-    spawnInterval: 1800,
-    repairTimeout: 3500,
+    spawnInterval: 2200, // was 1800
+    repairTimeout: 4000, // was 3500
     maxSimultaneous: 5,
     maxBurst: 2,
     minSpawnIntervalMultiplier: 0.45,
-    speedMultiplier: 1.2
+    speedMultiplier: 1.05 // was 1.2
   },
   expert: {
     pool: [
@@ -59,12 +59,12 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1200,
-    repairTimeout: 2600,
+    spawnInterval: 1500, // was 1200
+    repairTimeout: 3000, // was 2600
     maxSimultaneous: 7,
     maxBurst: 3,
     minSpawnIntervalMultiplier: 0.35,
-    speedMultiplier: 1.4
+    speedMultiplier: 1.25 // was 1.4
   }
 };
 
@@ -77,6 +77,7 @@ let elapsedTime = 0;
 let compromiseLevel = 0; // 0 to 100%
 let mistakes = 0;
 let totalRepairs = 0;
+let transitioning = false;
 
 // Stats tracking
 let totalKeystrokes = 0;
@@ -355,11 +356,15 @@ function morphCell(cell, mode) {
 
 // ── VIEW TRANSITIONS ──
 function transitionToView(nextView, onComplete) {
+  if (transitioning) return;
+
   const currentView = document.querySelector(".mission-view.active");
   if (currentView === nextView) {
     if (onComplete) onComplete();
     return;
   }
+
+  transitioning = true;
 
   const currentHeight = currentView.offsetHeight;
   missionStage.style.height = `${currentHeight}px`;
@@ -423,6 +428,7 @@ function transitionToView(nextView, onComplete) {
     const children = nextView.querySelectorAll(".briefing-panel, .arena-layout, .result-container");
     children.forEach(el => el.removeAttribute("style"));
 
+    transitioning = false;
     if (onComplete) onComplete();
   };
 }
@@ -479,7 +485,11 @@ function startBriefingDemoAnimation() {
   const bar = document.querySelector(".demo-bar-inner");
   const leds = document.querySelectorAll(".warning-led");
   let tick = 0;
-  briefingDemoInterval = setInterval(() => {
+  const thisInterval = setInterval(() => {
+    if (briefingDemoInterval !== thisInterval) {
+      clearInterval(thisInterval);
+      return;
+    }
     tick++;
     if (tick % 2 === 0) {
       if (bar) bar.style.width = "75%";
@@ -489,10 +499,12 @@ function startBriefingDemoAnimation() {
       leds.forEach(led => led.style.boxShadow = "");
     }
   }, 1000);
+  briefingDemoInterval = thisInterval;
 }
 
 function stopBriefingDemoAnimation() {
   clearInterval(briefingDemoInterval);
+  briefingDemoInterval = null;
 }
 
 // ── SVG INTERFACE HELPERS ──
@@ -674,61 +686,6 @@ function updateDynamicCoordinates() {
     if (rightRefTraces[i]) {
       const d = `M 760,${startY} H ${x1Right} L ${x2Right},${endY} H ${cpuRight}`;
       rightRefTraces[i].setAttribute("d", d);
-    }
-  }
-
-  // Update CPU socket connection pads
-  const leftCpuPads = document.querySelectorAll(".left-cpu-pad");
-  const rightCpuPads = document.querySelectorAll(".right-cpu-pad");
-  for (let i = 0; i < 6; i++) {
-    const endY = endYList[i];
-    if (leftCpuPads[i]) {
-      leftCpuPads[i].setAttribute("cx", cpuLeft);
-      leftCpuPads[i].setAttribute("cy", endY);
-    }
-    if (rightCpuPads[i]) {
-      rightCpuPads[i].setAttribute("cx", cpuRight);
-      rightCpuPads[i].setAttribute("cy", endY);
-    }
-  }
-
-  // Update source pads
-  const leftSources = document.querySelectorAll(".left-source");
-  const rightSources = document.querySelectorAll(".right-source");
-  for (let i = 0; i < 6; i++) {
-    if (leftSources[i]) leftSources[i].setAttribute("cy", startYList[i]);
-    if (rightSources[i]) rightSources[i].setAttribute("cy", startYList[i]);
-  }
-
-  // Update intermediate vias
-  const leftVia1 = document.querySelectorAll(".left-via-1");
-  const leftVia2 = document.querySelectorAll(".left-via-2");
-  const rightVia1 = document.querySelectorAll(".right-via-1");
-  const rightVia2 = document.querySelectorAll(".right-via-2");
-
-  for (let i = 0; i < 6; i++) {
-    const startY = startYList[i];
-    const endY = endYList[i];
-    const x1Left = 220;
-    const x2Left = x1Left + Math.abs(endY - startY);
-    const x1Right = 580;
-    const x2Right = x1Right - Math.abs(endY - startY);
-
-    if (leftVia1[i]) {
-      leftVia1[i].setAttribute("cx", x1Left);
-      leftVia1[i].setAttribute("cy", startY);
-    }
-    if (leftVia2[i]) {
-      leftVia2[i].setAttribute("cx", x2Left);
-      leftVia2[i].setAttribute("cy", endY);
-    }
-    if (rightVia1[i]) {
-      rightVia1[i].setAttribute("cx", x1Right);
-      rightVia1[i].setAttribute("cy", startY);
-    }
-    if (rightVia2[i]) {
-      rightVia2[i].setAttribute("cx", x2Right);
-      rightVia2[i].setAttribute("cy", endY);
     }
   }
 
@@ -914,7 +871,9 @@ function resetTest() {
   clearSvgGameElements();
 
   clearInterval(gameInterval);
+  gameInterval = null;
   clearTimeout(hackSpawnerTimeout);
+  hackSpawnerTimeout = null;
 
   timerEl.textContent = "0.0";
   liveCpmEl.textContent = "0";
@@ -992,10 +951,21 @@ function beginDefense() {
   playSynthSound("success");
 
   // Spawn first hack after 1 second
-  hackSpawnerTimeout = setTimeout(spawnHack, 1000);
+  const thisTimeout = setTimeout(() => {
+    if (hackSpawnerTimeout !== thisTimeout) return;
+    spawnHack();
+  }, 1000);
+  hackSpawnerTimeout = thisTimeout;
 
   // Main tick loop
-  gameInterval = setInterval(gameTick, 40);
+  const thisInterval = setInterval(() => {
+    if (gameInterval !== thisInterval) {
+      clearInterval(thisInterval);
+      return;
+    }
+    gameTick();
+  }, 40);
+  gameInterval = thisInterval;
 }
 
 function interpolateLimitTest(t) {
@@ -1287,7 +1257,11 @@ function spawnHack() {
 
   const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3);
 
-  hackSpawnerTimeout = setTimeout(spawnHack, nextSpawnDelay);
+  const thisTimeout = setTimeout(() => {
+    if (hackSpawnerTimeout !== thisTimeout) return;
+    spawnHack();
+  }, nextSpawnDelay);
+  hackSpawnerTimeout = thisTimeout;
 }
 
 function gameTick() {
@@ -1297,7 +1271,7 @@ function gameTick() {
   elapsedTime = (now - startedAt) / 1000;
 
   // Check win condition
-  if (currentGameMode === "standard" && elapsedTime >= GAME_DURATION) {
+  if (currentGameMode === "standard" && elapsedTime >= GAME_DURATION - 0.05) {
     elapsedTime = GAME_DURATION;
     timerEl.textContent = elapsedTime.toFixed(1);
     finishGame(true);
@@ -1395,7 +1369,7 @@ function gameTick() {
       playSynthSound("success");
 
       // Recover compromise level slightly
-      compromiseLevel = Math.max(0, compromiseLevel - 3);
+      compromiseLevel = Math.max(0, compromiseLevel - 5);
 
       // Clear alert tag if no active viruses
       if (activeViruses.length === 0) {
@@ -1413,11 +1387,12 @@ function gameTick() {
   }
 
   // Update compromise progress bar level
-  if (activeViruses.length > 0) {
+  const untargetedViruses = activeViruses.filter(v => !v.targeted);
+  if (untargetedViruses.length > 0) {
     const profile = getPressureProfile();
-    compromiseLevel += activeViruses.length * (0.07 + profile.pressure * 0.05); // Increase
+    compromiseLevel += untargetedViruses.length * (0.05 + profile.pressure * 0.04); // Increase
   } else {
-    compromiseLevel -= 0.12; // Decompress slowly
+    compromiseLevel -= 0.18; // Decompress slowly
   }
   compromiseLevel = Math.max(0, Math.min(100, compromiseLevel));
 
@@ -1644,7 +1619,9 @@ function finishGame(won, reasonMsg = "") {
   gameWon = won;
 
   clearInterval(gameInterval);
+  gameInterval = null;
   clearTimeout(hackSpawnerTimeout);
+  hackSpawnerTimeout = null;
 
   // Clear all sector cell status
   gridCells.forEach(cell => {
@@ -1979,6 +1956,10 @@ if (spacebarAdvanceBtn) {
 }
 
 document.addEventListener("keydown", (e) => {
+  if (transitioning) {
+    if (e.code === "Space") e.preventDefault();
+    return;
+  }
   if (!onboardingComplete && e.code === "Space") {
     e.preventDefault();
     advanceBriefingSlide();

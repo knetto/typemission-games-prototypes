@@ -1460,9 +1460,9 @@ body::before {
 }
 
 .cell-letter {
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(1.15rem, 2.4vh, 1.45rem);
-  font-weight: 900;
+  font-family: "Roboto Mono", monospace;
+  font-size: clamp(1.2rem, 2.6vh, 1.6rem);
+  font-weight: 700;
   color: rgba(205, 235, 255, 0.85);
   transition: color 0.12s ease;
   position: relative;
