@@ -482,29 +482,11 @@ function finishBriefing() {
 }
 
 function startBriefingDemoAnimation() {
-  const bar = document.querySelector(".demo-bar-inner");
-  const leds = document.querySelectorAll(".warning-led");
-  let tick = 0;
-  const thisInterval = setInterval(() => {
-    if (briefingDemoInterval !== thisInterval) {
-      clearInterval(thisInterval);
-      return;
-    }
-    tick++;
-    if (tick % 2 === 0) {
-      if (bar) bar.style.width = "75%";
-      leds.forEach(led => led.style.boxShadow = "0 0 10px var(--red)");
-    } else {
-      if (bar) bar.style.width = "40%";
-      leds.forEach(led => led.style.boxShadow = "");
-    }
-  }, 1000);
-  briefingDemoInterval = thisInterval;
+  // SVG animation is fully driven by CSS keyframes
 }
 
 function stopBriefingDemoAnimation() {
-  clearInterval(briefingDemoInterval);
-  briefingDemoInterval = null;
+  // No-op
 }
 
 // ── SVG INTERFACE HELPERS ──
@@ -2054,7 +2036,7 @@ function initDottedWaveBackground() {
           }
         }
 
-        ctx.fillStyle = `rgba(68, 215, 117, ${opacity})`;
+        ctx.fillStyle = `rgba(154, 215, 68, ${opacity})`;
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);
         ctx.fill();
