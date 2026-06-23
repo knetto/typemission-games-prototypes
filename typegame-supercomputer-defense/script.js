@@ -13,7 +13,11 @@ const GRID_SIZE = GRID_COLS * GRID_ROWS; // 24 sectors
 // Difficulty configurations
 const DIFFICULTY_CONFIGS = {
   easy: {
-    pool: ["a", "s", "d", "f", "g", "h", "j", "k", "l"], // Home Row only
+    pool: [
+      "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
+      "a", "s", "d", "f", "g", "h", "j", "k", "l",
+      "z", "x", "c", "v", "b", "n", "m"
+    ],
     spawnInterval: 3500, // ms between hacks
     repairTimeout: 5500, // ms to repair a key
     maxSimultaneous: 2,
@@ -137,6 +141,12 @@ const difficultyDropdownHeader = document.getElementById("difficultyDropdownHead
 const currentDiffDisplay = document.getElementById("currentDiffDisplay");
 const difficultyOptions = document.querySelectorAll(".dropdown-list li");
 let selectedDifficulty = "medium";
+
+const modeDropdown = document.getElementById("modeDropdown");
+const modeDropdownHeader = document.getElementById("modeDropdownHeader");
+const currentModeDisplay = document.getElementById("currentModeDisplay");
+const modeOptions = document.querySelectorAll("#modeDropdown .dropdown-list li");
+let currentGameMode = "standard";
 
 const typingInput = document.getElementById("typingInput");
 const typingOverlay = document.getElementById("typingOverlay");
@@ -273,7 +283,11 @@ function randomLetter(pool, avoid) {
 }
 
 function renderSectorGrid() {
-  currentPool = DIFFICULTY_CONFIGS[selectedDifficulty].pool;
+  if (currentGameMode === "limit-test") {
+    currentPool = DIFFICULTY_CONFIGS.easy.pool;
+  } else {
+    currentPool = DIFFICULTY_CONFIGS[selectedDifficulty].pool;
+  }
   sectorGridEl.style.setProperty("--cols", GRID_COLS);
   sectorGridEl.replaceChildren();
   gridCells = [];
@@ -925,6 +939,7 @@ function resetTest() {
   if (attackStreamsEl) attackStreamsEl.replaceChildren();
 
   if (difficultyDropdown) difficultyDropdown.classList.remove("disabled");
+  if (modeDropdown) modeDropdown.classList.remove("disabled");
   resetButton.style.display = "none";
 
   // Re-render the live sector grid
@@ -969,6 +984,7 @@ function beginDefense() {
   typingInput.focus();
 
   if (difficultyDropdown) difficultyDropdown.classList.add("disabled");
+  if (modeDropdown) modeDropdown.classList.add("disabled");
   resetButton.style.display = "inline-flex";
 
   statusLogEl.textContent = "Systeem verdediging online. Zoeken naar hackers...";
@@ -982,7 +998,84 @@ function beginDefense() {
   gameInterval = setInterval(gameTick, 40);
 }
 
+function interpolateLimitTest(t) {
+  const easy = DIFFICULTY_CONFIGS.easy;
+  const medium = DIFFICULTY_CONFIGS.medium;
+  const hard = DIFFICULTY_CONFIGS.hard;
+  const expert = DIFFICULTY_CONFIGS.expert;
+
+  let pool, spawnInterval, repairTimeout, maxSimultaneous, burstCount, speedMultiplier, wave;
+
+  if (t < 30) {
+    const p = t / 30;
+    pool = easy.pool;
+    spawnInterval = easy.spawnInterval + p * (medium.spawnInterval - easy.spawnInterval);
+    repairTimeout = easy.repairTimeout + p * (medium.repairTimeout - easy.repairTimeout);
+    maxSimultaneous = Math.round(easy.maxSimultaneous + p * (medium.maxSimultaneous - easy.maxSimultaneous));
+    burstCount = Math.round(easy.maxBurst + p * (medium.maxBurst - easy.maxBurst));
+    speedMultiplier = easy.speedMultiplier + p * (medium.speedMultiplier - easy.speedMultiplier);
+    wave = 1 + Math.floor(p * 2);
+  } else if (t < 60) {
+    const p = (t - 30) / 30;
+    pool = medium.pool;
+    spawnInterval = medium.spawnInterval + p * (hard.spawnInterval - medium.spawnInterval);
+    repairTimeout = medium.repairTimeout + p * (hard.repairTimeout - medium.repairTimeout);
+    maxSimultaneous = Math.round(medium.maxSimultaneous + p * (hard.maxSimultaneous - medium.maxSimultaneous));
+    burstCount = Math.round(medium.maxBurst + p * (hard.maxBurst - medium.maxBurst));
+    speedMultiplier = medium.speedMultiplier + p * (hard.speedMultiplier - medium.speedMultiplier);
+    wave = 3 + Math.floor(p * 2);
+  } else if (t < 120) {
+    const p = (t - 60) / 60;
+    pool = hard.pool;
+    spawnInterval = hard.spawnInterval + p * (expert.spawnInterval - hard.spawnInterval);
+    repairTimeout = hard.repairTimeout + p * (expert.repairTimeout - hard.repairTimeout);
+    maxSimultaneous = Math.round(hard.maxSimultaneous + p * (expert.maxSimultaneous - hard.maxSimultaneous));
+    burstCount = Math.round(hard.maxBurst + p * (expert.maxBurst - hard.maxBurst));
+    speedMultiplier = hard.speedMultiplier + p * (expert.speedMultiplier - hard.speedMultiplier);
+    wave = 5 + Math.floor(p * 3);
+  } else {
+    const p = Math.min(1, (t - 120) / 60);
+    const superSpawnInterval = 600;
+    const superRepairTimeout = 1200;
+    const superMaxSimultaneous = 12;
+    const superBurstCount = 4;
+    const superSpeedMultiplier = 2.2;
+
+    pool = expert.pool;
+    spawnInterval = expert.spawnInterval + p * (superSpawnInterval - expert.spawnInterval);
+    repairTimeout = expert.repairTimeout + p * (superRepairTimeout - expert.repairTimeout);
+    maxSimultaneous = Math.round(expert.maxSimultaneous + p * (superMaxSimultaneous - expert.maxSimultaneous));
+    burstCount = Math.round(expert.maxBurst + p * (superBurstCount - expert.maxBurst));
+    speedMultiplier = expert.speedMultiplier + p * (superSpeedMultiplier - expert.speedMultiplier);
+    wave = 8 + Math.floor((t - 120) / 15);
+  }
+
+  if (t > 180) {
+    const extraTime = t - 180;
+    spawnInterval = Math.max(400, spawnInterval - extraTime * 2);
+    repairTimeout = Math.max(800, repairTimeout - extraTime * 5);
+    maxSimultaneous = Math.min(24, maxSimultaneous + Math.floor(extraTime / 20));
+    speedMultiplier = speedMultiplier + extraTime * 0.005;
+  }
+
+  currentPool = pool;
+
+  return {
+    pressure: Math.min(1, t / 180),
+    wave,
+    maxSimultaneous,
+    spawnInterval,
+    repairTimeout,
+    burstCount,
+    speedMultiplier
+  };
+}
+
 function getPressureProfile() {
+  if (currentGameMode === "limit-test") {
+    return interpolateLimitTest(elapsedTime);
+  }
+
   const config = DIFFICULTY_CONFIGS[selectedDifficulty];
   const timeProgress = clamp(elapsedTime / GAME_DURATION, 0, 1);
   const repairPressure = clamp(totalRepairs / 36, 0, 0.24);
@@ -990,7 +1083,6 @@ function getPressureProfile() {
   const pressure = clamp(timeProgress + repairPressure + mistakePressure, 0, 1);
   const extraKeys = Math.min(MAX_EXTRA_PRESSURE_KEYS, Math.floor(pressure * (MAX_EXTRA_PRESSURE_KEYS + 1)));
 
-  // Custom difficulty scaling parameters
   const minMult = config.minSpawnIntervalMultiplier !== undefined ? config.minSpawnIntervalMultiplier : 0.32;
   const maxBurst = config.maxBurst !== undefined ? config.maxBurst : 3;
 
@@ -1000,7 +1092,8 @@ function getPressureProfile() {
     maxSimultaneous: Math.min(config.pool.length, config.maxSimultaneous + extraKeys),
     spawnInterval: config.spawnInterval * Math.max(minMult, 1 - pressure * (1 - minMult)),
     repairTimeout: config.repairTimeout * Math.max(0.48, 1 - pressure * 0.45),
-    burstCount: Math.min(maxBurst, 1 + (pressure > 0.34 ? 1 : 0) + (pressure > 0.72 ? 1 : 0))
+    burstCount: Math.min(maxBurst, 1 + (pressure > 0.34 ? 1 : 0) + (pressure > 0.72 ? 1 : 0)),
+    speedMultiplier: config.speedMultiplier || 1.0
   };
 }
 
@@ -1171,7 +1264,7 @@ function spawnHack() {
         cell: cell || null,
         routePoints: routePoints,
         progress: 0,
-        speed: (0.004 + (profile.pressure * 0.004)) * (DIFFICULTY_CONFIGS[selectedDifficulty].speedMultiplier || 1.0) + Math.random() * 0.002,
+        speed: (0.004 + (profile.pressure * 0.004)) * (profile.speedMultiplier || 1.0) + Math.random() * 0.002,
         el: groupEl,
         targeted: false,
         x: startPoint.x,
@@ -1204,7 +1297,7 @@ function gameTick() {
   elapsedTime = (now - startedAt) / 1000;
 
   // Check win condition
-  if (elapsedTime >= GAME_DURATION) {
+  if (currentGameMode === "standard" && elapsedTime >= GAME_DURATION) {
     elapsedTime = GAME_DURATION;
     timerEl.textContent = elapsedTime.toFixed(1);
     finishGame(true);
@@ -1566,7 +1659,16 @@ function finishGame(won, reasonMsg = "") {
 
   typingInput.disabled = true;
 
-  if (won) {
+  if (currentGameMode === "limit-test") {
+    playSynthSound("complete");
+    typingOverlay.hidden = false;
+    typingOverlay.className = "code-overlay overlay-success";
+    overlayMessage.textContent = `LIMIT TEST VOLTOOID - SURVIVED: ${elapsedTime.toFixed(1)}s`;
+    if (coreReadoutEl) coreReadoutEl.textContent = "FINISHED";
+    if (lockIcon) lockIcon.style.display = "none";
+    if (unlockIcon) unlockIcon.style.display = "block";
+    if (failIcon) failIcon.style.display = "none";
+  } else if (won) {
     playSynthSound("complete");
     typingOverlay.hidden = false;
     typingOverlay.className = "code-overlay overlay-success";
@@ -1587,7 +1689,7 @@ function finishGame(won, reasonMsg = "") {
   }
 
   // Trigger final status flash overlay
-  triggerStatusFlash(won);
+  triggerStatusFlash(won || currentGameMode === "limit-test");
 
   if (finishSpaceHint) finishSpaceHint.hidden = false;
   finishButton.hidden = false;
@@ -1717,30 +1819,48 @@ function calculateScores() {
   const cpmCoins = Math.round(cpm * 0.4);
   const precisionCoins = Math.round(acc * 1.2);
   const streakCoins = Math.round(maxStreak * 2.0);
-  const completionBonus = gameWon ? 50 : 0;
+  const completionBonus = currentGameMode === "limit-test" ? Math.round(elapsedTime * 0.5) : (gameWon ? 50 : 0);
   const totalCoins = cpmCoins + precisionCoins + streakCoins + completionBonus;
 
   // Rank badge
   let rank = "Schijf-Klungel";
-  if (gameWon) {
-    if (cpm >= 180 && acc >= 96) rank = "SecOps Commandeur";
-    else if (cpm >= 120 && acc >= 90) rank = "System Administrator";
-    else if (cpm >= 80) rank = "Cyber Security Specialist";
+  if (currentGameMode === "limit-test") {
+    if (elapsedTime >= 180) rank = "Elite Cyber Guardian";
+    else if (elapsedTime >= 120) rank = "Master Administrator";
+    else if (elapsedTime >= 60) rank = "Advanced SecOps";
+    else if (elapsedTime >= 30) rank = "Junior SecOps";
+    else rank = "Schild Klungel";
   } else {
-    rank = "Gebraakte Agent";
+    if (gameWon) {
+      if (cpm >= 180 && acc >= 96) rank = "SecOps Commandeur";
+      else if (cpm >= 120 && acc >= 90) rank = "System Administrator";
+      else if (cpm >= 80) rank = "Cyber Security Specialist";
+    } else {
+      rank = "Gebraakte Agent";
+    }
   }
   rankBadge.textContent = rank;
 
-  if (gameWon) {
+  const timeLimitLabel = document.getElementById("completeTimeLimitLabel");
+
+  if (currentGameMode === "limit-test") {
+    resultTitle.textContent = "LIMIT TEST BEËINDIGD";
+    resultTitle.className = "result-title-success";
+    missionStatusContainer.innerHTML = '<span class="status-success-badge" id="missionBadge" style="background: var(--blue); border-color: var(--blue); box-shadow: 0 0 10px rgba(116, 216, 255, 0.45);">LIMIT TEST</span>';
+    completeAccuracy.className = "card-main-value highlight-green";
+    if (timeLimitLabel) timeLimitLabel.textContent = "GEEN TIJD LIMIET";
+  } else if (gameWon) {
     resultTitle.textContent = "SUPERCOMPUTER BEVEILIGD!";
     resultTitle.className = "result-title-success";
     missionStatusContainer.innerHTML = '<span class="status-success-badge" id="missionBadge">GESLAAGD</span>';
     completeAccuracy.className = "card-main-value highlight-green";
+    if (timeLimitLabel) timeLimitLabel.textContent = "MAX: 60.0 SECONDEN";
   } else {
     resultTitle.textContent = "FIREWALL BREACH — MISSIE GEFAALD";
     resultTitle.className = "result-title-failed";
     missionStatusContainer.innerHTML = '<span class="status-failed-badge" id="missionBadge">GEFAALD</span>';
     completeAccuracy.className = "card-main-value highlight-red";
+    if (timeLimitLabel) timeLimitLabel.textContent = "MAX: 60.0 SECONDEN";
   }
 
   completeCoins.textContent = "0";
@@ -1778,14 +1898,14 @@ function calculateScores() {
 // Document focus clicker
 document.addEventListener("click", (e) => {
   if (!testFinished && !typingInput.disabled) {
-    const clickedDropdown = difficultyDropdown && difficultyDropdown.contains(e.target);
+    const clickedDropdown = (difficultyDropdown && difficultyDropdown.contains(e.target)) || (modeDropdown && modeDropdown.contains(e.target));
     if (missionLayout.contains(e.target) && !clickedDropdown && !resetButton.contains(e.target)) {
       typingInput.focus();
     }
   }
 });
 
-// Dropdown handler
+// Dropdown handler (difficulty)
 if (difficultyDropdownHeader) {
   difficultyDropdownHeader.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1807,6 +1927,31 @@ difficultyOptions.forEach(opt => {
 document.addEventListener("click", (e) => {
   if (difficultyDropdown && !difficultyDropdown.contains(e.target)) {
     difficultyDropdown.classList.remove("open");
+  }
+});
+
+// Dropdown handler (mode)
+if (modeDropdownHeader) {
+  modeDropdownHeader.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (running) return;
+    if (modeDropdown) modeDropdown.classList.toggle("open");
+  });
+}
+
+modeOptions.forEach(opt => {
+  opt.addEventListener("click", () => {
+    currentGameMode = opt.dataset.val;
+    modeOptions.forEach(o => o.classList.remove("selected"));
+    opt.classList.add("selected");
+    if (currentModeDisplay) currentModeDisplay.textContent = opt.textContent;
+    if (modeDropdown) modeDropdown.classList.remove("open");
+  });
+});
+
+document.addEventListener("click", (e) => {
+  if (modeDropdown && !modeDropdown.contains(e.target)) {
+    modeDropdown.classList.remove("open");
   }
 });
 

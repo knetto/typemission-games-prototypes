@@ -31,6 +31,18 @@
 
       <!-- Controls -->
       <div class="header-controls">
+        <div class="custom-dropdown" id="modeDropdown">
+          <div class="dropdown-header" id="modeDropdownHeader">
+            <span id="currentModeDisplay">STANDAARD MODE</span>
+            <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <ul class="dropdown-list">
+            <li class="selected" data-val="standard">STANDAARD MODE</li>
+            <li data-val="limit-test">LIMIT TEST MODE</li>
+          </ul>
+        </div>
 
         <button class="ghost-button" id="resetButton" type="button" style="display: none;">
           <span aria-hidden="true">&#8635;</span>
@@ -764,7 +776,7 @@
             <div class="card-value-container">
               <span class="card-main-value highlight-green" id="completeTime">0.0s</span>
             </div>
-            <span class="card-footer-label">MAX: 60.0 SECONDEN</span>
+            <span class="card-footer-label" id="completeTimeLimitLabel">MAX: 60.0 SECONDEN</span>
           </div>
 
           <!-- Card 3: Accuracy -->
