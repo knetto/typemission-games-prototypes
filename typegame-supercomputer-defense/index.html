@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="nl-BE">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeMission — Supercomputer Defense (16:9 Fullscreen Game)</title>
+  <meta name="description" content="Verdedig de supercomputer tegen de hack-aanval door de roodgekleurde sectoren in het lettergrid snel te repareren via typen!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Centered 16:9 Green Security Console Game Container -->
+  <div class="game-container" id="gameContainer">
+
+    <!-- Top Header Panel -->
+    <header class="game-header">
+      <div class="game-branding">
+        <div class="branding-text">
+          <span class="brand-system">SYSTEM: CPU_FIREWALL_V4.8</span>
+          <h1 class="brand-title">TYPEMISSION // SUPERCOMPUTER DEFENSE</h1>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="header-controls">
+
+        <button class="ghost-button" id="resetButton" type="button" style="display: none;">
+          <span aria-hidden="true">&#8635;</span>
+          Opnieuw
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Stage Window -->
+    <div class="mission-stage" id="missionStage">
+      <span class="stage-glow" aria-hidden="true"></span>
+      <div class="morph-flash" id="morphFlash" aria-hidden="true"></div>
+
+      <!-- ── VIEW 1: BRIEFING VIEW ── -->
+      <section class="mission-view mission-briefing-card active" id="storyStage" aria-labelledby="storyTitle">
+        <div class="briefing-top-banner"></div>
+
+        <div class="briefing-panel">
+          <!-- Panel Header -->
+          <div class="briefing-panel-header">
+            <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+            <div class="briefing-pagination" id="briefingPagination" aria-label="Briefing voortgang">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <div class="briefing-slides-container">
+            <!-- Slide 1: Introduction -->
+            <div class="briefing-slide active" data-slide="0">
+              <h2 class="briefing-slide-title" id="storyTitle">Bescherm de Supercomputer tegen de inkomende cyberaanval</h2>
+              <div class="briefing-slide-graphic">
+                <div class="cyber-shield-graphic">
+                  <div class="shield-circle">
+                    <svg viewBox="0 0 100 100" class="shield-svg">
+                      <circle cx="50" cy="50" r="45" stroke="var(--green)" stroke-width="2.5" fill="rgba(68, 215, 117, 0.08)" class="outer-ring"/>
+                      <path d="M50 22 L72 32 V55 C72 69 63 79 50 83 C37 79 28 69 28 55 V32 Z" fill="var(--green)" opacity="0.35" class="shield-core-fill"/>
+                      <path d="M50 25 L68 34 V52 C68 64 60 73 50 76 C40 73 32 64 32 52 V34 Z" stroke="var(--green)" stroke-width="2" fill="none" class="shield-outline"/>
+                      <path d="M44 51 L48 55 L56 47" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" class="check-mark"/>
+                    </svg>
+                  </div>
+                  <div class="threat-dots">
+                    <span class="threat-dot t1"></span>
+                    <span class="threat-dot t2"></span>
+                    <span class="threat-dot t3"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: Sector Grid mechanic -->
+            <div class="briefing-slide" data-slide="1">
+              <h2 class="briefing-slide-title">Repareer de gehackte sectoren in het lettergrid</h2>
+              <div class="briefing-slide-graphic">
+                <div class="grid-preview" aria-hidden="true">
+                  <span class="grid-preview-cell">Q</span>
+                  <span class="grid-preview-cell">W</span>
+                  <span class="grid-preview-cell hacked">J</span>
+                  <span class="grid-preview-cell">R</span>
+                  <span class="grid-preview-cell">F</span>
+                  <span class="grid-preview-cell">A</span>
+                  <span class="grid-preview-cell">S</span>
+                  <span class="grid-preview-cell hacked">O</span>
+                  <span class="grid-preview-cell">H</span>
+                  <span class="grid-preview-cell">K</span>
+                  <span class="grid-preview-cell">X</span>
+                  <span class="grid-preview-cell">C</span>
+                  <span class="grid-preview-cell">V</span>
+                  <span class="grid-preview-cell hacked">W</span>
+                  <span class="grid-preview-cell">D</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3: Telemetry & Rules -->
+            <div class="briefing-slide" data-slide="2">
+              <h2 class="briefing-slide-title">Voorkom systeem-overbelasting en crashes</h2>
+              <div class="briefing-slide-graphic">
+                <div class="demo-warnings-panel">
+                  <div class="demo-progress-box">
+                    <span class="demo-box-label">HACK COMPROMISE LEVEL:</span>
+                    <div class="demo-bar-outer">
+                      <div class="demo-bar-inner"></div>
+                    </div>
+                  </div>
+                  <div class="demo-warnings-grid">
+                    <div class="demo-warning-item">
+                      <div class="warning-led active-red"></div>
+                      <span>Rode letters = Hack breidt uit!</span>
+                    </div>
+                    <div class="demo-warning-item">
+                      <div class="warning-led pulse-red"></div>
+                      <span>Te laat of verkeerde toets = 1 fout (foutbudget: 3)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer: Spacebar Prompt -->
+          <div class="briefing-footer">
+            <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+            <button class="spacebar-btn-visual" id="spacebarAdvanceBtn" type="button" aria-label="Volgende dia">
+              <span class="spacebar-icon-line" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── VIEW 2: GAME ARENA VIEW ── -->
+      <div class="mission-view arena-game" id="missionLayout" hidden>
+        <div class="arena-layout">
+
+          <!-- Telemetry / Live Stats Header -->
+          <div class="arena-top-hud">
+            <div class="hud-telemetry">
+              <div class="hud-telemetry-item">
+                <span class="tel-label">TIJD</span>
+                <span class="tel-val" id="timer">0.0</span>
+                <span class="tel-unit">s</span>
+              </div>
+              <div class="hud-telemetry-item">
+                <span class="tel-label">REPAIRS (CPM)</span>
+                <span class="tel-val" id="liveCpm">0</span>
+              </div>
+              <div class="hud-telemetry-item">
+                <span class="tel-label">ACCURACY</span>
+                <span class="tel-val" id="accuracy">100%</span>
+              </div>
+              <div class="hud-telemetry-item mistake-hud">
+                <span class="tel-label">FOUTEN</span>
+                <span class="tel-val mistake-value" id="mistakeCount">0/3</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hack Progress compromised status -->
+          <div class="hack-progress-container">
+            <div class="hack-progress-meta">
+              <span class="progress-title">SYSTEM COMPROMISE STATUS</span>
+              <span class="progress-pct" id="compromisePct">0%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="compromiseFill"></div>
+            </div>
+          </div>
+
+          <!-- Supercomputer defense board -->
+          <div class="keyboard-board-outer" id="defenseBoard">
+            <svg class="pcb-circuits" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <pattern id="pcbGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(116, 216, 255, 0.012)" stroke-width="0.75" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#pcbGrid)" pointer-events="none" />
+
+              <!-- Focused PCB network: peripheral points route into the CPU socket -->
+              <g class="pcb-reference-layer">
+                <!-- Left input bank -->
+                <g class="pcb-cpu-bus">
+                  <path d="M 40,80 H 150 L 234,164 H 330" class="pcb-reference-trace" />
+                  <path d="M 40,92 H 150 L 234,176 H 330" class="pcb-reference-trace" />
+                  <path d="M 40,104 H 150 L 234,188 H 330" class="pcb-reference-trace" />
+                  <path d="M 40,240 H 176 L 208,208 H 330" class="pcb-reference-trace" />
+                  <path d="M 40,252 H 176 L 208,220 H 330" class="pcb-reference-trace" />
+                  <path d="M 40,264 H 176 L 208,232 H 330" class="pcb-reference-trace" />
+                </g>
+
+                <!-- Secondary left-to-right input bank -->
+                <g class="pcb-cpu-bus">
+                  <path d="M 40,124 H 174 L 306,164 H 470" class="pcb-reference-trace" />
+                  <path d="M 40,136 H 186 L 316,176 H 470" class="pcb-reference-trace" />
+                  <path d="M 40,148 H 198 L 326,188 H 470" class="pcb-reference-trace" />
+                  <path d="M 40,288 H 210 L 292,208 H 470" class="pcb-reference-trace" />
+                  <path d="M 40,300 H 222 L 302,220 H 470" class="pcb-reference-trace" />
+                  <path d="M 40,312 H 234 L 314,232 H 470" class="pcb-reference-trace" />
+                </g>
+
+                <!-- Left-to-right power and clock routes -->
+                <g class="pcb-cpu-bus pcb-cpu-bus-top">
+                  <path d="M 40,20 H 238 L 366,106 V 164" class="pcb-reference-trace" />
+                  <path d="M 40,32 H 250 L 382,102 V 164" class="pcb-reference-trace" />
+                  <path d="M 40,44 H 276 L 400,164" class="pcb-reference-trace thick" />
+                  <path d="M 40,56 H 292 L 418,102 V 164" class="pcb-reference-trace" />
+                  <path d="M 40,68 H 304 L 434,106 V 164" class="pcb-reference-trace" />
+                </g>
+
+                <!-- Peripheral source points -->
+                <g class="pcb-source-points">
+                  <circle cx="40" cy="80" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="92" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="104" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="240" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="252" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="264" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="124" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="136" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="148" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="288" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="300" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="312" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="20" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="32" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="44" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="56" r="5" class="pcb-reference-pad" />
+                  <circle cx="40" cy="68" r="5" class="pcb-reference-pad" />
+                </g>
+
+                <!-- Routing vias show the signal path inward -->
+                <g class="pcb-route-vias">
+                  <!-- Left Top Bus Bends -->
+                  <circle cx="150" cy="80" r="3.5" class="pcb-reference-via" />
+                  <circle cx="150" cy="92" r="3.5" class="pcb-reference-via" />
+                  <circle cx="150" cy="104" r="3.5" class="pcb-reference-via" />
+                  <circle cx="234" cy="164" r="3.5" class="pcb-reference-via" />
+                  <circle cx="246" cy="176" r="3.5" class="pcb-reference-via" />
+                  <circle cx="258" cy="188" r="3.5" class="pcb-reference-via" />
+                  <!-- Left Bottom Bus Bends -->
+                  <circle cx="176" cy="240" r="3.5" class="pcb-reference-via" />
+                  <circle cx="176" cy="252" r="3.5" class="pcb-reference-via" />
+                  <circle cx="176" cy="264" r="3.5" class="pcb-reference-via" />
+                  <circle cx="208" cy="208" r="3.5" class="pcb-reference-via" />
+                  <circle cx="208" cy="220" r="3.5" class="pcb-reference-via" />
+                  <circle cx="208" cy="232" r="3.5" class="pcb-reference-via" />
+                  <!-- Secondary Left-to-Right Bus Bends -->
+                  <circle cx="174" cy="124" r="3.5" class="pcb-reference-via" />
+                  <circle cx="186" cy="136" r="3.5" class="pcb-reference-via" />
+                  <circle cx="198" cy="148" r="3.5" class="pcb-reference-via" />
+                  <circle cx="306" cy="164" r="3.5" class="pcb-reference-via" />
+                  <circle cx="316" cy="176" r="3.5" class="pcb-reference-via" />
+                  <circle cx="326" cy="188" r="3.5" class="pcb-reference-via" />
+                  <circle cx="210" cy="288" r="3.5" class="pcb-reference-via" />
+                  <circle cx="222" cy="300" r="3.5" class="pcb-reference-via" />
+                  <circle cx="234" cy="312" r="3.5" class="pcb-reference-via" />
+                  <circle cx="292" cy="208" r="3.5" class="pcb-reference-via" />
+                  <circle cx="302" cy="220" r="3.5" class="pcb-reference-via" />
+                  <circle cx="314" cy="232" r="3.5" class="pcb-reference-via" />
+                  <!-- Left-to-right power and clock route bends -->
+                  <circle cx="238" cy="20" r="3.5" class="pcb-reference-via" />
+                  <circle cx="250" cy="32" r="3.5" class="pcb-reference-via" />
+                  <circle cx="276" cy="44" r="3.5" class="pcb-reference-via" />
+                  <circle cx="292" cy="56" r="3.5" class="pcb-reference-via" />
+                  <circle cx="304" cy="68" r="3.5" class="pcb-reference-via" />
+                  <circle cx="366" cy="106" r="3.5" class="pcb-reference-via" />
+                  <circle cx="382" cy="102" r="3.5" class="pcb-reference-via" />
+                  <circle cx="418" cy="102" r="3.5" class="pcb-reference-via" />
+                  <circle cx="434" cy="106" r="3.5" class="pcb-reference-via" />
+                </g>
+
+                <!-- CPU socket connection points -->
+                <g class="pcb-cpu-points">
+                  <circle cx="330" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="330" cy="176" r="4" class="pcb-reference-pad" />
+                  <circle cx="330" cy="188" r="4" class="pcb-reference-pad" />
+                  <circle cx="330" cy="208" r="4" class="pcb-reference-pad" />
+                  <circle cx="330" cy="220" r="4" class="pcb-reference-pad" />
+                  <circle cx="330" cy="232" r="4" class="pcb-reference-pad" />
+                  <circle cx="470" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="470" cy="176" r="4" class="pcb-reference-pad" />
+                  <circle cx="470" cy="188" r="4" class="pcb-reference-pad" />
+                  <circle cx="470" cy="208" r="4" class="pcb-reference-pad" />
+                  <circle cx="470" cy="220" r="4" class="pcb-reference-pad" />
+                  <circle cx="470" cy="232" r="4" class="pcb-reference-pad" />
+                  <circle cx="366" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="382" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="400" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="418" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="434" cy="164" r="4" class="pcb-reference-pad" />
+                </g>
+              </g>
+
+              <!-- Decorative Motherboard RAM Slots -->
+              <g class="pcb-ram-slots">
+                <!-- Slot Left 1 -->
+                <g class="ram-slot-group" transform="translate(245, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+                <!-- Slot Left 2 -->
+                <g class="ram-slot-group" transform="translate(257, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+                <!-- Slot Right 1 -->
+                <g class="ram-slot-group" transform="translate(537, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+                <!-- Slot Right 2 -->
+                <g class="ram-slot-group" transform="translate(549, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+              </g>
+
+              <!-- Motherboard Microchips -->
+              <!-- Chip Left (U1) -->
+              <g class="pcb-chip" transform="translate(70, 80)">
+                <rect x="-12" y="-18" width="24" height="36" rx="2" class="chip-body" />
+                <circle cx="-8" cy="-13" r="1.2" class="chip-dot" />
+                <text x="0" y="3" class="chip-text">BIOS_1</text>
+                <!-- Left Pins -->
+                <line x1="-17" y1="-12" x2="-12" y2="-12" class="chip-pin" />
+                <line x1="-17" y1="-4" x2="-12" y2="-4" class="chip-pin" />
+                <line x1="-17" y1="4" x2="-12" y2="4" class="chip-pin" />
+                <line x1="-17" y1="12" x2="-12" y2="12" class="chip-pin" />
+                <!-- Right Pins -->
+                <line x1="12" y1="-12" x2="17" y2="-12" class="chip-pin" />
+                <line x1="12" y1="-4" x2="17" y2="-4" class="chip-pin" />
+                <line x1="12" y1="4" x2="17" y2="4" class="chip-pin" />
+                <line x1="12" y1="12" x2="17" y2="12" class="chip-pin" />
+                <!-- Solder pads -->
+                <circle cx="-18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="-18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="18" cy="4" r="1" class="chip-solder" />
+                <circle cx="18" cy="12" r="1" class="chip-solder" />
+              </g>
+
+              <!-- Chip Right (U2) -->
+              <g class="pcb-chip" transform="translate(730, 80)">
+                <rect x="-12" y="-18" width="24" height="36" rx="2" class="chip-body" />
+                <circle cx="-8" cy="-13" r="1.2" class="chip-dot" />
+                <text x="0" y="3" class="chip-text">BIOS_2</text>
+                <!-- Left Pins -->
+                <line x1="-17" y1="-12" x2="-12" y2="-12" class="chip-pin" />
+                <line x1="-17" y1="-4" x2="-12" y2="-4" class="chip-pin" />
+                <line x1="-17" y1="4" x2="-12" y2="4" class="chip-pin" />
+                <line x1="-17" y1="12" x2="-12" y2="12" class="chip-pin" />
+                <!-- Right Pins -->
+                <line x1="12" y1="-12" x2="17" y2="-12" class="chip-pin" />
+                <line x1="12" y1="-4" x2="17" y2="-4" class="chip-pin" />
+                <line x1="12" y1="4" x2="17" y2="4" class="chip-pin" />
+                <line x1="12" y1="12" x2="17" y2="12" class="chip-pin" />
+                <!-- Solder pads -->
+                <circle cx="-18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="-18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="18" cy="4" r="1" class="chip-solder" />
+                <circle cx="18" cy="12" r="1" class="chip-solder" />
+              </g>
+
+              <!-- Chip Bottom (U3) -->
+              <g class="pcb-chip" transform="translate(400, 310)">
+                <rect x="-18" y="-12" width="36" height="24" rx="2" class="chip-body" />
+                <circle cx="-14" cy="-7" r="1.2" class="chip-dot" />
+                <text x="0" y="3" class="chip-text">BRIDGE</text>
+                <!-- Top Pins -->
+                <line x1="-12" y1="-17" x2="-12" y2="-12" class="chip-pin" />
+                <line x1="-4" y1="-17" x2="-4" y2="-12" class="chip-pin" />
+                <line x1="4" y1="-17" x2="4" y2="-12" class="chip-pin" />
+                <line x1="12" y1="-17" x2="12" y2="-12" class="chip-pin" />
+                <!-- Bottom Pins -->
+                <line x1="-12" y1="12" x2="-12" y2="17" class="chip-pin" />
+                <line x1="-4" y1="12" x2="-4" y2="17" class="chip-pin" />
+                <line x1="4" y1="12" x2="4" y2="17" class="chip-pin" />
+                <line x1="12" y1="12" x2="12" y2="17" class="chip-pin" />
+                <!-- Solder pads -->
+                <circle cx="-12" cy="-18" r="1" class="chip-solder" />
+                <circle cx="-4" cy="-18" r="1" class="chip-solder" />
+                <circle cx="4" cy="-18" r="1" class="chip-solder" />
+                <circle cx="12" cy="-18" r="1" class="chip-solder" />
+                <circle cx="-12" cy="18" r="1" class="chip-solder" />
+                <circle cx="-4" cy="18" r="1" class="chip-solder" />
+                <circle cx="4" cy="18" r="1" class="chip-solder" />
+                <circle cx="12" cy="18" r="1" class="chip-solder" />
+              </g>
+
+              <!-- Dot arrays (capacitors and solder pads) -->
+              <g class="pcb-dot-grid">
+                <circle cx="150" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="160" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="150" cy="190" r="1.5" class="pcb-dot" />
+                <circle cx="160" cy="190" r="1.5" class="pcb-dot" />
+                
+                <circle cx="640" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="650" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="640" cy="190" r="1.5" class="pcb-dot" />
+                <circle cx="650" cy="190" r="1.5" class="pcb-dot" />
+
+                <circle cx="380" cy="35" r="1.5" class="pcb-dot" />
+                <circle cx="390" cy="35" r="1.5" class="pcb-dot" />
+                <circle cx="410" cy="35" r="1.5" class="pcb-dot" />
+                <circle cx="420" cy="35" r="1.5" class="pcb-dot" />
+              </g>
+
+              <!-- Active Gameplay Traces (Viruses float along these) -->
+              <!-- Left Side Upper-Half Traces -->
+              <path d="M 20,60 H 160 L 280,180 H 330" class="circuit-trace-base" />
+              <path d="M 20,60 H 160 L 280,180 H 330" class="circuit-trace" />
+              
+              <path d="M 20,110 H 190 L 280,200 H 330" class="circuit-trace-base" />
+              <path d="M 20,110 H 190 L 280,200 H 330" class="circuit-trace" />
+              
+              <path d="M 20,150 H 205 L 285,220 H 330" class="circuit-trace-base" />
+              <path d="M 20,150 H 205 L 285,220 H 330" class="circuit-trace" />
+              
+              <!-- Left-to-Right Upper-Half Traces -->
+              <path d="M 20,80 H 210 L 350,180 H 470" class="circuit-trace-base" />
+              <path d="M 20,80 H 210 L 350,180 H 470" class="circuit-trace" />
+              
+              <path d="M 20,130 H 240 L 350,200 H 470" class="circuit-trace-base" />
+              <path d="M 20,130 H 240 L 350,200 H 470" class="circuit-trace" />
+              
+              <path d="M 20,190 H 260 L 350,220 H 470" class="circuit-trace-base" />
+              <path d="M 20,190 H 260 L 350,220 H 470" class="circuit-trace" />
+              
+              <!-- Long left-to-right CPU feed -->
+              <path d="M 20,25 H 260 L 400,164" class="circuit-trace-base" />
+              <path d="M 20,25 H 260 L 400,164" class="circuit-trace" />
+   
+              <!-- Decorative Motherboard Traces (Ignore for gameplay, pure aesthetics) -->
+              <path d="M 20,40 H 140 L 250,150 H 330" class="circuit-trace-decor" />
+              <path d="M 20,95 H 230 L 360,150 H 470" class="circuit-trace-decor" />
+              
+              <path d="M 350,295 V 320 L 300,370 H 250" class="circuit-trace-decor" />
+              <path d="M 450,295 V 320 L 500,370 H 550" class="circuit-trace-decor" />
+              <path d="M 380,295 V 340 L 350,370 H 310" class="circuit-trace-decor" />
+              <path d="M 420,295 V 340 L 450,370 H 490" class="circuit-trace-decor" />
+
+              <!-- Parallel trace busses with terminal pads -->
+              <g class="pcb-trace-busses">
+                <!-- Left Mid-Lower Bus -->
+                <path d="M 50,220 L 100,220 L 130,250 L 190,250" class="circuit-trace-decor" />
+                <circle cx="190" cy="250" r="2" class="pcb-dot" />
+                <path d="M 50,230 L 96,230 L 126,260 L 190,260" class="circuit-trace-decor" />
+                <circle cx="190" cy="260" r="2" class="pcb-dot" />
+                <path d="M 50,240 L 92,240 L 122,270 L 190,270" class="circuit-trace-decor" />
+                <circle cx="190" cy="270" r="2" class="pcb-dot" />
+
+                <!-- Additional left-to-right CPU bus -->
+                <path d="M 50,280 L 245,280 L 330,240 L 470,240" class="circuit-trace-decor" />
+                <circle cx="470" cy="240" r="2" class="pcb-dot" />
+                <path d="M 50,290 L 255,290 L 338,252 L 470,252" class="circuit-trace-decor" />
+                <circle cx="470" cy="252" r="2" class="pcb-dot" />
+                <path d="M 50,300 L 265,300 L 346,264 L 470,264" class="circuit-trace-decor" />
+                <circle cx="470" cy="264" r="2" class="pcb-dot" />
+
+                <!-- Top Left Bus -->
+                <path d="M 80,0 L 80,50 L 100,70 L 100,100" class="circuit-trace-decor" />
+                <circle cx="100" cy="100" r="2" class="pcb-dot" />
+                <path d="M 90,0 L 90,46 L 110,66 L 110,100" class="circuit-trace-decor" />
+                <circle cx="110" cy="100" r="2" class="pcb-dot" />
+
+                <!-- Additional top left-to-right CPU bus -->
+                <path d="M 50,10 L 220,10 L 350,100 L 470,100" class="circuit-trace-decor" />
+                <circle cx="470" cy="100" r="2" class="pcb-dot" />
+                <path d="M 50,20 L 230,20 L 356,112 L 470,112" class="circuit-trace-decor" />
+                <circle cx="470" cy="112" r="2" class="pcb-dot" />
+              </g>
+
+              <!-- Concentric test pads -->
+              <g class="pcb-concentric-pads">
+                <circle cx="200" cy="310" r="10" stroke="rgba(116, 216, 255, 0.15)" stroke-width="1" fill="none" />
+                <circle cx="200" cy="310" r="4" stroke="rgba(116, 216, 255, 0.2)" stroke-width="1.5" fill="none" />
+                
+                <circle cx="600" cy="110" r="10" stroke="rgba(116, 216, 255, 0.15)" stroke-width="1" fill="none" />
+                <circle cx="600" cy="110" r="4" stroke="rgba(116, 216, 255, 0.2)" stroke-width="1.5" fill="none" />
+              </g>
+
+              <!-- Grid of square connector contacts -->
+              <g class="pcb-square-grids">
+                <!-- Left Side Grid -->
+                <g transform="translate(60, 270)">
+                  <rect x="0" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                </g>
+                <!-- Right Side Grid -->
+                <g transform="translate(720, 270)">
+                  <rect x="0" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                </g>
+              </g>
+
+              <!-- Extra small IC chips for high-density design -->
+              <g class="pcb-chip" transform="translate(180, 80)">
+                <rect x="-10" y="-10" width="20" height="20" rx="1.5" class="chip-body" />
+                <line x1="-14" y1="-5" x2="-10" y2="-5" class="chip-pin" />
+                <line x1="-14" y1="5" x2="-10" y2="5" class="chip-pin" />
+                <line x1="10" y1="-5" x2="14" y2="-5" class="chip-pin" />
+                <line x1="10" y1="5" x2="14" y2="5" class="chip-pin" />
+                <line x1="-5" y1="-14" x2="-5" y2="-10" class="chip-pin" />
+                <line x1="5" y1="-14" x2="5" y2="-10" class="chip-pin" />
+                <line x1="-5" y1="10" x2="-5" y2="14" class="chip-pin" />
+                <line x1="5" y1="10" x2="5" y2="14" class="chip-pin" />
+              </g>
+              <g class="pcb-chip" transform="translate(620, 300)">
+                <rect x="-10" y="-10" width="20" height="20" rx="1.5" class="chip-body" />
+                <line x1="-14" y1="-5" x2="-10" y2="-5" class="chip-pin" />
+                <line x1="-14" y1="5" x2="-10" y2="5" class="chip-pin" />
+                <line x1="10" y1="-5" x2="14" y2="-5" class="chip-pin" />
+                <line x1="10" y1="5" x2="14" y2="5" class="chip-pin" />
+                <line x1="-5" y1="-14" x2="-5" y2="-10" class="chip-pin" />
+                <line x1="5" y1="-14" x2="5" y2="-10" class="chip-pin" />
+                <line x1="-5" y1="10" x2="-5" y2="14" class="chip-pin" />
+                <line x1="5" y1="10" x2="5" y2="14" class="chip-pin" />
+              </g>
+ 
+              <!-- Additional Motherboard Decorative Traces (faint background) -->
+              <!-- Left parallel busses -->
+              <path d="M 50,180 L 120,180 L 160,220 L 220,220" class="circuit-trace-decor" />
+              <path d="M 50,190 L 115,190 L 155,230 L 220,230" class="circuit-trace-decor" />
+              <path d="M 50,200 L 110,200 L 150,240 L 220,240" class="circuit-trace-decor" />
+              <!-- Additional left-to-right parallel busses -->
+              <path d="M 50,155 L 240,155 L 330,180 L 470,180" class="circuit-trace-decor" />
+              <path d="M 50,165 L 250,165 L 338,190 L 470,190" class="circuit-trace-decor" />
+              <path d="M 50,175 L 260,175 L 346,200 L 470,200" class="circuit-trace-decor" />
+              <!-- Long perimeter side traces -->
+              <path d="M 30,0 L 30,120 L 70,160 L 70,300 L 10,360" class="circuit-trace-decor" />
+              <path d="M 30,20 L 180,20 L 270,120 L 430,120 L 470,160" class="circuit-trace-decor" />
+              <!-- Behind CPU Core lines (shifted down) -->
+              <path d="M 300,220 L 300,250 L 330,280 L 470,280 L 500,250 L 500,220" class="circuit-trace-decor" />
+              <path d="M 280,220 L 280,260 L 320,300 L 480,300 L 520,260 L 520,220" class="circuit-trace-decor" />
+              <!-- Lower grid tracks -->
+              <path d="M 150,350 L 300,350 L 350,300 L 450,300 L 500,350 L 650,350" class="circuit-trace-decor" />
+              <path d="M 100,365 L 290,365 L 340,315 L 460,315 L 510,365 L 700,365" class="circuit-trace-decor" />
+              <!-- Corner rings -->
+              <path d="M 40,250 L 100,250 L 130,280 L 130,340" class="circuit-trace-decor" />
+              <path d="M 40,260 L 230,260 L 330,235 L 470,235" class="circuit-trace-decor" />
+ 
+              <!-- Solder pads at key intersection junctions -->
+              <circle cx="160" cy="40" r="2.5" class="pcb-pad" />
+              <circle cx="220" cy="210" r="2.5" class="pcb-pad" />
+              <circle cx="180" cy="110" r="2.5" class="pcb-pad" />
+              <circle cx="640" cy="40" r="2.5" class="pcb-pad" />
+              <circle cx="580" cy="210" r="2.5" class="pcb-pad" />
+              <circle cx="620" cy="110" r="2.5" class="pcb-pad" />
+              <circle cx="120" cy="80" r="2.5" class="pcb-pad" />
+              <circle cx="680" cy="80" r="2.5" class="pcb-pad" />
+
+              <!-- Interactive gameplay overlay groups -->
+              <g id="svgProjectiles"></g>
+              <g id="svgViruses"></g>
+              <g id="svgExplosions"></g>
+            </svg>
+            <div class="keyboard-scanlines"></div>
+
+            <div class="defense-core-visual" id="defenseCore" aria-hidden="true">
+              <div class="attack-streams" id="attackStreams"></div>
+              
+              <!-- Mistakes indicator above CPU (3 error budget) -->
+              <div class="cpu-shield-status">
+                <span class="shield-node active" id="shield0">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg>
+                </span>
+                <span class="shield-node active" id="shield1">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg>
+                </span>
+                <span class="shield-node active" id="shield2">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg>
+                </span>
+              </div>
+
+              <div class="core-ring ring-one"></div>
+              <div class="core-ring ring-two"></div>
+              <div class="core-ring ring-three"></div>
+              <div class="supercomputer-core">
+                <!-- Gold corners / packaging notches -->
+                <span class="cpu-notch tl" aria-hidden="true"></span>
+                <span class="cpu-notch tr" aria-hidden="true"></span>
+                <span class="cpu-notch bl" aria-hidden="true"></span>
+                <span class="cpu-notch br" aria-hidden="true"></span>
+                
+                <!-- Tiny golden pins around substrate -->
+                <span class="cpu-gold-edge-left" aria-hidden="true"></span>
+                <span class="cpu-gold-edge-right" aria-hidden="true"></span>
+                
+                <!-- Substrate surface capacitors -->
+                <span class="cpu-surface-components" aria-hidden="true">
+                  <span class="cap cap-1"></span>
+                  <span class="cap cap-2"></span>
+                  <span class="cap cap-3"></span>
+                  <span class="cap cap-4"></span>
+                </span>
+                
+                <!-- Central heatspreader cover plate -->
+                <div class="cpu-ihs">
+                  <!-- Serial / branding text laser etched -->
+                  <div class="cpu-serial" aria-hidden="true">TMS-8086-DEFENSE</div>
+                  
+                  <span class="core-crystal"></span>
+                  <span class="core-label">CORE</span>
+                  <span class="core-readout" id="coreReadout">STABLE</span>
+                  
+                  <!-- Tiny status led -->
+                  <div class="cpu-status-led-container" aria-hidden="true">
+                    <span class="cpu-status-led" id="cpuLed"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sector-panel">
+              <div class="sector-panel-header">
+                <span>FIREWALL SECTORS</span>
+                <span id="waveReadout">WAVE 01</span>
+              </div>
+              <!-- Live sector matrix — cells injected by script.js -->
+              <div class="sector-grid" id="sectorGrid"></div>
+            </div>
+          </div>
+
+          <!-- Console status feedback bottom panel -->
+          <div class="console-deck">
+            <div class="console-header">
+              <span class="console-tag">FIREWALL CONTROL SYSTEM v4.8</span>
+              <span class="console-ping" id="consolePing">SECURE</span>
+            </div>
+            <div class="console-body">
+              <span class="console-prompt">&gt;</span>
+              <span class="console-log" id="statusLog">Systeem online. Wachten op inbreuk poging...</span>
+              <span class="terminal-cursor"></span>
+            </div>
+          </div>
+
+          <!-- Digital Overlay (Success/Fail popup before result screen) -->
+          <div class="code-overlay" id="typingOverlay" hidden>
+            <div class="overlay-content">
+              <!-- Security Guard icons -->
+              <svg id="lockIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <svg id="unlockIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon unlock-icon"
+                style="display: none;">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <svg id="failIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--red)"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon fail-icon"
+                style="display: none;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <p id="overlayMessage">DRUK OP DE SPATIEBALK OM DE FIREWALL TE STARTEN</p>
+              
+              <div id="finishSpaceHint" class="finish-space-hint"
+                style="display: flex; flex-direction: column; align-items: center; gap: 8px;" hidden>
+                <p class="spacebar-instruction" style="margin-top: 10px;">Druk op de spatiebalk om de uitslag te bekijken</p>
+                <button class="spacebar-btn-visual" id="finishButton" type="button" aria-label="Bekijk uitslag">
+                  <span class="spacebar-icon-line" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Textarea input target -->
+          <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off" disabled></textarea>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── VIEW 3: RESULTS PANEL VIEW ── -->
+    <section class="mission-view result-panel" id="resultPanel" aria-live="polite" hidden>
+      <div class="result-container">
+
+        <header class="result-header">
+          <p class="result-eyebrow">SUPERCOMPUTER DEFENSE EVALUATION // SYSTEM REPORT</p>
+          <h2 id="resultTitle">SUPERCOMPUTER BEVEILIGD!</h2>
+          <div class="result-rank-bar">
+            <span>EVALUATIE RANG:</span>
+            <strong id="rankBadge" class="rank-badge-text">SecOps Commandeur</strong>
+          </div>
+        </header>
+
+        <!-- 6-Card Stats Dashboard Grid -->
+        <div class="result-dashboard-grid">
+
+          <!-- Card 1: Speed (CPM) -->
+          <div class="dashboard-card">
+            <span class="card-title">REPAIR SPEED (CPM)</span>
+            <div class="card-value-container">
+              <span class="card-main-value" id="completeCpm">0</span>
+            </div>
+            <div class="card-footer-reward" id="cpmCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 2: Survivability -->
+          <div class="dashboard-card">
+            <span class="card-title">SURVIVED TIME</span>
+            <div class="card-value-container">
+              <span class="card-main-value highlight-green" id="completeTime">0.0s</span>
+            </div>
+            <span class="card-footer-label">MAX: 60.0 SECONDEN</span>
+          </div>
+
+          <!-- Card 3: Accuracy -->
+          <div class="dashboard-card">
+            <span class="card-title">REPAIR ACCURACY</span>
+            <div class="card-value-container">
+              <span class="card-main-value highlight-green" id="completeAccuracy">100%</span>
+            </div>
+            <div class="card-footer-reward" id="precisionCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 4: Sectors Repaired -->
+          <div class="dashboard-card">
+            <span class="card-title">SECTORS RESTORED</span>
+            <div class="card-value-container">
+              <span class="streak-circle-value" id="completeSectors">0</span>
+            </div>
+            <div class="card-footer-reward" id="streakCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 5: Mission Status -->
+          <div class="dashboard-card">
+            <span class="card-title">MISSION STATUS</span>
+            <div class="card-value-container" id="missionStatusContainer">
+              <span class="status-success-badge" id="missionBadge">GESLAAGD</span>
+            </div>
+            <div class="card-footer-reward" id="completionCoinsReward">
+              +50 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 6: Total Credits -->
+          <div class="dashboard-card highlight-glow">
+            <span class="card-title">TOTAL CREDITS</span>
+            <div class="card-value-container credits-container">
+              <img src="coin.svg" alt="" aria-hidden="true" class="coin-total-img">
+              <span class="card-main-value" id="completeCoins">0</span>
+            </div>
+            <span class="card-footer-label">SUPER SPY SCHOOL MUNTEN</span>
+          </div>
+
+        </div>
+
+        <!-- Bottom CTA Actions -->
+        <div class="results-actions">
+          <p class="spacebar-instruction">Druk op de spatiebalk om door te gaan</p>
+          <button class="spacebar-btn-visual" id="retryResultButton" type="button" aria-label="Doorgaan">
+            <span class="spacebar-icon-line" aria-hidden="true"></span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
