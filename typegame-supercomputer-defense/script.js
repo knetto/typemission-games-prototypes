@@ -14,9 +14,12 @@ const GRID_SIZE = GRID_COLS * GRID_ROWS; // 24 sectors
 const DIFFICULTY_CONFIGS = {
   easy: {
     pool: ["a", "s", "d", "f", "g", "h", "j", "k", "l"], // Home Row only
-    spawnInterval: 3200, // ms between hacks
+    spawnInterval: 3500, // ms between hacks
     repairTimeout: 5500, // ms to repair a key
-    maxSimultaneous: 2
+    maxSimultaneous: 2,
+    maxBurst: 1,
+    minSpawnIntervalMultiplier: 0.7,
+    speedMultiplier: 0.75
   },
   medium: {
     pool: [
@@ -24,9 +27,12 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ], // All A-Z
-    spawnInterval: 2400,
+    spawnInterval: 2600,
     repairTimeout: 4500,
-    maxSimultaneous: 3
+    maxSimultaneous: 3,
+    maxBurst: 2,
+    minSpawnIntervalMultiplier: 0.6,
+    speedMultiplier: 0.95
   },
   hard: {
     pool: [
@@ -35,9 +41,12 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ], // A-Z + 0-9
-    spawnInterval: 1700,
+    spawnInterval: 1800,
     repairTimeout: 3500,
-    maxSimultaneous: 5
+    maxSimultaneous: 5,
+    maxBurst: 2,
+    minSpawnIntervalMultiplier: 0.45,
+    speedMultiplier: 1.2
   },
   expert: {
     pool: [
@@ -46,9 +55,12 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1000,
+    spawnInterval: 1200,
     repairTimeout: 2600,
-    maxSimultaneous: 7
+    maxSimultaneous: 7,
+    maxBurst: 3,
+    minSpawnIntervalMultiplier: 0.35,
+    speedMultiplier: 1.4
   }
 };
 
@@ -124,7 +136,7 @@ const difficultyDropdown = document.getElementById("difficultyDropdown");
 const difficultyDropdownHeader = document.getElementById("difficultyDropdownHeader");
 const currentDiffDisplay = document.getElementById("currentDiffDisplay");
 const difficultyOptions = document.querySelectorAll(".dropdown-list li");
-let selectedDifficulty = "easy";
+let selectedDifficulty = "medium";
 
 const typingInput = document.getElementById("typingInput");
 const typingOverlay = document.getElementById("typingOverlay");
@@ -978,13 +990,17 @@ function getPressureProfile() {
   const pressure = clamp(timeProgress + repairPressure + mistakePressure, 0, 1);
   const extraKeys = Math.min(MAX_EXTRA_PRESSURE_KEYS, Math.floor(pressure * (MAX_EXTRA_PRESSURE_KEYS + 1)));
 
+  // Custom difficulty scaling parameters
+  const minMult = config.minSpawnIntervalMultiplier !== undefined ? config.minSpawnIntervalMultiplier : 0.32;
+  const maxBurst = config.maxBurst !== undefined ? config.maxBurst : 3;
+
   return {
     pressure,
     wave: Math.min(9, Math.floor(pressure * 8) + 1),
     maxSimultaneous: Math.min(config.pool.length, config.maxSimultaneous + extraKeys),
-    spawnInterval: config.spawnInterval * Math.max(0.32, 1 - pressure * 0.68),
+    spawnInterval: config.spawnInterval * Math.max(minMult, 1 - pressure * (1 - minMult)),
     repairTimeout: config.repairTimeout * Math.max(0.48, 1 - pressure * 0.45),
-    burstCount: 1 + (pressure > 0.34 ? 1 : 0) + (pressure > 0.72 ? 1 : 0)
+    burstCount: Math.min(maxBurst, 1 + (pressure > 0.34 ? 1 : 0) + (pressure > 0.72 ? 1 : 0))
   };
 }
 
@@ -1155,7 +1171,7 @@ function spawnHack() {
         cell: cell || null,
         routePoints: routePoints,
         progress: 0,
-        speed: 0.004 + (profile.pressure * 0.004) + Math.random() * 0.002,
+        speed: (0.004 + (profile.pressure * 0.004)) * (DIFFICULTY_CONFIGS[selectedDifficulty].speedMultiplier || 1.0) + Math.random() * 0.002,
         el: groupEl,
         targeted: false,
         x: startPoint.x,
