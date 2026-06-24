@@ -289,11 +289,69 @@ function renderSectorGrid() {
   } else {
     currentPool = DIFFICULTY_CONFIGS[selectedDifficulty].pool;
   }
+  sectorGridEl.style.setProperty("--cols", GRID_COLS);
+  sectorGridEl.replaceChildren();
   gridCells = [];
+
+  // Trigger the staggered boot-in cascade for this render only.
+  sectorGridEl.classList.add("booting");
+  setTimeout(() => sectorGridEl.classList.remove("booting"), 1000);
+
   for (let i = 0; i < GRID_SIZE; i++) {
-    gridCells.push({ index: i, hacked: false });
+    const cellEl = document.createElement("div");
+    cellEl.className = "sector-cell healthy";
+    cellEl.style.setProperty("--cell-index", i);
+
+    const label = document.createElement("span");
+    label.className = "cell-letter";
+    const ch = randomLetter(currentPool);
+    label.textContent = ch.toUpperCase();
+
+    const fuse = document.createElement("span");
+    fuse.className = "cell-fuse";
+
+    const scan = document.createElement("span");
+    scan.className = "cell-scan";
+
+    const led = document.createElement("span");
+    led.className = "cell-led";
+
+    cellEl.appendChild(scan);
+    cellEl.appendChild(label);
+    cellEl.appendChild(fuse);
+    cellEl.appendChild(led);
+    sectorGridEl.appendChild(cellEl);
+
+    gridCells.push({ index: i, letter: ch, el: cellEl, labelEl: label, fuseEl: fuse, hacked: false });
   }
   drawPcbTraces();
+}
+
+// Swap letter instantly, show status color briefly (200ms), and revert to healthy.
+function morphCell(cell, mode) {
+  cell.hacked = false;
+  cell.fuseEl.style.transform = "scaleX(0)";
+  const trace = getTraceForCell(cell.index);
+  if (trace) {
+    trace.hackedCount = Math.max(0, trace.hackedCount - 1);
+    if (trace.hackedCount === 0) {
+      trace.baseEl.classList.remove("compromised");
+      trace.traceEl.classList.remove("compromised");
+    }
+  }
+
+  // Swap the letter instantly
+  const next = randomLetter(currentPool, cell.letter);
+  cell.letter = next;
+  cell.labelEl.textContent = next.toUpperCase();
+
+  // Show the feedback status color (repaired/crashed)
+  cell.el.className = `sector-cell ${mode === "crash" ? "crashed" : "repaired"}`;
+
+  // Revert back to healthy after 200ms
+  setTimeout(() => {
+    if (!cell.hacked) cell.el.className = "sector-cell healthy";
+  }, 200);
 }
 
 // ── VIEW TRANSITIONS ──
@@ -512,52 +570,147 @@ function getPointOnRoute(route, progress) {
   };
 }
 
-let PCB_ROUTES = [];
+let startYList = [60, 74, 88, 272, 286, 300];
+
+let PCB_ROUTES = {
+  left: [],
+  right: []
+};
 
 function updateDynamicCoordinates() {
-  const centerX = 400;
-  const centerY = 200;
-  const rx = 800 * 0.38; // 304
-  const ry = 400 * 0.38; // 152
+  const cpuEl = document.querySelector(".supercomputer-core");
 
-  PCB_ROUTES = [];
+  // Fallback coordinates based on layout baseline if element is hidden or has 0 dimensions on load/test
+  let cpuLeft = 330;
+  let cpuRight = 470;
+  let cpuTop = 110;
+  let cpuBottom = 290;
+  let cpuHeight = 180;
 
-  for (let i = 0; i < GRID_SIZE; i++) {
-    const angle = (i / GRID_SIZE) * 2 * Math.PI;
-
-    // Cell coordinate in SVG space (800x400)
-    const cellX = centerX + rx * Math.cos(angle);
-    const cellY = centerY + ry * Math.sin(angle);
-
-    // Socket pin coordinate close to CPU (radius ~ 65)
-    const pinX = centerX + 65 * Math.cos(angle);
-    const pinY = centerY + 65 * Math.sin(angle);
-
-    // Calculate a nice 45-degree motherboard bend
-    const dx = pinX - cellX;
-    const dy = pinY - cellY;
-
-    let midX, midY;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      midX = cellX + Math.sign(dx) * (Math.abs(dx) - Math.abs(dy));
-      midY = cellY;
-    } else {
-      midX = cellX;
-      midY = cellY + Math.sign(dy) * (Math.abs(dy) - Math.abs(dx));
+  if (cpuEl && pcbCircuits) {
+    const cpuRect = cpuEl.getBoundingClientRect();
+    const svgRect = pcbCircuits.getBoundingClientRect();
+    if (svgRect.width && svgRect.height) {
+      cpuLeft = (cpuRect.left - svgRect.left) / svgRect.width * 800;
+      cpuRight = (cpuRect.right - svgRect.left) / svgRect.width * 800;
+      cpuTop = (cpuRect.top - svgRect.top) / svgRect.height * 400;
+      cpuBottom = (cpuRect.bottom - svgRect.top) / svgRect.height * 400;
+      cpuHeight = cpuBottom - cpuTop;
     }
+  }
 
-    PCB_ROUTES.push([
-      { x: cellX, y: cellY },
-      { x: midX, y: midY },
-      { x: pinX, y: pinY }
+  // Calculate startYList dynamically to ensure perfect vertical fanning symmetry relative to the CPU center
+  const cpuCenterY = cpuTop + cpuHeight / 2;
+  const G = 24; // Gap between the inner traces and center
+  const S = 16; // Spacing between adjacent traces in the same group
+  startYList = [
+    cpuCenterY - G - 2 * S,
+    cpuCenterY - G - S,
+    cpuCenterY - G,
+    cpuCenterY + G,
+    cpuCenterY + G + S,
+    cpuCenterY + G + 2 * S
+  ];
+
+  // Calculate endYList dynamically to match the exact same parallel spacing (S) at the CPU pins
+  const G_cpu = 8; // Gap at the CPU connection
+  const endYList = [
+    cpuCenterY - G_cpu - 2 * S,
+    cpuCenterY - G_cpu - S,
+    cpuCenterY - G_cpu,
+    cpuCenterY + G_cpu,
+    cpuCenterY + G_cpu + S,
+    cpuCenterY + G_cpu + 2 * S
+  ];
+
+  PCB_ROUTES.left = [];
+  PCB_ROUTES.right = [];
+
+  for (let i = 0; i < 6; i++) {
+    const startY = startYList[i];
+    const endY = endYList[i];
+
+    const x1Left = 220;
+    const x2Left = x1Left + Math.abs(endY - startY);
+    PCB_ROUTES.left.push([
+      { x: 40, y: startY },
+      { x: x1Left, y: startY },
+      { x: x2Left, y: endY },
+      { x: cpuLeft, y: endY }
     ]);
+
+    const x1Right = 580;
+    const x2Right = x1Right - Math.abs(endY - startY);
+    PCB_ROUTES.right.push([
+      { x: 760, y: startY },
+      { x: x1Right, y: startY },
+      { x: x2Right, y: endY },
+      { x: cpuRight, y: endY }
+    ]);
+  }
+
+  // Update background reference traces to align perfectly
+  const leftRefTraces = document.querySelectorAll(".pcb-reference-layer .left-ref-trace");
+  const rightRefTraces = document.querySelectorAll(".pcb-reference-layer .right-ref-trace");
+
+  for (let i = 0; i < 6; i++) {
+    const startY = startYList[i];
+    const endY = endYList[i];
+    const x1Left = 220;
+    const x2Left = x1Left + Math.abs(endY - startY);
+    const x1Right = 580;
+    const x2Right = x1Right - Math.abs(endY - startY);
+
+    if (leftRefTraces[i]) {
+      const d = `M 40,${startY} H ${x1Left} L ${x2Left},${endY} H ${cpuLeft}`;
+      leftRefTraces[i].setAttribute("d", d);
+    }
+    if (rightRefTraces[i]) {
+      const d = `M 760,${startY} H ${x1Right} L ${x2Right},${endY} H ${cpuRight}`;
+      rightRefTraces[i].setAttribute("d", d);
+    }
+  }
+
+  // Update decorative SMD resistor packs to align with dynamic Y positions
+  const resistorBodies = document.querySelectorAll(".pcb-resistor-body");
+  const resistorContacts = document.querySelectorAll(".pcb-resistor-contact");
+
+  for (let i = 0; i < 6; i++) {
+    const y = startYList[i] - 2;
+
+    // Left side
+    if (resistorBodies[i]) resistorBodies[i].setAttribute("y", y);
+    if (resistorContacts[i * 2]) resistorContacts[i * 2].setAttribute("y", y);
+    if (resistorContacts[i * 2 + 1]) resistorContacts[i * 2 + 1].setAttribute("y", y);
+
+    // Right side
+    if (resistorBodies[i + 6]) resistorBodies[i + 6].setAttribute("y", y);
+    if (resistorContacts[(i + 6) * 2]) resistorContacts[(i + 6) * 2].setAttribute("y", y);
+    if (resistorContacts[(i + 6) * 2 + 1]) resistorContacts[(i + 6) * 2 + 1].setAttribute("y", y);
   }
 }
 
 let traceElements = [];
 
+function getCpuPinForCell(index) {
+  const row = Math.floor(index / GRID_COLS);
+  const col = index % GRID_COLS;
+  const left = col < 3;
+
+  let pinIndex = 0;
+  if (left) {
+    pinIndex = (row * 3 + col) % 6;
+    return { side: "left", index: pinIndex };
+  } else {
+    const rightCol = col - 3;
+    pinIndex = (row * 3 + (2 - rightCol)) % 6;
+    return { side: "right", index: pinIndex };
+  }
+}
+
 function getTraceForCell(cellIndex) {
-  return traceElements[cellIndex];
+  const info = getCpuPinForCell(cellIndex);
+  return traceElements.find(t => t.side === info.side && t.index === info.index);
 }
 
 function getPointOnPcbRoute(points, progress) {
@@ -597,7 +750,7 @@ function drawPcbTraces() {
   dynamicTracesEl.replaceChildren();
   traceElements = [];
 
-  const createTrace = (index, points) => {
+  const createTrace = (side, index, points) => {
     if (!points) return;
     const pathData = points.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
 
@@ -623,6 +776,7 @@ function drawPcbTraces() {
     });
 
     traceElements.push({
+      side,
       index,
       baseEl,
       traceEl,
@@ -630,8 +784,23 @@ function drawPcbTraces() {
     });
   };
 
-  PCB_ROUTES.forEach((points, i) => createTrace(i, points));
+  if (PCB_ROUTES.left && PCB_ROUTES.left.length > 0) {
+    PCB_ROUTES.left.forEach((points, i) => createTrace("left", i, points));
+  }
+  if (PCB_ROUTES.right && PCB_ROUTES.right.length > 0) {
+    PCB_ROUTES.right.forEach((points, i) => createTrace("right", i, points));
+  }
 
+  gridCells.forEach(cell => {
+    if (cell.hacked) {
+      const trace = getTraceForCell(cell.index);
+      if (trace) {
+        trace.hackedCount++;
+        trace.baseEl.classList.add("compromised");
+        trace.traceEl.classList.add("compromised");
+      }
+    }
+  });
 }
 
 function spawnExplosion(x, y) {
@@ -888,30 +1057,29 @@ function spawnHack() {
   const hacksToSpawn = Math.max(0, Math.min(slotsOpen, profile.burstCount));
   const spawnedKeys = [];
 
-  if (currentPool.length > 0) {
+  const availableLetters = gridCells.map(c => c.letter);
+
+  if (availableLetters.length > 0) {
     for (let i = 0; i < hacksToSpawn; i++) {
-      // Pick a unique letter not currently displayed by any active virus (if possible)
-      const activeLetters = activeViruses.map(v => v.letter);
-      let ch = '';
-      const available = currentPool.filter(l => !activeLetters.includes(l));
-      if (available.length > 0) {
-        ch = available[Math.floor(Math.random() * available.length)];
-      } else {
-        ch = currentPool[Math.floor(Math.random() * currentPool.length)];
+      const ch = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+
+      // Link to an uncompromised grid cell showing this letter
+      const cell = gridCells.find(c => c.letter === ch && !c.hacked);
+      if (cell) {
+        cell.hacked = true;
+        cell.el.className = "sector-cell hacked";
+        const trace = getTraceForCell(cell.index);
+        if (trace) {
+          trace.hackedCount++;
+          trace.baseEl.classList.add("compromised");
+          trace.traceEl.classList.add("compromised");
+        }
       }
 
-      // Pick a route index that is not currently occupied (if possible)
-      const occupiedRoutes = activeViruses.map(v => v.routeIndex);
-      const freeRoutes = Array.from({ length: GRID_SIZE }, (_, idx) => idx).filter(idx => !occupiedRoutes.includes(idx));
-      let routeIndex = 0;
-      if (freeRoutes.length > 0) {
-        routeIndex = freeRoutes[Math.floor(Math.random() * freeRoutes.length)];
-      } else {
-        routeIndex = Math.floor(Math.random() * GRID_SIZE);
-      }
-
-      const routePoints = PCB_ROUTES[routeIndex];
-      const startPoint = routePoints[0];
+      // PCB route for the virus (edge to CPU)
+      const traceInfo = getCpuPinForCell(cell ? cell.index : 0);
+      const routePoints = traceInfo.side === "left" ? PCB_ROUTES.left[traceInfo.index] : PCB_ROUTES.right[traceInfo.index];
+      const startPoint = routePoints[0]; // starting at the screen edge (left/right)
 
       // Create SVG group element for virus
       const groupEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -920,11 +1088,11 @@ function spawnHack() {
       const graphicEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
       graphicEl.setAttribute("class", "virus-graphic");
 
-      // Core circle (slightly larger for letter legibility)
+      // Core circle
       const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       core.setAttribute("cx", "0");
       core.setAttribute("cy", "0");
-      core.setAttribute("r", "10");
+      core.setAttribute("r", "8");
       core.setAttribute("class", "virus-body-core");
       graphicEl.appendChild(core);
 
@@ -932,10 +1100,10 @@ function spawnHack() {
       const angles = [0, 45, 90, 135, 180, 225, 270, 315];
       angles.forEach(angle => {
         const rad = (angle * Math.PI) / 180;
-        const xSpoke = 14 * Math.cos(rad);
-        const ySpoke = 14 * Math.sin(rad);
-        const xHead = 16.5 * Math.cos(rad);
-        const yHead = 16.5 * Math.sin(rad);
+        const xSpoke = 12 * Math.cos(rad);
+        const ySpoke = 12 * Math.sin(rad);
+        const xHead = 14.5 * Math.cos(rad);
+        const yHead = 14.5 * Math.sin(rad);
 
         const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
         line.setAttribute("x1", "0");
@@ -953,30 +1121,99 @@ function spawnHack() {
         graphicEl.appendChild(head);
       });
 
-      // Target letter text centered in virus core
-      const textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      textEl.setAttribute("class", "virus-letter");
-      textEl.setAttribute("x", "0");
-      textEl.setAttribute("y", "3.5");
-      textEl.setAttribute("text-anchor", "middle");
-      textEl.textContent = ch.toUpperCase();
-      graphicEl.appendChild(textEl);
+      // Random face generator (0 to 8)
+      const faceType = Math.floor(Math.random() * 9);
+      const faceGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      faceGroup.setAttribute("class", "virus-face");
 
+      if (faceType === 0) {
+        // Angry Face (Type A)
+        faceGroup.innerHTML = `
+          <path d="M -5.5,-3.5 L -1.5,-2 C -1.5,-0.5 -3.5,0 -5.5,-1.5 Z" fill="#010502" />
+          <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
+          <path d="M 5.5,-3.5 L 1.5,-2 C 1.5,-0.5 3.5,0 5.5,-1.5 Z" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
+          <path d="M -4.5,2.5 L -3,1 L -1.5,2.5 L 0,1 L 1.5,2.5 L 3,1 L 4.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        `;
+      } else if (faceType === 1) {
+        // Cyber Glitch Face (Type B)
+        faceGroup.innerHTML = `
+          <path d="M -5.5,-3.5 L -2.5,-0.5 M -2.5,-3.5 L -5.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M 2.5,-3.5 L 5.5,-0.5 M 5.5,-3.5 L 2.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
+          <path d="M -4.5,2 H -2.5 V 3.5 H -0.5 V 2 H 1.5 V 3.5 H 3.5 V 2 H 4.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" />
+        `;
+      } else if (faceType === 2) {
+        // Smirk Face (Type C)
+        faceGroup.innerHTML = `
+          <polygon points="-5.5,-3 -1.5,-1.5 -2.5,-3.5" fill="#010502" />
+          <polygon points="5.5,-3 1.5,-1.5 2.5,-3.5" fill="#010502" />
+          <path d="M -4,2 Q -1.5,5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+        `;
+      } else if (faceType === 3) {
+        // Shocked Face (Type D)
+        faceGroup.innerHTML = `
+          <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
+          <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
+          <circle cx="3.5" cy="-2" r="2.2" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
+          <circle cx="0" cy="3.2" r="1.8" fill="#fff" />
+        `;
+      } else if (faceType === 4) {
+        // Sad Face (Type E)
+        faceGroup.innerHTML = `
+          <line x1="-5.5" y1="-4.5" x2="-2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
+          <circle cx="-4" cy="-1.5" r="1.5" fill="#010502" />
+          <line x1="5.5" y1="-4.5" x2="2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
+          <circle cx="4" cy="-1.5" r="1.5" fill="#010502" />
+          <path d="M -3.5,4 Q 0,1 3.5,4" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+        `;
+      } else if (faceType === 5) {
+        // Crazy Face (Type F)
+        faceGroup.innerHTML = `
+          <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
+          <circle cx="-3.5" cy="-1.5" r="0.8" fill="#fff" />
+          <circle cx="3.5" cy="-2" r="1.2" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="0.5" fill="#fff" />
+          <path d="M -3,2 Q 0,4.5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+          <path d="M 0,2.5 C 0,5 2,5 2,2.5 Z" fill="#ff4b80" stroke="#fff" stroke-width="0.8" />
+        `;
+      } else if (faceType === 6) {
+        // Neutral Face (Type G)
+        faceGroup.innerHTML = `
+          <circle cx="-3.5" cy="-2" r="1.5" fill="#010502" />
+          <circle cx="3.5" cy="-2" r="1.5" fill="#010502" />
+          <line x1="-3.5" y1="2.5" x2="3.5" y2="2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" />
+        `;
+      } else if (faceType === 7) {
+        // Tired Face (Type H)
+        faceGroup.innerHTML = `
+          <path d="M -5.5,-2 H -1.5 C -1.5,-0.2 -5.5,-0.2 -5.5,-2" fill="#010502" />
+          <path d="M 1.5,-2 H 5.5 C 5.5,-0.2 1.5,-0.2 1.5,-2" fill="#010502" />
+          <line x1="-5.5" y1="-2.5" x2="-1.5" y2="-2" stroke="#010502" stroke-width="1" />
+          <line x1="5.5" y1="-2.5" x2="1.5" y2="-2" stroke="#010502" stroke-width="1" />
+          <path d="M -2.5,2.5 Q 0,1.5 2.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+        `;
+      } else {
+        // SUPER Angry Face (Type I)
+        faceGroup.innerHTML = `
+          <polygon points="-6,-5.5 -1.5,-2.5 -2,-3.5" fill="#010502" />
+          <path d="M -5.5,-3 L -1.5,-1 C -1.5,1 -3.5,1.5 -5.5,-0.5 Z" fill="#010502" />
+          <circle cx="-3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
+          <polygon points="6,-5.5 1.5,-2.5 2,-3.5" fill="#010502" />
+          <path d="M 5.5,-3 L 1.5,-1 C 1.5,1 3.5,1.5 5.5,-0.5 Z" fill="#010502" />
+          <circle cx="3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
+          <path d="M -4.5,1.5 L -2.5,3.5 L -0.5,1.5 L 1.5,3.5 L 3.5,1.5 L 2.5,5 L 0,4 L -2.5,5 Z" fill="#fff" />
+        `;
+      }
+
+      graphicEl.appendChild(faceGroup);
       groupEl.appendChild(graphicEl);
       if (svgViruses) svgViruses.appendChild(groupEl);
       groupEl.setAttribute("transform", `translate(${startPoint.x}, ${startPoint.y})`);
 
-      // Mark the PCB trace compromised
-      const trace = getTraceForCell(routeIndex);
-      if (trace) {
-        trace.hackedCount++;
-        trace.baseEl.classList.add("compromised");
-        trace.traceEl.classList.add("compromised");
-      }
-
       activeViruses.push({
         letter: ch,
-        routeIndex: routeIndex,
+        cell: cell || null,
         routePoints: routePoints,
         progress: 0,
         speed: (0.004 + (profile.pressure * 0.004)) * (profile.speedMultiplier || 1.0) + Math.random() * 0.002,
@@ -1030,10 +1267,6 @@ function gameTick() {
   // Update active viruses
   for (let i = activeViruses.length - 1; i >= 0; i--) {
     const virus = activeViruses[i];
-    
-    // If the virus is targeted (currently playing glitch animation), don't move it
-    if (virus.targeted) continue;
-
     virus.progress += virus.speed;
 
     if (virus.progress >= 1.0) {
@@ -1043,14 +1276,18 @@ function gameTick() {
       }
       activeViruses.splice(i, 1);
 
-      // Reset trace state
-      const trace = getTraceForCell(virus.routeIndex);
-      if (trace) {
-        trace.hackedCount = Math.max(0, trace.hackedCount - 1);
-        if (trace.hackedCount === 0) {
-          trace.baseEl.classList.remove("compromised");
-          trace.traceEl.classList.remove("compromised");
+      // Reset grid key red state and trigger crash visual morph
+      if (virus.cell) {
+        virus.cell.hacked = false;
+        const trace = getTraceForCell(virus.cell.index);
+        if (trace) {
+          trace.hackedCount = Math.max(0, trace.hackedCount - 1);
+          if (trace.hackedCount === 0) {
+            trace.baseEl.classList.remove("compromised");
+            trace.traceEl.classList.remove("compromised");
+          }
         }
+        morphCell(virus.cell, "crash");
       }
 
       // Damage CPU core
@@ -1169,7 +1406,16 @@ function flashBoardShake() {
   setTimeout(() => gameContainerEl.classList.remove("shake"), 400);
 }
 
-// A virus that ran out of time hit the CPU core (handled in gameTick).
+// A hacked sector that ran out of time crashes — the cell morphs to a new letter.
+function crashSector(cell) {
+  playSynthSound("error");
+  const lostLetter = cell.letter.toUpperCase();
+  morphCell(cell, "crash");
+  flashBoardShake();
+
+  registerStrike(cell.letter, `KRITIEK: Sector [${lostLetter}] gecrasht! Schild verloren.`, 12);
+  updateThreatVisuals();
+}
 
 // A wrong key (no hacked sector shows that letter) costs a firewall shield.
 function registerWrongKey(typedChar) {
@@ -1208,13 +1454,8 @@ function registerStrike(key, message, compromisePenalty) {
 
 // Handle real keyboard typing input
 function handleKeystroke(e) {
-  if (testFinished || !running) return;
-
-  if (e.key === "Tab" || e.key === "Enter" || e.key === "Escape") {
-    return; // Allow UI keys
-  }
-  if (e.ctrlKey || e.altKey || e.metaKey) {
-    return; // Allow shortcuts
+  if (e.key.length !== 1 || e.ctrlKey || e.altKey || e.metaKey || testFinished) {
+    return;
   }
   e.preventDefault();
 
@@ -1234,34 +1475,51 @@ function handleKeystroke(e) {
     const virus = matchingViruses[0];
     virus.targeted = true;
 
-    // Immediately trigger glitch animation on the virus element
     if (virus.el) {
-      virus.el.style.setProperty('--vx', `${virus.x}px`);
-      virus.el.style.setProperty('--vy', `${virus.y}px`);
-      virus.el.classList.add("glitch-destroy");
-      
-      const elToDelete = virus.el;
-      setTimeout(() => {
-        if (elToDelete && elToDelete.parentNode) {
-          elToDelete.parentNode.removeChild(elToDelete);
-        }
-      }, 200);
+      virus.el.classList.add("targeted");
     }
 
-    // Reset the trace state immediately
-    const trace = getTraceForCell(virus.routeIndex);
-    if (trace) {
-      trace.hackedCount = Math.max(0, trace.hackedCount - 1);
-      if (trace.hackedCount === 0) {
-        trace.baseEl.classList.remove("compromised");
-        trace.traceEl.classList.remove("compromised");
-      }
+    // Find grid cell displaying this letter to launch the projectile from
+    let cell = virus.cell;
+    if (!cell) {
+      cell = gridCells.find(c => c.letter === typedChar);
     }
+    if (cell) {
+      cell.hacked = false;
+      // Calculate coordinates of the grid cell in SVG coordinate space
+      const cellRect = cell.el.getBoundingClientRect();
+      const svgRect = pcbCircuits.getBoundingClientRect();
+      const localX = ((cellRect.left + cellRect.width / 2) - svgRect.left) / svgRect.width * 800;
+      const localY = ((cellRect.top + cellRect.height / 2) - svgRect.top) / svgRect.height * 400;
 
-    // Remove the virus from activeViruses array immediately so it stops ticking/damaging the CPU
-    const idx = activeViruses.indexOf(virus);
-    if (idx !== -1) {
-      activeViruses.splice(idx, 1);
+      // Create SVG group element for projectile
+      const projEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      projEl.setAttribute("class", "projectile-packet");
+
+      const circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circ.setAttribute("r", "7");
+
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("class", "projectile-text");
+      text.setAttribute("y", "2.5");
+      text.textContent = typedChar.toUpperCase();
+
+      projEl.appendChild(circ);
+      projEl.appendChild(text);
+      projEl.setAttribute("transform", `translate(${localX}, ${localY})`);
+      if (svgProjectiles) svgProjectiles.appendChild(projEl);
+
+      activeProjectiles.push({
+        letter: typedChar,
+        targetVirus: virus,
+        x: localX,
+        y: localY,
+        speed: 16,
+        el: projEl
+      });
+
+      // Morph the launcher key to a new character to keep the grid dynamic
+      morphCell(cell, "repair");
     }
 
     totalRepairs++;
@@ -1270,19 +1528,8 @@ function handleKeystroke(e) {
     if (currentStreak > maxStreak) maxStreak = currentStreak;
 
     playSynthSound("success");
-    statusLogEl.textContent = `REPARATIE: Virus [${typedChar.toUpperCase()}] gedestabiliseerd en opgeruimd via glitch-pulsen.`;
+    statusLogEl.textContent = `REPARATIE: Onderscheppingsprojectiel afgevuurd op [${typedChar.toUpperCase()}].`;
     statusLogEl.className = "console-log repairing";
-
-    // Recover compromise level slightly
-    compromiseLevel = Math.max(0, compromiseLevel - 5);
-
-    // Clear alert tag if no active viruses
-    if (activeViruses.length === 0) {
-      consolePingEl.textContent = "SECURE";
-      consolePingEl.className = "console-ping";
-    }
-
-    updateThreatVisuals();
     updateLiveStats();
   } else {
     // Typos / Wrong key typed
@@ -1310,23 +1557,32 @@ function updateDefensePressureVisuals() {
   if (waveReadoutEl) waveReadoutEl.textContent = `WAVE ${wave}`;
   if (defenseBoardEl) {
     defenseBoardEl.style.setProperty("--pressure", `${pressurePct}%`);
-    defenseBoardEl.classList.toggle("under-attack", activeViruses.length > 0);
+    defenseBoardEl.classList.toggle("under-attack", activeHacks.length > 0);
     defenseBoardEl.classList.toggle("critical", compromiseLevel >= 70 || mistakes >= 2);
   }
   if (defenseCoreEl) {
-    defenseCoreEl.classList.toggle("under-attack", activeViruses.length > 0);
+    defenseCoreEl.classList.toggle("under-attack", activeHacks.length > 0);
     defenseCoreEl.classList.toggle("critical", compromiseLevel >= 70 || mistakes >= 2);
   }
   if (coreReadoutEl && running) {
     if (compromiseLevel >= 80 || mistakes >= 2) {
       coreReadoutEl.textContent = "CRITICAL";
-    } else if (activeViruses.length >= 3) {
+    } else if (activeHacks.length >= 3) {
       coreReadoutEl.textContent = "OVERRUN";
-    } else if (activeViruses.length > 0) {
+    } else if (activeHacks.length > 0) {
       coreReadoutEl.textContent = "DEFEND";
     } else {
       coreReadoutEl.textContent = "STABLE";
     }
+  }
+}
+
+function updateThreatVisuals() {
+  if (defenseBoardEl) {
+    defenseBoardEl.classList.toggle("under-attack", activeViruses.length > 0);
+  }
+  if (defenseCoreEl) {
+    defenseCoreEl.classList.toggle("under-attack", activeViruses.length > 0);
   }
 }
 
@@ -1349,9 +1605,11 @@ function finishGame(won, reasonMsg = "") {
   clearTimeout(hackSpawnerTimeout);
   hackSpawnerTimeout = null;
 
-  // Clear logical states
+  // Clear all sector cell status
   gridCells.forEach(cell => {
     cell.hacked = false;
+    cell.el.className = "sector-cell healthy";
+    cell.fuseEl.style.transform = "scaleX(0)";
   });
   activeHacks = [];
   clearSvgGameElements();
