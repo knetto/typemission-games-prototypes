@@ -1,0 +1,3127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeMission Parts Styleguide</title>
+  <meta name="description" content="Reusable visual parts library for TypeMission typing games.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07080b;
+      --panel: #11131a;
+      --panel-2: #181b24;
+      --line: #282d38;
+      --text: #f5f7fb;
+      --muted: #9ca3af;
+      --soft: #c8ced8;
+
+      --orange: #e48e35;
+      --orange-soft: #f5b05f;
+      --green: #9ad744;
+      --green-strong: #44d775;
+      --green-glow: rgba(154, 215, 68, 0.4);
+      --red: #ff3b30;
+      --red-glow: rgba(255, 59, 48, 0.4);
+      --blue: #74d8ff;
+      --gold: #ffcc00;
+
+      --purple: #0f102b;
+      --purple-dark: #050206;
+      --purple-soft: #1e224e;
+      --terminal: #060714;
+      --hardware-black: #0d0e12;
+
+      --metal-top: #4a4d52;
+      --metal-mid: #33363b;
+      --metal-bottom: #2a2d32;
+      --metal-line: #5a5e65;
+      --metal-dark: #1e2024;
+
+      --file-purple: #1a0819;
+      --manila: #dca75e;
+      --manila-dark: #b8853f;
+
+      --pcb-dark: #020503;
+      --pcb-soft: #15331c;
+      --typing-soft: #333333;
+
+      --r-frame: 12px;
+      --r-module: 8px;
+      --r-control: 6px;
+      --r-detail: 3px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(228, 142, 53, 0.08), transparent 32%),
+        radial-gradient(circle at 82% 8%, rgba(154, 215, 68, 0.06), transparent 28%),
+        linear-gradient(180deg, #08090d 0%, #050608 75%);
+      color: var(--text);
+      font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.86em;
+      color: #f3c48f;
+      background: rgba(0, 0, 0, 0.32);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 22px 16px;
+      background: rgba(13, 15, 20, 0.96);
+      border-right: 1px solid var(--line);
+    }
+
+    main {
+      min-width: 0;
+      padding: 36px clamp(22px, 5vw, 62px) 80px;
+    }
+
+    .brand {
+      padding: 10px 10px 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+
+    .kicker,
+    .nav-title,
+    .nav-link,
+    .section-kicker,
+    .part-tag,
+    .spec-key,
+    .mini-label {
+      font-family: "Orbitron", sans-serif;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .kicker {
+      display: block;
+      color: var(--orange);
+      font-size: 0.66rem;
+      margin-bottom: 5px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .nav-title {
+      display: block;
+      color: #6d7483;
+      font-size: 0.62rem;
+      margin: 18px 10px 8px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 38px;
+      padding: 0 10px;
+      border-radius: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.72rem;
+      border: 1px solid transparent;
+    }
+
+    .nav-link::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      border: 1.5px solid var(--green);
+      flex: none;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero {
+      padding: clamp(24px, 4vw, 42px);
+      border: 1px solid var(--line);
+      border-radius: var(--r-frame);
+      background:
+        linear-gradient(135deg, rgba(17, 19, 26, 0.94), rgba(12, 13, 18, 0.94)),
+        radial-gradient(circle at 85% 0%, rgba(154, 215, 68, 0.12), transparent 40%);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+      margin-bottom: 34px;
+    }
+
+    .hero h2 {
+      margin: 0;
+      max-width: 980px;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 860px;
+      margin: 18px 0 0;
+      color: var(--soft);
+      font-size: 1rem;
+    }
+
+    .quick-rules {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .rule {
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--r-module);
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .rule strong {
+      display: block;
+      margin-bottom: 5px;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.76rem;
+      color: #fff;
+    }
+
+    .rule span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    section {
+      scroll-margin-top: 22px;
+      margin-bottom: 46px;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+    }
+
+    .section-kicker {
+      display: block;
+      color: var(--orange);
+      font-size: 0.66rem;
+      margin-bottom: 5px;
+    }
+
+    section h2 {
+      margin: 0;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 900px;
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .part-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .part-grid.single {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .part-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--r-frame);
+      background: rgba(17, 19, 26, 0.88);
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.34);
+    }
+
+    .part-demo {
+      min-height: 260px;
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .part-demo.tall {
+      min-height: 360px;
+    }
+
+    .part-info {
+      padding: 18px;
+    }
+
+    .part-info h3 {
+      margin: 0 0 8px;
+      font-family: "Orbitron", sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    .part-info p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .part-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.24);
+      font-size: 0.6rem;
+      margin-bottom: 10px;
+    }
+
+    .specs {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .specs li {
+      display: grid;
+      grid-template-columns: 126px minmax(0, 1fr);
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--soft);
+      font-size: 0.86rem;
+    }
+
+    .specs li:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .spec-key {
+      color: #fff;
+      font-size: 0.64rem;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .flow-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--r-frame);
+      background: rgba(17, 19, 26, 0.88);
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.34);
+    }
+
+    .flow-demo {
+      min-height: 210px;
+      padding: 20px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        rgba(0, 0, 0, 0.18);
+      background-size: 18px 18px;
+    }
+
+    .flow-info {
+      padding: 18px;
+    }
+
+    .flow-step {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 10px;
+      border: 2px solid var(--orange);
+      border-radius: 50%;
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 900;
+      box-shadow: 0 0 10px rgba(228, 142, 53, 0.28);
+    }
+
+    .flow-info h3 {
+      margin: 0 0 8px;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0;
+    }
+
+    .intro-keypad-object {
+      width: min(230px, 94%);
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .intro-example-title {
+      max-width: 260px;
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .intro-keypad-shell {
+      width: 132px;
+      min-height: 188px;
+      padding: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--metal-top), var(--metal-bottom));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .intro-keypad-inner {
+      min-height: 170px;
+      padding: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      background: var(--purple);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .intro-leds {
+      display: flex;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    .intro-leds span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 4px var(--green);
+    }
+
+    .intro-leds span:last-child {
+      background: var(--orange);
+      box-shadow: 0 0 4px var(--orange);
+    }
+
+    .intro-mini-screen {
+      padding: 4px 6px;
+      border: 1px solid var(--purple-soft);
+      border-radius: 4px;
+      background: var(--terminal);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+      text-align: center;
+    }
+
+    .intro-mini-screen strong {
+      display: block;
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.42rem;
+      letter-spacing: 0.5px;
+    }
+
+    .intro-dot-row {
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+      margin-top: 3px;
+    }
+
+    .intro-dot-row span {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--orange);
+      opacity: 0.38;
+    }
+
+    .intro-dot-row span:nth-child(2) {
+      opacity: 1;
+      box-shadow: 0 0 4px var(--orange);
+    }
+
+    .intro-keypad-buttons,
+    .intro-action-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .intro-keypad-buttons {
+      margin-top: 8px;
+    }
+
+    .intro-keypad-buttons span,
+    .intro-action-pad span {
+      aspect-ratio: 1.12;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.68);
+      display: grid;
+      place-items: center;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.46rem;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .intro-keypad-buttons .special,
+    .intro-action-pad .active {
+      color: var(--orange);
+      border-color: rgba(228, 142, 53, 0.45);
+      background: rgba(228, 142, 53, 0.06);
+      box-shadow: 0 0 6px rgba(228, 142, 53, 0.32);
+    }
+
+    .intro-home-svg {
+      width: min(460px, 100%);
+      height: auto;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.55));
+    }
+
+    .intro-home-svg .home-base {
+      fill: rgba(20, 20, 20, 0.75);
+      stroke: #333333;
+      stroke-width: 2;
+    }
+
+    .intro-home-svg .home-key {
+      fill: rgba(255, 255, 255, 0.02);
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 1.5;
+    }
+
+    .intro-home-svg .home-key-base {
+      fill: rgba(154, 215, 68, 0.12);
+      stroke: var(--green);
+      stroke-width: 1.8;
+      filter: drop-shadow(0 0 4px rgba(154, 215, 68, 0.45));
+    }
+
+    .intro-home-svg text {
+      fill: #7b786c;
+      font-family: "Roboto", sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .intro-home-svg .base-label {
+      fill: var(--green);
+    }
+
+    .intro-hand {
+      fill: rgba(240, 240, 240, 0.14);
+      stroke: rgba(255, 255, 255, 0.16);
+      stroke-width: 1.2;
+    }
+
+    .intro-action-example {
+      width: min(230px, 94%);
+      padding: 10px;
+      border: 2px solid var(--metal-line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, var(--metal-top), var(--metal-bottom));
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+    }
+
+    .intro-action-screen {
+      width: 95%;
+      padding: 5px 6px;
+      border: 1px solid var(--purple-soft);
+      border-radius: 4px;
+      background: var(--terminal);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+      text-align: center;
+    }
+
+    .intro-action-screen strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.5rem;
+    }
+
+    .intro-action-slots {
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .intro-action-slots span {
+      width: 16px;
+      height: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.4);
+      color: rgba(255, 255, 255, 0.16);
+      display: grid;
+      place-items: center;
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.58rem;
+      font-weight: 800;
+    }
+
+    .intro-action-slots .correct {
+      color: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 4px var(--green-glow);
+    }
+
+    .intro-action-slots .current {
+      color: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 0 4px rgba(228, 142, 53, 0.38);
+    }
+
+    .intro-action-pad {
+      width: 92px;
+      padding: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      background: var(--purple);
+    }
+
+    .intro-action-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--red);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.46rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .intro-action-status::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 4px var(--red-glow);
+    }
+
+    .game-flow-strip {
+      width: min(760px, 96%);
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .game-flow-step {
+      min-height: 96px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.28);
+      display: grid;
+      align-content: center;
+      gap: 7px;
+      text-align: center;
+    }
+
+    .game-flow-step strong {
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .game-flow-step span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .briefing-flow-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .briefing-example-card .flow-demo {
+      min-height: 360px;
+      padding: 12px;
+      background:
+        radial-gradient(circle at center, rgba(11, 12, 35, 0.95) 0%, rgba(4, 4, 11, 0.98) 100%),
+        radial-gradient(rgba(228, 142, 53, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px;
+    }
+
+    .style-briefing-panel {
+      width: 100%;
+      min-height: 330px;
+      padding: 14px 16px 16px;
+      border: 1.5px solid var(--purple-soft);
+      border-radius: 12px;
+      background: rgba(15, 16, 43, 0.4);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(139, 141, 253, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 11px;
+    }
+
+    .style-briefing-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--line);
+    }
+
+    .style-briefing-eyebrow {
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.54rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .style-briefing-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .style-briefing-dots span {
+      width: 8px;
+      height: 8px;
+      border: 1.5px solid var(--green);
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    .style-briefing-dots span.active {
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+      animation: briefingDotPulse 1.2s infinite alternate ease-in-out;
+    }
+
+    .style-briefing-title {
+      max-width: 680px;
+      margin: 0;
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(0.72rem, 1.2vw, 1rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: 0;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .style-briefing-graphic {
+      width: 100%;
+      min-height: 138px;
+      display: grid;
+      place-items: center;
+    }
+
+    .style-briefing-footer {
+      width: 100%;
+      padding-top: 10px;
+      border-top: 1.5px solid var(--line);
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+    }
+
+    .style-briefing-footer span {
+      color: rgba(255, 255, 255, 0.74);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .style-spacebar {
+      width: 112px;
+      height: 30px;
+      border: 1.5px solid var(--purple-soft);
+      border-radius: 6px;
+      background: #0c1328;
+      box-shadow: 0 3px 0 #202359, 0 5px 12px rgba(0, 0, 0, 0.6);
+      display: grid;
+      place-items: center;
+    }
+
+    .style-spacebar::after {
+      content: "";
+      width: 34px;
+      height: 2.5px;
+      border-radius: 99px;
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+      animation: spacebarGlow 1.1s infinite alternate ease-in-out;
+    }
+
+    .brief-keypad-device {
+      width: 105px;
+      min-height: 148px;
+      padding: 6px;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--metal-top), var(--metal-bottom));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .brief-keypad-inner {
+      min-height: 134px;
+      padding: 5px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      background: var(--purple);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .brief-leds {
+      display: flex;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .brief-leds span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 5px var(--green);
+      animation: briefingLedPulse 1s infinite alternate ease-in-out;
+    }
+
+    .brief-leds span:last-child {
+      background: var(--orange);
+      box-shadow: 0 0 5px var(--orange);
+      animation-duration: 0.72s;
+    }
+
+    .brief-mini-screen {
+      padding: 4px;
+      border: 1px solid var(--purple-soft);
+      border-radius: 4px;
+      background: var(--terminal);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+      text-align: center;
+    }
+
+    .brief-mini-screen strong {
+      display: block;
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.36rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brief-keypad-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      margin-top: 6px;
+    }
+
+    .brief-keypad-buttons span {
+      aspect-ratio: 1.18;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.62);
+      display: grid;
+      place-items: center;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.42rem;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .brief-keypad-buttons .special {
+      color: var(--orange);
+      border-color: rgba(228, 142, 53, 0.35);
+      background: rgba(228, 142, 53, 0.04);
+    }
+
+    .briefing-keyboard-svg {
+      width: min(340px, 98%);
+      height: auto;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
+    }
+
+    .briefing-keyboard-svg .keyboard-base {
+      fill: rgba(9, 17, 36, 0.6);
+      stroke: rgba(255, 255, 255, 0.15);
+      stroke-width: 1.5;
+    }
+
+    .briefing-keyboard-svg .svg-key {
+      fill: rgba(255, 255, 255, 0.03);
+      stroke: rgba(255, 255, 255, 0.08);
+    }
+
+    .briefing-keyboard-svg .svg-home-key {
+      fill: rgba(154, 215, 68, 0.12);
+      stroke: var(--green);
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0 5px var(--green-glow));
+      animation: homeKeyPulse 1.3s infinite alternate ease-in-out;
+    }
+
+    .briefing-keyboard-svg text {
+      fill: rgba(255, 255, 255, 0.45);
+      font-family: "Roboto", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .briefing-keyboard-svg .home-text {
+      fill: var(--green);
+      font-weight: 800;
+    }
+
+    .brief-hand {
+      fill: rgba(240, 240, 240, 0.14);
+      stroke: rgba(255, 255, 255, 0.16);
+      stroke-width: 1.2;
+      animation: handBreathe 1.8s infinite alternate ease-in-out;
+    }
+
+    .briefing-action-device {
+      width: 122px;
+      min-height: 166px;
+      padding: 8px;
+      border: 2px solid var(--metal-line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, var(--metal-top), var(--metal-bottom));
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+      display: grid;
+      justify-items: center;
+      gap: 5px;
+    }
+
+    .brief-action-screen {
+      width: 100%;
+      padding: 4px;
+      border: 1px solid var(--purple-soft);
+      border-radius: 4px;
+      background: var(--terminal);
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+      text-align: center;
+    }
+
+    .brief-action-screen strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.38rem;
+    }
+
+    .brief-action-slots {
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .brief-action-slots span {
+      width: 12px;
+      height: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.4);
+      color: rgba(255, 255, 255, 0.12);
+      display: grid;
+      place-items: center;
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.44rem;
+      font-weight: 800;
+    }
+
+    .brief-action-slots .slot-a {
+      animation: slotCorrectCycle 3.2s infinite steps(1, end);
+    }
+
+    .brief-action-slots .slot-b {
+      animation: slotCurrentCycle 3.2s infinite steps(1, end);
+    }
+
+    .brief-action-pad {
+      width: 68px;
+      padding: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      background: var(--purple);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+    }
+
+    .brief-action-pad span {
+      aspect-ratio: 1;
+      border: 0.5px solid rgba(255, 255, 255, 0.06);
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.7);
+      display: grid;
+      place-items: center;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.4rem;
+      font-weight: 800;
+    }
+
+    .brief-action-pad .active {
+      animation: keypadButtonCycle 3.2s infinite steps(1, end);
+    }
+
+    .brief-lock-status {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--red);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.38rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .brief-lock-status::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 4px var(--red-glow);
+    }
+
+    @keyframes briefingDotPulse {
+      from { opacity: 0.65; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1.12); }
+    }
+
+    @keyframes briefingLedPulse {
+      from { opacity: 0.35; }
+      to { opacity: 1; }
+    }
+
+    .brief-mini-screen .intro-dot-row span {
+      animation: miniDotFlow 1.6s infinite ease-in-out;
+    }
+
+    .brief-mini-screen .intro-dot-row span:nth-child(2) { animation-delay: 0.2s; }
+    .brief-mini-screen .intro-dot-row span:nth-child(3) { animation-delay: 0.4s; }
+    .brief-mini-screen .intro-dot-row span:nth-child(4) { animation-delay: 0.6s; }
+
+    @keyframes miniDotFlow {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 4px var(--orange); }
+    }
+
+    @keyframes spacebarGlow {
+      from { opacity: 0.65; box-shadow: 0 0 4px var(--orange); }
+      to { opacity: 1; box-shadow: 0 0 12px var(--orange); }
+    }
+
+    @keyframes homeKeyPulse {
+      from { filter: drop-shadow(0 0 3px rgba(154, 215, 68, 0.25)); }
+      to { filter: drop-shadow(0 0 8px rgba(154, 215, 68, 0.65)); }
+    }
+
+    @keyframes handBreathe {
+      from { opacity: 0.62; }
+      to { opacity: 0.86; }
+    }
+
+    @keyframes slotCorrectCycle {
+      0%, 24% { color: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.15); box-shadow: none; }
+      25%, 100% { color: var(--green); border-color: var(--green); box-shadow: 0 0 4px var(--green-glow); }
+    }
+
+    @keyframes slotCurrentCycle {
+      0%, 49% { color: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.15); box-shadow: none; }
+      50%, 100% { color: var(--orange); border-color: var(--orange); box-shadow: 0 0 5px rgba(228, 142, 53, 0.45); }
+    }
+
+    @keyframes keypadButtonCycle {
+      0%, 49% { color: rgba(255, 255, 255, 0.7); border-color: rgba(255, 255, 255, 0.06); box-shadow: none; }
+      50%, 100% { color: var(--orange); border-color: var(--orange); box-shadow: 0 0 6px rgba(228, 142, 53, 0.45); }
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .token {
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--r-control);
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .swatch {
+      height: 54px;
+    }
+
+    .token div:last-child {
+      padding: 10px;
+      display: grid;
+      gap: 2px;
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .token strong {
+      color: #fff;
+    }
+
+    .grid-bg {
+      background:
+        linear-gradient(rgba(154, 215, 68, 0.015) 1.5px, transparent 1.5px),
+        linear-gradient(90deg, rgba(154, 215, 68, 0.015) 1.5px, transparent 1.5px),
+        #02050f;
+      background-size: 28px 28px, 28px 28px, auto;
+    }
+
+    .scanner-bg {
+      background:
+        linear-gradient(rgba(154, 215, 68, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(154, 215, 68, 0.08) 1px, transparent 1px),
+        #080309;
+      background-size: 80px 80px, 80px 80px, auto;
+    }
+
+    .metal-plate {
+      position: relative;
+      width: min(420px, 92%);
+      min-height: 190px;
+      padding: 24px 14px 20px;
+      border: 2.5px solid var(--metal-line);
+      border-radius: var(--r-module);
+      background: linear-gradient(180deg, var(--metal-top) 0%, var(--metal-mid) 40%, var(--metal-bottom) 100%);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+      display: grid;
+      place-items: center;
+    }
+
+    .screw {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #6a6e75 30%, #3a3d42 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    .screw.tl { top: 10px; left: 10px; }
+    .screw.tr { top: 10px; right: 10px; }
+    .screw.bl { bottom: 10px; left: 10px; }
+    .screw.br { bottom: 10px; right: 10px; }
+
+    .door-label {
+      min-height: 24px;
+      padding: 3px 14px;
+      border-radius: var(--r-detail);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.15);
+      color: rgba(255, 255, 255, 0.25);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.6rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .panel-shell {
+      width: min(430px, 95%);
+      padding: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--r-frame);
+      background: var(--hardware-black);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      display: grid;
+      gap: 8px;
+    }
+
+    .panel-head,
+    .panel-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-head {
+      padding: 0 6px 6px;
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-foot {
+      padding-top: 8px;
+      border-top: 1.5px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-size: 0.58rem;
+    }
+
+    .led-row,
+    .circle-row,
+    .ports,
+    .signal-bars,
+    .state-samples {
+      display: flex;
+      align-items: center;
+    }
+
+    .led-row {
+      gap: 6px;
+    }
+
+    .led {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.6);
+    }
+
+    .led.green {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .led.orange {
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+    }
+
+    .terminal-screen {
+      position: relative;
+      overflow: hidden;
+      min-height: 108px;
+      padding: 8px 10px;
+      border: 1.8px solid var(--purple-soft);
+      border-radius: var(--r-module);
+      background: var(--terminal);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(109, 205, 239, 0.15);
+    }
+
+    .terminal-screen.red {
+      background: #140606;
+      border-color: #4a1818;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(228, 53, 53, 0.2);
+    }
+
+    .terminal-screen.gold {
+      background: #0c0a05;
+      border-color: #4a3e14;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(255, 204, 0, 0.15);
+    }
+
+    .terminal-screen::after,
+    .scanner-bezel::after,
+    .keyboard-sample::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(rgba(8, 16, 32, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 3px;
+      opacity: 0.9;
+    }
+
+    .screen-tags {
+      display: flex;
+      justify-content: space-between;
+      font-family: "Roboto Mono", monospace;
+      font-size: 7px;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.5px;
+    }
+
+    .screen-title {
+      margin: 7px 0 8px;
+      text-align: center;
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .slot-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .slot {
+      position: relative;
+      width: 26px;
+      height: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.01);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.15);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.86rem;
+      font-weight: 900;
+    }
+
+    .slot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.6) 50%);
+      background-size: 100% 4px;
+    }
+
+    .slot.active {
+      color: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 0 10px rgba(228, 142, 53, 0.35), inset 0 0 5px rgba(228, 142, 53, 0.15);
+    }
+
+    .char-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .char-box {
+      width: 46px;
+      height: 52px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      display: grid;
+      place-items: center;
+      color: #9296a8;
+      font-family: "Roboto Mono", monospace;
+      font-size: 1.35rem;
+      font-weight: 800;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .char-box.current {
+      color: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 0 10px rgba(228, 142, 53, 0.3);
+    }
+
+    .char-box.correct {
+      color: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 12px var(--green-glow), inset 0 0 6px var(--green-glow);
+    }
+
+    .char-box.wrong {
+      color: var(--red);
+      border-color: var(--red);
+      box-shadow: 0 0 12px var(--red-glow), inset 0 0 6px var(--red-glow);
+    }
+
+    .stat-card {
+      min-width: 140px;
+      min-height: 76px;
+      padding: 12px 20px;
+      border: 1px solid rgba(68, 215, 117, 0.15);
+      border-radius: 6px;
+      background:
+        linear-gradient(135deg, rgba(12, 25, 15, 0.85), rgba(5, 8, 6, 0.9)),
+        radial-gradient(circle at 50% 0%, rgba(68, 215, 117, 0.08), transparent 50%);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 6px 18px rgba(0, 0, 0, 0.45);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.55rem;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(213, 238, 220, 0.68);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.56rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .circle-row {
+      gap: 12px;
+    }
+
+    .status-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2.5px solid var(--green);
+      background: rgba(154, 215, 68, 0.08);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 10px rgba(154, 215, 68, 0.15);
+    }
+
+    .status-circle::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .status-circle.error {
+      border-color: var(--red);
+      background: rgba(255, 59, 48, 0.15);
+      box-shadow: 0 0 14px var(--red-glow), inset 0 0 9px rgba(255, 59, 48, 0.16);
+    }
+
+    .status-circle.error::after {
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+    }
+
+    .status-circle.small {
+      width: 18px;
+      height: 18px;
+      border-width: 1.5px;
+    }
+
+    .status-circle.small::after {
+      width: 4px;
+      height: 4px;
+    }
+
+    .keycap-grid {
+      width: min(270px, 90%);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .keycap {
+      aspect-ratio: 1;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.95);
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .keyboard-perspective-demo {
+      width: min(760px, 96%);
+      perspective: 900px;
+    }
+
+    .keyboard-sample {
+      position: relative;
+      width: 100%;
+      padding: 6px 8px;
+      border: 2px solid var(--typing-soft);
+      border-radius: 8px;
+      background: rgba(20, 20, 20, 0.75);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(228, 142, 53, 0.04);
+      transform: rotateX(24deg) translateZ(0);
+      transform-style: preserve-3d;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kbd-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 5px;
+    }
+
+    .kbd-key {
+      height: clamp(34px, 4.8vh, 48px);
+      flex: 1;
+      border: 1.5px solid rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.02);
+      color: #7b786c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Roboto", sans-serif;
+      font-size: clamp(0.9rem, 2vh, 1.2rem);
+      font-weight: 700;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      transform: translateY(0) translateZ(0);
+      transition: transform 0.04s cubic-bezier(0.1, 0.9, 0.2, 1), background-color 0.04s ease, border-color 0.04s ease, box-shadow 0.04s ease;
+    }
+
+    .kbd-key.mod {
+      color: rgba(255, 255, 255, 0.38);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .kbd-key.wide-1 { flex: 1.3; }
+    .kbd-key.wide-2 { flex: 1.6; }
+    .kbd-key.wide-3 { flex: 2; }
+    .kbd-key.wide-4 { flex: 2.3; }
+    .kbd-key.space { flex: 8.5; }
+
+    .kbd-key.finger-lp,
+    .kbd-key.finger-rp {
+      --finger-color: #d4a33b;
+      --finger-color-glow: rgba(212, 163, 59, 0.3);
+    }
+
+    .kbd-key.finger-lr,
+    .kbd-key.finger-rr {
+      --finger-color: #48b861;
+      --finger-color-glow: rgba(72, 184, 97, 0.3);
+    }
+
+    .kbd-key.finger-lm,
+    .kbd-key.finger-rm {
+      --finger-color: #e86b6b;
+      --finger-color-glow: rgba(232, 107, 107, 0.3);
+    }
+
+    .kbd-key.finger-li {
+      --finger-color: #2ebbb0;
+      --finger-color-glow: rgba(46, 187, 176, 0.3);
+    }
+
+    .kbd-key.finger-ri {
+      --finger-color: #4d82eb;
+      --finger-color-glow: rgba(77, 130, 235, 0.3);
+    }
+
+    .kbd-key.finger-t {
+      --finger-color: #b55feb;
+      --finger-color-glow: rgba(181, 95, 235, 0.3);
+    }
+
+    .kbd-key[class*="finger-"] {
+      color: var(--finger-color);
+      border-color: color-mix(in srgb, var(--finger-color) 50%, transparent);
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+    }
+
+    .kbd-key.active {
+      border-color: var(--finger-color, #2ebbb0);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--finger-color, #2ebbb0);
+      box-shadow: 0 1.5px 0 rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 15px var(--finger-color-glow, rgba(46, 187, 176, 0.3));
+    }
+
+    .kbd-key.dimmed {
+      opacity: 0.16;
+      box-shadow: none;
+    }
+
+    .spacebar {
+      width: 132px;
+      height: 31px;
+      border: 1.5px solid var(--purple-soft);
+      border-radius: 6px;
+      background: #08160c;
+      box-shadow: 0 3px 0 #202359, 0 5px 12px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .spacebar::after {
+      content: "";
+      position: absolute;
+      width: 42%;
+      height: 2.5px;
+      border-radius: 99px;
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .progress-unit {
+      width: min(430px, 95%);
+      display: grid;
+      gap: 6px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      height: 12px;
+      border: 1.5px solid var(--pcb-soft);
+      border-radius: 4px;
+      background: rgba(12, 45, 18, 0.25);
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .progress-fill {
+      width: 64%;
+      height: 100%;
+      background: var(--green-strong);
+      box-shadow: 0 0 8px rgba(68, 215, 117, 0.45);
+    }
+
+    .progress-fill.warning {
+      background: var(--orange);
+      box-shadow: 0 0 8px rgba(228, 142, 53, 0.5);
+    }
+
+    .progress-fill.danger {
+      background: var(--red);
+      box-shadow: 0 0 12px var(--red-glow);
+    }
+
+    .signal-bars {
+      gap: 3px;
+      align-items: end;
+      height: 12px;
+    }
+
+    .signal-bars i {
+      display: block;
+      width: 3px;
+      border-radius: 1px;
+      background: var(--orange);
+    }
+
+    .signal-bars i:nth-child(1) { height: 3px; }
+    .signal-bars i:nth-child(2) { height: 6px; }
+    .signal-bars i:nth-child(3) { height: 9px; }
+    .signal-bars i:nth-child(4) { height: 5px; }
+    .signal-bars i:nth-child(5) { height: 8px; }
+
+    .ports {
+      gap: 6px;
+    }
+
+    .port {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      background: #181920;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .panel-diagnostic-body {
+      min-height: 74px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.025);
+      background-size: 18px 18px;
+      display: grid;
+      place-items: center;
+    }
+
+    .panel-diagnostic-body .circle-row {
+      margin: 0;
+    }
+
+    .cable-demo {
+      width: min(430px, 95%);
+      height: 150px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: #020503;
+    }
+
+    .cable {
+      fill: none;
+      stroke-width: 2.8;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 4px var(--shadow-color));
+    }
+
+    .cable.green { stroke: var(--green); --shadow-color: var(--green-glow); }
+    .cable.orange { stroke: var(--orange); --shadow-color: rgba(228, 142, 53, 0.5); }
+    .cable.red { stroke: var(--red); --shadow-color: var(--red-glow); }
+
+    .scanner-bezel {
+      position: relative;
+      width: 210px;
+      height: 245px;
+      border: 2px solid #4a3e14;
+      border-radius: 16px;
+      background: rgba(15, 16, 20, 0.85);
+      overflow: hidden;
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.95), 0 10px 25px rgba(0, 0, 0, 0.55);
+      display: grid;
+      place-items: center;
+    }
+
+    .fingerprint-device {
+      position: relative;
+      width: 190px;
+      height: 230px;
+      border: 2px solid var(--line);
+      border-radius: 16px;
+      background: rgba(15, 16, 20, 0.85);
+      overflow: hidden;
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.95), 0 10px 25px rgba(0, 0, 0, 0.55);
+      display: grid;
+      place-items: center;
+    }
+
+    .fingerprint-device::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 204, 0, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 204, 0, 0.015) 1px, transparent 1px);
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    .fingerprint-core {
+      width: 112px;
+      height: 142px;
+      border-radius: 50%;
+      border: 8px double rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 0 0 12px rgba(255, 255, 255, 0.06), inset 0 0 0 26px rgba(255, 204, 0, 0.14);
+      position: relative;
+    }
+
+    .fingerprint-core::before,
+    .fingerprint-core::after {
+      content: "";
+      position: absolute;
+      inset: 18px 22px;
+      border: 3px solid rgba(255, 255, 255, 0.16);
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-radius: 50%;
+    }
+
+    .fingerprint-core::after {
+      inset: 36px 40px;
+      border-color: rgba(255, 255, 255, 0.22);
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+
+    .fingerprint-laser {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      box-shadow: 0 0 8px var(--gold), 0 0 18px rgba(255, 204, 0, 0.45);
+      animation: guideLaserSweep 3s infinite ease-in-out;
+      z-index: 4;
+    }
+
+    .scan-node {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      background: rgba(2, 5, 11, 0.95);
+      color: var(--muted);
+      font-family: "Roboto Mono", monospace;
+      font-size: 7px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+
+    .scan-node.active {
+      border-color: var(--gold);
+      color: #fff;
+      box-shadow: 0 0 8px rgba(255, 204, 0, 0.45);
+      animation: nodePulseRing 1.2s infinite ease-out;
+    }
+
+    @keyframes guideLaserSweep {
+      0%, 100% { top: 14%; }
+      50% { top: 86%; }
+    }
+
+    @keyframes nodePulseRing {
+      0% { transform: translate(-50%, -50%) scale(0.9); }
+      100% { transform: translate(-50%, -50%) scale(1.18); }
+    }
+
+    .scanner-bezel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 204, 0, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 204, 0, 0.015) 1px, transparent 1px);
+      background-size: 8px 8px;
+    }
+
+    .laser-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 42%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      box-shadow: 0 0 8px var(--gold), 0 0 18px rgba(255, 204, 0, 0.4);
+      z-index: 3;
+    }
+
+    .fingerprint-mark {
+      width: 130px;
+      height: 160px;
+      border-radius: 50%;
+      border: 10px double rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 0 0 13px rgba(255, 255, 255, 0.06), inset 0 0 0 28px rgba(255, 204, 0, 0.14);
+    }
+
+    .reticle {
+      position: relative;
+      width: 160px;
+      height: 54px;
+      border: 1.5px solid var(--green);
+      border-radius: 4px;
+      box-shadow: 0 0 15px rgba(154, 215, 68, 0.4), inset 0 0 10px rgba(154, 215, 68, 0.2);
+    }
+
+    .reticle::before {
+      content: "TARGET";
+      position: absolute;
+      top: -19px;
+      left: 0;
+      padding: 1px 6px;
+      border-radius: 2px;
+      background: var(--green);
+      color: var(--file-purple);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.55rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .paper-sample {
+      width: min(360px, 95%);
+      padding: 10px;
+      border-radius: 10px;
+      background: var(--manila);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .dossier-sample {
+      position: relative;
+      width: min(430px, 95%);
+      min-height: 250px;
+      display: grid;
+      place-items: center;
+    }
+
+    .dossier-folder-back {
+      position: absolute;
+      width: 330px;
+      height: 216px;
+      border-radius: 10px;
+      background: var(--manila);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      transform: rotate(-1deg);
+    }
+
+    .dossier-folder-tab {
+      position: absolute;
+      left: 18px;
+      top: -20px;
+      padding: 5px 16px 2px;
+      border-radius: 6px 12px 0 0;
+      background: var(--manila);
+      color: rgba(30, 9, 29, 0.7);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.58rem;
+      font-weight: 800;
+    }
+
+    .dossier-paper {
+      position: relative;
+      width: 305px;
+      min-height: 190px;
+      padding: 18px 20px;
+      border-radius: 3px;
+      background: #fdfbf4;
+      color: #1a1a1a;
+      font-family: "Courier New", monospace;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .dossier-paper h4 {
+      margin: 12px 0 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #8f8579;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .dossier-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.62rem;
+      color: #4a4037;
+    }
+
+    .dossier-stamp {
+      border: 2px solid #a12b1e;
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: #a12b1e;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.66rem;
+      font-weight: 900;
+      transform: rotate(-3deg);
+      text-transform: uppercase;
+    }
+
+    .dossier-text p {
+      margin: 0 0 8px;
+      font-size: 0.7rem;
+      line-height: 1.45;
+    }
+
+    .redacted-word {
+      display: inline-block;
+      padding: 0 3px;
+      border-radius: 1.5px;
+      background: #111;
+      color: transparent;
+    }
+
+    .redacted-word.active {
+      background: var(--orange);
+      box-shadow: 0 0 5px var(--orange);
+    }
+
+    .dossier-paper-footer {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px dashed #8f8579;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #7c7265;
+      font-size: 0.62rem;
+    }
+
+    .folder-tab {
+      position: absolute;
+      left: 10px;
+      bottom: 100%;
+      padding: 4px 12px 1px;
+      border-radius: 6px 12px 0 0;
+      background: var(--manila);
+      color: rgba(30, 9, 29, 0.7);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.58rem;
+      font-weight: 800;
+    }
+
+    .paper {
+      min-height: 190px;
+      padding: 18px 20px;
+      border-radius: 3px;
+      background: #fdfbf4;
+      color: #1a1a1a;
+      font-family: "Courier New", monospace;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .paper-head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 5px;
+      margin-bottom: 14px;
+      border-bottom: 2px double #8f8579;
+    }
+
+    .stamp {
+      display: inline-block;
+      border: 2px solid #a12b1e;
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: #a12b1e;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.76rem;
+      font-weight: 900;
+      transform: rotate(-3deg);
+      text-transform: uppercase;
+    }
+
+    .paper-line {
+      height: 8px;
+      margin-bottom: 9px;
+      border-radius: 2px;
+      background: #d8d1c7;
+    }
+
+    .redact {
+      display: inline-block;
+      width: 82px;
+      height: 12px;
+      margin: 0 5px;
+      border-radius: 1.5px;
+      background: #111;
+      vertical-align: middle;
+    }
+
+    .redact.active {
+      background: var(--orange);
+      box-shadow: 0 0 5px var(--orange);
+    }
+
+    .result-card {
+      width: min(230px, 90%);
+      min-height: 126px;
+      padding: 14px;
+      border: 1px solid var(--purple-soft);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(9, 17, 36, 0.7), rgba(4, 8, 20, 0.85));
+      box-shadow: inset 0 0 15px rgba(109, 205, 239, 0.05), 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .result-card.highlight {
+      border-color: var(--orange);
+      background: linear-gradient(135deg, rgba(38, 16, 12, 0.85), rgba(20, 8, 5, 0.95));
+      box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.2), 0 4px 20px rgba(228, 142, 53, 0.1);
+    }
+
+    .result-value {
+      font-family: "Orbitron", sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .result-value.green {
+      color: var(--green);
+      text-shadow: 0 0 10px var(--green-glow);
+    }
+
+    .result-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .stamp-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border: 2px solid var(--green);
+      border-radius: 4px;
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      transform: rotate(-3deg);
+      box-shadow: inset 0 0 8px rgba(80, 250, 123, 0.15), 0 0 8px rgba(80, 250, 123, 0.15);
+    }
+
+    .end-result-screen {
+      width: min(760px, 96%);
+      padding: 22px;
+      border-radius: 10px;
+      background:
+        radial-gradient(circle at center, rgba(6, 22, 10, 0.96) 0%, rgba(1, 4, 2, 0.99) 100%),
+        radial-gradient(rgba(68, 215, 117, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px;
+      color: #fff;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55);
+    }
+
+    .end-result-header {
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--purple-soft);
+      text-align: left;
+    }
+
+    .end-result-eyebrow {
+      margin: 0;
+      color: var(--muted);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .end-result-header h3 {
+      margin: 4px 0 8px;
+      color: var(--green);
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.1rem, 2.4vw, 1.65rem);
+      font-weight: 900;
+      text-shadow: 0 0 12px var(--green-glow);
+    }
+
+    .end-rank-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.72rem;
+    }
+
+    .end-rank-bar strong {
+      color: var(--green);
+      text-shadow: 0 0 5px var(--green-glow);
+    }
+
+    .end-dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .end-dashboard-card {
+      min-height: 96px;
+      padding: 12px;
+      border: 1px solid var(--purple-soft);
+      border-radius: 8px;
+      background: rgba(6, 22, 10, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    .end-dashboard-card.highlight {
+      border-color: var(--orange);
+      background: linear-gradient(135deg, rgba(38, 16, 12, 0.85), rgba(20, 8, 5, 0.95));
+      box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.25), 0 4px 20px rgba(228, 142, 53, 0.15);
+    }
+
+    .end-card-title {
+      color: var(--muted);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .end-card-value {
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .end-card-value.green {
+      color: var(--green);
+      text-shadow: 0 0 10px var(--green-glow);
+    }
+
+    .end-card-footer {
+      color: var(--orange-soft);
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    .end-results-actions {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .end-results-actions span {
+      color: var(--muted);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .font-sample {
+      display: grid;
+      gap: 12px;
+      width: min(460px, 95%);
+    }
+
+    .font-row {
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.24);
+    }
+
+    .font-row strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .orbitron {
+      font-family: "Orbitron", sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+    }
+
+    .mono {
+      font-family: "Roboto Mono", monospace;
+    }
+
+    .state-samples {
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .state-chip {
+      min-width: 100px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.24);
+      text-align: center;
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .state-chip.active {
+      color: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 0 12px rgba(228, 142, 53, 0.18);
+    }
+
+    .state-chip.good {
+      color: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 12px rgba(154, 215, 68, 0.16);
+    }
+
+    .state-chip.bad {
+      color: var(--red);
+      border-color: var(--red);
+      box-shadow: 0 0 12px rgba(255, 59, 48, 0.16);
+    }
+
+    @media (max-width: 1120px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      aside {
+        position: relative;
+        height: auto;
+      }
+
+      .quick-rules {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .flow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .game-flow-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      main {
+        padding: 22px 16px 70px;
+      }
+
+      .part-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .end-dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .specs li {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .quick-rules {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <span class="kicker">Parts Library</span>
+        <h1>TypeMission Styleguide</h1>
+        <p>Reusable visual parts for building new games in the existing style.</p>
+      </div>
+
+      <span class="nav-title">Foundations</span>
+      <a class="nav-link" href="#overview">Overview</a>
+      <a class="nav-link" href="#colors">Color Tokens</a>
+      <a class="nav-link" href="#type">Typography</a>
+      <a class="nav-link" href="#intro-flow">Intro Flow</a>
+      <a class="nav-link" href="#game-flow">Game Flow</a>
+
+      <span class="nav-title">Hardware Parts</span>
+      <a class="nav-link" href="#materials">Metal & Panels</a>
+      <a class="nav-link" href="#status">Status Parts</a>
+      <a class="nav-link" href="#screens">Screens & Slots</a>
+      <a class="nav-link" href="#inputs">Inputs</a>
+      <a class="nav-link" href="#connectors">Connectors</a>
+
+      <span class="nav-title">Special Parts</span>
+      <a class="nav-link" href="#scanner">Scanner Parts</a>
+      <a class="nav-link" href="#paper">Paper Parts</a>
+      <a class="nav-link" href="#results">Result Parts</a>
+      <a class="nav-link" href="#states">States</a>
+    </aside>
+
+    <main>
+      <section class="hero" id="overview">
+        <span class="kicker">Generic component guide</span>
+        <h2>Use parts, not copied screens.</h2>
+        <p>This guide shows the reusable building blocks behind the games: metal plates, embedded panels, terminal screens, HUD stats, mistake circles, scan reticles, keys, ports, paper stamps and result cards. Combine these parts to make new games without copying a whole keypad or scanner layout.</p>
+        <div class="quick-rules">
+          <div class="rule"><strong>12px</strong><span>Outer frames, big panels, result cards.</span></div>
+          <div class="rule"><strong>8px</strong><span>Metal plates, screens, keys, modules.</span></div>
+          <div class="rule"><strong>3-6px</strong><span>Labels, slots, small controls, stamps.</span></div>
+          <div class="rule"><strong>50%</strong><span>Screws, LEDs, status circles, nodes.</span></div>
+        </div>
+      </section>
+
+      <section id="colors">
+        <div class="section-head">
+          <span class="section-kicker">Foundations</span>
+          <h2>Color Tokens</h2>
+          <p>Theme colors can shift per game, but status meaning stays fixed: orange is active, green is correct, red is wrong, grey is hardware/passive.</p>
+        </div>
+        <div class="token-grid">
+          <div class="token"><div class="swatch" style="background:#e48e35"></div><div><strong>Active orange</strong><span>#e48e35</span></div></div>
+          <div class="token"><div class="swatch" style="background:#9ad744"></div><div><strong>Success green</strong><span>#9ad744</span></div></div>
+          <div class="token"><div class="swatch" style="background:#ff3b30"></div><div><strong>Error red</strong><span>#ff3b30</span></div></div>
+          <div class="token"><div class="swatch" style="background:#0f102b"></div><div><strong>Keypad navy</strong><span>#0f102b / #1e224e</span></div></div>
+          <div class="token"><div class="swatch" style="background:#120505"></div><div><strong>Lock red base</strong><span>#120505 / #300f0f</span></div></div>
+          <div class="token"><div class="swatch" style="background:#1c1809"></div><div><strong>Scanner gold base</strong><span>#1c1809 / #ffcc00</span></div></div>
+          <div class="token"><div class="swatch" style="background:#1a0819"></div><div><strong>Dossier plum</strong><span>#1a0819 / #4d1c44</span></div></div>
+          <div class="token"><div class="swatch" style="background:#091a0c"></div><div><strong>PCB green base</strong><span>#091a0c / #44d775</span></div></div>
+        </div>
+      </section>
+
+      <section id="type">
+        <div class="section-head">
+          <span class="section-kicker">Foundations</span>
+          <h2>Typography Parts</h2>
+          <p>Use type as a component. The games feel consistent because labels, terminal codes and body text each have a clear role.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="font-sample">
+                <div class="font-row"><strong>Orbitron</strong><div class="orbitron">RESTRICTED ACCESS</div></div>
+                <div class="font-row"><strong>Roboto Mono</strong><div class="mono">&gt; SYS_RECOVERY PORT_01</div></div>
+                <div class="font-row"><strong>Roboto</strong><div>Readable instructions and short explanations.</div></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">type system</span>
+              <h3>Font roles</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Orbitron</span><span>Headers, device labels, HUD values, buttons, stamps.</span></li>
+                <li><span class="spec-key">Roboto Mono</span><span>System tags, terminal logs, code slots, technical counters.</span></li>
+                <li><span class="spec-key">Roboto</span><span>Guide text, descriptions, supporting copy.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="intro-flow">
+        <div class="section-head">
+          <span class="section-kicker">Flow Pattern</span>
+          <h2>Introduction Flow</h2>
+          <p>Every game starts with the same three-part briefing rhythm. Keep it short, visual and repeatable so players know what kind of object they are using before the real interaction starts.</p>
+        </div>
+        <div class="flow-grid briefing-flow-grid">
+          <article class="flow-card briefing-example-card">
+            <div class="flow-demo">
+              <div class="style-briefing-panel">
+                <div class="style-briefing-header">
+                  <span class="style-briefing-eyebrow">MISSIE INTRODUCTIE</span>
+                  <div class="style-briefing-dots"><span class="active"></span><span></span><span></span></div>
+                </div>
+                <h3 class="style-briefing-title">Kraak de keypad code van de beveiligde deur</h3>
+                <div class="style-briefing-graphic">
+                  <div class="brief-keypad-device">
+                    <div class="brief-keypad-inner">
+                      <div class="brief-leds"><span></span><span></span></div>
+                      <div class="brief-mini-screen">
+                        <strong>BYPASS READY</strong>
+                        <div class="intro-dot-row"><span></span><span></span><span></span><span></span></div>
+                      </div>
+                      <div class="brief-keypad-buttons">
+                        <span>1</span><span>2</span><span>3</span>
+                        <span>4</span><span>5</span><span>6</span>
+                        <span>7</span><span>8</span><span>9</span>
+                        <span class="special">*</span><span>0</span><span class="special">#</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="style-briefing-footer">
+                  <span>Druk op de spatiebalk om verder te gaan</span>
+                  <div class="style-spacebar"></div>
+                </div>
+              </div>
+            </div>
+            <div class="flow-info">
+              <span class="flow-step">1</span>
+              <h3>Object and objective</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Example</span><span>Keypad mission: show the bypass device and the door objective first.</span></li>
+                <li><span class="spec-key">Visual</span><span>Show one clear device, file, keypad, scanner or screen piece.</span></li>
+                <li><span class="spec-key">Title</span><span>One short Orbitron title. No long explanation block.</span></li>
+                <li><span class="spec-key">Copy</span><span>One sentence explaining what the player will solve.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="flow-card briefing-example-card">
+            <div class="flow-demo">
+              <div class="style-briefing-panel">
+                <div class="style-briefing-header">
+                  <span class="style-briefing-eyebrow">MISSIE INTRODUCTIE</span>
+                  <div class="style-briefing-dots"><span></span><span class="active"></span><span></span></div>
+                </div>
+                <h3 class="style-briefing-title">Plaats je handen in de basispositie (Home Position)</h3>
+                <div class="style-briefing-graphic">
+                  <svg class="briefing-keyboard-svg" viewBox="0 0 580 220" aria-label="Toetsenbord vingerplaatsing diagram" role="img">
+                    <rect class="keyboard-base" x="10" y="10" width="560" height="200" rx="8"></rect>
+                    <rect class="svg-key" x="20" y="20" width="32" height="32" rx="4"></rect><text x="36" y="36">`</text>
+                    <rect class="svg-key" x="56" y="20" width="32" height="32" rx="4"></rect><text x="72" y="36">1</text>
+                    <rect class="svg-key" x="92" y="20" width="32" height="32" rx="4"></rect><text x="108" y="36">2</text>
+                    <rect class="svg-key" x="128" y="20" width="32" height="32" rx="4"></rect><text x="144" y="36">3</text>
+                    <rect class="svg-key" x="164" y="20" width="32" height="32" rx="4"></rect><text x="180" y="36">4</text>
+                    <rect class="svg-key" x="200" y="20" width="32" height="32" rx="4"></rect><text x="216" y="36">5</text>
+                    <rect class="svg-key" x="236" y="20" width="32" height="32" rx="4"></rect><text x="252" y="36">6</text>
+                    <rect class="svg-key" x="272" y="20" width="32" height="32" rx="4"></rect><text x="288" y="36">7</text>
+                    <rect class="svg-key" x="308" y="20" width="32" height="32" rx="4"></rect><text x="324" y="36">8</text>
+                    <rect class="svg-key" x="344" y="20" width="32" height="32" rx="4"></rect><text x="360" y="36">9</text>
+                    <rect class="svg-key" x="380" y="20" width="32" height="32" rx="4"></rect><text x="396" y="36">0</text>
+                    <rect class="svg-key" x="416" y="20" width="32" height="32" rx="4"></rect><text x="432" y="36">-</text>
+                    <rect class="svg-key" x="452" y="20" width="32" height="32" rx="4"></rect><text x="468" y="36">=</text>
+                    <rect class="svg-key" x="488" y="20" width="72" height="32" rx="4"></rect><text x="524" y="36">backspace</text>
+                    <rect class="svg-key" x="20" y="56" width="48" height="32" rx="4"></rect><text x="44" y="72">tab</text>
+                    <rect class="svg-key" x="72" y="56" width="32" height="32" rx="4"></rect><text x="88" y="72">Q</text>
+                    <rect class="svg-key" x="108" y="56" width="32" height="32" rx="4"></rect><text x="124" y="72">W</text>
+                    <rect class="svg-key" x="144" y="56" width="32" height="32" rx="4"></rect><text x="160" y="72">E</text>
+                    <rect class="svg-key" x="180" y="56" width="32" height="32" rx="4"></rect><text x="196" y="72">R</text>
+                    <rect class="svg-key" x="216" y="56" width="32" height="32" rx="4"></rect><text x="232" y="72">T</text>
+                    <rect class="svg-key" x="252" y="56" width="32" height="32" rx="4"></rect><text x="268" y="72">Y</text>
+                    <rect class="svg-key" x="288" y="56" width="32" height="32" rx="4"></rect><text x="304" y="72">U</text>
+                    <rect class="svg-key" x="324" y="56" width="32" height="32" rx="4"></rect><text x="340" y="72">I</text>
+                    <rect class="svg-key" x="360" y="56" width="32" height="32" rx="4"></rect><text x="376" y="72">O</text>
+                    <rect class="svg-key" x="396" y="56" width="32" height="32" rx="4"></rect><text x="412" y="72">P</text>
+                    <rect class="svg-key" x="432" y="56" width="32" height="32" rx="4"></rect><text x="448" y="72">[</text>
+                    <rect class="svg-key" x="468" y="56" width="32" height="32" rx="4"></rect><text x="484" y="72">]</text>
+                    <rect class="svg-key" x="504" y="56" width="56" height="32" rx="4"></rect><text x="532" y="72">\</text>
+                    <rect class="svg-key" x="20" y="92" width="58" height="32" rx="4"></rect><text x="49" y="108">caps</text>
+                    <rect class="svg-key" x="82" y="92" width="32" height="32" rx="4"></rect><text x="98" y="108">A</text>
+                    <rect class="svg-key" x="118" y="92" width="32" height="32" rx="4"></rect><text x="134" y="108">S</text>
+                    <rect class="svg-key" x="154" y="92" width="32" height="32" rx="4"></rect><text x="170" y="108">D</text>
+                    <rect class="svg-home-key" x="190" y="92" width="32" height="32" rx="4"></rect><text class="home-text" x="206" y="108">F</text>
+                    <rect class="svg-key" x="226" y="92" width="32" height="32" rx="4"></rect><text x="242" y="108">G</text>
+                    <rect class="svg-key" x="262" y="92" width="32" height="32" rx="4"></rect><text x="278" y="108">H</text>
+                    <rect class="svg-home-key" x="298" y="92" width="32" height="32" rx="4"></rect><text class="home-text" x="314" y="108">J</text>
+                    <rect class="svg-key" x="334" y="92" width="32" height="32" rx="4"></rect><text x="350" y="108">K</text>
+                    <rect class="svg-key" x="370" y="92" width="32" height="32" rx="4"></rect><text x="386" y="108">L</text>
+                    <rect class="svg-key" x="406" y="92" width="32" height="32" rx="4"></rect><text x="422" y="108">;</text>
+                    <rect class="svg-key" x="442" y="92" width="32" height="32" rx="4"></rect><text x="458" y="108">'</text>
+                    <rect class="svg-key" x="478" y="92" width="82" height="32" rx="4"></rect><text x="519" y="108">enter</text>
+                    <rect class="svg-key" x="20" y="128" width="72" height="32" rx="4"></rect><text x="56" y="144">shift</text>
+                    <rect class="svg-key" x="96" y="128" width="32" height="32" rx="4"></rect><text x="112" y="144">Z</text>
+                    <rect class="svg-key" x="132" y="128" width="32" height="32" rx="4"></rect><text x="148" y="144">X</text>
+                    <rect class="svg-key" x="168" y="128" width="32" height="32" rx="4"></rect><text x="184" y="144">C</text>
+                    <rect class="svg-key" x="204" y="128" width="32" height="32" rx="4"></rect><text x="220" y="144">V</text>
+                    <rect class="svg-key" x="240" y="128" width="32" height="32" rx="4"></rect><text x="256" y="144">B</text>
+                    <rect class="svg-key" x="276" y="128" width="32" height="32" rx="4"></rect><text x="292" y="144">N</text>
+                    <rect class="svg-key" x="312" y="128" width="32" height="32" rx="4"></rect><text x="328" y="144">M</text>
+                    <rect class="svg-key" x="348" y="128" width="32" height="32" rx="4"></rect><text x="364" y="144">,</text>
+                    <rect class="svg-key" x="384" y="128" width="32" height="32" rx="4"></rect><text x="400" y="144">.</text>
+                    <rect class="svg-key" x="420" y="128" width="32" height="32" rx="4"></rect><text x="436" y="144">/</text>
+                    <rect class="svg-key" x="456" y="128" width="104" height="32" rx="4"></rect><text x="508" y="144">shift</text>
+                    <rect class="svg-key" x="20" y="164" width="44" height="32" rx="4"></rect><text x="42" y="180">ctrl</text>
+                    <rect class="svg-key" x="68" y="164" width="44" height="32" rx="4"></rect><text x="90" y="180">win</text>
+                    <rect class="svg-key" x="116" y="164" width="44" height="32" rx="4"></rect><text x="138" y="180">alt</text>
+                    <rect class="svg-key" x="164" y="164" width="232" height="32" rx="4"></rect>
+                    <rect class="svg-key" x="400" y="164" width="44" height="32" rx="4"></rect><text x="422" y="180">alt</text>
+                    <rect class="svg-key" x="448" y="164" width="44" height="32" rx="4"></rect>
+                    <rect class="svg-key" x="496" y="164" width="64" height="32" rx="4"></rect><text x="528" y="180">ctrl</text>
+                    <path class="brief-hand" d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z" transform="translate(15, 80) scale(1.1, 1.1)"></path>
+                    <path class="brief-hand" d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z" transform="translate(505, 80) scale(-1.1, 1.1)"></path>
+                  </svg>
+                </div>
+                <div class="style-briefing-footer">
+                  <span>Druk op de spatiebalk om verder te gaan</span>
+                  <div class="style-spacebar"></div>
+                </div>
+              </div>
+            </div>
+            <div class="flow-info">
+              <span class="flow-step">2</span>
+              <h3>Base hand position</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Always</span><span>This step is fixed in every typing game intro.</span></li>
+                <li><span class="spec-key">Keyboard</span><span>Use the full briefing keyboard layout, not only the two-row training crop.</span></li>
+                <li><span class="spec-key">Hands</span><span>Overlay the same translucent hand silhouette used in the real briefing slide.</span></li>
+                <li><span class="spec-key">Highlight</span><span>Only the anchor keys <code>F</code> and <code>J</code> glow green in this example.</span></li>
+                <li><span class="spec-key">Copy</span><span>Short instruction only: place fingers, stay relaxed, look at screen.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="flow-card briefing-example-card">
+            <div class="flow-demo">
+              <div class="style-briefing-panel">
+                <div class="style-briefing-header">
+                  <span class="style-briefing-eyebrow">MISSIE INTRODUCTIE</span>
+                  <div class="style-briefing-dots"><span></span><span></span><span class="active"></span></div>
+                </div>
+                <h3 class="style-briefing-title">Typ de letters op het scherm om het slot te kraken</h3>
+                <div class="style-briefing-graphic">
+                  <div class="briefing-action-device">
+                    <div class="brief-action-screen">
+                      <strong>HACKCODE:</strong>
+                      <div class="brief-action-slots">
+                        <span class="slot-a">L</span><span class="slot-b">D</span><span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <div class="brief-action-pad">
+                      <span>1</span><span class="active">2</span><span>3</span>
+                      <span>4</span><span>5</span><span>6</span>
+                      <span>7</span><span>8</span><span>9</span>
+                      <span>*</span><span>0</span><span>#</span>
+                    </div>
+                    <div class="brief-lock-status">VERGRENDELD</div>
+                  </div>
+                </div>
+                <div class="style-briefing-footer">
+                  <span>Druk op de spatiebalk om de missie te starten!</span>
+                  <div class="style-spacebar"></div>
+                </div>
+              </div>
+            </div>
+            <div class="flow-info">
+              <span class="flow-step">3</span>
+              <h3>Action preview</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Example</span><span>Keypad mission: show hackcode slots, active keypad button and locked status together.</span></li>
+                <li><span class="spec-key">Animation</span><span>Use one short loop showing a slot filling and a keypad button activating.</span></li>
+                <li><span class="spec-key">Visual</span><span>Animate the actual target type: key, slot, scan zone, word or wire.</span></li>
+                <li><span class="spec-key">Timing</span><span>Keep it readable, about <code>1-2s</code> per loop.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="game-flow">
+        <div class="section-head">
+          <span class="section-kicker">Flow Pattern</span>
+          <h2>Full Game Flow</h2>
+          <p>New games should reuse the same pacing: clear briefing, hardware reveal, active loop, immediate feedback and a compact result screen.</p>
+        </div>
+        <div class="part-grid single">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="game-flow-strip">
+                <div class="game-flow-step"><strong>Intro</strong><span>3 briefing steps.</span></div>
+                <div class="game-flow-step"><strong>Reveal</strong><span>Show the device and stats.</span></div>
+                <div class="game-flow-step"><strong>Play</strong><span>Target, input, progress.</span></div>
+                <div class="game-flow-step"><strong>Feedback</strong><span>Green correct, red mistake.</span></div>
+                <div class="game-flow-step"><strong>Result</strong><span>Cards, stamp, continue.</span></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">screen sequence</span>
+              <h3>Reusable game pacing</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Intro</span><span>Use the fixed 3-step briefing: object, base hand position, action preview.</span></li>
+                <li><span class="spec-key">Reveal</span><span>Show one main hardware object with stats around it, never a crowded explanation screen.</span></li>
+                <li><span class="spec-key">Play loop</span><span>Keep target, input and progress visible at the same time. The player should not search for the next action.</span></li>
+                <li><span class="spec-key">Feedback</span><span>Correct actions use green glow; current targets use orange or finger color; mistakes use red circles/shake.</span></li>
+                <li><span class="spec-key">Endscreen</span><span>Use result cards plus one stamp/status line. Keep metrics compact and reuse the same card language across games.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="materials">
+        <div class="section-head">
+          <span class="section-kicker">Hardware Parts</span>
+          <h2>Metal & Embedded Panels</h2>
+          <p>These are generic hardware surfaces. They are used by keypad, lockpicking, fingerprint, supercomputer boards and future devices.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo grid-bg">
+              <div class="metal-plate">
+                <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+                <div class="door-label">RESTRICTED ACCESS</div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">metal background</span>
+              <h3>Metal backplate</h3>
+              <p>This is the generic metal surface behind keypad panels, lock devices and scanner rigs.</p>
+              <ul class="specs">
+                <li><span class="spec-key">Gradient</span><span><code>#4a4d52</code> top, <code>#33363b</code> middle, <code>#2a2d32</code> bottom.</span></li>
+                <li><span class="spec-key">Border</span><span><code>2.5px solid #5a5e65</code>.</span></li>
+                <li><span class="spec-key">Radius</span><span><code>8px</code>. Hardware is slightly rounded, never pill-shaped.</span></li>
+                <li><span class="spec-key">Screws</span><span><code>8px</code> circles placed <code>10px</code> from each corner.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="panel-shell">
+                <div class="panel-head"><span class="mini-label">BYPASS RIG v1.02</span><span class="led-row"><i class="led green"></i><i class="led orange"></i></span></div>
+                <div class="panel-diagnostic-body">
+                  <div class="circle-row"><span class="status-circle"></span><span class="status-circle"></span><span class="status-circle error"></span></div>
+                </div>
+                <div class="panel-foot"><span class="signal-bars"><i></i><i></i><i></i><i></i><i></i></span><span class="ports"><i class="port"></i><i class="port"></i></span></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">embedded body</span>
+              <h3>Black hardware panel</h3>
+              <p>Use this when an interactive part is mounted inside a larger object.</p>
+              <ul class="specs">
+                <li><span class="spec-key">Background</span><span><code>#0d0e12</code>, used like black plastic or rubberized metal.</span></li>
+                <li><span class="spec-key">Border</span><span><code>2px</code> translucent white. It should feel inset, not glowing.</span></li>
+                <li><span class="spec-key">Padding</span><span><code>8-12px</code> vertical, <code>10px</code> horizontal.</span></li>
+                <li><span class="spec-key">Header/footer</span><span>Thin <code>1.5px</code> dividers, label left, LEDs/ports right. Do not add a terminal screen unless the component is actually a screen.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="status">
+        <div class="section-head">
+          <span class="section-kicker">Hardware Parts</span>
+          <h2>Stats, LEDs & Mistake Circles</h2>
+          <p>These show game state without long text. They can be reused above any game object.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="stat-card"><div><strong>96%</strong><span>Accuracy</span></div></div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">hud metric</span>
+              <h3>Stat block</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Shape</span><span>Radius <code>6px</code>, low-opacity dark background, theme border.</span></li>
+                <li><span class="spec-key">Value</span><span>Orbitron, large, usually <code>1.3-1.7rem</code>.</span></li>
+                <li><span class="spec-key">Label</span><span>Uppercase, muted, small, below the value.</span></li>
+                <li><span class="spec-key">Use</span><span>Timer, accuracy, mistakes, shields, progress count, wave count.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="circle-row">
+                <span class="status-circle"></span>
+                <span class="status-circle"></span>
+                <span class="status-circle error"></span>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">mistake indicator</span>
+              <h3>Status / mistake circles</h3>
+              <p>Used for locks, shields, attempts, fingerprint nodes and other limited lives.</p>
+              <ul class="specs">
+                <li><span class="spec-key">Size</span><span>Main circles <code>28-38px</code>; small nodes <code>18px</code>.</span></li>
+                <li><span class="spec-key">Border</span><span><code>2.5px</code> green for available, red for lost/error.</span></li>
+                <li><span class="spec-key">Inner dot</span><span>Small glowing dot centered inside circle.</span></li>
+                <li><span class="spec-key">Motion</span><span>On error: brief scale pop or shake, then settle.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="screens">
+        <div class="section-head">
+          <span class="section-kicker">Hardware Parts</span>
+          <h2>Screens, Slots & Code Boxes</h2>
+          <p>Terminal-like display pieces appear in keypad, lockpicking, fingerprint and redaction demos.</p>
+        </div>
+        <div class="part-grid single">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="terminal-screen" style="width:min(520px,95%)">
+                <div class="screen-tags"><span>SYS_RECOVERY</span><span>PORT_01</span></div>
+                <div class="screen-title">HACKCODE:</div>
+                <div class="char-row"><span class="char-box correct">A</span><span class="char-box current">S</span><span class="char-box">D</span><span class="char-box wrong">F</span></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">terminal display family</span>
+              <h3>Screen shell with slot variants</h3>
+              <p>Use one terminal shell with one code row. Do not stack segmented slots and large letter boxes in the same component.</p>
+              <ul class="specs">
+                <li><span class="spec-key">Shell</span><span>Background <code>#060714</code>, border <code>1.8px</code>, radius <code>8px</code>, inset black shadow.</span></li>
+                <li><span class="spec-key">Scanlines</span><span>Overlay every <code>3px</code>, low black opacity.</span></li>
+                <li><span class="spec-key">Tags</span><span>Roboto Mono, <code>7px</code>, low opacity, pinned top left/right.</span></li>
+                <li><span class="spec-key">Code row</span><span>Pick one row type only: small slots for hackcode, or large boxes for pins/typing prompts.</span></li>
+                <li><span class="spec-key">Boxes</span><span><code>34-48px</code> wide, <code>38-60px</code> tall, radius <code>6px</code>, border <code>2px</code>.</span></li>
+                <li><span class="spec-key">States</span><span>Current orange, correct green, wrong red, inactive muted. State color changes the border/glow, not the layout.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="inputs">
+        <div class="section-head">
+          <span class="section-kicker">Hardware Parts</span>
+          <h2>Input Parts</h2>
+          <p>Inputs should feel physical: keys press, spacebars sink, and target keys glow without resizing.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="keycap-grid">
+                <span class="keycap">1</span><span class="keycap">2</span><span class="keycap">3</span>
+                <span class="keycap">4</span><span class="keycap">5</span><span class="keycap">6</span>
+                <span class="keycap">7</span><span class="keycap">8</span><span class="keycap">9</span>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">keypad buttons</span>
+              <h3>Square hardware keys</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Grid</span><span><code>3 x 4</code>, gap <code>4-8px</code>, width around <code>80%</code> of panel.</span></li>
+                <li><span class="spec-key">Shape</span><span>Square aspect ratio, radius <code>8px</code>.</span></li>
+                <li><span class="spec-key">Surface</span><span><code>rgba(255,255,255,0.04)</code> fill, <code>1.5px</code> low opacity border.</span></li>
+                <li><span class="spec-key">Text</span><span>Orbitron, white at <code>0.95</code> opacity.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="keyboard-perspective-demo">
+                <div class="keyboard-sample">
+                  <div class="kbd-row">
+                    <span class="kbd-key mod">esc</span><span class="kbd-key dimmed">&amp;</span><span class="kbd-key dimmed">E</span><span class="kbd-key dimmed">"</span><span class="kbd-key dimmed">'</span><span class="kbd-key dimmed">(</span><span class="kbd-key dimmed">!</span><span class="kbd-key dimmed">)</span><span class="kbd-key dimmed">-</span><span class="kbd-key mod wide-3">back</span>
+                  </div>
+                  <div class="kbd-row">
+                    <span class="kbd-key mod wide-2">tab</span><span class="kbd-key finger-lp">A</span><span class="kbd-key finger-lr">Z</span><span class="kbd-key finger-lm">E</span><span class="kbd-key finger-li active">R</span><span class="kbd-key finger-li">T</span><span class="kbd-key finger-ri">Y</span><span class="kbd-key finger-ri">U</span><span class="kbd-key finger-rm">I</span><span class="kbd-key finger-rr">O</span><span class="kbd-key finger-rp">P</span><span class="kbd-key dimmed">^</span><span class="kbd-key mod wide-3">enter</span>
+                  </div>
+                  <div class="kbd-row">
+                    <span class="kbd-key mod wide-2">caps</span><span class="kbd-key finger-lp">Q</span><span class="kbd-key finger-lr">S</span><span class="kbd-key finger-lm">D</span><span class="kbd-key finger-li active">F</span><span class="kbd-key finger-li">G</span><span class="kbd-key finger-ri">H</span><span class="kbd-key finger-ri">J</span><span class="kbd-key finger-rm">K</span><span class="kbd-key finger-rr">L</span><span class="kbd-key finger-rp">M</span><span class="kbd-key dimmed">%</span>
+                  </div>
+                  <div class="kbd-row">
+                    <span class="kbd-key mod wide-3">shift</span><span class="kbd-key dimmed">&lt;</span><span class="kbd-key finger-lp">W</span><span class="kbd-key finger-lr">X</span><span class="kbd-key finger-lm">C</span><span class="kbd-key finger-li">V</span><span class="kbd-key finger-li">B</span><span class="kbd-key finger-ri">N</span><span class="kbd-key finger-rm">,</span><span class="kbd-key finger-rr">;</span><span class="kbd-key finger-rp">:</span><span class="kbd-key mod wide-4">shift</span>
+                  </div>
+                  <div class="kbd-row">
+                    <span class="kbd-key mod wide-1">ctrl</span><span class="kbd-key mod wide-1">win</span><span class="kbd-key mod wide-1">alt</span><span class="kbd-key mod space finger-t active">space</span><span class="kbd-key mod wide-1">alt</span><span class="kbd-key mod wide-1">fn</span><span class="kbd-key mod wide-1">ctrl</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">training keyboard</span>
+              <h3>Typeoefening key deck</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Deck</span><span>Five flex rows, <code>rotateX(24deg)</code>, radius <code>8px</code>, border <code>2px</code>, padding <code>6px 8px</code>.</span></li>
+                <li><span class="spec-key">Rows</span><span><code>gap: 5px</code> between keys and <code>4px</code> between rows; wide keys use flex weights.</span></li>
+                <li><span class="spec-key">Keys</span><span>Height <code>34-48px</code>, radius <code>6px</code>, border <code>1.5px</code>, translucent dark fill.</span></li>
+                <li><span class="spec-key">Finger map</span><span>Pinky gold, ring green, middle red, left index cyan, right index blue, thumbs purple.</span></li>
+                <li><span class="spec-key">Active</span><span>Finger color border/glow and <code>rgba(255,255,255,0.1)</code> fill; no layout shift.</span></li>
+                <li><span class="spec-key">Pressed</span><span>Move down about <code>1.2px</code> with fast <code>0.04s</code> transition.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="spacebar"></div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">advance prompt</span>
+              <h3>Spacebar visual</h3>
+              <p>Used in briefings and result screens as a physical affordance.</p>
+              <ul class="specs">
+                <li><span class="spec-key">Size</span><span>Width <code>100-150px</code>, height <code>28-32px</code>.</span></li>
+                <li><span class="spec-key">Radius</span><span><code>6px</code>, with raised shadow below.</span></li>
+                <li><span class="spec-key">Icon</span><span>Centered orange line, <code>2.5px</code> tall, pill radius.</span></li>
+                <li><span class="spec-key">Pressed</span><span>Translate down <code>2.5px</code>, shadow collapses.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="progress-unit">
+                <div class="progress-meta"><span>COMPROMISE LEVEL</span><span>64%</span></div>
+                <div class="progress-track"><div class="progress-fill"></div></div>
+                <div class="progress-track"><div class="progress-fill warning" style="width:78%"></div></div>
+                <div class="progress-track"><div class="progress-fill danger" style="width:92%"></div></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">progress feedback</span>
+              <h3>Progress / danger bar</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Track</span><span>Height <code>8-14px</code>, radius <code>4px</code>, inset shadow.</span></li>
+                <li><span class="spec-key">Fill</span><span>Green normal, orange warning, red danger.</span></li>
+                <li><span class="spec-key">Labels</span><span>Small Orbitron title left and percent/value right.</span></li>
+                <li><span class="spec-key">Use</span><span>Hack progress, folder reveal, typing progress, threat level.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="connectors">
+        <div class="section-head">
+          <span class="section-kicker">Hardware Parts</span>
+          <h2>Connectors, Ports & Cables</h2>
+          <p>Small hardware details make a screen feel engineered instead of decorative.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="panel-shell" style="max-width:360px">
+                <div class="panel-head"><span class="mini-label">SIGNAL</span><span class="led-row"><i class="led green"></i><i class="led orange"></i></span></div>
+                <div class="panel-foot"><span class="signal-bars"><i></i><i></i><i></i><i></i><i></i></span><span class="ports"><i class="port"></i><i class="port"></i></span></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">footer diagnostics</span>
+              <h3>Signal bars and ports</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Bars</span><span>Five orange bars, <code>3px</code> wide, heights <code>3-9px</code>.</span></li>
+                <li><span class="spec-key">Ports</span><span><code>8px</code> circles, <code>1.5px</code> translucent border, dark inset.</span></li>
+                <li><span class="spec-key">Placement</span><span>Usually in panel footer, bars left and ports right.</span></li>
+                <li><span class="spec-key">Use</span><span>Panel realism, data-link status, hardware decoration with purpose.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo">
+              <svg class="cable-demo" viewBox="0 0 430 150">
+                <path class="cable green" d="M 0 35 C 75 60 92 92 165 68"></path>
+                <path class="cable orange" d="M 0 76 C 88 130 105 102 168 92"></path>
+                <path class="cable red" d="M 430 40 C 346 80 328 84 260 62"></path>
+                <path class="cable orange" d="M 430 95 C 342 132 325 108 260 88"></path>
+              </svg>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">wiring</span>
+              <h3>Sagging cables</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Shape</span><span>Use SVG cubic or quadratic curves. Avoid straight wires.</span></li>
+                <li><span class="spec-key">Stroke</span><span>Game size <code>2.8px</code>, preview size <code>1.8-2px</code>.</span></li>
+                <li><span class="spec-key">Colors</span><span>Green, orange and red only. Match glow to stroke color.</span></li>
+                <li><span class="spec-key">Why</span><span>Cables make the panel feel physically bypassed or hacked.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="scanner">
+        <div class="section-head">
+          <span class="section-kicker">Special Parts</span>
+          <h2>Scanner Parts</h2>
+          <p>Scanner pieces should match the door-fingerprint and dossier games: dark hardware, real scan overlays, moving laser, and clear node states.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="fingerprint-device">
+                <div class="fingerprint-core"></div>
+                <div class="fingerprint-laser"></div>
+                <span class="scan-node active" style="left:16%;top:43%">A</span>
+                <span class="scan-node" style="left:84%;top:43%">S</span>
+                <span class="scan-node" style="left:50%;top:84%">F</span>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">fingerprint scanner</span>
+              <h3>Bezel, fingerprint and scan nodes</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Bezel</span><span>Dark inset box, radius <code>16px</code>, border <code>2px</code>, heavy inner shadow.</span></li>
+                <li><span class="spec-key">Grid</span><span>Subtle <code>8px</code> scan grid inside the scanner, not a large decorative page grid.</span></li>
+                <li><span class="spec-key">Laser</span><span><code>3px</code> sweeping line with gold/cyan glow depending on game theme.</span></li>
+                <li><span class="spec-key">Nodes</span><span><code>18px</code> circular scan markers with letter labels and active/correct/wrong states.</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="part-card">
+            <div class="part-demo scanner-bg">
+              <div class="reticle"></div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">dossier target</span>
+              <h3>Scan reticle on document viewport</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Border</span><span><code>1.5px</code> green, radius <code>4px</code>, green glow.</span></li>
+                <li><span class="spec-key">Label</span><span>Small green label above the box with Orbitron text.</span></li>
+                <li><span class="spec-key">Background</span><span>Dossier scanner viewport uses <code>80px</code> grid cells over a dark plum field.</span></li>
+                <li><span class="spec-key">Use</span><span>Only for active words, scan targets, calibration zones, or redaction focus.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="paper">
+        <div class="section-head">
+          <span class="section-kicker">Special Parts</span>
+          <h2>Paper, Folders & Stamps</h2>
+          <p>Paper parts are the only intentionally non-metal materials. Keep them tactile but still surrounded by spy-tech overlays.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo scanner-bg">
+              <div class="dossier-sample">
+                <div class="dossier-folder-back"><div class="dossier-folder-tab">FILE NO: RE-D4CT-99</div></div>
+                <div class="dossier-paper">
+                  <div class="dossier-meta"><span>STATUS: STRIKT VERTROUWELIJK</span><span class="dossier-stamp">TOP SECRET</span></div>
+                  <h4>Inlichtingen rapport: Project Vakantie</h4>
+                  <div class="dossier-text">
+                    <p>Agent locatie: <span class="redacted-word">NOORDKADE</span></p>
+                    <p>Codenaam: <span class="redacted-word active">NIGHTHAWK</span></p>
+                    <p>Ontmoeting gepland na zonsondergang.</p>
+                  </div>
+                  <div class="dossier-paper-footer"><span>Ontcijfering: 3/5</span><span>Miss J</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">document material</span>
+              <h3>Folder, paper and redaction</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Folder</span><span>Manila backplate <code>#dca75e</code> with tab label above the paper, heavy shadow.</span></li>
+                <li><span class="spec-key">Paper</span><span>Off-white <code>#fdfbf4</code>, radius <code>3px</code>, Courier-like report text.</span></li>
+                <li><span class="spec-key">Header</span><span>Status meta left, red rotated stamp right, then report title with divider.</span></li>
+                <li><span class="spec-key">Redaction</span><span>Black hidden word, orange active target, green/plain text after decrypt.</span></li>
+                <li><span class="spec-key">Footer</span><span>Dashed divider with decrypt progress and signature at the bottom.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="results">
+        <div class="section-head">
+          <span class="section-kicker">Special Parts</span>
+          <h2>Result Parts</h2>
+          <p>Result screens are full reports: header, rank bar, six metric cards and a bottom spacebar action. Do not show result cards without the surrounding screen structure.</p>
+        </div>
+        <div class="part-grid single">
+          <article class="part-card">
+            <div class="part-demo tall">
+              <div class="end-result-screen">
+                <header class="end-result-header">
+                  <p class="end-result-eyebrow">DECRYPTIE EVALUATIE // SYSTEM REPORT</p>
+                  <h3>DOSSIER VOLLEDIG HERSTELD!</h3>
+                  <div class="end-rank-bar"><span>EVALUATIE RANG:</span><strong>Master Cyber-Spion</strong></div>
+                </header>
+                <div class="end-dashboard-grid">
+                  <div class="end-dashboard-card"><span class="end-card-title">Characters per minute</span><span class="end-card-value">184</span><span class="end-card-footer">+12 credits</span></div>
+                  <div class="end-dashboard-card"><span class="end-card-title">Time</span><span class="end-card-value green">42.8s</span><span class="end-card-footer">Mission time</span></div>
+                  <div class="end-dashboard-card"><span class="end-card-title">Accuracy</span><span class="end-card-value green">96%</span><span class="end-card-footer">+20 credits</span></div>
+                  <div class="end-dashboard-card"><span class="end-card-title">Difficult keys</span><span class="end-card-value">S F</span><span class="end-card-footer">Review hint</span></div>
+                  <div class="end-dashboard-card"><span class="end-card-title">Mission status</span><span class="stamp-badge">GESLAAGD</span><span class="end-card-footer">+50 credits</span></div>
+                  <div class="end-dashboard-card highlight"><span class="end-card-title">Total credits</span><span class="end-card-value">82</span><span class="end-card-footer">Super Spy School</span></div>
+                </div>
+                <div class="end-results-actions"><span>Druk op de spatiebalk om door te gaan</span><div class="spacebar"></div></div>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">complete endscreen</span>
+              <h3>Result report layout</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Container</span><span>Dark full-screen report panel with green/terminal radial background and <code>24px</code> dot grid.</span></li>
+                <li><span class="spec-key">Header</span><span>Eyebrow first, large result title second, rank bar third.</span></li>
+                <li><span class="spec-key">Grid</span><span>Six dashboard cards in a <code>3 x 2</code> grid. Each card has title, value and footer/reward.</span></li>
+                <li><span class="spec-key">Status</span><span>Mission status is a stamped badge inside a card, not floating alone.</span></li>
+                <li><span class="spec-key">Actions</span><span>Bottom row contains instruction text plus the same physical spacebar visual used in briefings.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="states">
+        <div class="section-head">
+          <span class="section-kicker">Behavior</span>
+          <h2>State Language</h2>
+          <p>Apply the same state meaning to every component. This is what makes new games feel like they belong to the same suite.</p>
+        </div>
+        <div class="part-grid">
+          <article class="part-card">
+            <div class="part-demo">
+              <div class="state-samples">
+                <span class="state-chip">Idle</span>
+                <span class="state-chip active">Active</span>
+                <span class="state-chip good">Correct</span>
+                <span class="state-chip bad">Wrong</span>
+              </div>
+            </div>
+            <div class="part-info">
+              <span class="part-tag">feedback system</span>
+              <h3>Universal states</h3>
+              <ul class="specs">
+                <li><span class="spec-key">Idle</span><span>Muted grey, low-opacity border, no strong glow.</span></li>
+                <li><span class="spec-key">Active</span><span>Orange border/text/glow. Only one current target should feel active.</span></li>
+                <li><span class="spec-key">Correct</span><span>Green border/text/glow. Use for unlocked, cracked, set, verified, revealed.</span></li>
+                <li><span class="spec-key">Wrong</span><span>Red flash, short shake/pop, then return or mark a lost circle.</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
