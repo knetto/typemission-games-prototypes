@@ -1,6 +1,6 @@
 // ── GAME CONSTANTS ──
 const GAME_DURATION = 60.0; // 60 seconds survival
-const MAX_MISTAKES = 3;
+const MAX_MISTAKES = 5;
 const MAX_EXTRA_PRESSURE_KEYS = 3;
 
 // Letter grid definition — a live matrix of supercomputer sectors (not a keyboard).
@@ -890,15 +890,13 @@ function spawnHack() {
 
   if (currentPool.length > 0) {
     for (let i = 0; i < hacksToSpawn; i++) {
-      // Pick a unique letter not currently displayed by any active virus (if possible)
+      // Pick a unique letter not currently displayed by any active virus
       const activeLetters = activeViruses.map(v => v.letter);
-      let ch = '';
       const available = currentPool.filter(l => !activeLetters.includes(l));
-      if (available.length > 0) {
-        ch = available[Math.floor(Math.random() * available.length)];
-      } else {
-        ch = currentPool[Math.floor(Math.random() * currentPool.length)];
+      if (available.length === 0) {
+        break; // No more unique letters available in pool, skip spawning for this burst
       }
+      const ch = available[Math.floor(Math.random() * available.length)];
 
       // Pick a route index that is not currently occupied (if possible)
       const occupiedRoutes = activeViruses.map(v => v.routeIndex);
@@ -1177,7 +1175,7 @@ function registerWrongKey(typedChar) {
   flashBoardShake();
 
   const label = typedChar === " " ? "SPATIE" : typedChar.toUpperCase();
-  registerStrike(typedChar, `FOUT: Verkeerde input [${label}]. Firewall-schild geraakt.`, 9);
+  registerStrike(typedChar, `FOUT: Verkeerde input [${label}]. Firewall-schild geraakt.`, 5);
 }
 
 function registerStrike(key, message, compromisePenalty) {

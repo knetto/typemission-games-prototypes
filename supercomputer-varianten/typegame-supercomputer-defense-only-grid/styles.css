@@ -459,431 +459,141 @@ body::before {
   width: 100%;
 }
 
-/* Slide 1 - CSS Simplified CPU Graphic */
-.briefing-cpu-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 220px;
-  height: 180px;
+/* Slide 1 - CSS Simplified Firewall Grid Preview */
+.briefing-grid-preview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 8px;
+  width: 280px;
+  height: 140px;
+  margin: 10px auto;
 }
 
-.briefing-cpu-socket {
-  width: 130px;
-  height: 130px;
-  background: rgba(6, 22, 10, 0.45);
-  border: 2px dashed rgba(68, 215, 117, 0.35);
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 15px rgba(68, 215, 117, 0.05);
-}
-
-.briefing-cpu-chip {
-  width: 102px;
-  height: 102px;
-  background: radial-gradient(circle at center, #0f2713 0%, #050e06 100%);
-  border: 1.5px solid var(--orange);
-  /* Gold edge mask */
+.briefing-grid-preview-cell {
+  display: grid;
+  place-items: center;
+  background: rgba(8, 14, 20, 0.92);
+  border: 1px solid rgba(116, 216, 255, 0.22);
   border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(205, 235, 255, 0.85);
+  box-shadow: inset 0 0 10px rgba(116, 216, 255, 0.05);
 }
 
-.briefing-cpu-ihs {
-  width: 74px;
-  height: 74px;
-  background: linear-gradient(135deg, #18221b 0%, #0d120e 100%);
-  border: 1.5px solid #2d3b31;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.05);
+.briefing-grid-preview-cell.healthy {
+  border-color: rgba(116, 216, 255, 0.35);
+  color: rgba(205, 235, 255, 0.85);
 }
 
-.briefing-cpu-core {
-  font-family: "Orbitron", sans-serif;
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--blue);
-  text-shadow: 0 0 8px rgba(116, 216, 255, 0.6);
-  letter-spacing: 1.5px;
+.briefing-grid-preview-cell.hacked {
+  background: rgba(255, 59, 48, 0.2);
+  border-color: var(--red);
+  color: #fff;
+  animation: pulseRedLight 1.5s infinite alternate ease-in-out;
 }
 
-.briefing-cpu-led {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 6px var(--green-glow);
-}
-
-
-
-/* Slide 3 - SVG Briefing Gameplay Graphic */
-.briefing-gameplay-demo-centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.briefing-gameplay-svg {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.65));
-}
-
-.briefing-gameplay-svg text {
-  user-select: none;
-  font-family: "Roboto", Arial, sans-serif;
-}
-
-.briefing-gameplay-svg .briefing-anim-virus {
-  animation: miniVirusLeftMove 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-packet {
-  animation: miniPacketLeftMove 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-explosion {
-  animation: miniExplosionLeft 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-key-c {
-  animation: miniKeyCBorders 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-key-c-led {
-  animation: miniKeyCLeds 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-key-c-text {
-  animation: miniKeyCTexts 4s linear infinite;
-}
-
-/* Right-side elements mapping */
-.briefing-gameplay-svg .briefing-anim-virus-right {
-  animation: miniVirusRightMove 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-packet-right {
-  animation: miniPacketRightMove 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-explosion-right {
-  animation: miniExplosionRight 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-key-z {
-  animation: miniKeyZBorders 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-key-z-led {
-  animation: miniKeyZLeds 4s linear infinite;
-}
-
-.briefing-gameplay-svg .briefing-anim-key-z-text {
-  animation: miniKeyZTexts 4s linear infinite;
-}
-
-@keyframes miniVirusLeftMove {
+@keyframes pulseRedLight {
   0% {
-    transform: translate(20px, 45px);
-    opacity: 0;
+    box-shadow: 0 0 4px rgba(255, 59, 48, 0.2), inset 0 0 6px rgba(255, 59, 48, 0.1);
+    background: rgba(255, 59, 48, 0.2);
   }
-
-  5% {
-    opacity: 1;
-  }
-
-  42% {
-    opacity: 1;
-    transform: translate(80px, 45px);
-  }
-
-  43%,
   100% {
-    opacity: 0;
-    transform: translate(80px, 45px);
+    box-shadow: 0 0 12px rgba(255, 59, 48, 0.5), inset 0 0 12px rgba(255, 59, 48, 0.2);
+    background: rgba(255, 59, 48, 0.35);
   }
 }
 
-@keyframes miniPacketLeftMove {
+/* Slide 3 - Grid Demo and Keyframes */
+.briefing-grid-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 240px;
+  margin: 10px auto;
+}
 
-  0%,
-  30% {
-    transform: translate(45px, 101px);
-    opacity: 0;
+.briefing-grid-demo-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.briefing-grid-demo-cell {
+  width: 65px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 14, 20, 0.92);
+  border: 1px solid rgba(116, 216, 255, 0.22);
+  border-radius: 6px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(205, 235, 255, 0.85);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 10px rgba(116, 216, 255, 0.05);
+}
+
+.briefing-grid-demo-cell.healthy {
+  border-color: rgba(116, 216, 255, 0.22);
+}
+
+.briefing-grid-demo-cell.hacked {
+  background: rgba(255, 59, 48, 0.25);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.briefing-anim-hack-1 {
+  animation: briefingHackCycle1 4s infinite ease-in-out;
+}
+
+.briefing-anim-hack-2 {
+  animation: briefingHackCycle2 4s infinite ease-in-out;
+}
+
+@keyframes briefingHackCycle1 {
+  0%, 20% {
+    background: rgba(255, 59, 48, 0.25);
+    border-color: var(--red);
+    color: #fff;
+    box-shadow: 0 0 8px rgba(255, 59, 48, 0.3);
   }
-
-  31% {
-    opacity: 1;
+  30%, 70% {
+    background: rgba(68, 215, 117, 0.22);
+    border-color: var(--green);
+    color: #eafff0;
+    box-shadow: 0 0 12px var(--green-glow);
   }
-
-  42% {
-    opacity: 1;
-    transform: translate(80px, 45px);
-  }
-
-  43%,
-  100% {
-    opacity: 0;
-    transform: translate(80px, 45px);
+  80%, 100% {
+    background: rgba(8, 14, 20, 0.92);
+    border-color: rgba(116, 216, 255, 0.22);
+    color: rgba(205, 235, 255, 0.85);
+    box-shadow: none;
   }
 }
 
-@keyframes miniExplosionLeft {
-
-  0%,
-  42% {
-    opacity: 0;
-    r: 0;
+@keyframes briefingHackCycle2 {
+  0%, 50% {
+    background: rgba(8, 14, 20, 0.92);
+    border-color: rgba(116, 216, 255, 0.22);
+    color: rgba(205, 235, 255, 0.85);
+    box-shadow: none;
   }
-
-  43% {
-    opacity: 1;
-    r: 1;
+  60%, 80% {
+    background: rgba(255, 59, 48, 0.25);
+    border-color: var(--red);
+    color: #fff;
+    box-shadow: 0 0 8px rgba(255, 59, 48, 0.3);
   }
-
-  52% {
-    opacity: 0;
-    r: 12;
-  }
-
-  100% {
-    opacity: 0;
-    r: 12;
-  }
-}
-
-@keyframes miniKeyCBorders {
-
-  0%,
-  30% {
-    fill: rgba(255, 59, 48, 0.12);
-    stroke: #ff3b30;
-  }
-
-  31%,
-  34% {
-    fill: rgba(68, 215, 117, 0.3);
-    stroke: #44d775;
-    filter: drop-shadow(0 0 3px #44d775);
-  }
-
-  35%,
-  42% {
-    fill: rgba(255, 59, 48, 0.12);
-    stroke: #ff3b30;
-    filter: none;
-  }
-
-  43%,
-  80% {
-    fill: rgba(8, 14, 20, 0.92);
-    stroke: rgba(116, 216, 255, 0.22);
-    filter: none;
-  }
-
-  81%,
-  100% {
-    fill: rgba(255, 59, 48, 0.12);
-    stroke: #ff3b30;
-  }
-}
-
-@keyframes miniKeyCLeds {
-
-  0%,
-  42% {
-    fill: #ff3b30;
-  }
-
-  43%,
-  80% {
-    fill: #44d775;
-  }
-
-  81%,
-  100% {
-    fill: #ff3b30;
-  }
-}
-
-@keyframes miniKeyCTexts {
-
-  0%,
-  30% {
-    fill: #ffffff;
-  }
-
-  31%,
-  34% {
-    fill: #44d775;
-  }
-
-  35%,
-  100% {
-    fill: #ffffff;
-  }
-}
-
-@keyframes miniVirusRightMove {
-
-  0%,
-  30% {
-    transform: translate(300px, 45px);
-    opacity: 0;
-  }
-
-  35% {
-    opacity: 1;
-  }
-
-  72% {
-    opacity: 1;
-    transform: translate(240px, 45px);
-  }
-
-  73%,
-  100% {
-    opacity: 0;
-    transform: translate(240px, 45px);
-  }
-}
-
-@keyframes miniPacketRightMove {
-
-  0%,
-  60% {
-    transform: translate(275px, 101px);
-    opacity: 0;
-  }
-
-  61% {
-    opacity: 1;
-  }
-
-  72% {
-    opacity: 1;
-    transform: translate(240px, 45px);
-  }
-
-  73%,
-  100% {
-    opacity: 0;
-    transform: translate(240px, 45px);
-  }
-}
-
-@keyframes miniExplosionRight {
-
-  0%,
-  72% {
-    opacity: 0;
-    r: 0;
-  }
-
-  73% {
-    opacity: 1;
-    r: 1;
-  }
-
-  82% {
-    opacity: 0;
-    r: 12;
-  }
-
-  83%,
-  100% {
-    opacity: 0;
-    r: 12;
-  }
-}
-
-@keyframes miniKeyZBorders {
-
-  0%,
-  12% {
-    fill: rgba(8, 14, 20, 0.92);
-    stroke: rgba(116, 216, 255, 0.22);
-    filter: none;
-  }
-
-  13%,
-  60% {
-    fill: rgba(255, 59, 48, 0.12);
-    stroke: #ff3b30;
-    filter: none;
-  }
-
-  61%,
-  64% {
-    fill: rgba(68, 215, 117, 0.3);
-    stroke: #44d775;
-    filter: drop-shadow(0 0 3px #44d775);
-  }
-
-  65%,
-  72% {
-    fill: rgba(255, 59, 48, 0.12);
-    stroke: #ff3b30;
-    filter: none;
-  }
-
-  73%,
-  100% {
-    fill: rgba(8, 14, 20, 0.92);
-    stroke: rgba(116, 216, 255, 0.22);
-    filter: none;
-  }
-}
-
-@keyframes miniKeyZLeds {
-
-  0%,
-  12% {
-    fill: #44d775;
-  }
-
-  13%,
-  72% {
-    fill: #ff3b30;
-  }
-
-  73%,
-  100% {
-    fill: #44d775;
-  }
-}
-
-@keyframes miniKeyZTexts {
-
-  0%,
-  60% {
-    fill: #ffffff;
-  }
-
-  61%,
-  64% {
-    fill: #44d775;
-  }
-
-  65%,
-  100% {
-    fill: #ffffff;
+  90%, 100% {
+    background: rgba(68, 215, 117, 0.22);
+    border-color: var(--green);
+    color: #eafff0;
+    box-shadow: 0 0 12px var(--green-glow);
   }
 }
 
@@ -1636,10 +1346,6 @@ body::before {
   text-shadow: 0 0 8px var(--red-glow);
 }
 
-.defense-core-visual.critical {
-  /* Disabled CPU shaking to keep positioning perfectly still */
-}
-
 .attack-streams {
   position: absolute;
   inset: 0;
@@ -1670,13 +1376,15 @@ body::before {
 .sector-panel {
   position: relative;
   z-index: 6;
-  width: 98%;
-  max-width: 920px;
-  padding: clamp(10px, 1.4vh, 14px);
+  width: 100%;
+  height: 100%;
+  padding: clamp(10px, 1.5vh, 18px);
   border-radius: 8px;
-  background: rgba(10, 15, 12, 0.95);
+  background: rgba(10, 15, 12, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
 }
 
 .sector-panel-header {
@@ -1699,12 +1407,14 @@ body::before {
 
 /* ── LIVE SECTOR GRID ── */
 .sector-grid {
-  --cols: 6;
+  --cols: 8;
+  --rows: 6;
   width: 100%;
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(var(--cols), 1fr);
-  grid-auto-rows: clamp(52px, 8.4vh, 68px);
-  gap: clamp(8px, 1.2vw, 12px);
+  grid-template-rows: repeat(var(--rows), 1fr);
+  gap: clamp(6px, 1vh, 10px);
 }
 
 /* Each sector — a live cell in the supercomputer matrix */
@@ -1882,6 +1592,24 @@ body::before {
 
 .sector-cell.repaired .cell-letter {
   color: #eafff0;
+}
+
+.sector-cell.victory-green {
+  border-color: #fff !important;
+  background: var(--green) !important;
+  box-shadow: 0 0 16px var(--green-glow);
+  transform: scale(1.04);
+  z-index: 5;
+  transition: all 0.35s ease;
+}
+
+.sector-cell.victory-green .cell-letter {
+  color: #000 !important;
+  text-shadow: none !important;
+}
+
+.sector-cell.victory-green .cell-led {
+  background: #fff !important;
 }
 
 .sector-cell.crashed {
