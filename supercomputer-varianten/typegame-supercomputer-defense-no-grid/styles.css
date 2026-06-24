@@ -2597,7 +2597,7 @@ body::before {
 
 /* Animation removed to keep the circuit lines static and clean */
 
-/* PCB Alarm details: traces flash red under attack */
+/* PCB Alarm details: traces flash red under attack (disabled for no-grid so only active tracks turn red)
 .defense-core-visual.under-attack~.pcb-circuits .circuit-trace-base,
 .keyboard-board-outer.under-attack .pcb-circuits .circuit-trace-base {
   stroke: rgba(255, 59, 48, 0.03);
@@ -2632,6 +2632,7 @@ body::before {
   stroke: rgba(255, 59, 48, 0.02);
   filter: none;
 }
+*/
 
 /* Blinking terminal console cursor */
 .terminal-cursor {
