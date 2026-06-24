@@ -1,0 +1,1258 @@
+<!doctype html>
+<html lang="nl-BE">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeMission — Supercomputer Defense (16:9 Fullscreen Game)</title>
+  <meta name="description"
+    content="Verdedig de supercomputer tegen de hack-aanval door de roodgekleurde sectoren in het lettergrid snel te repareren via typen!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=15">
+</head>
+
+<body>
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Centered 16:9 Green Security Console Game Container -->
+  <div class="game-container" id="gameContainer">
+
+    <!-- Top Header Panel -->
+    <header class="game-header">
+      <div class="game-branding">
+        <div class="branding-text">
+          <span class="brand-system">SYSTEM: CPU_FIREWALL_V4.8</span>
+          <h1 class="brand-title">TYPEMISSION // SUPERCOMPUTER DEFENSE</h1>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="header-controls">
+        <div class="custom-dropdown" id="modeDropdown">
+          <div class="dropdown-header" id="modeDropdownHeader">
+            <span id="currentModeDisplay">STANDAARD MODE</span>
+            <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <ul class="dropdown-list">
+            <li class="selected" data-val="standard">STANDAARD MODE</li>
+            <li data-val="limit-test">LIMIT TEST MODE</li>
+          </ul>
+        </div>
+
+        <button class="ghost-button" id="resetButton" type="button" style="display: none;">
+          <span aria-hidden="true">&#8635;</span>
+          Opnieuw
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Stage Window -->
+    <div class="mission-stage" id="missionStage">
+      <span class="stage-glow" aria-hidden="true"></span>
+      <div class="morph-flash" id="morphFlash" aria-hidden="true"></div>
+
+      <!-- ── VIEW 1: BRIEFING VIEW ── -->
+      <section class="mission-view mission-briefing-card active" id="storyStage" aria-labelledby="storyTitle">
+        <div class="briefing-top-banner"></div>
+
+        <div class="briefing-panel">
+          <!-- Panel Header -->
+          <div class="briefing-panel-header">
+            <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+            <div class="briefing-pagination" id="briefingPagination" aria-label="Briefing voortgang">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <div class="briefing-slides-container">
+            <!-- Slide 1: Introduction -->
+            <div class="briefing-slide active" data-slide="0">
+              <h2 class="briefing-slide-title" id="storyTitle">Bescherm de CPU tegen de inkomende cyberaanvallen</h2>
+              <div class="briefing-slide-graphic">
+                <div class="briefing-cpu-container" aria-hidden="true">
+                  <div class="briefing-cpu-socket">
+                    <div class="briefing-cpu-chip">
+                      <div class="briefing-cpu-ihs">
+                        <div class="briefing-cpu-core">CPU</div>
+                      </div>
+                      <div class="briefing-cpu-led"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2: Home Position -->
+            <div class="briefing-slide" data-slide="1">
+              <h2 class="briefing-slide-title">Plaats je handen in de basispositie (Home Position)</h2>
+              <div class="briefing-slide-graphic">
+                <svg viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="keyboard-svg"
+                  style="max-width: 440px; width: 100%; height: auto;" aria-label="Toetsenbord vingerplaatsing diagram">
+                  <defs>
+                    <linearGradient id="handGradientLeft" x1="0" y1="0.3" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(240, 240, 240, 0.22)" />
+                      <stop offset="50%" stop-color="rgba(240, 240, 240, 0.12)" />
+                      <stop offset="100%" stop-color="rgba(240, 240, 240, 0.0)" />
+                    </linearGradient>
+                    <linearGradient id="handGradientRight" x1="0" y1="0.3" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(240, 240, 240, 0.22)" />
+                      <stop offset="50%" stop-color="rgba(240, 240, 240, 0.12)" />
+                      <stop offset="100%" stop-color="rgba(240, 240, 240, 0.0)" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Keyboard base -->
+                  <rect x="10" y="10" width="560" height="200" rx="8" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"
+                    fill="rgba(6, 22, 10, 0.6)" />
+
+                  <!-- Row 1 -->
+                  <!-- ~ -->
+                  <rect x="20" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="36" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">`</text>
+
+                  <!-- 1 -->
+                  <rect x="56" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="72" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">1</text>
+
+                  <!-- 2 -->
+                  <rect x="92" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="108" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">2</text>
+
+                  <!-- 3 -->
+                  <rect x="128" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="144" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">3</text>
+
+                  <!-- 4 -->
+                  <rect x="164" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="180" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">4</text>
+
+                  <!-- 5 -->
+                  <rect x="200" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="216" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">5</text>
+
+                  <!-- 6 -->
+                  <rect x="236" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="252" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">6</text>
+
+                  <!-- 7 -->
+                  <rect x="272" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="288" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">7</text>
+
+                  <!-- 8 -->
+                  <rect x="308" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="324" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">8</text>
+
+                  <!-- 9 -->
+                  <rect x="344" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="360" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">9</text>
+
+                  <!-- 0 -->
+                  <rect x="380" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="396" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">0</text>
+
+                  <!-- - -->
+                  <rect x="416" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="432" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">-</text>
+
+                  <!-- = -->
+                  <rect x="452" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="468" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">=</text>
+
+                  <!-- backspace -->
+                  <rect x="488" y="20" width="72" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="524" y="39" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">backspace</text>
+
+                  <!-- Row 2 -->
+                  <!-- tab -->
+                  <rect x="20" y="56" width="48" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="44" y="75" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">tab</text>
+
+                  <!-- Q -->
+                  <rect x="72" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="88" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">Q</text>
+
+                  <!-- W -->
+                  <rect x="108" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="124" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">W</text>
+
+                  <!-- E -->
+                  <rect x="144" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="160" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">E</text>
+
+                  <!-- R -->
+                  <rect x="180" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="196" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">R</text>
+
+                  <!-- T -->
+                  <rect x="216" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="232" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">T</text>
+
+                  <!-- Y -->
+                  <rect x="252" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="268" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">Y</text>
+
+                  <!-- U -->
+                  <rect x="288" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="304" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">U</text>
+
+                  <!-- I -->
+                  <rect x="324" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="340" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">I</text>
+
+                  <!-- O -->
+                  <rect x="360" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="376" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">O</text>
+
+                  <!-- P -->
+                  <rect x="396" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="412" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">P</text>
+
+                  <!-- [ -->
+                  <rect x="432" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="448" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">[</text>
+
+                  <!-- ] -->
+                  <rect x="468" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="484" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">]</text>
+
+                  <!-- \ -->
+                  <rect x="504" y="56" width="56" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="532" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">\</text>
+
+                  <!-- Row 3 -->
+                  <!-- caps lock -->
+                  <rect x="20" y="92" width="58" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="49" y="111" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">caps lock</text>
+
+                  <!-- A -->
+                  <rect x="82" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="98" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">A</text>
+
+                  <!-- S -->
+                  <rect x="118" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="134" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">S</text>
+
+                  <!-- D -->
+                  <rect x="154" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="170" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">D</text>
+
+                  <!-- F (Home Key - Highlighted Green) -->
+                  <rect x="190" y="92" width="32" height="32" rx="4" stroke="var(--green)" stroke-width="1.5"
+                    fill="rgba(68, 215, 117, 0.12)" />
+                  <text x="206" y="113" fill="var(--green)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="700" text-anchor="middle">F</text>
+
+                  <!-- G -->
+                  <rect x="226" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="242" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">G</text>
+
+                  <!-- H -->
+                  <rect x="262" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="278" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">H</text>
+
+                  <!-- J (Home Key - Highlighted Green) -->
+                  <rect x="298" y="92" width="32" height="32" rx="4" stroke="var(--green)" stroke-width="1.5"
+                    fill="rgba(68, 215, 117, 0.12)" />
+                  <text x="314" y="113" fill="var(--green)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="700" text-anchor="middle">J</text>
+
+                  <!-- K -->
+                  <rect x="334" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="350" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">K</text>
+
+                  <!-- L -->
+                  <rect x="370" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="386" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">L</text>
+
+                  <!-- ; -->
+                  <rect x="406" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="422" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">;</text>
+
+                  <!-- ' -->
+                  <rect x="442" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="458" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">'</text>
+
+                  <!-- enter -->
+                  <rect x="478" y="92" width="82" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="519" y="111" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">enter</text>
+
+                  <!-- Row 4 -->
+                  <!-- left shift -->
+                  <rect x="20" y="128" width="72" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="56" y="147" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">shift</text>
+
+                  <!-- Z -->
+                  <rect x="96" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="112" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">Z</text>
+
+                  <!-- X -->
+                  <rect x="132" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="148" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">X</text>
+
+                  <!-- C -->
+                  <rect x="168" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="184" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">C</text>
+
+                  <!-- V -->
+                  <rect x="204" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="220" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">V</text>
+
+                  <!-- B -->
+                  <rect x="240" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="256" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">B</text>
+
+                  <!-- N -->
+                  <rect x="276" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="292" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">N</text>
+
+                  <!-- M -->
+                  <rect x="312" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="328" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">M</text>
+
+                  <!-- , -->
+                  <rect x="348" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="364" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">,</text>
+
+                  <!-- . -->
+                  <rect x="384" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="400" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">.</text>
+
+                  <!-- / -->
+                  <rect x="420" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="436" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10"
+                    font-weight="500" text-anchor="middle">/</text>
+
+                  <!-- right shift -->
+                  <rect x="456" y="128" width="104" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="508" y="147" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">shift</text>
+
+                  <!-- Row 5 -->
+                  <!-- left ctrl -->
+                  <rect x="20" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="42" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">ctrl</text>
+
+                  <!-- left win -->
+                  <rect x="68" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="90" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">win</text>
+
+                  <!-- left alt -->
+                  <rect x="116" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="138" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">alt</text>
+
+                  <!-- spacebar -->
+                  <rect x="164" y="164" width="232" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+
+                  <!-- right alt -->
+                  <rect x="400" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="422" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">alt</text>
+
+                  <!-- blank key / fn -->
+                  <rect x="448" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+
+                  <!-- right ctrl -->
+                  <rect x="496" y="164" width="64" height="32" rx="4" stroke="rgba(255,255,255,0.08)"
+                    fill="rgba(255,255,255,0.03)" />
+                  <text x="528" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8"
+                    font-weight="500" text-anchor="middle">ctrl</text>
+
+                  <!-- Left Hand silhouette overlay -->
+                  <path
+                    d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z"
+                    transform="translate(15, 80) scale(1.1, 1.1)" fill="url(#handGradientLeft)" />
+
+                  <!-- Right Hand silhouette overlay -->
+                  <path
+                    d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z"
+                    transform="translate(505, 80) scale(-1.1, 1.1)" fill="url(#handGradientRight)" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Slide 3: Telemetry & Rules -->
+            <div class="briefing-slide" data-slide="2">
+              <h2 class="briefing-slide-title">Voorkom CPU-compromis en systeemcrashes</h2>
+              <div class="briefing-slide-graphic">
+                <div class="briefing-gameplay-demo-centered">
+                  <svg class="briefing-gameplay-svg" viewBox="0 0 320 125" aria-hidden="true">
+                    <defs>
+                      <radialGradient id="cpuChipGradient" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#0f2713" />
+                        <stop offset="100%" stop-color="#050e06" />
+                      </radialGradient>
+                      <linearGradient id="cpuIhsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#18221b" />
+                        <stop offset="100%" stop-color="#0d120e" />
+                      </linearGradient>
+                    </defs>
+                    <!-- Background Motherboard Grid -->
+                    <rect x="0" y="0" width="320" height="125" rx="6" fill="#060f0a" stroke="rgba(255,255,255,0.08)"
+                      stroke-width="1.25" />
+
+                    <!-- PCB Decorative Circuit Traces (Left & Right Busses) -->
+                    <path d="M 20,33 H 136" stroke="rgba(68, 215, 117, 0.15)" stroke-width="0.75" fill="none" />
+                    <path d="M 20,45 H 136" stroke="#ff3b30" stroke-width="1.25" stroke-opacity="0.85" fill="none" />
+                    <path d="M 20,57 H 136" stroke="rgba(68, 215, 117, 0.15)" stroke-width="0.75" fill="none" />
+
+                    <path d="M 300,33 H 184" stroke="rgba(68, 215, 117, 0.15)" stroke-width="0.75" fill="none" />
+                    <path d="M 300,45 H 184" stroke="#ff3b30" stroke-width="1.25" stroke-opacity="0.85" fill="none" />
+                    <path d="M 300,57 H 184" stroke="rgba(68, 215, 117, 0.15)" stroke-width="0.75" fill="none" />
+
+                    <!-- Central CPU Socket & Chip (Matching Slide 1 Styling) -->
+                    <!-- Dotted/dashed socket frame container -->
+                    <rect x="136" y="21" width="48" height="48" rx="4" fill="rgba(6, 22, 10, 0.45)"
+                      stroke="rgba(68, 215, 117, 0.35)" stroke-width="0.75" stroke-dasharray="2 2" />
+                    <!-- Green silicon chip substrate with gold edge -->
+                    <rect x="141" y="26" width="38" height="38" rx="2.5" fill="url(#cpuChipGradient)"
+                      stroke="var(--orange)" stroke-width="0.75" />
+                    <!-- Metallic Integrated Heat Spreader (IHS) -->
+                    <rect x="148" y="33" width="24" height="24" rx="1.5" fill="url(#cpuIhsGradient)" stroke="#2d3b31"
+                      stroke-width="0.75" />
+                    <!-- Glowing CPU label text -->
+                    <text x="160" y="47.5" fill="var(--blue)" font-family="Orbitron" font-weight="900" font-size="5.5"
+                      text-anchor="middle" style="text-shadow: 0 0 4px rgba(116, 216, 255, 0.6);">CPU</text>
+                    <!-- Status LED -->
+                    <circle cx="160" cy="59" r="1.2" fill="var(--green)"
+                      style="filter: drop-shadow(0 0 2px var(--green-glow));" />
+
+                    <!-- Sector Grid Panel Area (Bottom half) -->
+                    <rect x="15" y="80" width="290" height="42" rx="3" fill="#060f0a" stroke="rgba(255,255,255,0.08)"
+                      stroke-width="0.75" />
+
+                    <!-- Keycap grid cells -->
+                    <!-- Key 1 (Hacked, C) -->
+                    <rect x="25" y="89" width="40" height="24" rx="2" class="briefing-anim-key-c" stroke="#ff3b30"
+                      stroke-width="1" />
+                    <circle cx="29.5" cy="93.5" r="1" class="briefing-anim-key-c-led" />
+                    <text x="45" y="106" font-family="Roboto Mono" font-size="10" font-weight="700" text-anchor="middle"
+                      class="briefing-anim-key-c-text">C</text>
+
+                    <!-- Key 2 (Healthy, D) -->
+                    <rect x="71" y="89" width="40" height="24" rx="2" fill="rgba(8, 14, 20, 0.92)"
+                      stroke="rgba(116, 216, 255, 0.22)" stroke-width="1" />
+                    <circle cx="75.5" cy="93.5" r="1" fill="#44d775" />
+                    <text x="91" y="106" fill="rgba(205, 235, 255, 0.85)" font-family="Roboto Mono" font-size="10"
+                      font-weight="700" text-anchor="middle">D</text>
+
+                    <!-- Key 3 (Healthy, V) -->
+                    <rect x="117" y="89" width="40" height="24" rx="2" fill="rgba(8, 14, 20, 0.92)"
+                      stroke="rgba(116, 216, 255, 0.22)" stroke-width="1" />
+                    <circle cx="121.5" cy="93.5" r="1" fill="#44d775" />
+                    <text x="137" y="106" fill="rgba(205, 235, 255, 0.85)" font-family="Roboto Mono" font-size="10"
+                      font-weight="700" text-anchor="middle">V</text>
+
+                    <!-- Key 4 (Healthy, M) -->
+                    <rect x="163" y="89" width="40" height="24" rx="2" fill="rgba(8, 14, 20, 0.92)"
+                      stroke="rgba(116, 216, 255, 0.22)" stroke-width="1" />
+                    <circle cx="167.5" cy="93.5" r="1" fill="#44d775" />
+                    <text x="183" y="106" fill="rgba(205, 235, 255, 0.85)" font-family="Roboto Mono" font-size="10"
+                      font-weight="700" text-anchor="middle">M</text>
+
+                    <!-- Key 5 (Healthy, V) -->
+                    <rect x="209" y="89" width="40" height="24" rx="2" fill="rgba(8, 14, 20, 0.92)"
+                      stroke="rgba(116, 216, 255, 0.22)" stroke-width="1" />
+                    <circle cx="213.5" cy="93.5" r="1" fill="#44d775" />
+                    <text x="229" y="106" fill="rgba(205, 235, 255, 0.85)" font-family="Roboto Mono" font-size="10"
+                      font-weight="700" text-anchor="middle">V</text>
+
+                    <!-- Key 6 (Hacked, Z) -->
+                    <rect x="255" y="89" width="40" height="24" rx="2" class="briefing-anim-key-z" stroke="#ff3b30"
+                      stroke-width="1" />
+                    <circle cx="259.5" cy="93.5" r="1" class="briefing-anim-key-z-led" />
+                    <text x="275" y="106" font-family="Roboto Mono" font-size="10" font-weight="700"
+                      text-anchor="middle" class="briefing-anim-key-z-text">Z</text>
+
+                    <!-- Animated Gameplay events (Left Virus, Defensive Packet, and Collision Explosion) -->
+                    <!-- Left Virus -->
+                    <g class="briefing-anim-virus">
+                      <line x1="-4" y1="0" x2="4" y2="0" stroke="#ff3b30" stroke-width="0.75" />
+                      <line x1="0" y1="-4" x2="0" y2="4" stroke="#ff3b30" stroke-width="0.75" />
+                      <circle cx="0" cy="0" r="3" fill="#ff3b30" />
+                      <circle cx="0" cy="0" r="1.5" fill="#a61c14" />
+                    </g>
+
+                    <!-- Defense Packet (Fires when key C is typed) -->
+                    <g class="briefing-anim-packet">
+                      <circle cx="0" cy="0" r="2.5" fill="#44d775" />
+                      <circle cx="0" cy="0" r="1.2" fill="#ffffff" />
+                    </g>
+
+                    <!-- Collision Explosion Ring -->
+                    <circle cx="80" cy="45" r="0" fill="none" stroke="#44d775" stroke-width="1"
+                      class="briefing-anim-explosion" />
+
+                    <!-- Right Virus -->
+                    <g class="briefing-anim-virus-right">
+                      <line x1="-4" y1="0" x2="4" y2="0" stroke="#ff3b30" stroke-width="0.75" />
+                      <line x1="0" y1="-4" x2="0" y2="4" stroke="#ff3b30" stroke-width="0.75" />
+                      <circle cx="0" cy="0" r="3" fill="#ff3b30" />
+                      <circle cx="0" cy="0" r="1.5" fill="#a61c14" />
+                    </g>
+
+                    <!-- Right Defense Packet (Fires when key Z is typed) -->
+                    <g class="briefing-anim-packet-right">
+                      <circle cx="0" cy="0" r="2.5" fill="#44d775" />
+                      <circle cx="0" cy="0" r="1.2" fill="#ffffff" />
+                    </g>
+
+                    <!-- Right Collision Explosion Ring -->
+                    <circle cx="240" cy="45" r="0" fill="none" stroke="#44d775" stroke-width="1"
+                      class="briefing-anim-explosion-right" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer: Spacebar Prompt -->
+          <div class="briefing-footer">
+            <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+            <button class="spacebar-btn-visual" id="spacebarAdvanceBtn" type="button" aria-label="Volgende dia">
+              <span class="spacebar-icon-line" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── VIEW 2: GAME ARENA VIEW ── -->
+      <div class="mission-view arena-game" id="missionLayout" hidden>
+        <div class="arena-layout">
+
+          <!-- Telemetry / Live Stats Header -->
+          <div class="arena-top-hud">
+            <div class="hud-telemetry">
+              <div class="hud-telemetry-item">
+                <div class="tel-val-container">
+                  <span class="tel-val" id="timer">0.0</span><span class="tel-unit">s</span>
+                </div>
+                <span class="tel-label">TIJD</span>
+              </div>
+              <div class="hud-telemetry-item">
+                <span class="tel-val" id="liveCpm">0</span>
+                <span class="tel-label">REPAIRS (CPM)</span>
+              </div>
+              <div class="hud-telemetry-item">
+                <span class="tel-val" id="accuracy">100%</span>
+                <span class="tel-label">ACCURACY</span>
+              </div>
+              <div class="hud-telemetry-item mistake-hud">
+                <span class="tel-val mistake-value" id="mistakeCount">0/3</span>
+                <span class="tel-label">FOUTEN</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hack Progress compromised status -->
+          <div class="hack-progress-container">
+            <div class="hack-progress-meta">
+              <span class="progress-title">SYSTEM COMPROMISE STATUS</span>
+              <span class="progress-pct" id="compromisePct">0%</span>
+            </div>
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" id="compromiseFill"></div>
+            </div>
+          </div>
+
+          <!-- Supercomputer defense board -->
+          <div class="keyboard-board-outer" id="defenseBoard">
+            <svg class="pcb-circuits" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <pattern id="pcbGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(116, 216, 255, 0.012)" stroke-width="0.75" />
+                </pattern>
+              </defs>
+              <!-- Motherboard SMD Resistor Networks (fancy layout element) -->
+              <g class="pcb-resistor-networks" opacity="0.4">
+                <!-- Left Side Resistor Packs -->
+                <g>
+                  <!-- Resistor 1 (Y: 60) -->
+                  <rect x="123" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="58" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 2 (Y: 74) -->
+                  <rect x="123" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="72" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 3 (Y: 88) -->
+                  <rect x="123" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="86" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 4 (Y: 272) -->
+                  <rect x="123" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="270" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 5 (Y: 286) -->
+                  <rect x="123" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="284" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 6 (Y: 300) -->
+                  <rect x="123" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="125.5" y="298" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="134.5" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                </g>
+
+                <!-- Right Side Resistor Packs -->
+                <g>
+                  <!-- Resistor 1 (Y: 60) -->
+                  <rect x="663" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="58" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="58" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 2 (Y: 74) -->
+                  <rect x="663" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="72" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="72" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 3 (Y: 88) -->
+                  <rect x="663" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="86" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="86" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 4 (Y: 272) -->
+                  <rect x="663" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="270" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="270" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 5 (Y: 286) -->
+                  <rect x="663" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="284" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="284" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <!-- Resistor 6 (Y: 300) -->
+                  <rect x="663" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                  <rect x="665.5" y="298" width="9" height="4" rx="0.5" class="pcb-resistor-body" />
+                  <rect x="674.5" y="298" width="2.5" height="4" class="pcb-resistor-contact" />
+                </g>
+              </g>
+
+              <!-- Focused PCB network: peripheral points route into the CPU socket -->
+              <g class="pcb-reference-layer">
+                <!-- Left input bank -->
+                <g class="pcb-cpu-bus">
+                  <path d="M 40,80 H 150 L 234,164 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,92 H 150 L 234,176 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,104 H 150 L 234,188 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,240 H 176 L 208,208 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,252 H 176 L 208,220 H 330" class="pcb-reference-trace left-ref-trace" />
+                  <path d="M 40,264 H 176 L 208,232 H 330" class="pcb-reference-trace left-ref-trace" />
+                </g>
+
+                <!-- Right input bank (Mirrored from Left) -->
+                <g class="pcb-cpu-bus">
+                  <path d="M 760,80 H 650 L 566,164 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,92 H 650 L 566,176 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,104 H 650 L 566,188 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,240 H 624 L 592,208 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,252 H 624 L 592,220 H 470" class="pcb-reference-trace right-ref-trace" />
+                  <path d="M 760,264 H 624 L 592,232 H 470" class="pcb-reference-trace right-ref-trace" />
+                </g>
+
+                <!-- Top power and clock buses (Clean, parallel lines running edge-to-edge) -->
+                <g class="pcb-cpu-bus pcb-cpu-bus-top">
+                  <path d="M 40,20 H 760" class="pcb-reference-trace" />
+                  <path d="M 40,32 H 760" class="pcb-reference-trace" />
+                  <path d="M 40,44 H 760" class="pcb-reference-trace thick" />
+                  <path d="M 40,56 H 760" class="pcb-reference-trace" />
+                  <path d="M 40,68 H 760" class="pcb-reference-trace" />
+                </g>
+
+
+
+
+
+                <!-- CPU socket connection points -->
+                <g class="pcb-cpu-points">
+                  <circle cx="366" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="382" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="400" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="418" cy="164" r="4" class="pcb-reference-pad" />
+                  <circle cx="434" cy="164" r="4" class="pcb-reference-pad" />
+                </g>
+              </g>
+
+              <!-- Decorative Motherboard RAM Slots -->
+              <g class="pcb-ram-slots">
+                <!-- Slot Left 1 -->
+                <g class="ram-slot-group" transform="translate(245, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+                <!-- Slot Left 2 -->
+                <g class="ram-slot-group" transform="translate(257, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+                <!-- Slot Right 1 -->
+                <g class="ram-slot-group" transform="translate(537, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+                <!-- Slot Right 2 -->
+                <g class="ram-slot-group" transform="translate(549, 20)">
+                  <rect x="-4" y="0" width="8" height="150" rx="1.5" class="ram-slot-body" />
+                  <line x1="0" y1="5" x2="0" y2="145" class="ram-slot-contacts" />
+                  <rect x="-3" y="0" width="6" height="5" class="ram-slot-latch" />
+                  <rect x="-3" y="145" width="6" height="5" class="ram-slot-latch" />
+                </g>
+              </g>
+
+              <!-- Motherboard Microchips -->
+              <!-- Chip Left (U1) -->
+              <g class="pcb-chip" transform="translate(70, 80)">
+                <rect x="-12" y="-18" width="24" height="36" rx="2" class="chip-body" />
+                <circle cx="-8" cy="-13" r="1.2" class="chip-dot" />
+                <text x="0" y="3" class="chip-text">BIOS_1</text>
+                <!-- Left Pins -->
+                <line x1="-17" y1="-12" x2="-12" y2="-12" class="chip-pin" />
+                <line x1="-17" y1="-4" x2="-12" y2="-4" class="chip-pin" />
+                <line x1="-17" y1="4" x2="-12" y2="4" class="chip-pin" />
+                <line x1="-17" y1="12" x2="-12" y2="12" class="chip-pin" />
+                <!-- Right Pins -->
+                <line x1="12" y1="-12" x2="17" y2="-12" class="chip-pin" />
+                <line x1="12" y1="-4" x2="17" y2="-4" class="chip-pin" />
+                <line x1="12" y1="4" x2="17" y2="4" class="chip-pin" />
+                <line x1="12" y1="12" x2="17" y2="12" class="chip-pin" />
+                <!-- Solder pads -->
+                <circle cx="-18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="-18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="18" cy="4" r="1" class="chip-solder" />
+                <circle cx="18" cy="12" r="1" class="chip-solder" />
+              </g>
+
+              <!-- Chip Right (U2) -->
+              <g class="pcb-chip" transform="translate(730, 80)">
+                <rect x="-12" y="-18" width="24" height="36" rx="2" class="chip-body" />
+                <circle cx="-8" cy="-13" r="1.2" class="chip-dot" />
+                <text x="0" y="3" class="chip-text">BIOS_2</text>
+                <!-- Left Pins -->
+                <line x1="-17" y1="-12" x2="-12" y2="-12" class="chip-pin" />
+                <line x1="-17" y1="-4" x2="-12" y2="-4" class="chip-pin" />
+                <line x1="-17" y1="4" x2="-12" y2="4" class="chip-pin" />
+                <line x1="-17" y1="12" x2="-12" y2="12" class="chip-pin" />
+                <!-- Right Pins -->
+                <line x1="12" y1="-12" x2="17" y2="-12" class="chip-pin" />
+                <line x1="12" y1="-4" x2="17" y2="-4" class="chip-pin" />
+                <line x1="12" y1="4" x2="17" y2="4" class="chip-pin" />
+                <line x1="12" y1="12" x2="17" y2="12" class="chip-pin" />
+                <!-- Solder pads -->
+                <circle cx="-18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="-18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="4" r="1" class="chip-solder" />
+                <circle cx="-18" cy="12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-12" r="1" class="chip-solder" />
+                <circle cx="18" cy="-4" r="1" class="chip-solder" />
+                <circle cx="18" cy="4" r="1" class="chip-solder" />
+                <circle cx="18" cy="12" r="1" class="chip-solder" />
+              </g>
+
+              <!-- Chip Bottom (U3) -->
+              <g class="pcb-chip" transform="translate(400, 310)">
+                <rect x="-18" y="-12" width="36" height="24" rx="2" class="chip-body" />
+                <circle cx="-14" cy="-7" r="1.2" class="chip-dot" />
+                <text x="0" y="3" class="chip-text">BRIDGE</text>
+                <!-- Top Pins -->
+                <line x1="-12" y1="-17" x2="-12" y2="-12" class="chip-pin" />
+                <line x1="-4" y1="-17" x2="-4" y2="-12" class="chip-pin" />
+                <line x1="4" y1="-17" x2="4" y2="-12" class="chip-pin" />
+                <line x1="12" y1="-17" x2="12" y2="-12" class="chip-pin" />
+                <!-- Bottom Pins -->
+                <line x1="-12" y1="12" x2="-12" y2="17" class="chip-pin" />
+                <line x1="-4" y1="12" x2="-4" y2="17" class="chip-pin" />
+                <line x1="4" y1="12" x2="4" y2="17" class="chip-pin" />
+                <line x1="12" y1="12" x2="12" y2="17" class="chip-pin" />
+                <!-- Solder pads -->
+                <circle cx="-12" cy="-18" r="1" class="chip-solder" />
+                <circle cx="-4" cy="-18" r="1" class="chip-solder" />
+                <circle cx="4" cy="-18" r="1" class="chip-solder" />
+                <circle cx="12" cy="-18" r="1" class="chip-solder" />
+                <circle cx="-12" cy="18" r="1" class="chip-solder" />
+                <circle cx="-4" cy="18" r="1" class="chip-solder" />
+                <circle cx="4" cy="18" r="1" class="chip-solder" />
+                <circle cx="12" cy="18" r="1" class="chip-solder" />
+              </g>
+
+              <!-- Dot arrays (capacitors and solder pads) -->
+              <g class="pcb-dot-grid">
+                <circle cx="150" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="160" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="150" cy="190" r="1.5" class="pcb-dot" />
+                <circle cx="160" cy="190" r="1.5" class="pcb-dot" />
+
+                <circle cx="640" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="650" cy="180" r="1.5" class="pcb-dot" />
+                <circle cx="640" cy="190" r="1.5" class="pcb-dot" />
+                <circle cx="650" cy="190" r="1.5" class="pcb-dot" />
+
+                <circle cx="380" cy="35" r="1.5" class="pcb-dot" />
+                <circle cx="390" cy="35" r="1.5" class="pcb-dot" />
+                <circle cx="410" cy="35" r="1.5" class="pcb-dot" />
+                <circle cx="420" cy="35" r="1.5" class="pcb-dot" />
+              </g>
+
+              <!-- Decorative Motherboard Traces (Ignore for gameplay, pure aesthetics) -->
+              <path d="M 350,295 V 320 L 300,370 H 250" class="circuit-trace-decor" />
+              <path d="M 450,295 V 320 L 500,370 H 550" class="circuit-trace-decor" />
+              <path d="M 380,295 V 340 L 350,370 H 310" class="circuit-trace-decor" />
+              <path d="M 420,295 V 340 L 450,370 H 490" class="circuit-trace-decor" />
+
+              <!-- Parallel trace busses with terminal pads -->
+              <g class="pcb-trace-busses">
+                <!-- Left Mid-Lower Bus -->
+                <path d="M 50,220 L 100,220 L 130,250 L 190,250" class="circuit-trace-decor" />
+                <circle cx="190" cy="250" r="2" class="pcb-dot" />
+                <path d="M 50,230 L 96,230 L 126,260 L 190,260" class="circuit-trace-decor" />
+                <circle cx="190" cy="260" r="2" class="pcb-dot" />
+                <path d="M 50,240 L 92,240 L 122,270 L 190,270" class="circuit-trace-decor" />
+                <circle cx="190" cy="270" r="2" class="pcb-dot" />
+
+                <!-- Top Left Bus (Starts below top buses to avoid crossing) -->
+                <path d="M 80,75 L 80,85 L 100,105 L 100,120" class="circuit-trace-decor" />
+                <circle cx="100" cy="120" r="2" class="pcb-dot" />
+                <path d="M 90,75 L 90,81 L 110,101 L 110,120" class="circuit-trace-decor" />
+                <circle cx="110" cy="120" r="2" class="pcb-dot" />
+              </g>
+
+              <!-- Concentric test pads -->
+              <g class="pcb-concentric-pads">
+                <circle cx="200" cy="310" r="10" stroke="rgba(116, 216, 255, 0.15)" stroke-width="1" fill="none" />
+                <circle cx="200" cy="310" r="4" stroke="rgba(116, 216, 255, 0.2)" stroke-width="1.5" fill="none" />
+
+                <circle cx="600" cy="110" r="10" stroke="rgba(116, 216, 255, 0.15)" stroke-width="1" fill="none" />
+                <circle cx="600" cy="110" r="4" stroke="rgba(116, 216, 255, 0.2)" stroke-width="1.5" fill="none" />
+              </g>
+
+              <!-- Grid of square connector contacts -->
+              <g class="pcb-square-grids">
+                <!-- Left Side Grid -->
+                <g transform="translate(60, 270)">
+                  <rect x="0" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                </g>
+                <!-- Right Side Grid -->
+                <g transform="translate(720, 270)">
+                  <rect x="0" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="0" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="8" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="16" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="0" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                  <rect x="8" y="24" width="5" height="5" rx="0.5" fill="rgba(116, 216, 255, 0.25)" />
+                </g>
+              </g>
+
+              <!-- Extra small IC chips for high-density design -->
+              <g class="pcb-chip" transform="translate(180, 80)">
+                <rect x="-10" y="-10" width="20" height="20" rx="1.5" class="chip-body" />
+                <line x1="-14" y1="-5" x2="-10" y2="-5" class="chip-pin" />
+                <line x1="-14" y1="5" x2="-10" y2="5" class="chip-pin" />
+                <line x1="10" y1="-5" x2="14" y2="-5" class="chip-pin" />
+                <line x1="10" y1="5" x2="14" y2="5" class="chip-pin" />
+                <line x1="-5" y1="-14" x2="-5" y2="-10" class="chip-pin" />
+                <line x1="5" y1="-14" x2="5" y2="-10" class="chip-pin" />
+                <line x1="-5" y1="10" x2="-5" y2="14" class="chip-pin" />
+                <line x1="5" y1="10" x2="5" y2="14" class="chip-pin" />
+              </g>
+              <g class="pcb-chip" transform="translate(620, 300)">
+                <rect x="-10" y="-10" width="20" height="20" rx="1.5" class="chip-body" />
+                <line x1="-14" y1="-5" x2="-10" y2="-5" class="chip-pin" />
+                <line x1="-14" y1="5" x2="-10" y2="5" class="chip-pin" />
+                <line x1="10" y1="-5" x2="14" y2="-5" class="chip-pin" />
+                <line x1="10" y1="5" x2="14" y2="5" class="chip-pin" />
+                <line x1="-5" y1="-14" x2="-5" y2="-10" class="chip-pin" />
+                <line x1="5" y1="-14" x2="5" y2="-10" class="chip-pin" />
+                <line x1="-5" y1="10" x2="-5" y2="14" class="chip-pin" />
+                <line x1="5" y1="10" x2="5" y2="14" class="chip-pin" />
+              </g>
+
+              <!-- Additional Motherboard Decorative Traces (faint background) -->
+              <!-- Left Edge vertical bus -->
+              <path d="M 20,10 V 300 L 40,320 H 200" class="circuit-trace-decor" />
+              <path d="M 28,10 V 295 L 45,312 H 200" class="circuit-trace-decor" />
+              <path d="M 36,10 V 290 L 50,304 H 200" class="circuit-trace-decor" />
+
+              <!-- Right Edge vertical bus -->
+              <path d="M 780,10 V 300 L 760,320 H 600" class="circuit-trace-decor" />
+              <path d="M 772,10 V 295 L 755,312 H 600" class="circuit-trace-decor" />
+              <path d="M 764,10 V 290 L 750,304 H 600" class="circuit-trace-decor" />
+
+              <!-- Bottom horizontal tracks -->
+              <path d="M 80,340 H 720" class="circuit-trace-decor" />
+              <path d="M 100,352 H 700" class="circuit-trace-decor" />
+              <path d="M 120,364 H 680" class="circuit-trace-decor" />
+
+              <!-- Left RAM slot bottom connections -->
+              <path d="M 245,170 V 190 L 210,225 V 270" class="circuit-trace-decor" />
+              <path d="M 257,170 V 185 L 222,220 V 270" class="circuit-trace-decor" />
+
+              <!-- Right RAM slot bottom connections -->
+              <path d="M 549,170 V 190 L 584,225 V 270" class="circuit-trace-decor" />
+              <path d="M 537,170 V 185 L 572,220 V 270" class="circuit-trace-decor" />
+
+              <!-- Solder pads at key intersection junctions -->
+              <circle cx="160" cy="40" r="2.5" class="pcb-pad" />
+              <circle cx="640" cy="40" r="2.5" class="pcb-pad" />
+              <circle cx="120" cy="80" r="2.5" class="pcb-pad" />
+              <circle cx="680" cy="80" r="2.5" class="pcb-pad" />
+
+              <!-- Interactive gameplay overlay groups -->
+              <g id="dynamicTraces"></g>
+              <g id="svgProjectiles"></g>
+              <g id="svgViruses"></g>
+              <g id="svgExplosions"></g>
+            </svg>
+            <div class="keyboard-scanlines"></div>
+
+            <div class="defense-core-visual" id="defenseCore" aria-hidden="true">
+              <div class="attack-streams" id="attackStreams"></div>
+
+              <!-- Mistakes indicator above CPU (3 error budget) -->
+              <div class="cpu-shield-status">
+                <span class="shield-node active" id="shield0">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                  </svg>
+                </span>
+                <span class="shield-node active" id="shield1">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                  </svg>
+                </span>
+                <span class="shield-node active" id="shield2">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                  </svg>
+                </span>
+              </div>
+
+              <div class="core-ring ring-one"></div>
+              <div class="core-ring ring-two"></div>
+              <div class="core-ring ring-three"></div>
+              <div class="supercomputer-core">
+                <!-- Gold corners / packaging notches -->
+                <span class="cpu-notch tl" aria-hidden="true"></span>
+                <span class="cpu-notch tr" aria-hidden="true"></span>
+                <span class="cpu-notch bl" aria-hidden="true"></span>
+                <span class="cpu-notch br" aria-hidden="true"></span>
+
+                <!-- Tiny golden pins around substrate -->
+                <span class="cpu-gold-edge-left" aria-hidden="true"></span>
+                <span class="cpu-gold-edge-right" aria-hidden="true"></span>
+
+                <!-- Substrate surface capacitors -->
+                <span class="cpu-surface-components" aria-hidden="true">
+                  <span class="cap cap-1"></span>
+                  <span class="cap cap-2"></span>
+                  <span class="cap cap-3"></span>
+                  <span class="cap cap-4"></span>
+                </span>
+
+                <!-- Central heatspreader cover plate -->
+                <div class="cpu-ihs">
+                  <!-- Serial / branding text laser etched -->
+                  <div class="cpu-serial" aria-hidden="true">TMS-8086-DEFENSE</div>
+
+                  <span class="core-crystal"></span>
+                  <span class="core-label">CORE</span>
+                  <span class="core-readout" id="coreReadout">STABLE</span>
+
+                  <!-- Tiny status led -->
+                  <div class="cpu-status-led-container" aria-hidden="true">
+                    <span class="cpu-status-led" id="cpuLed"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sector-panel">
+              <div class="sector-panel-header">
+                <span>FIREWALL SECTORS</span>
+                <span id="waveReadout">WAVE 01</span>
+              </div>
+              <!-- Live sector matrix — cells injected by script.js -->
+              <div class="sector-grid" id="sectorGrid"></div>
+            </div>
+          </div>
+
+          <!-- Console status feedback bottom panel -->
+          <div class="console-deck">
+            <div class="console-header">
+              <span class="console-tag">FIREWALL CONTROL SYSTEM v4.8</span>
+              <span class="console-ping" id="consolePing">SECURE</span>
+            </div>
+            <div class="console-body">
+              <span class="console-prompt">&gt;</span>
+              <span class="console-log" id="statusLog">Systeem online. Wachten op inbreuk poging...</span>
+              <span class="terminal-cursor"></span>
+            </div>
+          </div>
+
+          <!-- Digital Overlay (Success/Fail popup before result screen) -->
+          <div class="code-overlay" id="typingOverlay" hidden>
+            <div class="overlay-content">
+              <!-- Security Guard icons -->
+              <svg id="lockIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <svg id="unlockIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon unlock-icon"
+                style="display: none;">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <svg id="failIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--red)"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="overlay-icon fail-icon"
+                style="display: none;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <p id="overlayMessage">DRUK OP DE SPATIEBALK OM DE FIREWALL TE STARTEN</p>
+
+              <div id="finishSpaceHint" class="finish-space-hint"
+                style="display: flex; flex-direction: column; align-items: center; gap: 8px;" hidden>
+                <p class="spacebar-instruction" style="margin-top: 10px;">Druk op de spatiebalk om de uitslag te
+                  bekijken</p>
+                <button class="spacebar-btn-visual" id="finishButton" type="button" aria-label="Bekijk uitslag">
+                  <span class="spacebar-icon-line" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Textarea input target -->
+          <textarea id="typingInput" spellcheck="false" autocomplete="off" autocapitalize="off" disabled></textarea>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── VIEW 3: RESULTS PANEL VIEW ── -->
+    <section class="mission-view result-panel" id="resultPanel" aria-live="polite" hidden>
+      <div class="result-container">
+
+        <header class="result-header">
+          <p class="result-eyebrow">SUPERCOMPUTER DEFENSE EVALUATION // SYSTEM REPORT</p>
+          <h2 id="resultTitle">SUPERCOMPUTER BEVEILIGD!</h2>
+          <div class="result-rank-bar">
+            <span>EVALUATIE RANG:</span>
+            <strong id="rankBadge" class="rank-badge-text">SecOps Commandeur</strong>
+          </div>
+        </header>
+
+        <!-- 6-Card Stats Dashboard Grid -->
+        <div class="result-dashboard-grid">
+
+          <!-- Card 1: Speed (CPM) -->
+          <div class="dashboard-card">
+            <span class="card-title">REPAIR SPEED (CPM)</span>
+            <div class="card-value-container">
+              <span class="card-main-value" id="completeCpm">0</span>
+            </div>
+            <div class="card-footer-reward" id="cpmCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 2: Survivability -->
+          <div class="dashboard-card">
+            <span class="card-title">SURVIVED TIME</span>
+            <div class="card-value-container">
+              <span class="card-main-value highlight-green" id="completeTime">0.0s</span>
+            </div>
+            <span class="card-footer-label" id="completeTimeLimitLabel">MAX: 60.0 SECONDEN</span>
+          </div>
+
+          <!-- Card 3: Accuracy -->
+          <div class="dashboard-card">
+            <span class="card-title">REPAIR ACCURACY</span>
+            <div class="card-value-container">
+              <span class="card-main-value highlight-green" id="completeAccuracy">100%</span>
+            </div>
+            <div class="card-footer-reward" id="precisionCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 4: Sectors Repaired -->
+          <div class="dashboard-card">
+            <span class="card-title">SECTORS RESTORED</span>
+            <div class="card-value-container">
+              <span class="streak-circle-value" id="completeSectors">0</span>
+            </div>
+            <div class="card-footer-reward" id="streakCoinsReward">
+              +0 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 5: Mission Status -->
+          <div class="dashboard-card">
+            <span class="card-title">MISSION STATUS</span>
+            <div class="card-value-container" id="missionStatusContainer">
+              <span class="status-success-badge" id="missionBadge">GESLAAGD</span>
+            </div>
+            <div class="card-footer-reward" id="completionCoinsReward">
+              +50 <img src="coin.svg" alt="" aria-hidden="true" width="14" height="14">
+            </div>
+          </div>
+
+          <!-- Card 6: Total Credits -->
+          <div class="dashboard-card highlight-glow">
+            <span class="card-title">TOTAL CREDITS</span>
+            <div class="card-value-container credits-container">
+              <img src="coin.svg" alt="" aria-hidden="true" class="coin-total-img">
+              <span class="card-main-value" id="completeCoins">0</span>
+            </div>
+            <span class="card-footer-label">SUPER SPY SCHOOL MUNTEN</span>
+          </div>
+
+        </div>
+
+        <!-- Bottom CTA Actions -->
+        <div class="results-actions">
+          <p class="spacebar-instruction">Druk op de spatiebalk om door te gaan</p>
+          <button class="spacebar-btn-visual" id="retryResultButton" type="button" aria-label="Doorgaan">
+            <span class="spacebar-icon-line" aria-hidden="true"></span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

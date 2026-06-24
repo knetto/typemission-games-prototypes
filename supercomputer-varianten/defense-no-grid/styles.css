@@ -1,0 +1,3140 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap");
+
+:root {
+  color-scheme: dark;
+  --purple: #091a0c;
+  --purple-dark: #020503;
+  --purple-soft: #15331c;
+  --blue: #74d8ff;
+  --panel-blue: #0b1c0e;
+  --sky: #9ad744;
+  --ice: #09140b;
+  --orange: #e48e35;
+  --orange-soft: #f5b05f;
+  --green: #44d775;
+  --green-glow: rgba(68, 215, 117, 0.45);
+  --green-dim: #258f4a;
+  --red: #ff3b30;
+  --red-glow: rgba(255, 59, 48, 0.45);
+  --red-dim: #a61c14;
+  --text: #ffffff;
+  --text-dark: #d5eedc;
+  --muted: #799a80;
+  --line: #1d3d25;
+  --shadow: rgba(0, 0, 0, 0.8);
+  --terminal-bg: #060f0a;
+  --kbd-key-bg: rgba(255, 255, 255, 0.035);
+  --kbd-key-border: rgba(255, 255, 255, 0.11);
+  --scale: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  color: var(--text);
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+  font-size: 16px;
+  background-color: var(--purple-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(68, 215, 117, 0.04) 0%, rgba(1, 5, 2, 0.9) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── MATRIX CANVAS BACKGROUND ── */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* ── 16:9 CONTAINER & FRAME ── */
+.game-container {
+  width: 80vw;
+  height: 45vw;
+  max-width: 142.22vh;
+  max-height: 80vh;
+  position: relative;
+  z-index: 10;
+  background: var(--purple-dark);
+  border: 3px solid var(--purple-soft);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    0 0 45px rgba(68, 215, 117, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  container-type: size;
+  container-name: gameContainer;
+}
+
+/* ── HEADER PANEL ── */
+.game-header {
+  height: clamp(54px, 7.5vh, 72px);
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--purple-soft);
+  background: rgba(4, 14, 6, 0.95);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.game-branding {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.branding-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-system {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.55rem, 1vh, 0.65rem);
+  font-weight: 700;
+  color: #9ad744 !important;
+  letter-spacing: 1.5px;
+}
+
+.brand-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.95rem, 1.8vh, 1.25rem);
+  font-weight: 900;
+  margin: 0;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff, var(--orange));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Interactive Buttons */
+.primary-button,
+.ghost-button {
+  min-height: clamp(34px, 4.5vh, 42px);
+  padding: 0 clamp(12px, 2vh, 20px);
+  border-radius: 6px;
+  font-family: "Orbitron", "Segoe UI", sans-serif;
+  font-size: clamp(0.68rem, 1.2vh, 0.78rem);
+  font-weight: 700;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.primary-button {
+  border: 2px solid var(--green);
+  background: var(--green);
+  color: #000;
+  box-shadow: 0 0 10px var(--green-glow);
+}
+
+.primary-button:hover {
+  border-color: var(--sky);
+  background: var(--sky);
+  box-shadow: 0 0 15px rgba(139, 253, 163, 0.6);
+}
+
+.ghost-button {
+  border: 2px solid var(--purple-soft);
+  background: transparent;
+  color: var(--text-dark);
+}
+
+.ghost-button:hover {
+  background: rgba(12, 45, 18, 0.2);
+  border-color: var(--green);
+  color: #fff;
+}
+
+/* Custom Dropdown */
+.custom-dropdown {
+  position: relative;
+  z-index: 200;
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 2px solid var(--purple-soft);
+  padding: 0 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text);
+  min-height: clamp(34px, 4.5vh, 42px);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.68rem, 1.2vh, 0.74rem);
+  font-weight: 700;
+  user-select: none;
+}
+
+.dropdown-header:hover {
+  border-color: var(--green);
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s;
+  width: 14px;
+  height: 14px;
+  stroke: var(--muted);
+}
+
+.custom-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+  stroke: var(--green);
+}
+
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 230px;
+  margin: 0;
+  background: rgba(4, 14, 6, 0.98);
+  border: 2px solid var(--purple-soft);
+  border-radius: 6px;
+  list-style: none;
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+  display: none;
+}
+
+.custom-dropdown.open .dropdown-list {
+  display: block;
+}
+
+.dropdown-list li {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-dark);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.dropdown-list li:hover {
+  background: var(--purple-soft);
+  color: #fff;
+}
+
+.dropdown-list li.selected {
+  background: var(--ice);
+  color: var(--green);
+  border-left: 2px solid var(--green);
+}
+
+.custom-dropdown.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── STAGE VIEW ── */
+.mission-stage {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.stage-glow {
+  position: absolute;
+  inset: auto 15% -30px;
+  z-index: 0;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(68, 215, 117, 0.05);
+  filter: blur(45px);
+  pointer-events: none;
+}
+
+.morph-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 18% 50%, rgba(68, 215, 117, 0.2), transparent 25%),
+    linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.3) 45%, transparent 72%);
+  transform: translateX(-105%) skewX(-14deg);
+}
+
+.mission-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 2;
+}
+
+.mission-view.active {
+  display: grid;
+}
+
+/* ── VIEW 1: BRIEFING VIEW ── */
+.mission-briefing-card {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 30px 20px;
+  background:
+    radial-gradient(circle at center, rgba(6, 22, 10, 0.95) 0%, rgba(2, 6, 3, 0.98) 100%),
+    radial-gradient(rgba(228, 142, 53, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+.mission-briefing-card.active {
+  display: flex;
+}
+
+.briefing-top-banner {
+  height: 38px;
+  background: #030e05;
+  border-bottom: 2px solid var(--orange);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.briefing-panel {
+  max-width: 580px;
+  width: 95%;
+  background: rgba(6, 22, 10, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 12px;
+  padding: clamp(16px, 3vh, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.6),
+    inset 0 0 15px rgba(68, 215, 117, 0.05);
+  z-index: 5;
+  margin-top: 15px;
+}
+
+.briefing-panel-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 10px;
+  margin-bottom: clamp(10px, 2vh, 18px);
+}
+
+.briefing-eyebrow {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--orange) !important;
+  letter-spacing: 1.5px;
+}
+
+.briefing-pagination {
+  display: flex;
+  gap: 8px;
+}
+
+.briefing-pagination .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--green);
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.briefing-pagination .dot.active {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
+}
+
+.briefing-slides-container {
+  width: 100%;
+  position: relative;
+  min-height: 245px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.briefing-slide {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.briefing-slide.active {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.briefing-slide-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.9rem, 2vh, 1.1rem);
+  color: #fff;
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.briefing-slide-desc {
+  font-family: "Roboto", sans-serif;
+  font-size: clamp(0.72rem, 1.5vh, 0.82rem);
+  color: var(--text-dark);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 500px;
+}
+
+.briefing-slide-graphic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  width: 100%;
+}
+
+/* Slide 1 - CSS Simplified CPU Graphic */
+.briefing-cpu-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  height: 180px;
+}
+
+.briefing-cpu-socket {
+  width: 130px;
+  height: 130px;
+  background: rgba(6, 22, 10, 0.45);
+  border: 2px dashed rgba(68, 215, 117, 0.35);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(68, 215, 117, 0.05);
+}
+
+.briefing-cpu-chip {
+  width: 102px;
+  height: 102px;
+  background: radial-gradient(circle at center, #0f2713 0%, #050e06 100%);
+  border: 1.5px solid var(--orange);
+  /* Gold edge mask */
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+}
+
+.briefing-cpu-ihs {
+  width: 74px;
+  height: 74px;
+  background: linear-gradient(135deg, #18221b 0%, #0d120e 100%);
+  border: 1.5px solid #2d3b31;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.05);
+}
+
+.briefing-cpu-core {
+  font-family: "Orbitron", sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--blue);
+  text-shadow: 0 0 8px rgba(116, 216, 255, 0.6);
+  letter-spacing: 1.5px;
+}
+
+.briefing-cpu-led {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+}
+
+
+
+/* Slide 3 - SVG Briefing Gameplay Graphic */
+.briefing-gameplay-demo-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.briefing-gameplay-svg {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.65));
+}
+
+.briefing-gameplay-svg text {
+  user-select: none;
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+.briefing-gameplay-svg .briefing-anim-virus {
+  animation: miniVirusLeftMove 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-packet {
+  animation: miniPacketLeftMove 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-explosion {
+  animation: miniExplosionLeft 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-key-c {
+  animation: miniKeyCBorders 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-key-c-led {
+  animation: miniKeyCLeds 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-key-c-text {
+  animation: miniKeyCTexts 4s linear infinite;
+}
+
+/* Right-side elements mapping */
+.briefing-gameplay-svg .briefing-anim-virus-right {
+  animation: miniVirusRightMove 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-packet-right {
+  animation: miniPacketRightMove 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-explosion-right {
+  animation: miniExplosionRight 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-key-z {
+  animation: miniKeyZBorders 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-key-z-led {
+  animation: miniKeyZLeds 4s linear infinite;
+}
+
+.briefing-gameplay-svg .briefing-anim-key-z-text {
+  animation: miniKeyZTexts 4s linear infinite;
+}
+
+@keyframes miniVirusLeftMove {
+  0% {
+    transform: translate(20px, 45px);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  42% {
+    opacity: 1;
+    transform: translate(80px, 45px);
+  }
+
+  43%,
+  100% {
+    opacity: 0;
+    transform: translate(80px, 45px);
+  }
+}
+
+@keyframes miniPacketLeftMove {
+
+  0%,
+  30% {
+    transform: translate(45px, 101px);
+    opacity: 0;
+  }
+
+  31% {
+    opacity: 1;
+  }
+
+  42% {
+    opacity: 1;
+    transform: translate(80px, 45px);
+  }
+
+  43%,
+  100% {
+    opacity: 0;
+    transform: translate(80px, 45px);
+  }
+}
+
+@keyframes miniExplosionLeft {
+
+  0%,
+  42% {
+    opacity: 0;
+    r: 0;
+  }
+
+  43% {
+    opacity: 1;
+    r: 1;
+  }
+
+  52% {
+    opacity: 0;
+    r: 12;
+  }
+
+  100% {
+    opacity: 0;
+    r: 12;
+  }
+}
+
+@keyframes miniKeyCBorders {
+
+  0%,
+  30% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+  }
+
+  31%,
+  34% {
+    fill: rgba(68, 215, 117, 0.3);
+    stroke: #44d775;
+    filter: drop-shadow(0 0 3px #44d775);
+  }
+
+  35%,
+  42% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+    filter: none;
+  }
+
+  43%,
+  80% {
+    fill: rgba(8, 14, 20, 0.92);
+    stroke: rgba(116, 216, 255, 0.22);
+    filter: none;
+  }
+
+  81%,
+  100% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+  }
+}
+
+@keyframes miniKeyCLeds {
+
+  0%,
+  42% {
+    fill: #ff3b30;
+  }
+
+  43%,
+  80% {
+    fill: #44d775;
+  }
+
+  81%,
+  100% {
+    fill: #ff3b30;
+  }
+}
+
+@keyframes miniKeyCTexts {
+
+  0%,
+  30% {
+    fill: #ffffff;
+  }
+
+  31%,
+  34% {
+    fill: #44d775;
+  }
+
+  35%,
+  100% {
+    fill: #ffffff;
+  }
+}
+
+@keyframes miniVirusRightMove {
+
+  0%,
+  30% {
+    transform: translate(300px, 45px);
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+    transform: translate(240px, 45px);
+  }
+
+  73%,
+  100% {
+    opacity: 0;
+    transform: translate(240px, 45px);
+  }
+}
+
+@keyframes miniPacketRightMove {
+
+  0%,
+  60% {
+    transform: translate(275px, 101px);
+    opacity: 0;
+  }
+
+  61% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+    transform: translate(240px, 45px);
+  }
+
+  73%,
+  100% {
+    opacity: 0;
+    transform: translate(240px, 45px);
+  }
+}
+
+@keyframes miniExplosionRight {
+
+  0%,
+  72% {
+    opacity: 0;
+    r: 0;
+  }
+
+  73% {
+    opacity: 1;
+    r: 1;
+  }
+
+  82% {
+    opacity: 0;
+    r: 12;
+  }
+
+  83%,
+  100% {
+    opacity: 0;
+    r: 12;
+  }
+}
+
+@keyframes miniKeyZBorders {
+
+  0%,
+  12% {
+    fill: rgba(8, 14, 20, 0.92);
+    stroke: rgba(116, 216, 255, 0.22);
+    filter: none;
+  }
+
+  13%,
+  60% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+    filter: none;
+  }
+
+  61%,
+  64% {
+    fill: rgba(68, 215, 117, 0.3);
+    stroke: #44d775;
+    filter: drop-shadow(0 0 3px #44d775);
+  }
+
+  65%,
+  72% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+    filter: none;
+  }
+
+  73%,
+  100% {
+    fill: rgba(8, 14, 20, 0.92);
+    stroke: rgba(116, 216, 255, 0.22);
+    filter: none;
+  }
+}
+
+@keyframes miniKeyZLeds {
+
+  0%,
+  12% {
+    fill: #44d775;
+  }
+
+  13%,
+  72% {
+    fill: #ff3b30;
+  }
+
+  73%,
+  100% {
+    fill: #44d775;
+  }
+}
+
+@keyframes miniKeyZTexts {
+
+  0%,
+  60% {
+    fill: #ffffff;
+  }
+
+  61%,
+  64% {
+    fill: #44d775;
+  }
+
+  65%,
+  100% {
+    fill: #ffffff;
+  }
+}
+
+/* Briefing Spacebar Advance */
+.briefing-footer {
+  width: 100%;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.spacebar-instruction {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.65rem, 1.3vh, 0.75rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-transform: uppercase;
+  animation: pulseInstruction 1.5s infinite ease-in-out;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+@keyframes pulseInstruction {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.spacebar-btn-visual {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(100px, 16vw, 150px);
+  height: clamp(28px, 5.5vh, 32px);
+  background: #08160c;
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 6px;
+  box-shadow: 0 3px 0 #12301a, 0 5px 12px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.08s ease;
+  outline: none;
+}
+
+.spacebar-btn-visual:hover {
+  background: #0d2414;
+  box-shadow: 0 3px 0 #12301a, 0 5px 15px rgba(228, 142, 53, 0.15);
+}
+
+.spacebar-btn-visual:active,
+.spacebar-btn-visual.pressed {
+  transform: translateY(2.5px);
+  box-shadow: 0 0.5px 0 #12301a, 0 2px 6px rgba(0, 0, 0, 0.6);
+  background: var(--purple-soft);
+}
+
+.spacebar-btn-visual.pressed .spacebar-icon-line {
+  background: #000;
+  box-shadow: none;
+}
+
+.spacebar-icon-line {
+  width: 36%;
+  height: 2.5px;
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange);
+  border-radius: 99px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: background 0.1s ease;
+}
+
+/* ── VIEW 2: ARENA VIEW LAYOUT ── */
+.arena-game {
+  display: none;
+}
+
+.arena-game.active {
+  display: grid;
+}
+
+.arena-layout {
+  padding: clamp(10px, 2vh, 18px) 24px clamp(8px, 1.5vh, 14px) 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+/* Arena Top HUD Stats */
+.arena-top-hud {
+  width: 100%;
+}
+
+.hud-telemetry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(8px, 1.2vw, 14px);
+  background: transparent;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  width: 100%;
+}
+
+.hud-telemetry-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  background:
+    linear-gradient(135deg, rgba(12, 25, 15, 0.85), rgba(5, 8, 6, 0.9)),
+    radial-gradient(circle at 50% 0%, rgba(68, 215, 117, 0.08), transparent 50%);
+  border: 1px solid rgba(68, 215, 117, 0.15);
+  border-radius: 6px;
+  padding: clamp(7px, 1.3vh, 11px) clamp(8px, 1.2vw, 16px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 6px 18px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* Glass screen glare sheen */
+.hud-telemetry-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+.tel-label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: rgba(213, 238, 220, 0.68);
+  letter-spacing: 0.8px;
+  margin-top: 3px;
+}
+
+.tel-val-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.tel-val {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.2rem, 2.5vh, 1.6rem);
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+
+.tel-unit {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+#timer {
+  color: var(--sky);
+  text-shadow: 0 0 6px rgba(139, 253, 163, 0.4);
+}
+
+#accuracy {
+  color: var(--green);
+  text-shadow: 0 0 6px var(--green-glow);
+}
+
+.mistake-hud {
+  gap: 2px;
+}
+
+.mistake-value {
+  color: var(--red);
+  font-size: clamp(1.2rem, 2.5vh, 1.6rem);
+  text-shadow: 0 0 8px var(--red-glow);
+}
+
+/* Shield Node Indicators */
+.shield-nodes {
+  display: flex;
+  gap: clamp(6px, 1vh, 10px);
+  margin-top: 4px;
+}
+
+.shield-node {
+  width: clamp(26px, 4.5vh, 32px);
+  height: clamp(26px, 4.5vh, 32px);
+  border-radius: 50%;
+  border: 2.5px solid var(--green);
+  background: rgba(68, 215, 117, 0.08);
+  display: grid;
+  place-items: center;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 10px rgba(68, 215, 117, 0.15);
+}
+
+.shield-node.active {
+  background: rgba(68, 215, 117, 0.16);
+}
+
+.shield-node svg {
+  width: 60%;
+  height: 60%;
+  stroke: var(--green);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 4px var(--green-glow));
+  transition: all 0.3s ease;
+}
+
+.shield-node.lost {
+  border-color: var(--red);
+  background: rgba(255, 59, 48, 0.16);
+  box-shadow: 0 0 14px var(--red-glow), inset 0 0 9px rgba(255, 59, 48, 0.16);
+  transform: scale(1);
+  animation: lockError 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.shield-node.lost svg {
+  stroke: var(--red) !important;
+  opacity: 1;
+  filter: drop-shadow(0 0 6px var(--red-glow));
+}
+
+@keyframes lockError {
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.35);
+  }
+
+  60% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Hack Progress compromised level bar */
+.hack-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.hack-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.progress-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.progress-pct {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+
+.progress-pct.warning {
+  color: var(--orange);
+  text-shadow: 0 0 4px rgba(228, 142, 53, 0.4);
+}
+
+.progress-pct.danger {
+  color: var(--red);
+  text-shadow: 0 0 6px var(--red-glow);
+  animation: textGlitchColor 0.5s infinite steps(2);
+}
+
+@keyframes textGlitchColor {
+
+  0%,
+  100% {
+    color: var(--red);
+  }
+
+  50% {
+    color: #fff;
+  }
+}
+
+.progress-bar-track {
+  height: clamp(8px, 1.5vh, 12px);
+  background: rgba(12, 45, 18, 0.25);
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
+  transition: width 0.15s ease-out, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.progress-bar-fill.warning {
+  background: var(--orange);
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.5);
+}
+
+.progress-bar-fill.danger {
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red-glow);
+}
+
+/* ── KEYBOARD INTERFACE ── */
+.keyboard-board-outer {
+  position: relative;
+  --pressure: 0%;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(116, 216, 255, 0.06), transparent 36%),
+    linear-gradient(135deg, #0b1a0e 0%, #050d07 52%, #020503 100%);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: clamp(10px, 1.8vh, 16px) clamp(12px, 2vw, 26px);
+  box-shadow:
+    inset 0 0 24px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 26px rgba(0, 0, 0, 0.55);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 0;
+  margin-bottom: clamp(6px, 1vh, 12px);
+  gap: clamp(8px, 1.5vh, 14px);
+  overflow: hidden;
+}
+
+.keyboard-board-outer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 59, 48, 0.06), transparent 48%);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  transition: opacity 0.2s ease;
+}
+
+.keyboard-board-outer.under-attack::before {
+  opacity: 0.78;
+}
+
+.keyboard-board-outer.critical {
+  border-color: rgba(255, 59, 48, 0.45);
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.98),
+    inset 0 0 20px rgba(255, 59, 48, 0.12),
+    0 0 28px rgba(255, 59, 48, 0.16);
+}
+
+.keyboard-scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(10, 10, 10, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.25;
+  border-radius: 6px;
+}
+
+.defense-core-visual {
+  position: relative;
+  top: 20px;
+  z-index: 6;
+  width: min(460px, 56%);
+  height: clamp(140px, 20vh, 180px);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Floating mistakes/shield status panel above CPU */
+.cpu-shield-status {
+  position: absolute;
+  top: -55px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+}
+
+/* Concentric square PCB trace paths around the CPU socket */
+.core-ring {
+  position: absolute;
+  z-index: 1;
+  border: 1.5px solid rgba(116, 216, 255, 0.12);
+  border-radius: 6px;
+  pointer-events: none;
+  aspect-ratio: 1;
+}
+
+.ring-one {
+  width: clamp(155px, 22vh, 185px);
+  border-color: rgba(116, 216, 255, 0.14);
+}
+
+.ring-two {
+  width: clamp(190px, 27vh, 225px);
+  border-style: dashed;
+  border-color: rgba(116, 216, 255, 0.08);
+}
+
+.ring-three {
+  width: clamp(225px, 32vh, 265px);
+  border: 1px dotted rgba(116, 216, 255, 0.04);
+}
+
+/* Square BGA/LGA Cyber CPU Substrate - Brushed Metallic IHS */
+.supercomputer-core {
+  position: relative;
+  z-index: 2;
+  width: clamp(140px, 19vh, 160px);
+  height: clamp(140px, 19vh, 160px);
+  border-radius: 6px;
+  /* Dark green-black high-tech fiberglass substrate with a subtle metallic outline */
+  background:
+    radial-gradient(circle at center, rgba(16, 29, 20, 0.98) 0%, rgba(6, 12, 8, 1) 100%),
+    repeating-linear-gradient(45deg, rgba(68, 215, 117, 0.02) 0px, rgba(68, 215, 117, 0.02) 1px, transparent 1px, transparent 4px);
+  border: 2px solid rgba(217, 119, 6, 0.45);
+  /* Gold solder mask border edge */
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(68, 215, 117, 0.05),
+    inset 0 0 12px rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
+}
+
+/* CPU notches in corners of substrate */
+.cpu-notch {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #020503;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.cpu-notch.tl {
+  top: -4px;
+  left: -4px;
+}
+
+.cpu-notch.tr {
+  top: -4px;
+  right: -4px;
+}
+
+.cpu-notch.bl {
+  bottom: -4px;
+  left: -4px;
+}
+
+.cpu-notch.br {
+  bottom: -4px;
+  right: -4px;
+}
+
+/* Gold contact pads on left/right edges of substrate */
+.cpu-gold-edge-left,
+.cpu-gold-edge-right {
+  position: absolute;
+  top: 10%;
+  height: 80%;
+  width: 5px;
+  background: repeating-linear-gradient(to bottom, #d97706 0px, #d97706 3px, transparent 3px, transparent 6px);
+  opacity: 0.85;
+  z-index: 3;
+}
+
+.cpu-gold-edge-left {
+  left: 2px;
+}
+
+.cpu-gold-edge-right {
+  right: 2px;
+}
+
+/* Surface mount components (SMD capacitors) on substrate */
+.cpu-surface-components {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cpu-surface-components .cap {
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  background: #475569;
+  /* Grey body */
+  border-left: 1.5px solid #cbd5e1;
+  /* Silver caps */
+  border-right: 1.5px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.cpu-surface-components .cap-1 {
+  top: 12px;
+  left: 24px;
+}
+
+.cpu-surface-components .cap-2 {
+  top: 12px;
+  right: 24px;
+}
+
+.cpu-surface-components .cap-3 {
+  bottom: 12px;
+  left: 24px;
+}
+
+.cpu-surface-components .cap-4 {
+  bottom: 12px;
+  right: 24px;
+}
+
+/* Brushed Titanium IHS (heat spreader plate) */
+.cpu-ihs {
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2d3139 0%, #1e2024 45%, #15171a 55%, #0d0f11 100%);
+  border: 2.5px solid #4a505a;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 4;
+}
+
+.cpu-serial {
+  position: absolute;
+  top: 6px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 5.5px;
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Tiny status LED indicator on the CPU plate */
+.cpu-status-led-container {
+  position: absolute;
+  bottom: 6px;
+}
+
+.cpu-status-led {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+  animation: cpuLedPulse 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes cpuLedPulse {
+  0% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Matte steel socket retention clamp bracket holding down the CPU cover */
+.supercomputer-core::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  /* Extends outside CPU cover */
+  border-radius: 12px;
+  /* Heavy matte industrial retention frame clamp */
+  background: linear-gradient(135deg, #3f3f46 0%, #1e1b1b 50%, #09090b 100%);
+  border: 3.5px solid #52525b;
+  /* Slate steel clamp edge */
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.85),
+    inset 0 0 10px rgba(0, 0, 0, 0.95);
+  z-index: -1;
+  opacity: 1;
+}
+
+
+/* Central Silicon Die */
+.core-crystal {
+  width: clamp(52px, 7.5vh, 62px);
+  height: clamp(52px, 7.5vh, 62px);
+  border-radius: 4px;
+  /* Square silicon chip */
+  background: radial-gradient(circle at center, #05141e 0%, #010408 100%);
+  border: 2px solid #233545;
+  box-shadow:
+    0 0 10px rgba(116, 216, 255, 0.12),
+    inset 0 0 8px rgba(0, 0, 0, 0.95);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Glowing Neon Cyan CPU Label in the core */
+.core-crystal::before {
+  content: "CPU";
+  display: block;
+  font-family: "Orbitron", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--blue);
+  text-shadow:
+    0 0 4px var(--blue),
+    0 0 12px rgba(116, 216, 255, 0.6);
+  text-align: center;
+  letter-spacing: 1px;
+  animation: neonCpuPulse 2.5s infinite ease-in-out alternate;
+  z-index: 2;
+}
+
+/* Glossy reflection overlay to the crystal core */
+.core-crystal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes neonCpuPulse {
+  0% {
+    opacity: 0.8;
+    filter: brightness(0.9);
+    text-shadow: 0 0 3px var(--blue);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1.25);
+    text-shadow: 0 0 6px var(--blue), 0 0 15px rgba(116, 216, 255, 0.85);
+  }
+}
+
+.core-label,
+.core-readout {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.core-label {
+  font-size: 7.5px;
+  color: #475569;
+  /* Laser etched slate grey */
+  letter-spacing: 0.75px;
+  opacity: 0.85;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.core-readout {
+  font-size: 6px;
+  color: #64748b;
+  /* Laser etched grey */
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  margin-top: 1px;
+}
+
+.defense-core-visual.under-attack .supercomputer-core {
+  border-color: var(--red);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.85),
+    0 0 24px rgba(255, 59, 48, 0.45),
+    inset 0 0 12px rgba(255, 59, 48, 0.25);
+}
+
+.defense-core-visual.under-attack .core-readout {
+  color: var(--red);
+  text-shadow: 0 0 8px var(--red-glow);
+}
+
+.defense-core-visual.critical {
+  /* Disabled CPU shaking to keep positioning perfectly still */
+}
+
+.attack-streams {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.attack-chip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(22px, 3.5vh, 30px);
+  height: clamp(22px, 3.5vh, 30px);
+  margin: -15px 0 0 -15px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: grid;
+  place-items: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.6rem, 1.1vh, 0.76rem);
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(180deg, #ff3b30 0%, #a61c14 100%);
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.8));
+  animation: attackChipFly 1.05s linear infinite;
+  animation-delay: var(--stream-delay, 0s);
+}
+
+.sector-panel {
+  position: relative;
+  z-index: 6;
+  width: 98%;
+  max-width: 920px;
+  padding: clamp(10px, 1.4vh, 14px);
+  border-radius: 8px;
+  background: rgba(10, 15, 12, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.sector-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: clamp(6px, 1vh, 9px);
+  margin-bottom: clamp(6px, 1vh, 9px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.52rem, 1vh, 0.64rem);
+  font-weight: 800;
+  color: rgba(213, 238, 220, 0.72);
+  letter-spacing: 1.5px;
+}
+
+#waveReadout {
+  color: var(--orange-soft);
+}
+
+/* ── LIVE SECTOR GRID ── */
+.sector-grid {
+  --cols: 6;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-auto-rows: clamp(52px, 8.4vh, 68px);
+  gap: clamp(8px, 1.2vw, 12px);
+}
+
+/* Each sector — a live cell in the supercomputer matrix */
+.sector-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: rgba(8, 14, 20, 0.92);
+  border: 1px solid rgba(116, 216, 255, 0.22);
+  overflow: hidden;
+  user-select: none;
+  transition: border-color 0.12s, background-color 0.12s;
+}
+
+/* Copper card teeth contacts at the bottom (hidden for minimal look) */
+.sector-cell::after {
+  display: none !important;
+}
+
+/* LED Status Indicator */
+.cell-led {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  transition: background 0.12s;
+  z-index: 10;
+}
+
+.sector-cell.hacked .cell-led {
+  background: var(--red);
+  animation: none !important;
+}
+
+.sector-cell.repaired .cell-led {
+  background: #a3f7be;
+}
+
+.sector-cell.crashed .cell-led {
+  background: #440a07;
+}
+
+.sector-cell.healthy:hover .cell-letter {
+  color: #fff;
+  text-shadow: 0 0 6px rgba(116, 216, 255, 0.6);
+}
+
+/* Staggered boot-in disabled for minimal feel */
+.sector-grid.booting .sector-cell {
+  animation: none !important;
+}
+
+.sector-cell::before {
+  display: none !important;
+}
+
+.cell-letter {
+  font-family: "Roboto Mono", monospace;
+  font-size: clamp(1.35rem, 2.8vh, 1.85rem);
+  font-weight: 700;
+  color: rgba(205, 235, 255, 0.85);
+  transition: color 0.12s ease;
+  position: relative;
+  z-index: 2;
+}
+
+/* Shrinking repair-fuse timer along the bottom of a hacked cell */
+.cell-fuse {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--red);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.1s linear;
+  z-index: 4;
+}
+
+.sector-cell.hacked .cell-fuse {
+  transform: scaleX(1);
+  /* Driven by script via inline transform */
+}
+
+/* Ambient "alive" shimmer disabled for minimal styling */
+.cell-scan {
+  display: none !important;
+}
+
+.sector-cell.healthy {
+  border-color: rgba(116, 216, 255, 0.22);
+  background: rgba(8, 14, 20, 0.92);
+}
+
+.sector-cell.healthy .cell-scan {
+  animation: none !important;
+}
+
+/* Hacked / compromised (flat design, no animations) */
+.sector-cell.hacked {
+  background: rgba(255, 59, 48, 0.15);
+  border-color: var(--red);
+  z-index: 3;
+  animation: none !important;
+}
+
+.sector-cell.hacked .cell-letter {
+  color: #fff;
+}
+
+.sector-cell.hacked .cell-scan {
+  display: none !important;
+}
+
+@keyframes cellWiggle {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes cellGlitch {
+
+  0%,
+  100% {
+    border-color: var(--red);
+  }
+}
+
+@keyframes cellThreatSweep {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes cellShimmer {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cellBoot {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.sector-cell.repaired {
+  border-color: var(--green);
+  background: rgba(68, 215, 117, 0.22);
+  z-index: 3;
+}
+
+.sector-cell.repaired .cell-letter {
+  color: #eafff0;
+}
+
+.sector-cell.crashed {
+  border-color: var(--red);
+  background: rgba(255, 59, 48, 0.25);
+  z-index: 3;
+}
+
+/* Bottom Console Feedback Panel */
+.console-deck {
+  display: none !important;
+  background: var(--terminal-bg);
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 6px;
+  padding: 6px 14px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.console-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-right: 1.5px solid var(--line);
+  padding-right: 12px;
+  flex-shrink: 0;
+}
+
+.console-tag {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.console-ping {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--green);
+  background: rgba(68, 215, 117, 0.1);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.console-ping.alarm {
+  color: var(--red);
+  background: rgba(255, 59, 48, 0.1);
+  animation: miniLedBlink 0.4s infinite alternate;
+}
+
+.console-body {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.72rem;
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.console-prompt {
+  color: var(--green);
+  font-weight: bold;
+}
+
+.console-log {
+  color: var(--text-dark);
+}
+
+.console-log.repairing {
+  color: var(--green);
+  text-shadow: 0 0 3px var(--green-glow);
+}
+
+.console-log.breached {
+  color: var(--red);
+  text-shadow: 0 0 3px var(--red-glow);
+}
+
+/* Typing inputs collector & overlays */
+#typingInput {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+/* Translucent High-Tech Code Overlay */
+.code-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 14, 6, 0.85);
+  /* Deep green-black translucent */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 2px solid rgba(68, 215, 117, 0.15);
+  box-shadow: 0 0 30px rgba(68, 215, 117, 0.05);
+  transition: all 0.3s ease;
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  text-align: center;
+}
+
+.overlay-icon {
+  stroke: var(--green);
+  filter: drop-shadow(0 0 8px var(--green-glow));
+}
+
+.overlay-icon.fail-icon {
+  stroke: var(--red);
+  filter: drop-shadow(0 0 8px var(--red-glow));
+}
+
+#overlayMessage {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.9rem, 2vh, 1.2rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.code-overlay.overlay-failed {
+  background: rgba(14, 4, 4, 0.85);
+  /* Reddish-black translucent */
+  border-color: rgba(255, 59, 48, 0.25);
+  box-shadow: 0 0 35px rgba(255, 59, 48, 0.08);
+}
+
+.code-overlay.overlay-failed #overlayMessage {
+  color: var(--red);
+  text-shadow: 0 0 8px var(--red-glow);
+}
+
+.code-overlay.overlay-success {
+  background: rgba(4, 14, 6, 0.85);
+  /* Greenish-black translucent */
+  border-color: rgba(68, 215, 117, 0.25);
+  box-shadow: 0 0 35px rgba(68, 215, 117, 0.08);
+}
+
+.code-overlay.overlay-success #overlayMessage {
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+/* ── VIEW 3: RESULTS PANEL VIEW ── */
+.result-panel {
+  background:
+    radial-gradient(circle at center, rgba(6, 22, 10, 0.96) 0%, rgba(1, 4, 2, 0.99) 100%),
+    radial-gradient(rgba(68, 215, 117, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px;
+  color: #fff;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(20px, 4vh, 40px) 20px;
+}
+
+.result-panel.active {
+  display: flex;
+}
+
+.result-container {
+  width: 90%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vh, 24px);
+}
+
+/* Stagger animations for premium entry feel */
+.result-panel.active .result-header {
+  animation: resultFadeDown 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  opacity: 0;
+}
+
+.result-panel.active .result-rank-bar {
+  animation: resultFadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.15s forwards;
+  opacity: 0;
+}
+
+.result-panel.active .dashboard-card {
+  opacity: 0;
+  animation: cardEntry 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.result-panel.active .dashboard-card:nth-child(1) {
+  animation-delay: 0.22s;
+}
+
+.result-panel.active .dashboard-card:nth-child(2) {
+  animation-delay: 0.28s;
+}
+
+.result-panel.active .dashboard-card:nth-child(3) {
+  animation-delay: 0.34s;
+}
+
+.result-panel.active .dashboard-card:nth-child(4) {
+  animation-delay: 0.40s;
+}
+
+.result-panel.active .dashboard-card:nth-child(5) {
+  animation-delay: 0.46s;
+}
+
+.result-panel.active .dashboard-card:nth-child(6) {
+  animation-delay: 0.52s;
+}
+
+.result-panel.active .results-actions {
+  animation: resultFadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.65s forwards;
+  opacity: 0;
+}
+
+.result-panel.active .status-success-badge {
+  animation: stampEffect 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.25) 0.6s both;
+}
+
+.result-panel.active .status-failed-badge {
+  animation: stampEffect 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.25) 0.6s both;
+}
+
+.result-panel.active .dashboard-card.highlight-glow {
+  animation: cardEntry 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.52s both, goldCardGlow 3s infinite alternate 1.2s;
+}
+
+@keyframes resultFadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes resultFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardEntry {
+  0% {
+    opacity: 0;
+    transform: translateY(25px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes stampEffect {
+  0% {
+    transform: scale(3.5) rotate(-15deg);
+    opacity: 0;
+    filter: blur(4px);
+  }
+
+  70% {
+    transform: scale(0.9) rotate(3deg);
+    opacity: 0.9;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: scale(1) rotate(-3deg);
+    opacity: 1;
+  }
+}
+
+@keyframes goldCardGlow {
+  0% {
+    box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.25), 0 4px 20px rgba(228, 142, 53, 0.15);
+    border-color: var(--orange);
+  }
+
+  50% {
+    box-shadow: inset 0 0 25px rgba(228, 142, 53, 0.35), 0 8px 30px rgba(228, 142, 53, 0.3);
+    border-color: var(--orange-soft);
+  }
+
+  100% {
+    box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.25), 0 4px 20px rgba(228, 142, 53, 0.15);
+    border-color: var(--orange);
+  }
+}
+
+.result-header {
+  border-bottom: 2px solid var(--purple-soft);
+  padding-bottom: 12px;
+  text-align: left;
+}
+
+.result-eyebrow {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  margin: 0;
+}
+
+#resultTitle {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.2rem, 3.5vh, 1.8rem);
+  font-weight: 900;
+  color: #fff;
+  margin: 4px 0 8px 0;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.result-title-success {
+  color: var(--green) !important;
+  text-shadow: 0 0 12px var(--green-glow);
+}
+
+.result-title-failed {
+  color: var(--red) !important;
+  text-shadow: 0 0 12px var(--red-glow);
+}
+
+.result-rank-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-family: "Orbitron", sans-serif;
+  color: var(--text-dark);
+}
+
+.rank-badge-text {
+  color: var(--green);
+  text-shadow: 0 0 5px var(--green-glow);
+  font-weight: bold;
+}
+
+/* 6-Card Dashboard Grid */
+.result-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(10px, 1.8vh, 16px);
+  width: 100%;
+}
+
+.dashboard-card {
+  background: rgba(6, 22, 10, 0.4);
+  border: 1px solid var(--purple-soft);
+  border-radius: 8px;
+  padding: clamp(10px, 2vh, 18px) 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: clamp(86px, 14vh, 110px);
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.dashboard-card:hover {
+  border-color: rgba(68, 215, 117, 0.25);
+  background: rgba(6, 22, 10, 0.6);
+}
+
+.card-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.8px;
+}
+
+.card-value-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 0;
+}
+
+.card-main-value {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.4rem, 3.5vh, 1.95rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.card-main-value.highlight-green {
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.card-main-value.highlight-red {
+  color: var(--red);
+  text-shadow: 0 0 8px var(--red-glow);
+}
+
+.card-footer-reward {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--orange-soft);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-footer-label {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.52rem;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.streak-circle-value {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1.3rem, 3.2vh, 1.7rem);
+  font-weight: 900;
+  color: var(--sky);
+  text-shadow: 0 0 6px rgba(139, 253, 163, 0.4);
+}
+
+/* Status badge styles */
+.status-success-badge,
+.status-failed-badge {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.status-success-badge {
+  background: rgba(68, 215, 117, 0.15);
+  border: 1.5px solid var(--green);
+  color: var(--green);
+  box-shadow: 0 0 10px var(--green-glow);
+}
+
+.status-failed-badge {
+  background: rgba(255, 59, 48, 0.15);
+  border: 1.5px solid var(--red);
+  color: var(--red);
+  box-shadow: 0 0 10px var(--red-glow);
+}
+
+/* Credits block styling */
+.credits-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coin-total-img {
+  width: clamp(20px, 3vh, 26px);
+  height: clamp(20px, 3vh, 26px);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  animation: coinSpin 4s infinite linear;
+}
+
+@keyframes coinSpin {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.dashboard-card.highlight-glow {
+  border-color: rgba(228, 142, 53, 0.4);
+  box-shadow:
+    0 0 15px rgba(228, 142, 53, 0.08),
+    0 4px 15px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(180deg, rgba(6, 22, 10, 0.4) 0%, rgba(20, 10, 3, 0.18) 100%);
+}
+
+/* Results Actions footer */
+.results-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-top: 1.5px solid var(--purple-soft);
+  padding-top: 15px;
+}
+
+/* ── ANIMATION EFFECTS ── */
+/* Coin particles */
+.floating-coin {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  background-image: url("coin.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 1000;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Screen shake on error */
+.game-container.shake {
+  animation: screenShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenShake {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+/* Success red-to-green light-flash overlay */
+.success-flash-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  background: var(--green);
+  opacity: 0;
+  pointer-events: none;
+  animation: successFlashAnim 0.6s ease-out;
+}
+
+.success-flash-overlay.fail-flash {
+  background: var(--red);
+}
+
+@keyframes successFlashAnim {
+  0% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* General keyframes */
+@keyframes coreSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes coreAlarmShake {
+  0% {
+    transform: translateX(-1px);
+  }
+
+  100% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes attackChipFly {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--stream-angle)) translateX(clamp(140px, 20vh, 210px)) scale(0.72);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(var(--stream-angle)) translateX(clamp(34px, 5.5vh, 56px)) scale(1.1);
+  }
+}
+
+@keyframes keyThreatSweep {
+  0% {
+    transform: translateX(-80%) rotate(4deg);
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateX(80%) rotate(4deg);
+    opacity: 0;
+  }
+}
+
+@keyframes miniLedBlink {
+  0% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ── ADDITIONAL DETAILS APPEND ── */
+
+/* Motherboard metal pull handles on the sides of the sector tray panel (removed) */
+.sector-panel::before,
+.sector-panel::after {
+  display: none !important;
+}
+
+/* PCB Circuit Paths & Motherboard Detailing Styles */
+.pcb-circuits {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Traces and background details are visible */
+
+.pcb-reference-layer {
+  opacity: 0.58;
+}
+
+.pcb-reference-trace {
+  fill: none;
+  stroke: rgba(116, 216, 255, 0.075);
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pcb-reference-trace.thick {
+  stroke: rgba(68, 215, 117, 0.045);
+  stroke-width: 3.5;
+}
+
+.pcb-reference-pad,
+.pcb-reference-via {
+  fill: rgba(4, 14, 6, 0.9);
+  stroke: rgba(116, 216, 255, 0.11);
+  stroke-width: 1.1;
+}
+
+.pcb-reference-via {
+  fill: rgba(116, 216, 255, 0.035);
+}
+
+.pcb-source-points .pcb-reference-pad {
+  fill: rgba(68, 215, 117, 0.035);
+  stroke: rgba(68, 215, 117, 0.14);
+}
+
+.pcb-cpu-points .pcb-reference-pad {
+  fill: rgba(116, 216, 255, 0.08);
+  stroke: rgba(116, 216, 255, 0.2);
+  stroke-width: 1.3;
+}
+
+.circuit-trace-base {
+  fill: none;
+  stroke: rgba(68, 215, 117, 0.035);
+  /* Very faint green copper trace */
+  stroke-width: 4.0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s;
+}
+
+.circuit-trace {
+  fill: none;
+  stroke: rgba(116, 216, 255, 0.15);
+  /* Sleek data lines */
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 2px rgba(116, 216, 255, 0.25));
+  transition: stroke 0.3s, filter 0.3s;
+}
+
+/* Compromised active traces glow red when their key is hacked */
+.circuit-trace.compromised {
+  stroke: var(--red) !important;
+  filter: drop-shadow(0 0 4px var(--red-glow)) !important;
+}
+
+.circuit-trace-base.compromised {
+  stroke: rgba(255, 59, 48, 0.08) !important;
+}
+
+.circuit-trace-decor {
+  fill: none;
+  stroke: rgba(116, 216, 255, 0.03);
+  stroke-width: 1.0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s;
+}
+
+/* Motherboard RAM Slots */
+.ram-slot-group {
+  display: block;
+  opacity: 0.025;
+}
+
+.ram-slot-body {
+  fill: #080c14;
+  /* Deep matte socket body */
+  stroke: rgba(116, 216, 255, 0.12);
+  stroke-width: 1.25;
+}
+
+.ram-slot-contacts {
+  stroke: #d97706;
+  /* Golden RAM slots */
+  stroke-width: 1.5;
+  stroke-dasharray: 1 3;
+}
+
+.ram-slot-latch {
+  fill: #4b5563;
+  /* Slot ejection locking latch */
+}
+
+/* Detailed Motherboard IC Chips */
+.pcb-chip {
+  display: block;
+  opacity: 0.025;
+}
+
+.pcb-chip .chip-body {
+  fill: #090d16;
+  /* Glossy carbon packaging */
+  stroke: #1e293b;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
+}
+
+.pcb-chip .chip-pin {
+  stroke: #94a3b8;
+  /* Lead frame contact pins */
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.pcb-chip .chip-dot {
+  fill: #475569;
+  /* Pin 1 dot marking */
+}
+
+.pcb-chip .chip-text {
+  font-family: "Roboto Mono", monospace;
+  font-size: 5px;
+  fill: #475569;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.pcb-chip .chip-solder {
+  fill: #cbd5e1;
+  /* Silver solder joints connecting pin to pad */
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 0.5;
+}
+
+.pcb-pad {
+  display: block;
+  opacity: 0.065;
+}
+
+.pcb-dot {
+  display: block;
+  opacity: 0.025;
+}
+
+.pcb-concentric-pads,
+.pcb-square-grids {
+  display: block;
+  opacity: 0.02;
+}
+
+/* Animation removed to keep the circuit lines static and clean */
+
+/* PCB Alarm details: traces flash red under attack */
+.defense-core-visual.under-attack~.pcb-circuits .circuit-trace-base,
+.keyboard-board-outer.under-attack .pcb-circuits .circuit-trace-base {
+  stroke: rgba(255, 59, 48, 0.03);
+}
+
+.defense-core-visual.under-attack~.pcb-circuits .circuit-trace,
+.keyboard-board-outer.under-attack .pcb-circuits .circuit-trace {
+  stroke: rgba(255, 59, 48, 0.35);
+  filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.65));
+}
+
+.defense-core-visual.under-attack~.pcb-circuits .circuit-trace-decor,
+.keyboard-board-outer.under-attack .pcb-circuits .circuit-trace-decor {
+  stroke: rgba(255, 59, 48, 0.02);
+}
+
+.defense-core-visual.under-attack~.pcb-circuits .pcb-reference-trace,
+.keyboard-board-outer.under-attack .pcb-circuits .pcb-reference-trace {
+  stroke: rgba(255, 59, 48, 0.05);
+}
+
+.defense-core-visual.under-attack~.pcb-circuits .pcb-reference-pad,
+.defense-core-visual.under-attack~.pcb-circuits .pcb-reference-via,
+.keyboard-board-outer.under-attack .pcb-circuits .pcb-reference-pad,
+.keyboard-board-outer.under-attack .pcb-circuits .pcb-reference-via {
+  stroke: rgba(255, 59, 48, 0.055);
+}
+
+.defense-core-visual.under-attack~.pcb-circuits .pcb-pad,
+.keyboard-board-outer.under-attack .pcb-circuits .pcb-pad {
+  fill: rgba(255, 59, 48, 0.03);
+  stroke: rgba(255, 59, 48, 0.02);
+  filter: none;
+}
+
+/* Blinking terminal console cursor */
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background: var(--green);
+  box-shadow: 0 0 4px var(--green-glow);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: terminalCursorBlink 0.8s infinite steps(2);
+}
+
+@keyframes terminalCursorBlink {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* CPU Core damaged state: shake + red glow */
+.supercomputer-core.damaged {
+  border-color: var(--red) !important;
+  box-shadow:
+    0 10px 30px rgba(255, 59, 48, 0.35),
+    0 0 40px var(--red-glow),
+    inset 0 0 15px rgba(255, 59, 48, 0.4) !important;
+  /* Disabled CPU shaking to keep layout perfectly still */
+}
+
+.supercomputer-core.damaged .cpu-status-led {
+  background: var(--red) !important;
+  box-shadow: 0 0 8px var(--red) !important;
+  animation: cpuLedPulseFast 0.3s infinite alternate;
+}
+
+.supercomputer-core.damaged .cpu-ihs {
+  border-color: var(--red-dim) !important;
+}
+
+@keyframes cpuLedPulseFast {
+  0% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.defense-core-visual.under-attack .core-crystal,
+.supercomputer-core.damaged .core-crystal {
+  background: linear-gradient(135deg, #450a0a 0%, #1c0505 100%);
+  border-color: #7f1d1d;
+  box-shadow:
+    0 0 22px rgba(255, 59, 48, 0.85),
+    inset 0 0 12px rgba(255, 59, 48, 0.75);
+}
+
+.defense-core-visual.under-attack .core-crystal::before,
+.supercomputer-core.damaged .core-crystal::before {
+  content: "ERR";
+  color: var(--red);
+  text-shadow:
+    0 0 5px var(--red),
+    0 0 15px rgba(255, 59, 48, 0.85);
+  animation: miniLedBlink 0.3s infinite alternate;
+}
+
+
+/* SVG Game Elements */
+.virus-graphic {
+  animation: virusGlitch 1.5s infinite linear;
+}
+
+.virus-blob.targeted .virus-graphic {
+  animation: virusGlitchTargeted 1.5s infinite linear;
+}
+
+.virus-graphic .virus-body-core {
+  stroke: var(--red);
+  stroke-width: 1.6;
+  fill: #ff3b30;
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+  transition: fill 0.15s, stroke 0.15s;
+}
+
+.virus-graphic .virus-spike-line {
+  stroke: var(--red);
+  stroke-width: 1.8;
+  fill: none;
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+  transition: stroke 0.15s;
+}
+
+.virus-graphic .virus-spike-head {
+  stroke: var(--red);
+  stroke-width: 1.2;
+  fill: #ff3b30;
+  filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+  transition: fill 0.15s, stroke 0.15s;
+}
+
+.virus-blob.targeted .virus-graphic .virus-body-core {
+  stroke: var(--orange);
+  fill: #e48e35;
+  filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85));
+}
+
+.virus-blob.targeted .virus-graphic .virus-spike-line {
+  stroke: var(--orange);
+  filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85));
+}
+
+.virus-blob.targeted .virus-graphic .virus-spike-head {
+  stroke: var(--orange);
+  fill: #e48e35;
+  filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85));
+}
+
+@keyframes virusGlitch {
+
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.75)) brightness(1);
+  }
+
+  10% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.6)) brightness(1.3);
+  }
+
+  15% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(255, 59, 48, 0.9)) brightness(0.9);
+  }
+
+  20% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.75)) brightness(1);
+  }
+
+  48% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.5)) brightness(1.5);
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #ff3b30) brightness(2.2);
+  }
+
+  53% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.6)) brightness(1);
+  }
+
+  75% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 7px rgba(255, 59, 48, 0.8)) brightness(1.25);
+  }
+
+  85% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.5)) brightness(0.85);
+  }
+}
+
+@keyframes virusGlitchTargeted {
+
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.75)) brightness(1);
+  }
+
+  10% {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.6)) brightness(1.3);
+  }
+
+  15% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(228, 142, 53, 0.9)) brightness(0.9);
+  }
+
+  20% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.75)) brightness(1);
+  }
+
+  48% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 3px rgba(228, 142, 53, 0.5)) brightness(1.5);
+  }
+
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #e48e35) brightness(2.2);
+  }
+
+  53% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.6)) brightness(1);
+  }
+
+  75% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 7px rgba(228, 142, 53, 0.8)) brightness(1.25);
+  }
+
+  85% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 3px rgba(228, 142, 53, 0.5)) brightness(0.85);
+  }
+}
+
+
+.virus-text {
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  fill: #ffffff;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  pointer-events: none;
+}
+
+/* Dotted rotating threat radar ring */
+.virus-outer-ring {
+  fill: none;
+  stroke: rgba(255, 59, 48, 0.45);
+  stroke-dasharray: 4 2;
+  stroke-width: 1.25;
+  transform-origin: center;
+  animation: rotateRing 8s linear infinite;
+}
+
+.virus-blob.targeted .virus-outer-ring {
+  stroke: rgba(228, 142, 53, 0.45);
+}
+
+.projectile-packet circle {
+  fill: var(--green);
+  stroke: #ffffff;
+  stroke-width: 1;
+  filter: drop-shadow(0 0 6px var(--green));
+}
+
+.projectile-text {
+  font-family: "Orbitron", sans-serif;
+  font-size: 8px;
+  font-weight: 900;
+  fill: #000000;
+  text-anchor: middle;
+  alignment-baseline: middle;
+  pointer-events: none;
+}
+
+.projectile-outer-ring {
+  fill: none;
+  stroke: rgba(68, 215, 117, 0.45);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  transform-origin: center;
+  animation: rotateRing 4s linear infinite reverse;
+}
+
+.explosion-ring {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3;
+  transform-origin: center;
+  animation: explodeRing 0.3s ease-out forwards;
+}
+
+@keyframes explodeRing {
+  0% {
+    r: 4px;
+    stroke-width: 4px;
+    opacity: 1;
+  }
+
+  100% {
+    r: 28px;
+    stroke-width: 0.5px;
+    opacity: 0;
+  }
+}
+
+@keyframes rotateRing {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Resistor Networks styling */
+.pcb-resistor-body {
+  fill: #060e09;
+  /* Matte black/dark green resistor body */
+  stroke: rgba(68, 215, 117, 0.55);
+  stroke-width: 0.75;
+}
+
+.pcb-resistor-contact {
+  fill: #94a3b8;
+  /* Silver metallic caps */
+  stroke: rgba(148, 163, 184, 0.4);
+  stroke-width: 0.5;
+}
+
+/* ── CONTAINER-BASED UNIFORM SCALING FOR SMALL HEIGHTS ── */
+/* Queries are based on the actual height of .game-container, ensuring perfect fit everywhere */
+
+@container gameContainer (max-height: 700px) {
+  .game-header {
+    height: 48px;
+  }
+
+  /* Briefing slideshow & Results */
+  .briefing-panel {
+    transform: scale(0.88);
+    transform-origin: center center;
+    margin-top: 5px;
+  }
+
+  .result-panel {
+    transform: scale(0.88);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 580px) {
+  .game-header {
+    height: 42px;
+  }
+
+  .briefing-panel {
+    transform: scale(0.78);
+    transform-origin: center center;
+    margin-top: 0;
+  }
+
+  .result-panel {
+    transform: scale(0.76);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 460px) {
+  .game-header {
+    height: 38px;
+  }
+
+  .briefing-panel {
+    transform: scale(0.66);
+    transform-origin: center center;
+    margin-top: -10px;
+  }
+
+  .result-panel {
+    transform: scale(0.62);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 400px) {
+  .briefing-panel {
+    transform: scale(0.56);
+    transform-origin: center center;
+    margin-top: -20px;
+  }
+
+  .result-panel {
+    transform: scale(0.5);
+    transform-origin: center center;
+  }
+}

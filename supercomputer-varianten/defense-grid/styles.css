@@ -484,7 +484,8 @@ body::before {
   width: 102px;
   height: 102px;
   background: radial-gradient(circle at center, #0f2713 0%, #050e06 100%);
-  border: 1.5px solid var(--orange); /* Gold edge mask */
+  border: 1.5px solid var(--orange);
+  /* Gold edge mask */
   border-radius: 6px;
   display: flex;
   justify-content: center;
@@ -598,85 +599,292 @@ body::before {
 }
 
 @keyframes miniVirusLeftMove {
-  0% { transform: translate(20px, 45px); opacity: 0; }
-  5% { opacity: 1; }
-  42% { opacity: 1; transform: translate(80px, 45px); }
-  43%, 100% { opacity: 0; transform: translate(80px, 45px); }
+  0% {
+    transform: translate(20px, 45px);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  42% {
+    opacity: 1;
+    transform: translate(80px, 45px);
+  }
+
+  43%,
+  100% {
+    opacity: 0;
+    transform: translate(80px, 45px);
+  }
 }
 
 @keyframes miniPacketLeftMove {
-  0%, 30% { transform: translate(45px, 101px); opacity: 0; }
-  31% { opacity: 1; }
-  42% { opacity: 1; transform: translate(80px, 45px); }
-  43%, 100% { opacity: 0; transform: translate(80px, 45px); }
+
+  0%,
+  30% {
+    transform: translate(45px, 101px);
+    opacity: 0;
+  }
+
+  31% {
+    opacity: 1;
+  }
+
+  42% {
+    opacity: 1;
+    transform: translate(80px, 45px);
+  }
+
+  43%,
+  100% {
+    opacity: 0;
+    transform: translate(80px, 45px);
+  }
 }
 
 @keyframes miniExplosionLeft {
-  0%, 42% { opacity: 0; r: 0; }
-  43% { opacity: 1; r: 1; }
-  52% { opacity: 0; r: 12; }
-  100% { opacity: 0; r: 12; }
+
+  0%,
+  42% {
+    opacity: 0;
+    r: 0;
+  }
+
+  43% {
+    opacity: 1;
+    r: 1;
+  }
+
+  52% {
+    opacity: 0;
+    r: 12;
+  }
+
+  100% {
+    opacity: 0;
+    r: 12;
+  }
 }
 
 @keyframes miniKeyCBorders {
-  0%, 30% { fill: rgba(255, 59, 48, 0.12); stroke: #ff3b30; }
-  31%, 34% { fill: rgba(68, 215, 117, 0.3); stroke: #44d775; filter: drop-shadow(0 0 3px #44d775); }
-  35%, 42% { fill: rgba(255, 59, 48, 0.12); stroke: #ff3b30; filter: none; }
-  43%, 80% { fill: rgba(8, 14, 20, 0.92); stroke: rgba(116, 216, 255, 0.22); filter: none; }
-  81%, 100% { fill: rgba(255, 59, 48, 0.12); stroke: #ff3b30; }
+
+  0%,
+  30% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+  }
+
+  31%,
+  34% {
+    fill: rgba(68, 215, 117, 0.3);
+    stroke: #44d775;
+    filter: drop-shadow(0 0 3px #44d775);
+  }
+
+  35%,
+  42% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+    filter: none;
+  }
+
+  43%,
+  80% {
+    fill: rgba(8, 14, 20, 0.92);
+    stroke: rgba(116, 216, 255, 0.22);
+    filter: none;
+  }
+
+  81%,
+  100% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+  }
 }
 
 @keyframes miniKeyCLeds {
-  0%, 42% { fill: #ff3b30; }
-  43%, 80% { fill: #44d775; }
-  81%, 100% { fill: #ff3b30; }
+
+  0%,
+  42% {
+    fill: #ff3b30;
+  }
+
+  43%,
+  80% {
+    fill: #44d775;
+  }
+
+  81%,
+  100% {
+    fill: #ff3b30;
+  }
 }
 
 @keyframes miniKeyCTexts {
-  0%, 30% { fill: #ffffff; }
-  31%, 34% { fill: #44d775; }
-  35%, 100% { fill: #ffffff; }
+
+  0%,
+  30% {
+    fill: #ffffff;
+  }
+
+  31%,
+  34% {
+    fill: #44d775;
+  }
+
+  35%,
+  100% {
+    fill: #ffffff;
+  }
 }
 
 @keyframes miniVirusRightMove {
-  0%, 30% { transform: translate(300px, 45px); opacity: 0; }
-  35% { opacity: 1; }
-  72% { opacity: 1; transform: translate(240px, 45px); }
-  73%, 100% { opacity: 0; transform: translate(240px, 45px); }
+
+  0%,
+  30% {
+    transform: translate(300px, 45px);
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+    transform: translate(240px, 45px);
+  }
+
+  73%,
+  100% {
+    opacity: 0;
+    transform: translate(240px, 45px);
+  }
 }
 
 @keyframes miniPacketRightMove {
-  0%, 60% { transform: translate(275px, 101px); opacity: 0; }
-  61% { opacity: 1; }
-  72% { opacity: 1; transform: translate(240px, 45px); }
-  73%, 100% { opacity: 0; transform: translate(240px, 45px); }
+
+  0%,
+  60% {
+    transform: translate(275px, 101px);
+    opacity: 0;
+  }
+
+  61% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+    transform: translate(240px, 45px);
+  }
+
+  73%,
+  100% {
+    opacity: 0;
+    transform: translate(240px, 45px);
+  }
 }
 
 @keyframes miniExplosionRight {
-  0%, 72% { opacity: 0; r: 0; }
-  73% { opacity: 1; r: 1; }
-  82% { opacity: 0; r: 12; }
-  83%, 100% { opacity: 0; r: 12; }
+
+  0%,
+  72% {
+    opacity: 0;
+    r: 0;
+  }
+
+  73% {
+    opacity: 1;
+    r: 1;
+  }
+
+  82% {
+    opacity: 0;
+    r: 12;
+  }
+
+  83%,
+  100% {
+    opacity: 0;
+    r: 12;
+  }
 }
 
 @keyframes miniKeyZBorders {
-  0%, 12% { fill: rgba(8, 14, 20, 0.92); stroke: rgba(116, 216, 255, 0.22); filter: none; }
-  13%, 60% { fill: rgba(255, 59, 48, 0.12); stroke: #ff3b30; filter: none; }
-  61%, 64% { fill: rgba(68, 215, 117, 0.3); stroke: #44d775; filter: drop-shadow(0 0 3px #44d775); }
-  65%, 72% { fill: rgba(255, 59, 48, 0.12); stroke: #ff3b30; filter: none; }
-  73%, 100% { fill: rgba(8, 14, 20, 0.92); stroke: rgba(116, 216, 255, 0.22); filter: none; }
+
+  0%,
+  12% {
+    fill: rgba(8, 14, 20, 0.92);
+    stroke: rgba(116, 216, 255, 0.22);
+    filter: none;
+  }
+
+  13%,
+  60% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+    filter: none;
+  }
+
+  61%,
+  64% {
+    fill: rgba(68, 215, 117, 0.3);
+    stroke: #44d775;
+    filter: drop-shadow(0 0 3px #44d775);
+  }
+
+  65%,
+  72% {
+    fill: rgba(255, 59, 48, 0.12);
+    stroke: #ff3b30;
+    filter: none;
+  }
+
+  73%,
+  100% {
+    fill: rgba(8, 14, 20, 0.92);
+    stroke: rgba(116, 216, 255, 0.22);
+    filter: none;
+  }
 }
 
 @keyframes miniKeyZLeds {
-  0%, 12% { fill: #44d775; }
-  13%, 72% { fill: #ff3b30; }
-  73%, 100% { fill: #44d775; }
+
+  0%,
+  12% {
+    fill: #44d775;
+  }
+
+  13%,
+  72% {
+    fill: #ff3b30;
+  }
+
+  73%,
+  100% {
+    fill: #44d775;
+  }
 }
 
 @keyframes miniKeyZTexts {
-  0%, 60% { fill: #ffffff; }
-  61%, 64% { fill: #44d775; }
-  65%, 100% { fill: #ffffff; }
+
+  0%,
+  60% {
+    fill: #ffffff;
+  }
+
+  61%,
+  64% {
+    fill: #44d775;
+  }
+
+  65%,
+  100% {
+    fill: #ffffff;
+  }
 }
 
 /* Briefing Spacebar Advance */
@@ -705,8 +913,15 @@ body::before {
 }
 
 @keyframes pulseInstruction {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .spacebar-btn-visual {
@@ -925,10 +1140,21 @@ body::before {
 }
 
 @keyframes lockError {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.35); }
-  60% { transform: scale(0.9); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(1.35);
+  }
+
+  60% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Hack Progress compromised level bar */
@@ -974,8 +1200,15 @@ body::before {
 }
 
 @keyframes textGlitchColor {
-  0%, 100% { color: var(--red); }
-  50% { color: #fff; }
+
+  0%,
+  100% {
+    color: var(--red);
+  }
+
+  50% {
+    color: #fff;
+  }
 }
 
 .progress-bar-track {
@@ -1015,7 +1248,7 @@ body::before {
   border: 2px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: clamp(10px, 1.8vh, 16px) clamp(12px, 2vw, 26px);
-  box-shadow: 
+  box-shadow:
     inset 0 0 24px rgba(0, 0, 0, 0.95),
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 10px 26px rgba(0, 0, 0, 0.55);
@@ -1066,7 +1299,7 @@ body::before {
 
 .defense-core-visual {
   position: relative;
-  top: -20px;
+  top: 20px;
   z-index: 6;
   width: min(460px, 56%);
   height: clamp(140px, 20vh, 180px);
@@ -1122,10 +1355,11 @@ body::before {
   height: clamp(140px, 19vh, 160px);
   border-radius: 6px;
   /* Dark green-black high-tech fiberglass substrate with a subtle metallic outline */
-  background: 
+  background:
     radial-gradient(circle at center, rgba(16, 29, 20, 0.98) 0%, rgba(6, 12, 8, 1) 100%),
     repeating-linear-gradient(45deg, rgba(68, 215, 117, 0.02) 0px, rgba(68, 215, 117, 0.02) 1px, transparent 1px, transparent 4px);
-  border: 2px solid rgba(217, 119, 6, 0.45); /* Gold solder mask border edge */
+  border: 2px solid rgba(217, 119, 6, 0.45);
+  /* Gold solder mask border edge */
   box-shadow:
     0 12px 32px rgba(0, 0, 0, 0.8),
     0 0 20px rgba(68, 215, 117, 0.05),
@@ -1146,10 +1380,26 @@ body::before {
   border-radius: 50%;
   z-index: 3;
 }
-.cpu-notch.tl { top: -4px; left: -4px; }
-.cpu-notch.tr { top: -4px; right: -4px; }
-.cpu-notch.bl { bottom: -4px; left: -4px; }
-.cpu-notch.br { bottom: -4px; right: -4px; }
+
+.cpu-notch.tl {
+  top: -4px;
+  left: -4px;
+}
+
+.cpu-notch.tr {
+  top: -4px;
+  right: -4px;
+}
+
+.cpu-notch.bl {
+  bottom: -4px;
+  left: -4px;
+}
+
+.cpu-notch.br {
+  bottom: -4px;
+  right: -4px;
+}
 
 /* Gold contact pads on left/right edges of substrate */
 .cpu-gold-edge-left,
@@ -1162,8 +1412,14 @@ body::before {
   opacity: 0.85;
   z-index: 3;
 }
-.cpu-gold-edge-left { left: 2px; }
-.cpu-gold-edge-right { right: 2px; }
+
+.cpu-gold-edge-left {
+  left: 2px;
+}
+
+.cpu-gold-edge-right {
+  right: 2px;
+}
 
 /* Surface mount components (SMD capacitors) on substrate */
 .cpu-surface-components {
@@ -1172,19 +1428,38 @@ body::before {
   pointer-events: none;
   z-index: 3;
 }
+
 .cpu-surface-components .cap {
   position: absolute;
   width: 6px;
   height: 4px;
-  background: #475569; /* Grey body */
-  border-left: 1.5px solid #cbd5e1; /* Silver caps */
+  background: #475569;
+  /* Grey body */
+  border-left: 1.5px solid #cbd5e1;
+  /* Silver caps */
   border-right: 1.5px solid #cbd5e1;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
-.cpu-surface-components .cap-1 { top: 12px; left: 24px; }
-.cpu-surface-components .cap-2 { top: 12px; right: 24px; }
-.cpu-surface-components .cap-3 { bottom: 12px; left: 24px; }
-.cpu-surface-components .cap-4 { bottom: 12px; right: 24px; }
+
+.cpu-surface-components .cap-1 {
+  top: 12px;
+  left: 24px;
+}
+
+.cpu-surface-components .cap-2 {
+  top: 12px;
+  right: 24px;
+}
+
+.cpu-surface-components .cap-3 {
+  bottom: 12px;
+  left: 24px;
+}
+
+.cpu-surface-components .cap-4 {
+  bottom: 12px;
+  right: 24px;
+}
 
 /* Brushed Titanium IHS (heat spreader plate) */
 .cpu-ihs {
@@ -1194,7 +1469,7 @@ body::before {
   background: linear-gradient(135deg, #2d3139 0%, #1e2024 45%, #15171a 55%, #0d0f11 100%);
   border: 2.5px solid #4a505a;
   box-shadow:
-    0 4px 10px rgba(0,0,0,0.6),
+    0 4px 10px rgba(0, 0, 0, 0.6),
     inset 0 1px 2px rgba(255, 255, 255, 0.15),
     inset 0 -2px 4px rgba(0, 0, 0, 0.7);
   display: flex;
@@ -1221,6 +1496,7 @@ body::before {
   position: absolute;
   bottom: 6px;
 }
+
 .cpu-status-led {
   display: block;
   width: 5px;
@@ -1232,20 +1508,27 @@ body::before {
 }
 
 @keyframes cpuLedPulse {
-  0% { opacity: 0.4; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Matte steel socket retention clamp bracket holding down the CPU cover */
 .supercomputer-core::before {
   content: "";
   position: absolute;
-  inset: -14px; /* Extends outside CPU cover */
+  inset: -14px;
+  /* Extends outside CPU cover */
   border-radius: 12px;
   /* Heavy matte industrial retention frame clamp */
   background: linear-gradient(135deg, #3f3f46 0%, #1e1b1b 50%, #09090b 100%);
-  border: 3.5px solid #52525b; /* Slate steel clamp edge */
-  box-shadow: 
+  border: 3.5px solid #52525b;
+  /* Slate steel clamp edge */
+  box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.85),
     inset 0 0 10px rgba(0, 0, 0, 0.95);
   z-index: -1;
@@ -1257,10 +1540,11 @@ body::before {
 .core-crystal {
   width: clamp(52px, 7.5vh, 62px);
   height: clamp(52px, 7.5vh, 62px);
-  border-radius: 4px; /* Square silicon chip */
+  border-radius: 4px;
+  /* Square silicon chip */
   background: radial-gradient(circle at center, #05141e 0%, #010408 100%);
   border: 2px solid #233545;
-  box-shadow: 
+  box-shadow:
     0 0 10px rgba(116, 216, 255, 0.12),
     inset 0 0 8px rgba(0, 0, 0, 0.95);
   margin-bottom: 4px;
@@ -1280,7 +1564,7 @@ body::before {
   font-size: 14px;
   font-weight: 900;
   color: var(--blue);
-  text-shadow: 
+  text-shadow:
     0 0 4px var(--blue),
     0 0 12px rgba(116, 216, 255, 0.6);
   text-align: center;
@@ -1294,14 +1578,23 @@ body::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 50%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
   pointer-events: none;
   z-index: 3;
 }
 
 @keyframes neonCpuPulse {
-  0% { opacity: 0.8; filter: brightness(0.9); text-shadow: 0 0 3px var(--blue); }
-  100% { opacity: 1; filter: brightness(1.25); text-shadow: 0 0 6px var(--blue), 0 0 15px rgba(116, 216, 255, 0.85); }
+  0% {
+    opacity: 0.8;
+    filter: brightness(0.9);
+    text-shadow: 0 0 3px var(--blue);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1.25);
+    text-shadow: 0 0 6px var(--blue), 0 0 15px rgba(116, 216, 255, 0.85);
+  }
 }
 
 .core-label,
@@ -1314,7 +1607,8 @@ body::before {
 
 .core-label {
   font-size: 7.5px;
-  color: #475569; /* Laser etched slate grey */
+  color: #475569;
+  /* Laser etched slate grey */
   letter-spacing: 0.75px;
   opacity: 0.85;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -1322,7 +1616,8 @@ body::before {
 
 .core-readout {
   font-size: 6px;
-  color: #64748b; /* Laser etched grey */
+  color: #64748b;
+  /* Laser etched grey */
   letter-spacing: 0.5px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   margin-top: 1px;
@@ -1495,7 +1790,8 @@ body::before {
 }
 
 .sector-cell.hacked .cell-fuse {
-  transform: scaleX(1); /* Driven by script via inline transform */
+  transform: scaleX(1);
+  /* Driven by script via inline transform */
 }
 
 /* Ambient "alive" shimmer disabled for minimal styling */
@@ -1529,27 +1825,53 @@ body::before {
 }
 
 @keyframes cellWiggle {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(0); }
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
 }
 
 @keyframes cellGlitch {
-  0%, 100% { border-color: var(--red); }
+
+  0%,
+  100% {
+    border-color: var(--red);
+  }
 }
 
 @keyframes cellThreatSweep {
-  0% { transform: translateX(-120%); opacity: 0; }
-  100% { transform: translateX(120%); opacity: 0; }
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
 }
 
 @keyframes cellShimmer {
-  0% { opacity: 0; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes cellBoot {
-  0% { opacity: 1; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .sector-cell.repaired {
@@ -1575,7 +1897,7 @@ body::before {
   border: 1.5px solid var(--purple-soft);
   border-radius: 6px;
   padding: 6px 14px;
-  box-shadow: 
+  box-shadow:
     inset 0 2px 4px rgba(0, 0, 0, 0.85),
     0 1px 0 rgba(255, 255, 255, 0.03);
   display: flex;
@@ -1656,7 +1978,8 @@ body::before {
 .code-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(4, 14, 6, 0.85); /* Deep green-black translucent */
+  background: rgba(4, 14, 6, 0.85);
+  /* Deep green-black translucent */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 100;
@@ -1697,7 +2020,8 @@ body::before {
 }
 
 .code-overlay.overlay-failed {
-  background: rgba(14, 4, 4, 0.85); /* Reddish-black translucent */
+  background: rgba(14, 4, 4, 0.85);
+  /* Reddish-black translucent */
   border-color: rgba(255, 59, 48, 0.25);
   box-shadow: 0 0 35px rgba(255, 59, 48, 0.08);
 }
@@ -1708,7 +2032,8 @@ body::before {
 }
 
 .code-overlay.overlay-success {
-  background: rgba(4, 14, 6, 0.85); /* Greenish-black translucent */
+  background: rgba(4, 14, 6, 0.85);
+  /* Greenish-black translucent */
   border-color: rgba(68, 215, 117, 0.25);
   box-shadow: 0 0 35px rgba(68, 215, 117, 0.08);
 }
@@ -1759,12 +2084,29 @@ body::before {
   animation: cardEntry 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-.result-panel.active .dashboard-card:nth-child(1) { animation-delay: 0.22s; }
-.result-panel.active .dashboard-card:nth-child(2) { animation-delay: 0.28s; }
-.result-panel.active .dashboard-card:nth-child(3) { animation-delay: 0.34s; }
-.result-panel.active .dashboard-card:nth-child(4) { animation-delay: 0.40s; }
-.result-panel.active .dashboard-card:nth-child(5) { animation-delay: 0.46s; }
-.result-panel.active .dashboard-card:nth-child(6) { animation-delay: 0.52s; }
+.result-panel.active .dashboard-card:nth-child(1) {
+  animation-delay: 0.22s;
+}
+
+.result-panel.active .dashboard-card:nth-child(2) {
+  animation-delay: 0.28s;
+}
+
+.result-panel.active .dashboard-card:nth-child(3) {
+  animation-delay: 0.34s;
+}
+
+.result-panel.active .dashboard-card:nth-child(4) {
+  animation-delay: 0.40s;
+}
+
+.result-panel.active .dashboard-card:nth-child(5) {
+  animation-delay: 0.46s;
+}
+
+.result-panel.active .dashboard-card:nth-child(6) {
+  animation-delay: 0.52s;
+}
 
 .result-panel.active .results-actions {
   animation: resultFadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.65s forwards;
@@ -1784,24 +2126,58 @@ body::before {
 }
 
 @keyframes resultFadeDown {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes resultFadeUp {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes cardEntry {
-  0% { opacity: 0; transform: translateY(25px) scale(0.95); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateY(25px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes stampEffect {
-  0% { transform: scale(3.5) rotate(-15deg); opacity: 0; filter: blur(4px); }
-  70% { transform: scale(0.9) rotate(3deg); opacity: 0.9; filter: blur(0); }
-  100% { transform: scale(1) rotate(-3deg); opacity: 1; }
+  0% {
+    transform: scale(3.5) rotate(-15deg);
+    opacity: 0;
+    filter: blur(4px);
+  }
+
+  70% {
+    transform: scale(0.9) rotate(3deg);
+    opacity: 0.9;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: scale(1) rotate(-3deg);
+    opacity: 1;
+  }
 }
 
 @keyframes goldCardGlow {
@@ -1809,10 +2185,12 @@ body::before {
     box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.25), 0 4px 20px rgba(228, 142, 53, 0.15);
     border-color: var(--orange);
   }
+
   50% {
     box-shadow: inset 0 0 25px rgba(228, 142, 53, 0.35), 0 8px 30px rgba(228, 142, 53, 0.3);
     border-color: var(--orange-soft);
   }
+
   100% {
     box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.25), 0 4px 20px rgba(228, 142, 53, 0.15);
     border-color: var(--orange);
@@ -1996,13 +2374,18 @@ body::before {
 }
 
 @keyframes coinSpin {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
 }
 
 .dashboard-card.highlight-glow {
   border-color: rgba(228, 142, 53, 0.4);
-  box-shadow: 
+  box-shadow:
     0 0 15px rgba(228, 142, 53, 0.08),
     0 4px 15px rgba(0, 0, 0, 0.4);
   background: linear-gradient(180deg, rgba(6, 22, 10, 0.4) 0%, rgba(20, 10, 3, 0.18) 100%);
@@ -2038,10 +2421,27 @@ body::before {
 }
 
 @keyframes screenShake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 /* Success red-to-green light-flash overlay */
@@ -2060,19 +2460,34 @@ body::before {
 }
 
 @keyframes successFlashAnim {
-  0% { opacity: 0.35; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 /* General keyframes */
 @keyframes coreSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes coreAlarmShake {
-  0% { transform: translateX(-1px); }
-  100% { transform: translateX(1px); }
+  0% {
+    transform: translateX(-1px);
+  }
+
+  100% {
+    transform: translateX(1px);
+  }
 }
 
 @keyframes attackChipFly {
@@ -2080,9 +2495,11 @@ body::before {
     opacity: 0;
     transform: rotate(var(--stream-angle)) translateX(clamp(140px, 20vh, 210px)) scale(0.72);
   }
+
   20% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
     transform: rotate(var(--stream-angle)) translateX(clamp(34px, 5.5vh, 56px)) scale(1.1);
@@ -2090,14 +2507,29 @@ body::before {
 }
 
 @keyframes keyThreatSweep {
-  0% { transform: translateX(-80%) rotate(4deg); opacity: 0; }
-  45% { opacity: 0.8; }
-  100% { transform: translateX(80%) rotate(4deg); opacity: 0; }
+  0% {
+    transform: translateX(-80%) rotate(4deg);
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateX(80%) rotate(4deg);
+    opacity: 0;
+  }
 }
 
 @keyframes miniLedBlink {
-  0% { opacity: 0.35; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* ── ADDITIONAL DETAILS APPEND ── */
@@ -2161,7 +2593,8 @@ body::before {
 
 .circuit-trace-base {
   fill: none;
-  stroke: rgba(68, 215, 117, 0.035); /* Very faint green copper trace */
+  stroke: rgba(68, 215, 117, 0.035);
+  /* Very faint green copper trace */
   stroke-width: 4.0;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -2170,7 +2603,8 @@ body::before {
 
 .circuit-trace {
   fill: none;
-  stroke: rgba(116, 216, 255, 0.15); /* Sleek data lines */
+  stroke: rgba(116, 216, 255, 0.15);
+  /* Sleek data lines */
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -2204,19 +2638,22 @@ body::before {
 }
 
 .ram-slot-body {
-  fill: #080c14; /* Deep matte socket body */
+  fill: #080c14;
+  /* Deep matte socket body */
   stroke: rgba(116, 216, 255, 0.12);
   stroke-width: 1.25;
 }
 
 .ram-slot-contacts {
-  stroke: #d97706; /* Golden RAM slots */
+  stroke: #d97706;
+  /* Golden RAM slots */
   stroke-width: 1.5;
   stroke-dasharray: 1 3;
 }
 
 .ram-slot-latch {
-  fill: #4b5563; /* Slot ejection locking latch */
+  fill: #4b5563;
+  /* Slot ejection locking latch */
 }
 
 /* Detailed Motherboard IC Chips */
@@ -2226,20 +2663,23 @@ body::before {
 }
 
 .pcb-chip .chip-body {
-  fill: #090d16; /* Glossy carbon packaging */
+  fill: #090d16;
+  /* Glossy carbon packaging */
   stroke: #1e293b;
   stroke-width: 1.5;
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
 }
 
 .pcb-chip .chip-pin {
-  stroke: #94a3b8; /* Lead frame contact pins */
+  stroke: #94a3b8;
+  /* Lead frame contact pins */
   stroke-width: 1.5;
   stroke-linecap: round;
 }
 
 .pcb-chip .chip-dot {
-  fill: #475569; /* Pin 1 dot marking */
+  fill: #475569;
+  /* Pin 1 dot marking */
 }
 
 .pcb-chip .chip-text {
@@ -2253,7 +2693,8 @@ body::before {
 }
 
 .pcb-chip .chip-solder {
-  fill: #cbd5e1; /* Silver solder joints connecting pin to pad */
+  fill: #cbd5e1;
+  /* Silver solder joints connecting pin to pad */
   stroke: rgba(255, 255, 255, 0.25);
   stroke-width: 0.5;
 }
@@ -2277,35 +2718,35 @@ body::before {
 /* Animation removed to keep the circuit lines static and clean */
 
 /* PCB Alarm details: traces flash red under attack */
-.defense-core-visual.under-attack ~ .pcb-circuits .circuit-trace-base,
+.defense-core-visual.under-attack~.pcb-circuits .circuit-trace-base,
 .keyboard-board-outer.under-attack .pcb-circuits .circuit-trace-base {
   stroke: rgba(255, 59, 48, 0.03);
 }
 
-.defense-core-visual.under-attack ~ .pcb-circuits .circuit-trace,
+.defense-core-visual.under-attack~.pcb-circuits .circuit-trace,
 .keyboard-board-outer.under-attack .pcb-circuits .circuit-trace {
   stroke: rgba(255, 59, 48, 0.35);
   filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.65));
 }
 
-.defense-core-visual.under-attack ~ .pcb-circuits .circuit-trace-decor,
+.defense-core-visual.under-attack~.pcb-circuits .circuit-trace-decor,
 .keyboard-board-outer.under-attack .pcb-circuits .circuit-trace-decor {
   stroke: rgba(255, 59, 48, 0.02);
 }
 
-.defense-core-visual.under-attack ~ .pcb-circuits .pcb-reference-trace,
+.defense-core-visual.under-attack~.pcb-circuits .pcb-reference-trace,
 .keyboard-board-outer.under-attack .pcb-circuits .pcb-reference-trace {
   stroke: rgba(255, 59, 48, 0.05);
 }
 
-.defense-core-visual.under-attack ~ .pcb-circuits .pcb-reference-pad,
-.defense-core-visual.under-attack ~ .pcb-circuits .pcb-reference-via,
+.defense-core-visual.under-attack~.pcb-circuits .pcb-reference-pad,
+.defense-core-visual.under-attack~.pcb-circuits .pcb-reference-via,
 .keyboard-board-outer.under-attack .pcb-circuits .pcb-reference-pad,
 .keyboard-board-outer.under-attack .pcb-circuits .pcb-reference-via {
   stroke: rgba(255, 59, 48, 0.055);
 }
 
-.defense-core-visual.under-attack ~ .pcb-circuits .pcb-pad,
+.defense-core-visual.under-attack~.pcb-circuits .pcb-pad,
 .keyboard-board-outer.under-attack .pcb-circuits .pcb-pad {
   fill: rgba(255, 59, 48, 0.03);
   stroke: rgba(255, 59, 48, 0.02);
@@ -2325,8 +2766,13 @@ body::before {
 }
 
 @keyframes terminalCursorBlink {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* CPU Core damaged state: shake + red glow */
@@ -2350,15 +2796,20 @@ body::before {
 }
 
 @keyframes cpuLedPulseFast {
-  0% { opacity: 0.2; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .defense-core-visual.under-attack .core-crystal,
 .supercomputer-core.damaged .core-crystal {
   background: linear-gradient(135deg, #450a0a 0%, #1c0505 100%);
   border-color: #7f1d1d;
-  box-shadow: 
+  box-shadow:
     0 0 22px rgba(255, 59, 48, 0.85),
     inset 0 0 12px rgba(255, 59, 48, 0.75);
 }
@@ -2367,7 +2818,7 @@ body::before {
 .supercomputer-core.damaged .core-crystal::before {
   content: "ERR";
   color: var(--red);
-  text-shadow: 
+  text-shadow:
     0 0 5px var(--red),
     0 0 15px rgba(255, 59, 48, 0.85);
   animation: miniLedBlink 0.3s infinite alternate;
@@ -2425,38 +2876,48 @@ body::before {
 }
 
 @keyframes virusGlitch {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.75)) brightness(1);
   }
+
   10% {
     opacity: 0.8;
     filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.6)) brightness(1.3);
   }
+
   15% {
     opacity: 0.95;
     filter: drop-shadow(0 0 8px rgba(255, 59, 48, 0.9)) brightness(0.9);
   }
+
   20% {
     opacity: 1;
     filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.75)) brightness(1);
   }
+
   48% {
     opacity: 0.6;
     filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.5)) brightness(1.5);
   }
+
   50% {
     opacity: 1;
     filter: drop-shadow(0 0 10px #ff3b30) brightness(2.2);
   }
+
   53% {
     opacity: 0.85;
     filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.6)) brightness(1);
   }
+
   75% {
     opacity: 0.95;
     filter: drop-shadow(0 0 7px rgba(255, 59, 48, 0.8)) brightness(1.25);
   }
+
   85% {
     opacity: 0.7;
     filter: drop-shadow(0 0 3px rgba(255, 59, 48, 0.5)) brightness(0.85);
@@ -2464,38 +2925,48 @@ body::before {
 }
 
 @keyframes virusGlitchTargeted {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.75)) brightness(1);
   }
+
   10% {
     opacity: 0.8;
     filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.6)) brightness(1.3);
   }
+
   15% {
     opacity: 0.95;
     filter: drop-shadow(0 0 8px rgba(228, 142, 53, 0.9)) brightness(0.9);
   }
+
   20% {
     opacity: 1;
     filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.75)) brightness(1);
   }
+
   48% {
     opacity: 0.6;
     filter: drop-shadow(0 0 3px rgba(228, 142, 53, 0.5)) brightness(1.5);
   }
+
   50% {
     opacity: 1;
     filter: drop-shadow(0 0 10px #e48e35) brightness(2.2);
   }
+
   53% {
     opacity: 0.85;
     filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.6)) brightness(1);
   }
+
   75% {
     opacity: 0.95;
     filter: drop-shadow(0 0 7px rgba(228, 142, 53, 0.8)) brightness(1.25);
   }
+
   85% {
     opacity: 0.7;
     filter: drop-shadow(0 0 3px rgba(228, 142, 53, 0.5)) brightness(0.85);
@@ -2567,6 +3038,7 @@ body::before {
     stroke-width: 4px;
     opacity: 1;
   }
+
   100% {
     r: 28px;
     stroke-width: 0.5px;
@@ -2575,19 +3047,26 @@ body::before {
 }
 
 @keyframes rotateRing {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Resistor Networks styling */
 .pcb-resistor-body {
-  fill: #060e09; /* Matte black/dark green resistor body */
+  fill: #060e09;
+  /* Matte black/dark green resistor body */
   stroke: rgba(68, 215, 117, 0.55);
   stroke-width: 0.75;
 }
 
 .pcb-resistor-contact {
-  fill: #94a3b8; /* Silver metallic caps */
+  fill: #94a3b8;
+  /* Silver metallic caps */
   stroke: rgba(148, 163, 184, 0.4);
   stroke-width: 0.5;
 }
@@ -2599,12 +3078,14 @@ body::before {
   .game-header {
     height: 48px;
   }
+
   /* Briefing slideshow & Results */
   .briefing-panel {
     transform: scale(0.88);
     transform-origin: center center;
     margin-top: 5px;
   }
+
   .result-panel {
     transform: scale(0.88);
     transform-origin: center center;
@@ -2615,11 +3096,13 @@ body::before {
   .game-header {
     height: 42px;
   }
+
   .briefing-panel {
     transform: scale(0.78);
     transform-origin: center center;
     margin-top: 0;
   }
+
   .result-panel {
     transform: scale(0.76);
     transform-origin: center center;
@@ -2630,11 +3113,13 @@ body::before {
   .game-header {
     height: 38px;
   }
+
   .briefing-panel {
     transform: scale(0.66);
     transform-origin: center center;
     margin-top: -10px;
   }
+
   .result-panel {
     transform: scale(0.62);
     transform-origin: center center;
@@ -2647,9 +3132,9 @@ body::before {
     transform-origin: center center;
     margin-top: -20px;
   }
+
   .result-panel {
     transform: scale(0.5);
     transform-origin: center center;
   }
 }
-
