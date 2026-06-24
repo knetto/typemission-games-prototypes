@@ -12,7 +12,7 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 2800, // ms between hacks
+    spawnInterval: 3200, // ms between hacks
     maxBurst: 2,
     minSpawnIntervalMultiplier: 0.5,
     speedMultiplier: 0.7
@@ -23,8 +23,8 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 2000,
-    maxBurst: 3,
+    spawnInterval: 2400,
+    maxBurst: 2,
     minSpawnIntervalMultiplier: 0.4,
     speedMultiplier: 1.0
   },
@@ -35,8 +35,8 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1400,
-    maxBurst: 4,
+    spawnInterval: 1800,
+    maxBurst: 3,
     minSpawnIntervalMultiplier: 0.3,
     speedMultiplier: 1.3
   },
@@ -47,8 +47,8 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 900,
-    maxBurst: 5,
+    spawnInterval: 1200,
+    maxBurst: 4,
     minSpawnIntervalMultiplier: 0.25,
     speedMultiplier: 1.6
   }
@@ -462,6 +462,7 @@ function resetTest() {
     defenseBoardEl.style.setProperty("--pressure", "0%");
   }
 
+  if (modeDropdown) modeDropdown.classList.remove("disabled");
   resetButton.style.display = "none";
 
   // Re-render the live sector grid
@@ -492,6 +493,7 @@ function beginDefense() {
   typingInput.disabled = false;
   typingInput.focus();
 
+  if (modeDropdown) modeDropdown.classList.add("disabled");
   resetButton.style.display = "inline-flex";
   statusLogEl.textContent = "Systeem verdediging online. Zoeken naar inbreuken...";
   playSynthSound("success");
