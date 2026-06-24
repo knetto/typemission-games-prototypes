@@ -1017,7 +1017,7 @@ function gameTick() {
   if (currentGameMode === "standard" && elapsedTime >= GAME_DURATION - 0.05) {
     elapsedTime = GAME_DURATION;
     timerEl.textContent = elapsedTime.toFixed(1);
-    finishGame(true);
+    killRemainingVirusesAndFinish();
     return;
   }
 
@@ -1335,6 +1335,134 @@ function updateThreatVisuals() {
   if (defenseCoreEl) {
     defenseCoreEl.classList.toggle("under-attack", activeViruses.length > 0);
   }
+}
+
+function killRemainingVirusesAndFinish() {
+  running = false;
+  clearInterval(gameInterval);
+  gameInterval = null;
+  clearTimeout(hackSpawnerTimeout);
+  hackSpawnerTimeout = null;
+
+  // If there are no viruses, finish immediately
+  if (activeViruses.length === 0) {
+    finishGame(true);
+    return;
+  }
+
+  // Disable typing input
+  typingInput.disabled = true;
+
+  statusLogEl.textContent = "BEVEILIGINGSMAATREGEL: Resterende dreigingen neutraliseren...";
+  statusLogEl.className = "console-log repairing";
+
+  // Create projectiles from CPU core to each virus
+  const cpuCenter = getElementCenterInSvg(defenseCoreEl);
+  
+  // We can animate them using a requestAnimationFrame loop
+  let startTime = null;
+  const duration = 500; // 500ms animation duration for projectiles to fly
+
+  // Capture all currently active viruses and create projectiles
+  const finalViruses = [...activeViruses];
+  const projectiles = finalViruses.map((virus, index) => {
+    // Mark virus as targeted so it doesn't do anything else (like animate)
+    virus.targeted = true;
+
+    // Create SVG projectile element
+    const projEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    projEl.setAttribute("class", "projectile-packet");
+
+    const circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circ.setAttribute("r", "8"); // slightly larger for visibility
+    projEl.appendChild(circ);
+
+    if (svgProjectiles) {
+      svgProjectiles.appendChild(projEl);
+    }
+
+    // Return projectile state
+    return {
+      el: projEl,
+      virus: virus,
+      startX: cpuCenter.x,
+      startY: cpuCenter.y,
+      endX: virus.x,
+      endY: virus.y,
+      stagger: index * 80, // stagger the shots by 80ms each
+      exploded: false
+    };
+  });
+
+  function animateKills(now) {
+    if (!startTime) startTime = now;
+    const globalElapsed = now - startTime;
+
+    let allDone = true;
+
+    projectiles.forEach(proj => {
+      if (globalElapsed < proj.stagger) {
+        // Not fired yet
+        proj.el.setAttribute("transform", `translate(${proj.startX}, ${proj.startY})`);
+        proj.el.style.opacity = "0";
+        allDone = false;
+        return;
+      }
+
+      proj.el.style.opacity = "1";
+      const elapsed = globalElapsed - proj.stagger;
+      const progress = Math.min(elapsed / duration, 1.0);
+
+      // Ease out quad for flight
+      const t = progress * (2 - progress);
+      
+      const currentX = proj.startX + (proj.endX - proj.startX) * t;
+      const currentY = proj.startY + (proj.endY - proj.startY) * t;
+
+      proj.el.setAttribute("transform", `translate(${currentX}, ${currentY})`);
+
+      if (progress < 1.0) {
+        allDone = false;
+      } else if (!proj.exploded) {
+        proj.exploded = true;
+        
+        // Remove projectile element
+        if (proj.el && proj.el.parentNode) {
+          proj.el.parentNode.removeChild(proj.el);
+        }
+
+        // Explode virus
+        spawnExplosion(proj.endX, proj.endY);
+        playSynthSound("success");
+
+        if (proj.virus.el && proj.virus.el.parentNode) {
+          proj.virus.el.parentNode.removeChild(proj.virus.el);
+        }
+
+        // Also clean up trace if needed
+        const trace = getTraceForCell(proj.virus.routeIndex);
+        if (trace) {
+          trace.hackedCount = Math.max(0, trace.hackedCount - 1);
+          if (trace.hackedCount === 0) {
+            trace.baseEl.classList.remove("compromised");
+            trace.traceEl.classList.remove("compromised");
+          }
+        }
+      }
+    });
+
+    if (!allDone) {
+      requestAnimationFrame(animateKills);
+    } else {
+      // All viruses exploded, wait a bit and finish game
+      setTimeout(() => {
+        activeViruses = [];
+        finishGame(true);
+      }, 400);
+    }
+  }
+
+  requestAnimationFrame(animateKills);
 }
 
 function finishGame(won, reasonMsg = "") {
