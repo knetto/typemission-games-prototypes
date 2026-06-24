@@ -18,10 +18,10 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 4000, // ms between hacks (was 3500)
+    spawnInterval: 2800, // ms between hacks (was 4000)
     repairTimeout: 6000, // ms to repair a key (was 5500)
     maxSimultaneous: 2,
-    maxBurst: 1,
+    maxBurst: 2, // was 1
     minSpawnIntervalMultiplier: 0.7,
     speedMultiplier: 0.65 // was 0.75
   },
@@ -31,10 +31,10 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ], // All A-Z
-    spawnInterval: 3000, // was 2600
+    spawnInterval: 2200, // was 3000
     repairTimeout: 5000, // was 4500
     maxSimultaneous: 3,
-    maxBurst: 2,
+    maxBurst: 3, // was 2
     minSpawnIntervalMultiplier: 0.6,
     speedMultiplier: 0.85 // was 0.95
   },
@@ -45,10 +45,10 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ], // A-Z + 0-9
-    spawnInterval: 2200, // was 1800
+    spawnInterval: 1600, // was 2200
     repairTimeout: 4000, // was 3500
     maxSimultaneous: 5,
-    maxBurst: 2,
+    maxBurst: 4, // was 2
     minSpawnIntervalMultiplier: 0.45,
     speedMultiplier: 1.05 // was 1.2
   },
@@ -59,10 +59,10 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1500, // was 1200
+    spawnInterval: 1100, // was 1500
     repairTimeout: 3000, // was 2600
     maxSimultaneous: 7,
-    maxBurst: 3,
+    maxBurst: 5, // was 3
     minSpawnIntervalMultiplier: 0.35,
     speedMultiplier: 1.25 // was 1.4
   }
@@ -1055,17 +1055,27 @@ function spawnHack() {
   const profile = getPressureProfile();
   const slotsOpen = profile.maxSimultaneous - activeViruses.length;
   const hacksToSpawn = Math.max(0, Math.min(slotsOpen, profile.burstCount));
-  const spawnedKeys = [];
 
   const availableLetters = gridCells.map(c => c.letter);
 
-  if (availableLetters.length > 0) {
-    for (let i = 0; i < hacksToSpawn; i++) {
-      const ch = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+  if (availableLetters.length > 0 && hacksToSpawn > 0) {
+    const selectedCells = [];
 
-      // Link to an uncompromised grid cell showing this letter
-      const cell = gridCells.find(c => c.letter === ch && !c.hacked);
-      if (cell) {
+    for (let i = 0; i < hacksToSpawn; i++) {
+      const healthyCells = gridCells.filter(c => !c.hacked && !selectedCells.includes(c));
+      if (healthyCells.length === 0) break;
+
+      const cell = healthyCells[Math.floor(Math.random() * healthyCells.length)];
+      selectedCells.push(cell);
+    }
+
+    selectedCells.forEach((cell, idx) => {
+      setTimeout(() => {
+        if (testFinished || !running) return;
+
+        // Double check in case cell state changed during the stagger delay
+        if (cell.hacked) return;
+
         cell.hacked = true;
         cell.el.className = "sector-cell hacked";
         const trace = getTraceForCell(cell.index);
@@ -1074,170 +1084,166 @@ function spawnHack() {
           trace.baseEl.classList.add("compromised");
           trace.traceEl.classList.add("compromised");
         }
-      }
 
-      // PCB route for the virus (edge to CPU)
-      const traceInfo = getCpuPinForCell(cell ? cell.index : 0);
-      const routePoints = traceInfo.side === "left" ? PCB_ROUTES.left[traceInfo.index] : PCB_ROUTES.right[traceInfo.index];
-      const startPoint = routePoints[0]; // starting at the screen edge (left/right)
+        // PCB route for the virus (edge to CPU)
+        const traceInfo = getCpuPinForCell(cell.index);
+        const routePoints = traceInfo.side === "left" ? PCB_ROUTES.left[traceInfo.index] : PCB_ROUTES.right[traceInfo.index];
+        const startPoint = routePoints[0]; // starting at the screen edge (left/right)
 
-      // Create SVG group element for virus
-      const groupEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      groupEl.setAttribute("class", "virus-blob");
+        // Create SVG group element for virus
+        const groupEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        groupEl.setAttribute("class", "virus-blob");
 
-      const graphicEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      graphicEl.setAttribute("class", "virus-graphic");
+        const graphicEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        graphicEl.setAttribute("class", "virus-graphic");
 
-      // Core circle
-      const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      core.setAttribute("cx", "0");
-      core.setAttribute("cy", "0");
-      core.setAttribute("r", "8");
-      core.setAttribute("class", "virus-body-core");
-      graphicEl.appendChild(core);
+        // Core circle
+        const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        core.setAttribute("cx", "0");
+        core.setAttribute("cy", "0");
+        core.setAttribute("r", "8");
+        core.setAttribute("class", "virus-body-core");
+        graphicEl.appendChild(core);
 
-      // Spikes
-      const angles = [0, 45, 90, 135, 180, 225, 270, 315];
-      angles.forEach(angle => {
-        const rad = (angle * Math.PI) / 180;
-        const xSpoke = 12 * Math.cos(rad);
-        const ySpoke = 12 * Math.sin(rad);
-        const xHead = 14.5 * Math.cos(rad);
-        const yHead = 14.5 * Math.sin(rad);
+        // Spikes
+        const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+        angles.forEach(angle => {
+          const rad = (angle * Math.PI) / 180;
+          const xSpoke = 12 * Math.cos(rad);
+          const ySpoke = 12 * Math.sin(rad);
+          const xHead = 14.5 * Math.cos(rad);
+          const yHead = 14.5 * Math.sin(rad);
 
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", "0");
-        line.setAttribute("y1", "0");
-        line.setAttribute("x2", xSpoke.toFixed(2));
-        line.setAttribute("y2", ySpoke.toFixed(2));
-        line.setAttribute("class", "virus-spike-line");
-        graphicEl.appendChild(line);
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", "0");
+          line.setAttribute("y1", "0");
+          line.setAttribute("x2", xSpoke.toFixed(2));
+          line.setAttribute("y2", ySpoke.toFixed(2));
+          line.setAttribute("class", "virus-spike-line");
+          graphicEl.appendChild(line);
 
-        const head = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        head.setAttribute("cx", xHead.toFixed(2));
-        head.setAttribute("cy", yHead.toFixed(2));
-        head.setAttribute("r", "2.0");
-        head.setAttribute("class", "virus-spike-head");
-        graphicEl.appendChild(head);
-      });
+          const head = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          head.setAttribute("cx", xHead.toFixed(2));
+          head.setAttribute("cy", yHead.toFixed(2));
+          head.setAttribute("r", "2.0");
+          head.setAttribute("class", "virus-spike-head");
+          graphicEl.appendChild(head);
+        });
 
-      // Random face generator (0 to 8)
-      const faceType = Math.floor(Math.random() * 9);
-      const faceGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      faceGroup.setAttribute("class", "virus-face");
+        // Random face generator (0 to 8)
+        const faceType = Math.floor(Math.random() * 9);
+        const faceGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        faceGroup.setAttribute("class", "virus-face");
 
-      if (faceType === 0) {
-        // Angry Face (Type A)
-        faceGroup.innerHTML = `
-          <path d="M -5.5,-3.5 L -1.5,-2 C -1.5,-0.5 -3.5,0 -5.5,-1.5 Z" fill="#010502" />
-          <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
-          <path d="M 5.5,-3.5 L 1.5,-2 C 1.5,-0.5 3.5,0 5.5,-1.5 Z" fill="#010502" />
-          <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
-          <path d="M -4.5,2.5 L -3,1 L -1.5,2.5 L 0,1 L 1.5,2.5 L 3,1 L 4.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-        `;
-      } else if (faceType === 1) {
-        // Cyber Glitch Face (Type B)
-        faceGroup.innerHTML = `
-          <path d="M -5.5,-3.5 L -2.5,-0.5 M -2.5,-3.5 L -5.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
-          <path d="M 2.5,-3.5 L 5.5,-0.5 M 5.5,-3.5 L 2.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
-          <path d="M -4.5,2 H -2.5 V 3.5 H -0.5 V 2 H 1.5 V 3.5 H 3.5 V 2 H 4.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" />
-        `;
-      } else if (faceType === 2) {
-        // Smirk Face (Type C)
-        faceGroup.innerHTML = `
-          <polygon points="-5.5,-3 -1.5,-1.5 -2.5,-3.5" fill="#010502" />
-          <polygon points="5.5,-3 1.5,-1.5 2.5,-3.5" fill="#010502" />
-          <path d="M -4,2 Q -1.5,5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
-        `;
-      } else if (faceType === 3) {
-        // Shocked Face (Type D)
-        faceGroup.innerHTML = `
-          <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
-          <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
-          <circle cx="3.5" cy="-2" r="2.2" fill="#010502" />
-          <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
-          <circle cx="0" cy="3.2" r="1.8" fill="#fff" />
-        `;
-      } else if (faceType === 4) {
-        // Sad Face (Type E)
-        faceGroup.innerHTML = `
-          <line x1="-5.5" y1="-4.5" x2="-2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
-          <circle cx="-4" cy="-1.5" r="1.5" fill="#010502" />
-          <line x1="5.5" y1="-4.5" x2="2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
-          <circle cx="4" cy="-1.5" r="1.5" fill="#010502" />
-          <path d="M -3.5,4 Q 0,1 3.5,4" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
-        `;
-      } else if (faceType === 5) {
-        // Crazy Face (Type F)
-        faceGroup.innerHTML = `
-          <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
-          <circle cx="-3.5" cy="-1.5" r="0.8" fill="#fff" />
-          <circle cx="3.5" cy="-2" r="1.2" fill="#010502" />
-          <circle cx="3.5" cy="-2" r="0.5" fill="#fff" />
-          <path d="M -3,2 Q 0,4.5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
-          <path d="M 0,2.5 C 0,5 2,5 2,2.5 Z" fill="#ff4b80" stroke="#fff" stroke-width="0.8" />
-        `;
-      } else if (faceType === 6) {
-        // Neutral Face (Type G)
-        faceGroup.innerHTML = `
-          <circle cx="-3.5" cy="-2" r="1.5" fill="#010502" />
-          <circle cx="3.5" cy="-2" r="1.5" fill="#010502" />
-          <line x1="-3.5" y1="2.5" x2="3.5" y2="2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" />
-        `;
-      } else if (faceType === 7) {
-        // Tired Face (Type H)
-        faceGroup.innerHTML = `
-          <path d="M -5.5,-2 H -1.5 C -1.5,-0.2 -5.5,-0.2 -5.5,-2" fill="#010502" />
-          <path d="M 1.5,-2 H 5.5 C 5.5,-0.2 1.5,-0.2 1.5,-2" fill="#010502" />
-          <line x1="-5.5" y1="-2.5" x2="-1.5" y2="-2" stroke="#010502" stroke-width="1" />
-          <line x1="5.5" y1="-2.5" x2="1.5" y2="-2" stroke="#010502" stroke-width="1" />
-          <path d="M -2.5,2.5 Q 0,1.5 2.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
-        `;
-      } else {
-        // SUPER Angry Face (Type I)
-        faceGroup.innerHTML = `
-          <polygon points="-6,-5.5 -1.5,-2.5 -2,-3.5" fill="#010502" />
-          <path d="M -5.5,-3 L -1.5,-1 C -1.5,1 -3.5,1.5 -5.5,-0.5 Z" fill="#010502" />
-          <circle cx="-3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
-          <polygon points="6,-5.5 1.5,-2.5 2,-3.5" fill="#010502" />
-          <path d="M 5.5,-3 L 1.5,-1 C 1.5,1 3.5,1.5 5.5,-0.5 Z" fill="#010502" />
-          <circle cx="3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
-          <path d="M -4.5,1.5 L -2.5,3.5 L -0.5,1.5 L 1.5,3.5 L 3.5,1.5 L 2.5,5 L 0,4 L -2.5,5 Z" fill="#fff" />
-        `;
-      }
+        if (faceType === 0) {
+          // Angry Face (Type A)
+          faceGroup.innerHTML = `
+            <path d="M -5.5,-3.5 L -1.5,-2 C -1.5,-0.5 -3.5,0 -5.5,-1.5 Z" fill="#010502" />
+            <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
+            <path d="M 5.5,-3.5 L 1.5,-2 C 1.5,-0.5 3.5,0 5.5,-1.5 Z" fill="#010502" />
+            <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
+            <path d="M -4.5,2.5 L -3,1 L -1.5,2.5 L 0,1 L 1.5,2.5 L 3,1 L 4.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+          `;
+        } else if (faceType === 1) {
+          // Cyber Glitch Face (Type B)
+          faceGroup.innerHTML = `
+            <path d="M -5.5,-3.5 L -2.5,-0.5 M -2.5,-3.5 L -5.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M 2.5,-3.5 L 5.5,-0.5 M 5.5,-3.5 L 2.5,-0.5" stroke="#010502" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M -4.5,2 H -2.5 V 3.5 H -0.5 V 2 H 1.5 V 3.5 H 3.5 V 2 H 4.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" />
+          `;
+        } else if (faceType === 2) {
+          // Smirk Face (Type C)
+          faceGroup.innerHTML = `
+            <polygon points="-5.5,-3 -1.5,-1.5 -2.5,-3.5" fill="#010502" />
+            <polygon points="5.5,-3 1.5,-1.5 2.5,-3.5" fill="#010502" />
+            <path d="M -4,2 Q -1.5,5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+          `;
+        } else if (faceType === 3) {
+          // Shocked Face (Type D)
+          faceGroup.innerHTML = `
+            <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
+            <circle cx="-3.5" cy="-2" r="0.8" fill="#fff" />
+            <circle cx="3.5" cy="-2" r="2.2" fill="#010502" />
+            <circle cx="3.5" cy="-2" r="0.8" fill="#fff" />
+            <circle cx="0" cy="3.2" r="1.8" fill="#fff" />
+          `;
+        } else if (faceType === 4) {
+          // Sad Face (Type E)
+          faceGroup.innerHTML = `
+            <line x1="-5.5" y1="-4.5" x2="-2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
+            <circle cx="-4" cy="-1.5" r="1.5" fill="#010502" />
+            <line x1="5.5" y1="-4.5" x2="2.5" y2="-3" stroke="#010502" stroke-width="1.2" stroke-linecap="round" />
+            <circle cx="4" cy="-1.5" r="1.5" fill="#010502" />
+            <path d="M -3.5,4 Q 0,1 3.5,4" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+          `;
+        } else if (faceType === 5) {
+          // Crazy Face (Type F)
+          faceGroup.innerHTML = `
+            <circle cx="-3.5" cy="-2" r="2.2" fill="#010502" />
+            <circle cx="-3.5" cy="-1.5" r="0.8" fill="#fff" />
+            <circle cx="3.5" cy="-2" r="1.2" fill="#010502" />
+            <circle cx="3.5" cy="-2" r="0.5" fill="#fff" />
+            <path d="M -3,2 Q 0,4.5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+            <path d="M 0,2.5 C 0,5 2,5 2,2.5 Z" fill="#ff4b80" stroke="#fff" stroke-width="0.8" />
+          `;
+        } else if (faceType === 6) {
+          // Neutral Face (Type G)
+          faceGroup.innerHTML = `
+            <circle cx="-3.5" cy="-2" r="1.5" fill="#010502" />
+            <circle cx="3.5" cy="-2" r="1.5" fill="#010502" />
+            <line x1="-3.5" y1="2.5" x2="3.5" y2="2.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round" />
+          `;
+        } else if (faceType === 7) {
+          // Tired Face (Type H)
+          faceGroup.innerHTML = `
+            <path d="M -5.5,-2 H -1.5 C -1.5,-0.2 -5.5,-0.2 -5.5,-2" fill="#010502" />
+            <path d="M 1.5,-2 H 5.5 C 5.5,-0.2 1.5,-0.2 1.5,-2" fill="#010502" />
+            <line x1="-5.5" y1="-2.5" x2="-1.5" y2="-2" stroke="#010502" stroke-width="1" />
+            <line x1="5.5" y1="-2.5" x2="1.5" y2="-2" stroke="#010502" stroke-width="1" />
+            <path d="M -2.5,2.5 Q 0,1.5 2.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" />
+          `;
+        } else {
+          // SUPER Angry Face (Type I)
+          faceGroup.innerHTML = `
+            <polygon points="-6,-5.5 -1.5,-2.5 -2,-3.5" fill="#010502" />
+            <path d="M -5.5,-3 L -1.5,-1 C -1.5,1 -3.5,1.5 -5.5,-0.5 Z" fill="#010502" />
+            <circle cx="-3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
+            <polygon points="6,-5.5 1.5,-2.5 2,-3.5" fill="#010502" />
+            <path d="M 5.5,-3 L 1.5,-1 C 1.5,1 3.5,1.5 5.5,-0.5 Z" fill="#010502" />
+            <circle cx="3.5" cy="-1.2" r="0.75" fill="#ff3b30" />
+            <path d="M -4.5,1.5 L -2.5,3.5 L -0.5,1.5 L 1.5,3.5 L 3.5,1.5 L 2.5,5 L 0,4 L -2.5,5 Z" fill="#fff" />
+          `;
+        }
 
-      graphicEl.appendChild(faceGroup);
-      groupEl.appendChild(graphicEl);
-      if (svgViruses) svgViruses.appendChild(groupEl);
-      groupEl.setAttribute("transform", `translate(${startPoint.x}, ${startPoint.y})`);
+        graphicEl.appendChild(faceGroup);
+        groupEl.appendChild(graphicEl);
+        if (svgViruses) svgViruses.appendChild(groupEl);
+        groupEl.setAttribute("transform", `translate(${startPoint.x}, ${startPoint.y})`);
 
-      activeViruses.push({
-        letter: ch,
-        cell: cell || null,
-        routePoints: routePoints,
-        progress: 0,
-        speed: (0.004 + (profile.pressure * 0.004)) * (profile.speedMultiplier || 1.0) + Math.random() * 0.002,
-        el: groupEl,
-        targeted: false,
-        x: startPoint.x,
-        y: startPoint.y
-      });
+        activeViruses.push({
+          letter: cell.letter,
+          cell: cell,
+          routePoints: routePoints,
+          progress: 0,
+          speed: (0.004 + (profile.pressure * 0.004)) * (profile.speedMultiplier || 1.0) + Math.random() * 0.002,
+          el: groupEl,
+          targeted: false,
+          x: startPoint.x,
+          y: startPoint.y
+        });
 
-      spawnedKeys.push(ch.toUpperCase());
-    }
+        playSynthSound("warning");
+        statusLogEl.textContent = `WAARSCHUWING: Inkomend Virus [${cell.letter.toUpperCase()}]-signatuur gedetecteerd!`;
+        statusLogEl.className = "console-log breached";
+        consolePingEl.textContent = "BREACH";
+        consolePingEl.className = "console-ping alarm";
+        updateThreatVisuals();
+      }, idx * 300);
+    });
   }
 
-  if (spawnedKeys.length > 0) {
-    playSynthSound("warning");
-    const sectorText = spawnedKeys.length === 1 ? `Virus [${spawnedKeys[0]}]` : `Virussen [${spawnedKeys.join(" ")}]`;
-    statusLogEl.textContent = `WAARSCHUWING: Inkomend ${sectorText}-signatuur gedetecteerd!`;
-    statusLogEl.className = "console-log breached";
-    consolePingEl.textContent = "BREACH";
-    consolePingEl.className = "console-ping alarm";
-    updateThreatVisuals();
-  }
-
-  const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3);
+  const extraMultiplier = hacksToSpawn > 2 ? 1.0 + (hacksToSpawn - 2) * 0.5 : 1.0;
+  const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3) * extraMultiplier;
 
   const thisTimeout = setTimeout(() => {
     if (hackSpawnerTimeout !== thisTimeout) return;

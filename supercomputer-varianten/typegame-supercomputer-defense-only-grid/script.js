@@ -12,8 +12,8 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 3200, // ms between hacks
-    maxBurst: 2,
+    spawnInterval: 2400, // ms between hacks (was 3200)
+    maxBurst: 3, // was 2
     minSpawnIntervalMultiplier: 0.5,
     speedMultiplier: 0.7
   },
@@ -23,8 +23,8 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 2400,
-    maxBurst: 2,
+    spawnInterval: 1800, // was 2400
+    maxBurst: 4, // was 2
     minSpawnIntervalMultiplier: 0.4,
     speedMultiplier: 1.0
   },
@@ -35,8 +35,8 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1800,
-    maxBurst: 3,
+    spawnInterval: 1300, // was 1800
+    maxBurst: 5, // was 3
     minSpawnIntervalMultiplier: 0.3,
     speedMultiplier: 1.3
   },
@@ -47,8 +47,8 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1200,
-    maxBurst: 4,
+    spawnInterval: 900, // was 1200
+    maxBurst: 6, // was 4
     minSpawnIntervalMultiplier: 0.25,
     speedMultiplier: 1.6
   }
@@ -539,35 +539,41 @@ function spawnHack() {
   if (testFinished || !running) return;
 
   const profile = getPressureProfile();
-  const healthyCells = gridCells.filter(c => !c.hacked);
+  const healthyCells = [...gridCells.filter(c => !c.hacked)];
 
   if (healthyCells.length > 0) {
     const hacksToSpawn = Math.min(healthyCells.length, profile.burstCount);
-    const spawnedKeys = [];
+    const cellsToHack = [];
 
     for (let i = 0; i < hacksToSpawn; i++) {
       const index = Math.floor(Math.random() * healthyCells.length);
       const cell = healthyCells.splice(index, 1)[0];
-
-      cell.hacked = true;
-      cell.hackedAt = Date.now();
-      cell.el.className = "sector-cell hacked";
-
-      spawnedKeys.push(cell.letter.toUpperCase());
+      cellsToHack.push(cell);
     }
 
-    if (spawnedKeys.length > 0) {
-      playSynthSound("warning");
-      const sectorText = spawnedKeys.length === 1 ? `Sector [${spawnedKeys[0]}]` : `Sectoren [${spawnedKeys.join(" ")}]`;
-      statusLogEl.textContent = `WAARSCHUWING: Inbreuk gedetecteerd in ${sectorText}!`;
-      statusLogEl.className = "console-log breached";
-      consolePingEl.textContent = "ALARM";
-      consolePingEl.className = "console-ping alarm";
-      updateThreatVisuals();
-    }
+    cellsToHack.forEach((cell, idx) => {
+      setTimeout(() => {
+        if (testFinished || !running) return;
+
+        // Double check in case cell state changed during the stagger delay
+        if (cell.hacked) return;
+
+        cell.hacked = true;
+        cell.hackedAt = Date.now();
+        cell.el.className = "sector-cell hacked";
+
+        playSynthSound("warning");
+        statusLogEl.textContent = `WAARSCHUWING: Inbreuk gedetecteerd in Sector [${cell.letter.toUpperCase()}]!`;
+        statusLogEl.className = "console-log breached";
+        consolePingEl.textContent = "ALARM";
+        consolePingEl.className = "console-ping alarm";
+        updateThreatVisuals();
+      }, idx * 300);
+    });
   }
 
-  const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3);
+  const extraMultiplier = hacksToSpawn > 2 ? 1.0 + (hacksToSpawn - 2) * 0.5 : 1.0;
+  const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3) * extraMultiplier;
   hackSpawnerTimeout = setTimeout(spawnHack, nextSpawnDelay);
 }
 

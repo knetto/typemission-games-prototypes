@@ -18,10 +18,10 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 4000, // ms between hacks (was 3500)
+    spawnInterval: 2800, // ms between hacks (was 4000)
     repairTimeout: 6000, // ms to repair a key (was 5500)
     maxSimultaneous: 2,
-    maxBurst: 1,
+    maxBurst: 2, // was 1
     minSpawnIntervalMultiplier: 0.7,
     speedMultiplier: 0.65 // was 0.75
   },
@@ -31,10 +31,10 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ], // All A-Z
-    spawnInterval: 3000, // was 2600
+    spawnInterval: 2200, // was 3000
     repairTimeout: 5000, // was 4500
     maxSimultaneous: 3,
-    maxBurst: 2,
+    maxBurst: 3, // was 2
     minSpawnIntervalMultiplier: 0.6,
     speedMultiplier: 0.85 // was 0.95
   },
@@ -45,10 +45,10 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ], // A-Z + 0-9
-    spawnInterval: 2200, // was 1800
+    spawnInterval: 1600, // was 2200
     repairTimeout: 4000, // was 3500
     maxSimultaneous: 5,
-    maxBurst: 2,
+    maxBurst: 4, // was 2
     minSpawnIntervalMultiplier: 0.45,
     speedMultiplier: 1.05 // was 1.2
   },
@@ -59,10 +59,10 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1500, // was 1200
+    spawnInterval: 1100, // was 1500
     repairTimeout: 3000, // was 2600
     maxSimultaneous: 7,
-    maxBurst: 3,
+    maxBurst: 5, // was 3
     minSpawnIntervalMultiplier: 0.35,
     speedMultiplier: 1.25 // was 1.4
   }
@@ -886,119 +886,126 @@ function spawnHack() {
   const profile = getPressureProfile();
   const slotsOpen = profile.maxSimultaneous - activeViruses.length;
   const hacksToSpawn = Math.max(0, Math.min(slotsOpen, profile.burstCount));
-  const spawnedKeys = [];
 
-  if (currentPool.length > 0) {
+  if (currentPool.length > 0 && hacksToSpawn > 0) {
+    const lettersToSpawn = [];
+    const selectedRoutes = [];
+
+    // Pre-determine letters and routes to prevent duplication in this staggered wave
     for (let i = 0; i < hacksToSpawn; i++) {
-      // Pick a unique letter not currently displayed by any active virus
       const activeLetters = activeViruses.map(v => v.letter);
-      const available = currentPool.filter(l => !activeLetters.includes(l));
-      if (available.length === 0) {
-        break; // No more unique letters available in pool, skip spawning for this burst
-      }
-      const ch = available[Math.floor(Math.random() * available.length)];
+      const available = currentPool.filter(l => !activeLetters.includes(l) && !lettersToSpawn.includes(l));
+      if (available.length === 0) break;
 
-      // Pick a route index that is not currently occupied (if possible)
+      const ch = available[Math.floor(Math.random() * available.length)];
+      lettersToSpawn.push(ch);
+
       const occupiedRoutes = activeViruses.map(v => v.routeIndex);
-      const freeRoutes = Array.from({ length: GRID_SIZE }, (_, idx) => idx).filter(idx => !occupiedRoutes.includes(idx));
+      const freeRoutes = Array.from({ length: GRID_SIZE }, (_, idx) => idx)
+        .filter(idx => !occupiedRoutes.includes(idx) && !selectedRoutes.includes(idx));
+      
       let routeIndex = 0;
       if (freeRoutes.length > 0) {
         routeIndex = freeRoutes[Math.floor(Math.random() * freeRoutes.length)];
       } else {
         routeIndex = Math.floor(Math.random() * GRID_SIZE);
       }
-
-      const routePoints = PCB_ROUTES[routeIndex];
-      const startPoint = routePoints[0];
-
-      // Create SVG group element for virus
-      const groupEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      groupEl.setAttribute("class", "virus-blob");
-
-      const graphicEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      graphicEl.setAttribute("class", "virus-graphic");
-
-      // Core circle (slightly larger for letter legibility)
-      const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      core.setAttribute("cx", "0");
-      core.setAttribute("cy", "0");
-      core.setAttribute("r", "10");
-      core.setAttribute("class", "virus-body-core");
-      graphicEl.appendChild(core);
-
-      // Spikes
-      const angles = [0, 45, 90, 135, 180, 225, 270, 315];
-      angles.forEach(angle => {
-        const rad = (angle * Math.PI) / 180;
-        const xSpoke = 14 * Math.cos(rad);
-        const ySpoke = 14 * Math.sin(rad);
-        const xHead = 16.5 * Math.cos(rad);
-        const yHead = 16.5 * Math.sin(rad);
-
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", "0");
-        line.setAttribute("y1", "0");
-        line.setAttribute("x2", xSpoke.toFixed(2));
-        line.setAttribute("y2", ySpoke.toFixed(2));
-        line.setAttribute("class", "virus-spike-line");
-        graphicEl.appendChild(line);
-
-        const head = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        head.setAttribute("cx", xHead.toFixed(2));
-        head.setAttribute("cy", yHead.toFixed(2));
-        head.setAttribute("r", "2.0");
-        head.setAttribute("class", "virus-spike-head");
-        graphicEl.appendChild(head);
-      });
-
-      // Target letter text centered in virus core
-      const textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      textEl.setAttribute("class", "virus-letter");
-      textEl.setAttribute("x", "0");
-      textEl.setAttribute("y", "3.5");
-      textEl.setAttribute("text-anchor", "middle");
-      textEl.textContent = ch.toUpperCase();
-      graphicEl.appendChild(textEl);
-
-      groupEl.appendChild(graphicEl);
-      if (svgViruses) svgViruses.appendChild(groupEl);
-      groupEl.setAttribute("transform", `translate(${startPoint.x}, ${startPoint.y})`);
-
-      // Mark the PCB trace compromised
-      const trace = getTraceForCell(routeIndex);
-      if (trace) {
-        trace.hackedCount++;
-        trace.baseEl.classList.add("compromised");
-        trace.traceEl.classList.add("compromised");
-      }
-
-      activeViruses.push({
-        letter: ch,
-        routeIndex: routeIndex,
-        routePoints: routePoints,
-        progress: 0,
-        speed: (0.004 + (profile.pressure * 0.004)) * (profile.speedMultiplier || 1.0) + Math.random() * 0.002,
-        el: groupEl,
-        targeted: false,
-        x: startPoint.x,
-        y: startPoint.y
-      });
-
-      spawnedKeys.push(ch.toUpperCase());
+      selectedRoutes.push(routeIndex);
     }
+
+    lettersToSpawn.forEach((ch, idx) => {
+      setTimeout(() => {
+        if (testFinished || !running) return;
+
+        const routeIndex = selectedRoutes[idx];
+        const routePoints = PCB_ROUTES[routeIndex];
+        const startPoint = routePoints[0];
+
+        // Create SVG group element for virus
+        const groupEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        groupEl.setAttribute("class", "virus-blob");
+
+        const graphicEl = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        graphicEl.setAttribute("class", "virus-graphic");
+
+        // Core circle (slightly larger for letter legibility)
+        const core = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        core.setAttribute("cx", "0");
+        core.setAttribute("cy", "0");
+        core.setAttribute("r", "10");
+        core.setAttribute("class", "virus-body-core");
+        graphicEl.appendChild(core);
+
+        // Spikes
+        const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+        angles.forEach(angle => {
+          const rad = (angle * Math.PI) / 180;
+          const xSpoke = 14 * Math.cos(rad);
+          const ySpoke = 14 * Math.sin(rad);
+          const xHead = 16.5 * Math.cos(rad);
+          const yHead = 16.5 * Math.sin(rad);
+
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", "0");
+          line.setAttribute("y1", "0");
+          line.setAttribute("x2", xSpoke.toFixed(2));
+          line.setAttribute("y2", ySpoke.toFixed(2));
+          line.setAttribute("class", "virus-spike-line");
+          graphicEl.appendChild(line);
+
+          const head = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          head.setAttribute("cx", xHead.toFixed(2));
+          head.setAttribute("cy", yHead.toFixed(2));
+          head.setAttribute("r", "2.0");
+          head.setAttribute("class", "virus-spike-head");
+          graphicEl.appendChild(head);
+        });
+
+        // Target letter text centered in virus core
+        const textEl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textEl.setAttribute("class", "virus-letter");
+        textEl.setAttribute("x", "0");
+        textEl.setAttribute("y", "3.5");
+        textEl.setAttribute("text-anchor", "middle");
+        textEl.textContent = ch.toUpperCase();
+        graphicEl.appendChild(textEl);
+
+        groupEl.appendChild(graphicEl);
+        if (svgViruses) svgViruses.appendChild(groupEl);
+        groupEl.setAttribute("transform", `translate(${startPoint.x}, ${startPoint.y})`);
+
+        // Mark the PCB trace compromised
+        const trace = getTraceForCell(routeIndex);
+        if (trace) {
+          trace.hackedCount++;
+          trace.baseEl.classList.add("compromised");
+          trace.traceEl.classList.add("compromised");
+        }
+
+        activeViruses.push({
+          letter: ch,
+          routeIndex: routeIndex,
+          routePoints: routePoints,
+          progress: 0,
+          speed: (0.004 + (profile.pressure * 0.004)) * (profile.speedMultiplier || 1.0) + Math.random() * 0.002,
+          el: groupEl,
+          targeted: false,
+          x: startPoint.x,
+          y: startPoint.y
+        });
+
+        playSynthSound("warning");
+        statusLogEl.textContent = `WAARSCHUWING: Inkomend Virus [${ch.toUpperCase()}]-signatuur gedetecteerd!`;
+        statusLogEl.className = "console-log breached";
+        consolePingEl.textContent = "BREACH";
+        consolePingEl.className = "console-ping alarm";
+        updateThreatVisuals();
+      }, idx * 300);
+    });
   }
 
-  if (spawnedKeys.length > 0) {
-    playSynthSound("warning");
-    const sectorText = spawnedKeys.length === 1 ? `Virus [${spawnedKeys[0]}]` : `Virussen [${spawnedKeys.join(" ")}]`;
-    statusLogEl.textContent = `WAARSCHUWING: Inkomend ${sectorText}-signatuur gedetecteerd!`;
-    statusLogEl.className = "console-log breached";
-    consolePingEl.textContent = "BREACH";
-    consolePingEl.className = "console-ping alarm";
-    updateThreatVisuals();
-  }
-
-  const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3);
+  const extraMultiplier = hacksToSpawn > 2 ? 1.0 + (hacksToSpawn - 2) * 0.5 : 1.0;
+  const nextSpawnDelay = profile.spawnInterval * (0.85 + Math.random() * 0.3) * extraMultiplier;
 
   const thisTimeout = setTimeout(() => {
     if (hackSpawnerTimeout !== thisTimeout) return;
