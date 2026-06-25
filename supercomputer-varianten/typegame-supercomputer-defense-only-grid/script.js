@@ -1,8 +1,8 @@
 // ── GAME CONSTANTS ──
 const GAME_DURATION = 60.0; // 60 seconds survival
-const GRID_COLS = 8;
-const GRID_ROWS = 6;
-const GRID_SIZE = GRID_COLS * GRID_ROWS; // 48 sectors
+const GRID_COLS = 6;
+const GRID_ROWS = 4;
+const GRID_SIZE = GRID_COLS * GRID_ROWS; // 24 sectors
 
 // Difficulty configurations
 const DIFFICULTY_CONFIGS = {
@@ -539,10 +539,11 @@ function spawnHack() {
   if (testFinished || !running) return;
 
   const profile = getPressureProfile();
+  let hacksToSpawn = 0;
   const healthyCells = [...gridCells.filter(c => !c.hacked)];
 
   if (healthyCells.length > 0) {
-    const hacksToSpawn = Math.min(healthyCells.length, profile.burstCount);
+    hacksToSpawn = Math.min(healthyCells.length, profile.burstCount);
     const cellsToHack = [];
 
     for (let i = 0; i < hacksToSpawn; i++) {
