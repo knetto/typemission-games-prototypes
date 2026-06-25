@@ -395,8 +395,6 @@ function updateActiveKeypadButton() {
   const allBtns = keypadGrid.querySelectorAll(".keypad-btn");
   allBtns.forEach(btn => btn.classList.remove("active-target"));
 
-  // Target highlighting disabled to avoid drawing focus to the keypad layout
-  /*
   if (!testFinished && !isDecryptingAnimation && codeCursor < currentCode.length) {
     const targetChar = currentCode[codeCursor];
     const keypadNum = getKeypadNumForChar(targetChar);
@@ -408,7 +406,6 @@ function updateActiveKeypadButton() {
       });
     }
   }
-  */
 }
 
 function flashKeypadButton(keypadNum, type) {
