@@ -1,6 +1,6 @@
 // ── GAME CONSTANTS ──
 const GAME_DURATION = 60.0; // 60 seconds survival
-const MAX_MISTAKES = 3;
+const MAX_MISTAKES = 5;
 const MAX_EXTRA_PRESSURE_KEYS = 3;
 
 // Letter grid definition — a live matrix of supercomputer sectors (not a keyboard).
@@ -18,12 +18,12 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 2800, // ms between hacks (was 4000)
-    repairTimeout: 6000, // ms to repair a key (was 5500)
+    spawnInterval: 3800, // ms between hacks (was 2800)
+    repairTimeout: 7000, // ms to repair a key (was 6000)
     maxSimultaneous: 2,
-    maxBurst: 2, // was 1
-    minSpawnIntervalMultiplier: 0.7,
-    speedMultiplier: 0.65 // was 0.75
+    maxBurst: 1, // was 2
+    minSpawnIntervalMultiplier: 0.8, // was 0.7
+    speedMultiplier: 0.5 // was 0.65
   },
   medium: {
     pool: [
@@ -31,12 +31,12 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ], // All A-Z
-    spawnInterval: 2200, // was 3000
-    repairTimeout: 5000, // was 4500
+    spawnInterval: 3000, // was 2200
+    repairTimeout: 6000, // was 5000
     maxSimultaneous: 3,
-    maxBurst: 3, // was 2
-    minSpawnIntervalMultiplier: 0.6,
-    speedMultiplier: 0.85 // was 0.95
+    maxBurst: 2, // was 3
+    minSpawnIntervalMultiplier: 0.75, // was 0.6
+    speedMultiplier: 0.65 // was 0.85
   },
   hard: {
     pool: [
@@ -45,12 +45,12 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ], // A-Z + 0-9
-    spawnInterval: 1600, // was 2200
-    repairTimeout: 4000, // was 3500
-    maxSimultaneous: 5,
-    maxBurst: 4, // was 2
-    minSpawnIntervalMultiplier: 0.45,
-    speedMultiplier: 1.05 // was 1.2
+    spawnInterval: 2200, // was 1600
+    repairTimeout: 5000, // was 4000
+    maxSimultaneous: 4, // was 5
+    maxBurst: 3, // was 4
+    minSpawnIntervalMultiplier: 0.65, // was 0.45
+    speedMultiplier: 0.8 // was 1.05
   },
   expert: {
     pool: [
@@ -59,12 +59,12 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1100, // was 1500
-    repairTimeout: 3000, // was 2600
-    maxSimultaneous: 7,
-    maxBurst: 5, // was 3
-    minSpawnIntervalMultiplier: 0.35,
-    speedMultiplier: 1.25 // was 1.4
+    spawnInterval: 1600, // was 1100
+    repairTimeout: 4000, // was 3000
+    maxSimultaneous: 5, // was 7
+    maxBurst: 3, // was 5
+    minSpawnIntervalMultiplier: 0.55, // was 0.35
+    speedMultiplier: 1.0 // was 1.25
   }
 };
 

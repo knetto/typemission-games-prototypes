@@ -12,9 +12,9 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 2400, // ms between hacks (was 3200)
-    maxBurst: 3, // was 2
-    minSpawnIntervalMultiplier: 0.5,
+    spawnInterval: 3600, // ms between hacks (was 2400)
+    maxBurst: 1, // was 3
+    minSpawnIntervalMultiplier: 0.8, // was 0.5
     speedMultiplier: 0.7
   },
   medium: {
@@ -23,9 +23,9 @@ const DIFFICULTY_CONFIGS = {
       "a", "s", "d", "f", "g", "h", "j", "k", "l",
       "z", "x", "c", "v", "b", "n", "m"
     ],
-    spawnInterval: 1800, // was 2400
-    maxBurst: 4, // was 2
-    minSpawnIntervalMultiplier: 0.4,
+    spawnInterval: 2800, // ms between hacks (was 1800)
+    maxBurst: 2, // was 4
+    minSpawnIntervalMultiplier: 0.7, // was 0.4
     speedMultiplier: 1.0
   },
   hard: {
@@ -35,9 +35,9 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 1300, // was 1800
-    maxBurst: 5, // was 3
-    minSpawnIntervalMultiplier: 0.3,
+    spawnInterval: 2000, // ms between hacks (was 1300)
+    maxBurst: 3, // was 5
+    minSpawnIntervalMultiplier: 0.6, // was 0.3
     speedMultiplier: 1.3
   },
   expert: {
@@ -47,9 +47,9 @@ const DIFFICULTY_CONFIGS = {
       "z", "x", "c", "v", "b", "n", "m",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ],
-    spawnInterval: 900, // was 1200
-    maxBurst: 6, // was 4
-    minSpawnIntervalMultiplier: 0.25,
+    spawnInterval: 1400, // ms between hacks (was 900)
+    maxBurst: 4, // was 6
+    minSpawnIntervalMultiplier: 0.5, // was 0.25
     speedMultiplier: 1.6
   }
 };
