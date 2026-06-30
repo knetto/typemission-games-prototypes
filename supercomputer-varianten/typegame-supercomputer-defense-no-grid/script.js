@@ -1,6 +1,6 @@
 // ── GAME CONSTANTS ──
 const GAME_DURATION = 60.0; // 60 seconds survival
-const MAX_MISTAKES = 5;
+const MAX_MISTAKES = 3;
 const MAX_EXTRA_PRESSURE_KEYS = 3;
 
 // Letter grid definition — a live matrix of supercomputer sectors (not a keyboard).

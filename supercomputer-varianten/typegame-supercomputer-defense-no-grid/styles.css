@@ -1267,8 +1267,7 @@ body::before {
     0 10px 26px rgba(0, 0, 0, 0.55);
   flex: 1;
   width: 100%;
-  aspect-ratio: 2 / 1;
-  min-height: clamp(380px, 50vh, 460px);
+  min-height: clamp(220px, 42vh, 460px);
   margin-bottom: clamp(6px, 1vh, 12px);
   overflow: hidden;
 }
@@ -2973,6 +2972,10 @@ body::before {
   .game-header {
     height: 48px;
   }
+  .arena-layout {
+    transform: scale(0.90);
+    transform-origin: center center;
+  }
 
   /* Briefing slideshow & Results */
   .briefing-panel {
@@ -2987,9 +2990,20 @@ body::before {
   }
 }
 
+@container gameContainer (max-height: 640px) {
+  .arena-layout {
+    transform: scale(0.82);
+    transform-origin: center center;
+  }
+}
+
 @container gameContainer (max-height: 580px) {
   .game-header {
     height: 42px;
+  }
+  .arena-layout {
+    transform: scale(0.74);
+    transform-origin: center center;
   }
 
   .briefing-panel {
@@ -3004,9 +3018,20 @@ body::before {
   }
 }
 
+@container gameContainer (max-height: 520px) {
+  .arena-layout {
+    transform: scale(0.66);
+    transform-origin: center center;
+  }
+}
+
 @container gameContainer (max-height: 460px) {
   .game-header {
     height: 38px;
+  }
+  .arena-layout {
+    transform: scale(0.58);
+    transform-origin: center center;
   }
 
   .briefing-panel {
@@ -3022,6 +3047,11 @@ body::before {
 }
 
 @container gameContainer (max-height: 400px) {
+  .arena-layout {
+    transform: scale(0.50);
+    transform-origin: center center;
+  }
+
   .briefing-panel {
     transform: scale(0.56);
     transform-origin: center center;

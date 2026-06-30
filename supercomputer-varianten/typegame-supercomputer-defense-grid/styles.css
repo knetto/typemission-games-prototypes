@@ -1327,7 +1327,7 @@ body::before {
 /* Floating mistakes/shield status panel above CPU */
 .cpu-shield-status {
   position: absolute;
-  top: -55px;
+  top: -38px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -1686,7 +1686,7 @@ body::before {
   z-index: 6;
   width: 98%;
   max-width: 920px;
-  padding: clamp(10px, 1.4vh, 14px);
+  padding: clamp(8px, 1.2vh, 12px);
   border-radius: 8px;
   background: rgba(10, 15, 12, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1717,8 +1717,8 @@ body::before {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(var(--cols), 1fr);
-  grid-auto-rows: clamp(52px, 8.4vh, 68px);
-  gap: clamp(8px, 1.2vw, 12px);
+  grid-auto-rows: clamp(42px, 6.2vh, 52px);
+  gap: clamp(6px, 1vh, 10px);
 }
 
 /* Each sector — a live cell in the supercomputer matrix */
@@ -1781,7 +1781,7 @@ body::before {
 
 .cell-letter {
   font-family: "Roboto Mono", monospace;
-  font-size: clamp(1.35rem, 2.8vh, 1.85rem);
+  font-size: clamp(1.15rem, 2.2vh, 1.55rem);
   font-weight: 700;
   color: rgba(205, 235, 255, 0.85);
   transition: color 0.12s ease;
@@ -3088,20 +3088,59 @@ body::before {
 /* ── CONTAINER-BASED UNIFORM SCALING FOR SMALL HEIGHTS ── */
 /* Queries are based on the actual height of .game-container, ensuring perfect fit everywhere */
 
+@container gameContainer (max-height: 940px) {
+  .arena-layout {
+    transform: scale(0.94);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 880px) {
+  .arena-layout {
+    transform: scale(0.88);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 820px) {
+  .arena-layout {
+    transform: scale(0.80);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 760px) {
+  .arena-layout {
+    transform: scale(0.72);
+    transform-origin: center center;
+  }
+}
+
 @container gameContainer (max-height: 700px) {
   .game-header {
     height: 48px;
   }
+  .arena-layout {
+    transform: scale(0.65);
+    transform-origin: center center;
+  }
 
   /* Briefing slideshow & Results */
   .briefing-panel {
-    transform: scale(0.88);
+    transform: scale(0.85);
     transform-origin: center center;
     margin-top: 5px;
   }
 
   .result-panel {
-    transform: scale(0.88);
+    transform: scale(0.85);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 640px) {
+  .arena-layout {
+    transform: scale(0.58);
     transform-origin: center center;
   }
 }
@@ -3110,15 +3149,26 @@ body::before {
   .game-header {
     height: 42px;
   }
+  .arena-layout {
+    transform: scale(0.51);
+    transform-origin: center center;
+  }
 
   .briefing-panel {
-    transform: scale(0.78);
+    transform: scale(0.75);
     transform-origin: center center;
     margin-top: 0;
   }
 
   .result-panel {
-    transform: scale(0.76);
+    transform: scale(0.72);
+    transform-origin: center center;
+  }
+}
+
+@container gameContainer (max-height: 520px) {
+  .arena-layout {
+    transform: scale(0.45);
     transform-origin: center center;
   }
 }
@@ -3127,28 +3177,37 @@ body::before {
   .game-header {
     height: 38px;
   }
+  .arena-layout {
+    transform: scale(0.39);
+    transform-origin: center center;
+  }
 
   .briefing-panel {
-    transform: scale(0.66);
+    transform: scale(0.62);
     transform-origin: center center;
     margin-top: -10px;
   }
 
   .result-panel {
-    transform: scale(0.62);
+    transform: scale(0.58);
     transform-origin: center center;
   }
 }
 
 @container gameContainer (max-height: 400px) {
+  .arena-layout {
+    transform: scale(0.33);
+    transform-origin: center center;
+  }
+
   .briefing-panel {
-    transform: scale(0.56);
+    transform: scale(0.52);
     transform-origin: center center;
     margin-top: -20px;
   }
 
   .result-panel {
-    transform: scale(0.5);
+    transform: scale(0.48);
     transform-origin: center center;
   }
 }

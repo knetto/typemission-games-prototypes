@@ -2455,15 +2455,27 @@ body::before {
 /* ── CONTAINER-BASED UNIFORM SCALING FOR SMALL HEIGHTS ── */
 /* Queries are based on the actual height of .game-container, ensuring perfect fit everywhere */
 
+@container gameContainer (max-height: 940px) {
+  .viewport-content {
+    transform: scale(0.94);
+  }
+}
+
+@container gameContainer (max-height: 880px) {
+  .viewport-content {
+    transform: scale(0.88);
+  }
+}
+
 @container gameContainer (max-height: 820px) {
   .viewport-content {
-    transform: scale(0.85);
+    transform: scale(0.80);
   }
 }
 
 @container gameContainer (max-height: 760px) {
   .viewport-content {
-    transform: scale(0.76);
+    transform: scale(0.72);
   }
 }
 
@@ -2475,24 +2487,24 @@ body::before {
     padding: 10px 16px 12px;
   }
   .viewport-content {
-    transform: scale(0.68);
+    transform: scale(0.65);
   }
 
   /* Briefing slideshow & Results */
   .briefing-panel {
-    transform: scale(0.88);
+    transform: scale(0.85);
     transform-origin: center center;
     margin-top: 5px;
   }
   .result-panel {
-    transform: scale(0.88);
+    transform: scale(0.85);
     transform-origin: center center;
   }
 }
 
 @container gameContainer (max-height: 640px) {
   .viewport-content {
-    transform: scale(0.60);
+    transform: scale(0.58);
   }
 }
 
@@ -2501,22 +2513,22 @@ body::before {
     height: 42px;
   }
   .viewport-content {
-    transform: scale(0.52);
+    transform: scale(0.51);
   }
   .briefing-panel {
-    transform: scale(0.78);
+    transform: scale(0.75);
     transform-origin: center center;
     margin-top: 0;
   }
   .result-panel {
-    transform: scale(0.76);
+    transform: scale(0.72);
     transform-origin: center center;
   }
 }
 
 @container gameContainer (max-height: 520px) {
   .viewport-content {
-    transform: scale(0.46);
+    transform: scale(0.45);
   }
 }
 
@@ -2525,30 +2537,30 @@ body::before {
     height: 38px;
   }
   .viewport-content {
-    transform: scale(0.40);
+    transform: scale(0.39);
   }
   .briefing-panel {
-    transform: scale(0.66);
+    transform: scale(0.62);
     transform-origin: center center;
     margin-top: -10px;
   }
   .result-panel {
-    transform: scale(0.62);
+    transform: scale(0.58);
     transform-origin: center center;
   }
 }
 
 @container gameContainer (max-height: 400px) {
   .viewport-content {
-    transform: scale(0.34);
+    transform: scale(0.33);
   }
   .briefing-panel {
-    transform: scale(0.56);
+    transform: scale(0.52);
     transform-origin: center center;
     margin-top: -20px;
   }
   .result-panel {
-    transform: scale(0.5);
+    transform: scale(0.48);
     transform-origin: center center;
   }
 }
