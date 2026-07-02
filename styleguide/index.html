@@ -11,6 +11,8 @@
   <style>
     :root {
       color-scheme: dark;
+      --spring-bg: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2018%2042'%20preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient%20id='sg'%20x1='0%'%20y1='0%'%20x2='100%'%20y2='0%'%3E%3Cstop%20offset='0%'%20stop-color='%234b5059'/%3E%3Cstop%20offset='30%'%20stop-color='%23bfc5cf'/%3E%3Cstop%20offset='50%'%20stop-color='%23ffffff'/%3E%3Cstop%20offset='70%'%20stop-color='%23bfc5cf'/%3E%3Cstop%20offset='100%'%20stop-color='%233a3e45'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath%20d='M%209%201%20C%205%201,%202%202,%202%203%20M%2016%206%20C%2016%207,%202%208,%202%209%20M%2016%2012%20C%2016%2013,%202%2014,%202%2015%20M%2016%2018%20C%2016%2019,%202%2020,%202%2021%20M%2016%2024%20C%2016%2025,%202%2026,%202%2027%20M%2016%2030%20C%2016%2031,%202%2032,%202%2033%20M%2016%2036%20C%2016%2037,%202%2038,%202%2039%20M%2016%2041.5%20C%2016%2040.5,%202%2040.5,%202%2041.5'%20fill='none'%20stroke='%2323262c'%20stroke-width='1.8'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3Cpath%20d='M%202%203%20C%202%204,%2016%205,%2016%206%20M%202%209%20C%202%2010,%2016%2011,%2016%2012%20M%202%2015%20C%202%2016,%2016%2017,%2016%2018%20M%202%2021%20C%202%2022,%2016%2023,%2016%2024%20M%202%2027%20C%202%2028,%2016%2029,%2016%2030%20M%202%2033%20C%202%2034,%2016%2035,%2016%2036%20M%202%2039%20C%202%2041,%2016%2041.5,%2016%2041.5%20M%202%2041.5%20C%202%2042.5,%2016%2042.5,%2016%2041.5'%20fill='none'%20stroke='url(%23sg)'%20stroke-width='2.8'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E");
+      --fp-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M390.42,75.28a10.45,10.45,0,0,1-5.32-1.44C340.72,50.08,302.35,40,256.35,40c-45.77,0-89.23,11.28-128.76,33.84C122,77,115.11,74.8,111.87,69a12.4,12.4,0,0,1,4.63-16.32A281.81,281.81,0,0,1,256.35,16c49.23,0,92.23,11.28,139.39,36.48a12,12,0,0,1,4.85,16.08A11.3,11.3,0,0,1,390.42,75.28Zm-330.79,126a11.73,11.73,0,0,1-6.7-2.16,12.26,12.26,0,0,1-2.78-16.8c22.89-33.6,52-60,86.69-78.48C209.42,65,302.35,64.72,375.16,103.6c34.68,18.48,63.8,44.64,86.69,78a12.29,12.29,0,0,1-2.78,16.8,11.26,11.26,0,0,1-16.18-2.88c-20.8-30.24-47.15-54-78.36-70.56-66.34-35.28-151.18-35.28-217.29.24-31.44,16.8-57.79,40.8-78.59,71A10,10,0,0,1,59.63,201.28ZM204.1,491a10.66,10.66,0,0,1-8.09-3.6C175.9,466.48,165,453,149.55,424c-16-29.52-24.27-65.52-24.27-104.16,0-71.28,58.71-129.36,130.84-129.36S387,248.56,387,319.84a11.56,11.56,0,1,1-23.11,0c0-58.08-48.32-105.36-107.72-105.36S148.4,261.76,148.4,319.84c0,34.56,7.39,66.48,21.49,92.4,14.8,27.6,25,39.36,42.77,58.08a12.67,12.67,0,0,1,0,17A12.44,12.44,0,0,1,204.1,491Zm165.75-44.4c-27.51,0-51.78-7.2-71.66-21.36a129.1,129.1,0,0,1-55-105.36,11.57,11.57,0,1,1,23.12,0,104.28,104.28,0,0,0,44.84,85.44c16.41,11.52,35.6,17,58.72,17a147.41,147.41,0,0,0,24-2.4c6.24-1.2,12.25,3.12,13.4,9.84a11.92,11.92,0,0,1-9.47,13.92A152.28,152.28,0,0,1,369.85,446.56ZM323.38,496a13,13,0,0,1-3-.48c-36.76-10.56-60.8-24.72-86-50.4-32.37-33.36-50.16-77.76-50.16-125.28,0-38.88,31.9-70.56,71.19-70.56s71.2,31.68,71.2,70.56c0,25.68,21.5,46.56,48.08,46.56s48.08-20.88,48.08-46.56c0-90.48-75.13-163.92-167.59-163.92-65.65,0-125.75,37.92-152.79,96.72-9,19.44-13.64,42.24-13.64,67.2,0,18.72,1.61,48.24,15.48,86.64,2.32,6.24-.69,13.2-6.7,15.36a11.34,11.34,0,0,1-14.79-7,276.39,276.39,0,0,1-16.88-95c0-28.8,5.32-55,15.72-77.76,30.75-67,98.94-110.4,173.6-110.4,105.18,0,190.71,84.24,190.71,187.92,0,38.88-31.9,70.56-71.2,70.56s-71.2-31.68-71.2-70.56C303.5,293.92,282,273,255.42,273s-48.08,20.88-48.08,46.56c0,41,15.26,79.44,43.23,108.24,22,22.56,43,35,75.59,44.4,6.24,1.68,9.71,8.4,8.09,14.64A11.39,11.39,0,0,1,323.38,496Z'/%3E%3C/svg%3E");
       --bg: #07080b;
       --panel: #11131a;
       --panel-2: #181b24;
@@ -1780,30 +1782,12 @@
     }
 
     .fingerprint-core {
-      width: 112px;
-      height: 142px;
-      border-radius: 50%;
-      border: 8px double rgba(255, 255, 255, 0.12);
-      box-shadow: inset 0 0 0 12px rgba(255, 255, 255, 0.06), inset 0 0 0 26px rgba(255, 204, 0, 0.14);
+      width: 130px;
+      height: 160px;
       position: relative;
-    }
-
-    .fingerprint-core::before,
-    .fingerprint-core::after {
-      content: "";
-      position: absolute;
-      inset: 18px 22px;
-      border: 3px solid rgba(255, 255, 255, 0.16);
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-radius: 50%;
-    }
-
-    .fingerprint-core::after {
-      inset: 36px 40px;
-      border-color: rgba(255, 255, 255, 0.22);
-      border-left-color: transparent;
-      border-right-color: transparent;
+      background: rgba(255, 255, 255, 0.16);
+      -webkit-mask: var(--fp-mask) center / contain no-repeat;
+      mask: var(--fp-mask) center / contain no-repeat;
     }
 
     .fingerprint-laser {
@@ -1839,6 +1823,42 @@
       color: #fff;
       box-shadow: 0 0 8px rgba(255, 204, 0, 0.45);
       animation: nodePulseRing 1.2s infinite ease-out;
+    }
+
+    .scan-node.correct {
+      border-color: var(--gold);
+      background: rgba(255, 204, 0, 0.25);
+      color: #fff;
+      box-shadow: 0 0 6px rgba(255, 204, 0, 0.45);
+    }
+
+    .scan-node.wrong {
+      border-color: var(--red);
+      background: rgba(255, 59, 48, 0.2);
+      color: var(--red);
+      box-shadow: 0 0 10px rgba(255, 59, 48, 0.6);
+    }
+
+    .scan-node-states {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .scan-node-states .scan-node {
+      position: static;
+      transform: none;
+      width: 22px;
+      height: 22px;
+      font-size: 8px;
+      animation: none;
+    }
+
+    .scan-node-legend {
+      font-family: "Roboto Mono", monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
     }
 
     @keyframes guideLaserSweep {
@@ -1887,10 +1907,12 @@
       border: 1.5px solid var(--green);
       border-radius: 4px;
       box-shadow: 0 0 15px rgba(154, 215, 68, 0.4), inset 0 0 10px rgba(154, 215, 68, 0.2);
+      outline: 1.5px solid var(--orange);
+      outline-offset: 6px;
     }
 
     .reticle::before {
-      content: "TARGET";
+      content: "TARGET LOCKED";
       position: absolute;
       top: -19px;
       left: 0;
@@ -1902,6 +1924,20 @@
       font-size: 0.55rem;
       font-weight: 900;
       letter-spacing: 0.5px;
+    }
+
+    /* Active redacted word the reticle has locked onto */
+    .reticle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 64%;
+      height: 16px;
+      border-radius: 2px;
+      background: var(--orange);
+      box-shadow: 0 0 8px rgba(228, 142, 53, 0.6);
     }
 
     .paper-sample {
@@ -2430,7 +2466,7 @@
 
     .exact-game-shell {
       display: grid;
-      grid-template-columns: minmax(560px, 1fr) minmax(320px, 0.48fr);
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.38fr);
       gap: 18px;
       align-items: stretch;
     }
@@ -2458,6 +2494,7 @@
     .live-frame {
       position: relative;
       aspect-ratio: 16 / 9;
+      width: 100%;
       overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 6px;
@@ -2494,9 +2531,9 @@
     }
 
     .callout {
+      display: none;
       position: absolute;
       z-index: 4;
-      display: inline-flex;
       align-items: center;
       gap: 6px;
       max-width: 220px;
@@ -2633,6 +2670,482 @@
       display: grid;
       gap: 10px;
       align-content: start;
+    }
+
+    .exact-card-sample {
+      min-height: 104px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 6px;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        rgba(0, 0, 0, 0.28);
+      background-size: 18px 18px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .exact-card-sample.compact {
+      min-height: 86px;
+    }
+
+    .sample-door-slab {
+      position: relative;
+      width: min(220px, 88%);
+      height: 122px;
+      border: 2.5px solid var(--metal-line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, var(--metal-top) 0%, var(--metal-mid) 42%, var(--metal-bottom) 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -2px 0 rgba(0, 0, 0, 0.35), 0 10px 24px rgba(0, 0, 0, 0.55);
+      display: grid;
+      place-items: center;
+    }
+
+    .sample-door-slab.wide {
+      width: min(285px, 92%);
+    }
+
+    .sample-keypad-panel {
+      width: min(230px, 92%);
+      padding: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      background: #0d0e12;
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.9), 0 8px 22px rgba(0, 0, 0, 0.5);
+      display: grid;
+      gap: 8px;
+    }
+
+    .sample-lock-panel {
+      width: min(290px, 94%);
+      padding: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      background: linear-gradient(135deg, #121318, #08090b);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.92), 0 10px 24px rgba(0, 0, 0, 0.5);
+      display: grid;
+      gap: 8px;
+    }
+
+    .sample-screen-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .sample-screen-row .char-box {
+      width: 34px;
+      height: 40px;
+      font-size: 0.95rem;
+    }
+
+    .sample-key-grid {
+      width: min(150px, 80%);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin: 0 auto;
+    }
+
+    .sample-key-grid .keypad-btn-demo {
+      min-height: 40px;
+    }
+
+    .sample-lock-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .sample-lock-row .door-lock-dot-demo {
+      width: 34px;
+      height: 34px;
+    }
+
+    .sample-cylinder {
+      --shear-y: 54px;
+      width: min(285px, 96%);
+      height: 154px;
+      min-height: 154px;
+      padding: 6px 8px 10px;
+      grid-template-columns: repeat(6, minmax(24px, 34px));
+      gap: 6px;
+    }
+
+    .sample-cylinder .pin-demo {
+      height: 132px;
+    }
+
+    .sample-cylinder .pin-spring-demo {
+      height: 28px;
+    }
+
+    .sample-cylinder .driver-pin-demo {
+      width: 24px;
+      height: 36px;
+    }
+
+    .sample-cylinder .key-pin-demo {
+      width: 24px;
+      height: 40px;
+      font-size: 0.62rem;
+    }
+
+    .sample-meter-pick {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .sample-bio-panel {
+      width: min(218px, 92%);
+      padding: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      background: linear-gradient(135deg, #17140a, #070604);
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 10px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .sample-bio-panel .bio-screen-mini {
+      width: 100%;
+      min-height: 54px;
+      padding: 7px;
+    }
+
+    .sample-bio-panel .slot-strip i,
+    .exact-card-sample .bio-screen-mini .slot-strip i {
+      width: 24px;
+      height: 30px;
+    }
+
+    .bio-screen-mini .slot-strip i.active {
+      border-color: var(--gold);
+      background: rgba(255, 204, 0, 0.12);
+      box-shadow: 0 0 8px rgba(255, 204, 0, 0.35);
+    }
+
+    .sample-bio-panel .bio-scanner-demo {
+      width: 104px;
+      height: 124px;
+      border-radius: 14px;
+    }
+
+    .sample-bio-panel .bio-print-demo {
+      width: 62px;
+      height: 78px;
+      border-width: 5px;
+    }
+
+    .sample-bezel {
+      width: 122px;
+      height: 146px;
+      border-radius: 16px;
+    }
+
+    .sample-print {
+      transform: scale(0.74);
+    }
+
+    /* CPU rig card samples */
+    .sample-pcb {
+      position: relative;
+      width: min(232px, 92%);
+      height: 104px;
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      background:
+        radial-gradient(circle at 50% 26%, rgba(116, 216, 255, 0.09), transparent 55%),
+        linear-gradient(135deg, #0b1a0e 0%, #050d07 52%, #020503 100%);
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.92);
+      overflow: hidden;
+    }
+
+    .sample-pcb svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .sample-pcb svg path {
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sample-pcb .pcb-via-demo {
+      position: absolute;
+    }
+
+    .sample-cpu {
+      position: relative;
+      width: 100%;
+      min-height: 132px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .sample-cpu.ring::before {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      border: 1px solid rgba(116, 216, 255, 0.22);
+      border-radius: 8px;
+      box-shadow: 0 0 16px rgba(116, 216, 255, 0.1);
+    }
+
+    .sample-cpu .cpu-core-demo {
+      position: relative;
+      left: auto;
+      top: auto;
+      transform: scale(0.6);
+    }
+
+    .sample-cpu .cpu-ihs-demo {
+      transform: scale(0.92);
+    }
+
+    .sample-chip-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .sample-gold-edge {
+      width: 8px;
+      height: 36px;
+      border-radius: 1px;
+      background: repeating-linear-gradient(to bottom, #d97706 0 3px, transparent 3px 6px);
+    }
+
+    .sample-cap {
+      width: 14px;
+      height: 9px;
+      background: #475569;
+      border-left: 2px solid #cbd5e1;
+      border-right: 2px solid #cbd5e1;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .sample-state-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .sample-state-row .virus-demo,
+    .sample-state-row .packet-demo {
+      position: relative;
+      left: auto;
+      top: auto;
+      right: auto;
+      bottom: auto;
+    }
+
+    /* Spiked virus microbe, matching the supercomputer game SVG */
+    .virus-svg-demo {
+      width: 46px;
+      height: 46px;
+      display: inline-block;
+      filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85));
+      animation: virusGlitch 1.5s infinite linear;
+    }
+
+    .virus-svg-demo svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    @keyframes virusGlitch {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.35); }
+    }
+
+    /* Typing rig card samples */
+    .sample-frame {
+      width: min(200px, 84%);
+      aspect-ratio: 16 / 9;
+      border: 2px solid #4d4d4d;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(228, 142, 53, 0.05), transparent 45%),
+        linear-gradient(135deg, #0a0a0a, #070707);
+      box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.85);
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-family: "Orbitron", sans-serif;
+      font-size: 0.56rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .sample-term {
+      width: min(252px, 96%);
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: #050505;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9);
+      overflow: hidden;
+    }
+
+    .sample-term .typing-terminal-head {
+      min-height: 26px;
+      font-size: 0.55rem;
+    }
+
+    .sample-conveyor {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .sample-conveyor .char-block-demo {
+      width: 40px;
+      height: 40px;
+      font-size: 1.05rem;
+    }
+
+    .sample-metro {
+      width: min(232px, 92%);
+    }
+
+    .sample-metro .rhythm-wave-demo {
+      width: 100%;
+    }
+
+    .sample-kbd {
+      width: min(250px, 96%);
+    }
+
+    .sample-kbd .keyboard-perspective-demo {
+      width: 100%;
+    }
+
+    .sample-key-row {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .sample-key-row .kbd-key {
+      width: 38px;
+      height: 38px;
+      flex: none;
+    }
+
+    /* Redaction rig card samples */
+    .sample-scanbed {
+      width: min(232px, 92%);
+      height: 104px;
+      border: 1px solid rgba(154, 215, 68, 0.12);
+      border-radius: 4px;
+      background:
+        linear-gradient(rgba(154, 215, 68, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(154, 215, 68, 0.08) 1px, transparent 1px),
+        #080309;
+      background-size: 26px 26px, 26px 26px, auto;
+    }
+
+    .sample-hud {
+      position: relative;
+      width: min(220px, 90%);
+      height: 104px;
+    }
+
+    .sample-hud .ruler-strip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 14px;
+      background: #18111d;
+      border-bottom: 1px solid #2e2235;
+    }
+
+    .sample-hud .scanner-corners-demo {
+      position: absolute;
+      inset: 0;
+    }
+
+    .sample-overlay {
+      position: relative;
+      width: min(220px, 90%);
+      height: 104px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      background: rgba(8, 3, 9, 0.6);
+      overflow: hidden;
+    }
+
+    .sample-overlay .redaction-laser-demo {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 36%;
+      height: 3px;
+    }
+
+    .sample-overlay .motion-reticle {
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      transform: translate(-50%, -50%);
+    }
+
+    .sample-manila {
+      position: relative;
+      width: min(150px, 70%);
+      height: 86px;
+      border-radius: 8px;
+      background: var(--manila);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .sample-manila::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      bottom: 100%;
+      width: 54px;
+      height: 12px;
+      border-radius: 6px 10px 0 0;
+      background: var(--manila);
+    }
+
+    .sample-paper {
+      width: min(222px, 92%);
+      padding: 12px 14px 10px;
+      border-radius: 3px;
+      background: #fdfbf4;
+      color: #1a1a1a;
+      font-family: "Courier New", monospace;
+      font-size: 0.62rem;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .sample-paper .redaction-paper-head-demo {
+      margin-bottom: 8px;
+    }
+
+    .sample-paper .redaction-blackout {
+      width: 64px;
+      height: 11px;
     }
 
     .selector-pill {
@@ -3294,9 +3807,7 @@
       width: 18px;
       height: 42px;
       margin-top: 3px;
-      background:
-        repeating-linear-gradient(165deg, transparent 0 4px, #cbd5e1 4px 6px, transparent 6px 10px);
-      opacity: 0.85;
+      background: var(--spring-bg) center / 100% 100% no-repeat;
       filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
     }
 
@@ -3481,33 +3992,16 @@
       background-size: 8px 8px;
     }
 
+    /* Real fingerprint shape, masked from the game's own asset.
+       Idle look = uniform greyed ridges, exactly like the game before scanning. */
     .bio-print-demo {
       position: relative;
-      width: 140px;
-      height: 178px;
-      border-radius: 50%;
-      border: 8px double rgba(255, 255, 255, 0.12);
-      box-shadow: inset 0 0 0 12px rgba(255, 255, 255, 0.06), inset 0 0 0 27px rgba(255, 204, 0, 0.14);
+      width: 150px;
+      height: 184px;
+      background: rgba(255, 255, 255, 0.16);
+      -webkit-mask: var(--fp-mask) center / contain no-repeat;
+      mask: var(--fp-mask) center / contain no-repeat;
       z-index: 3;
-    }
-
-    .bio-print-demo::before,
-    .bio-print-demo::after {
-      content: "";
-      position: absolute;
-      inset: 18px 22px;
-      border: 3px solid rgba(255, 255, 255, 0.18);
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-radius: 50%;
-    }
-
-    .bio-print-demo::after {
-      inset: 36px 40px;
-      border-color: rgba(154, 215, 68, 0.8);
-      border-left-color: transparent;
-      border-right-color: transparent;
-      filter: drop-shadow(0 0 6px rgba(154, 215, 68, 0.8));
     }
 
     .bio-laser-demo,
@@ -3520,6 +4014,25 @@
       box-shadow: 0 0 8px var(--gold), 0 0 18px rgba(255, 204, 0, 0.45);
       animation: guideLaserSweep 3s infinite ease-in-out;
       z-index: 6;
+    }
+
+    .bio-laser-demo::before,
+    .fingerprint-laser::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 46px;
+      background: linear-gradient(to bottom,
+        rgba(255, 204, 0, 0) 0%,
+        rgba(255, 204, 0, 0.22) 38%,
+        rgba(255, 204, 0, 0.5) 50%,
+        rgba(255, 204, 0, 0.22) 62%,
+        rgba(255, 204, 0, 0) 100%);
+      mix-blend-mode: screen;
+      pointer-events: none;
     }
 
     .bio-node-demo {
@@ -3546,13 +4059,12 @@
     .bio-node-demo.n3 { left: 50%; top: 82%; }
 
     .ridge-stack-demo {
-      width: 84px;
-      height: 84px;
-      border-radius: 50%;
-      background:
-        radial-gradient(ellipse at center, transparent 18%, rgba(255, 255, 255, 0.12) 20%, transparent 23%, transparent 34%, rgba(255, 204, 0, 0.65) 36%, transparent 39%, transparent 52%, rgba(154, 215, 68, 0.78) 54%, transparent 57%);
-      border: 2px solid rgba(255, 255, 255, 0.12);
-      filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.3));
+      width: 74px;
+      height: 88px;
+      background: rgba(255, 255, 255, 0.16);
+      -webkit-mask: var(--fp-mask) center / contain no-repeat;
+      mask: var(--fp-mask) center / contain no-repeat;
+      filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.25));
     }
 
     .redaction-object-demo {
@@ -3719,7 +4231,7 @@
     }
 
     .redaction-reticle-demo::before {
-      content: "TARGET";
+      content: "TARGET LOCKED";
       position: absolute;
       top: -18px;
       left: 0;
@@ -4375,6 +4887,305 @@
         padding-inline: 10px;
       }
     }
+
+    /* ─────────────────────────────────────────────
+       Result screen — 1:1 reproduction of the redaction
+       game's result panel (markup + CSS lifted from
+       typegame-file-redacting). Scoped under .result-real
+       with the game's own tokens so it renders identically.
+       ───────────────────────────────────────────── */
+    .result-real {
+      --purple-soft: #4d1c44;
+      --muted: #a092a7;
+      --text: #ffffff;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: clamp(20px, 4vh, 40px) clamp(16px, 4vw, 32px);
+      background: rgba(8, 3, 9, 0.985);
+      border-radius: 12px;
+    }
+    .result-real .result-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
+      gap: clamp(12px, 3vh, 24px);
+    }
+    .result-real .result-header { text-align: center; margin-bottom: clamp(6px, 1.5vh, 12px); flex-shrink: 0; }
+    .result-real .result-eyebrow {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(0.6rem, 1vh, 0.72rem);
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
+    }
+    .result-real .result-header h2 {
+      font-size: clamp(1.2rem, 3.2vh, 1.8rem);
+      color: var(--orange);
+      margin: 0 0 6px 0;
+      font-family: "Orbitron", sans-serif;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(228, 142, 53, 0.25);
+    }
+    .result-real .result-rank-bar {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(0.68rem, 1.2vh, 0.8rem);
+      color: var(--text);
+      background: rgba(186, 104, 200, 0.1);
+      border: 1px solid rgba(186, 104, 200, 0.3);
+      padding: 4px 16px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .result-real .rank-badge-text { color: var(--green); text-shadow: 0 0 8px var(--green-glow); }
+    .result-real .result-dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: clamp(12px, 2vh, 18px);
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .result-real .dashboard-card {
+      background: linear-gradient(135deg, rgba(26, 8, 25, 0.7) 0%, rgba(14, 4, 13, 0.85) 100%);
+      border: 1px solid var(--purple-soft);
+      border-radius: 12px;
+      padding: clamp(14px, 2vh, 20px) clamp(10px, 1.5vw, 16px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      box-shadow: inset 0 0 15px rgba(186, 104, 200, 0.05), 0 4px 20px rgba(0, 0, 0, 0.3);
+      min-height: clamp(110px, 16vh, 140px);
+    }
+    .result-real .dashboard-card.highlight-glow {
+      border-color: var(--orange);
+      background: linear-gradient(135deg, rgba(38, 16, 12, 0.85) 0%, rgba(20, 8, 5, 0.95) 100%);
+      box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.2), 0 4px 20px rgba(228, 142, 53, 0.1);
+    }
+    .result-real .card-title {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(0.58rem, 1.1vh, 0.72rem);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 2px;
+    }
+    .result-real .card-value-container { display: flex; align-items: center; justify-content: center; flex: 1; margin: 4px 0; }
+    .result-real .card-main-value {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.8rem, 4.2vh, 2.4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    .result-real .card-main-value.highlight-green { color: var(--green); text-shadow: 0 0 10px var(--green-glow); }
+    .result-real .difficult-key-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(228, 142, 53, 0.1);
+      border: 2px solid var(--orange);
+      color: var(--orange);
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.4rem, 3.2vh, 1.8rem);
+      font-weight: 800;
+      width: clamp(40px, 7.5vh, 48px);
+      height: clamp(40px, 7.5vh, 48px);
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(228, 142, 53, 0.2);
+      text-transform: uppercase;
+    }
+    .result-real .streak-circle-value {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(186, 104, 200, 0.15);
+      border: 2px solid var(--purple-soft);
+      color: #fff;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.4rem, 3.2vh, 1.8rem);
+      font-weight: 800;
+      width: clamp(40px, 7.5vh, 48px);
+      height: clamp(40px, 7.5vh, 48px);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(186, 104, 200, 0.3);
+    }
+    .result-real .status-success-badge {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(1.05rem, 2.4vh, 1.35rem);
+      font-weight: 900;
+      color: var(--green);
+      border: 2px solid var(--green);
+      padding: 2px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      box-shadow: inset 0 0 8px rgba(80, 250, 123, 0.15), 0 0 8px rgba(80, 250, 123, 0.15);
+      transform: rotate(-3deg);
+      display: inline-block;
+    }
+    .result-real .credits-container { gap: 8px; }
+    .result-real .coin-total-img {
+      width: clamp(18px, 3.5vh, 24px);
+      height: clamp(18px, 3.5vh, 24px);
+      filter: drop-shadow(0 0 6px rgba(228, 142, 53, 0.4));
+      animation: coin-spin 3s linear infinite;
+    }
+    @keyframes coin-spin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+    .result-real .card-footer-reward {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(0.68rem, 1.2vh, 0.8rem);
+      color: var(--orange);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .result-real .card-footer-reward img { width: clamp(12px, 1.8vh, 14px); height: clamp(12px, 1.8vh, 14px); }
+    .result-real .card-footer-label {
+      font-size: clamp(0.5rem, 0.8vh, 0.58rem);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .result-real .results-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 320px;
+      margin-top: clamp(8px, 2vh, 16px);
+    }
+    .result-real .spacebar-instruction {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(0.72rem, 1.6vh, 0.82rem);
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    .result-real .spacebar-btn-visual {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(100px, 20vw, 130px);
+      height: clamp(28px, 5.5vh, 32px);
+      background: #1c0d1e;
+      border: 1.5px solid var(--purple-soft);
+      border-radius: 6px;
+      box-shadow: 0 3px 0 #3b283f, 0 5px 12px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+    .result-real .spacebar-icon-line {
+      width: 36%;
+      height: 2.5px;
+      background: var(--orange);
+      box-shadow: 0 0 4px var(--orange);
+      border-radius: 99px;
+    }
+    @media (max-width: 640px) {
+      .result-real { padding: 16px 10px; }
+      .result-real .result-dashboard-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; gap: 10px; }
+      .result-real .dashboard-card { min-height: 96px; }
+      .result-real .card-main-value { font-size: 1.5rem; }
+    }
+
+    /* ─────────────────────────────────────────────
+       Typing console — parts lifted from
+       typegame-typeoefening-losse-letters, scoped under
+       .typing-real with that game's own tokens.
+       ───────────────────────────────────────────── */
+    .typing-real {
+      --cyan: #e48e35;
+      --cyan-glow: rgba(228, 142, 53, 0.35);
+      --green: #9ad744;
+      --green-glow: rgba(154, 215, 68, 0.4);
+      --red: #ff3b30;
+      --muted: #7a7a7a;
+      --line: #222222;
+    }
+    .typing-real.term {
+      width: min(280px, 96%);
+      border: 2px solid #333333;
+      border-radius: 8px;
+      background: #141418;
+      overflow: hidden;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9);
+    }
+    .typing-real .terminal-header {
+      background: #080808;
+      height: 30px;
+      padding-left: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+    .typing-real .terminal-header-info { display: flex; align-items: center; gap: 10px; }
+    .typing-real .terminal-title { font-family: "Orbitron", sans-serif; font-size: 0.55rem; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; }
+    .typing-real .terminal-ping { font-family: "Orbitron", sans-serif; font-size: 0.46rem; color: var(--green); background: rgba(154, 215, 68, 0.1); padding: 2px 5px; border-radius: 3px; letter-spacing: 0.5px; }
+    .typing-real .terminal-win-controls { display: flex; height: 100%; }
+    .typing-real .control-btn { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 30px; color: var(--muted); }
+    .typing-real .typewriter-body { position: relative; padding: 14px 16px; overflow: hidden; }
+    .typing-real .text-scanlines { position: absolute; inset: 0; background: linear-gradient(rgba(10, 10, 10, 0) 50%, rgba(0, 0, 0, 0.2) 50%); background-size: 100% 4px; opacity: 0.18; pointer-events: none; }
+    .typing-real .typing-text-line { font-family: "Roboto Mono", monospace; font-size: 19px; font-weight: 700; line-height: 1.6; letter-spacing: 0.12em; color: #fff; position: relative; z-index: 2; display: flex; flex-direction: column; gap: 6px; }
+    .typing-real .typing-text-row { display: block; white-space: nowrap; }
+    .typing-real .typing-text-row.completed { opacity: 0.4; }
+    .typing-real .char { border-bottom: 3px solid transparent; color: #fff; }
+    .typing-real .char.correct { color: var(--green); text-shadow: 0 0 3px var(--green-glow); }
+    .typing-real .char.wrong { color: var(--red); background: rgba(255, 59, 48, 0.18); border-bottom-color: var(--red); }
+    .typing-real .char.faded { opacity: 0.85; }
+    .typing-real .char.current { color: #000; background: var(--cyan); border-radius: 1px; box-shadow: 0 0 8px var(--cyan-glow); }
+    .typing-real .metronome-deck {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, #101012 0%, #0a0a0c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 8px 14px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(255, 255, 255, 0.03);
+      gap: 12px;
+      width: min(250px, 96%);
+      position: relative;
+      overflow: hidden;
+    }
+    .typing-real .metronome-deck::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent); }
+    .typing-real .metronome-wrapper { display: flex; align-items: center; gap: 12px; }
+    .typing-real .metronome-core {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid var(--green);
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(154, 215, 68, 0.05);
+      box-shadow: 0 0 12px var(--green-glow), inset 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+    .typing-real .metronome-pulse-wave { position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid var(--cyan); opacity: 0.5; animation: metroWave 1s infinite ease-out; }
+    @keyframes metroWave { 0% { transform: scale(0.85); opacity: 0.6; } 100% { transform: scale(1.25); opacity: 0; } }
+    .typing-real .metronome-meta { display: flex; flex-direction: column; }
+    .typing-real .metronome-label { font-family: "Orbitron", sans-serif; font-size: 0.6rem; font-weight: 900; letter-spacing: 0.8px; color: var(--cyan); text-shadow: 0 0 5px var(--cyan-glow); white-space: nowrap; }
+    .typing-real .metronome-status-text { font-family: "Roboto Mono", monospace; font-size: 0.5rem; color: var(--muted); margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -4985,7 +5796,7 @@
           <p>The keypad game is the base door-bypass language: a heavy metal security door, a black embedded keypad module, a small terminal screen, exposed bypass cables and a simple locked/unlocked status. New door games should start from this anatomy.</p>
         </div>
         <div class="exact-reference">
-          <p class="exact-note">This visual is not redrawn by the styleguide. It loads the real game folder in a fixed 16:9 frame: <code>typegame-door-keypad/index.html</code>. Use the callouts and specs below to copy the style accurately.</p>
+          <p class="exact-note">This visual loads the real game folder in a responsive 16:9 iframe: <code>typegame-door-keypad/index.html</code>. Use the live frame and specs below to copy the style accurately.</p>
           <div class="exact-game-shell">
             <div class="live-frame-panel">
               <div class="live-frame">
@@ -5018,6 +5829,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.security-door</span>
               <h3>Metal Door Shell</h3>
+              <div class="exact-card-sample">
+                <div class="sample-door-slab">
+                  <span class="door-rivet-demo tl"></span><span class="door-rivet-demo tr"></span><span class="door-rivet-demo bl"></span><span class="door-rivet-demo br"></span>
+                  <div class="door-label-demo">RESTRICTED</div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">width: clamp(340px, 85%, 460px)</span></li>
                 <li><b>Surface</b><span class="value-pill">linear-gradient(#4a4d52, #33363b, #2a2d32)</span></li>
@@ -5030,6 +5847,11 @@
             <article class="exact-element-card">
               <span class="selector-pill">.rivet, .door-rivets</span>
               <h3>Corner Screws</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-door-slab">
+                  <span class="door-rivet-demo tl"></span><span class="door-rivet-demo tr"></span><span class="door-rivet-demo bl"></span><span class="door-rivet-demo br"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">8px x 8px</span></li>
                 <li><b>Position</b><span class="value-pill">10px from each corner</span></li>
@@ -5041,6 +5863,15 @@
             <article class="exact-element-card">
               <span class="selector-pill">.keypad-panel</span>
               <h3>Embedded Keypad Module</h3>
+              <div class="exact-card-sample">
+                <div class="sample-keypad-panel">
+                  <div class="panel-head"><span class="mini-label">BYPASS RIG</span><span class="led-row"><i class="led green"></i><i class="led orange"></i></span></div>
+                  <div class="keypad-mini-grid">
+                    <div class="keypad-btn-demo"><span class="btn-char">A</span></div><div class="keypad-btn-demo active"><span class="btn-char">S</span></div><div class="keypad-btn-demo"><span class="btn-char">D</span></div>
+                  </div>
+                  <div class="panel-foot"><span class="signal-bars"><i></i><i></i><i></i><i></i><i></i></span><span class="ports"><i class="port"></i><i class="port"></i></span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">width: clamp(280px, 92%, 410px)</span></li>
                 <li><b>Fill</b><span class="value-pill">#0d0e12</span></li>
@@ -5053,6 +5884,13 @@
             <article class="exact-element-card">
               <span class="selector-pill">.door-screen, .char-box</span>
               <h3>Terminal Code Screen</h3>
+              <div class="exact-card-sample">
+                <div class="terminal-screen" style="width:min(260px,95%)">
+                  <div class="screen-tags"><span>SYS</span><span>PORT_01</span></div>
+                  <div class="screen-title">HACKCODE:</div>
+                  <div class="sample-screen-row"><span class="char-box correct">A</span><span class="char-box current">S</span><span class="char-box">D</span><span class="char-box wrong">F</span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Screen</b><span class="value-pill">#060714, 1.8px #1e224e, radius 8px</span></li>
                 <li><b>Slots</b><span class="value-pill">34-48px wide, 38-56px tall</span></li>
@@ -5065,6 +5903,16 @@
             <article class="exact-element-card">
               <span class="selector-pill">.keypad-grid, .keypad-btn</span>
               <h3>Key Grid</h3>
+              <div class="exact-card-sample">
+                <div class="sample-key-grid">
+                  <div class="keypad-btn-demo"><span class="btn-num">1</span><span class="btn-char">A</span></div>
+                  <div class="keypad-btn-demo active"><span class="btn-num">2</span><span class="btn-char">S</span></div>
+                  <div class="keypad-btn-demo"><span class="btn-num">3</span><span class="btn-char">D</span></div>
+                  <div class="keypad-btn-demo"><span class="btn-num">4</span><span class="btn-char">F</span></div>
+                  <div class="keypad-btn-demo"><span class="btn-num">5</span><span class="btn-char">G</span></div>
+                  <div class="keypad-btn-demo"><span class="btn-num">6</span><span class="btn-char">H</span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Grid</b><span class="value-pill">repeat(3, 1fr)</span></li>
                 <li><b>Width</b><span class="value-pill">80%, max-width: min(270px, 32vh)</span></li>
@@ -5077,6 +5925,13 @@
             <article class="exact-element-card">
               <span class="selector-pill">.lock-indicator</span>
               <h3>Error Budget Indicators</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-lock-row">
+                  <div class="door-lock-dot-demo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle></svg></div>
+                  <div class="door-lock-dot-demo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle></svg></div>
+                  <div class="door-lock-dot-demo bad"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle></svg></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">clamp(28px, 5vh, 38px)</span></li>
                 <li><b>Border</b><span class="value-pill">2.5px solid #9ad744</span></li>
@@ -5262,6 +6117,14 @@
             <article class="exact-element-card">
               <span class="selector-pill">.security-door</span>
               <h3>Wide Lock Door</h3>
+              <div class="exact-card-sample">
+                <div class="sample-door-slab wide">
+                  <span class="door-rivet-demo tl"></span><span class="door-rivet-demo tr"></span><span class="door-rivet-demo bl"></span><span class="door-rivet-demo br"></span>
+                  <div class="sample-lock-panel">
+                    <div class="lock-diagnostic-row" style="min-height:48px;padding:5px"><span class="slot-strip"><i></i><i class="active"></i><i></i><i></i><i></i><i></i></span></div>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">width: clamp(480px, 88%, 620px)</span></li>
                 <li><b>Padding</b><span class="value-pill">24px 30px 20px</span></li>
@@ -5274,6 +6137,13 @@
             <article class="exact-element-card">
               <span class="selector-pill">.lock-workbench, .lock-panel</span>
               <h3>Workbench Housing</h3>
+              <div class="exact-card-sample">
+                <div class="sample-lock-panel">
+                  <div class="panel-head"><span class="mini-label">LOCK INTERCEPT</span><span class="led-row"><i class="led green"></i><i class="led orange"></i></span></div>
+                  <div class="lock-diagnostic-row" style="min-height:48px;padding:5px"><span class="slot-strip"><i></i><i></i><i class="active"></i><i></i><i></i><i></i></span></div>
+                  <div class="pin-progress-demo"><span class="set">01</span><span class="active">02</span><span>03</span><span>04</span><span>05</span><span>06</span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Bench</b><span class="value-pill">width: clamp(420px, 92%, 540px)</span></li>
                 <li><b>Height</b><span class="value-pill">min-height: clamp(280px, 46vh, 390px)</span></li>
@@ -5286,6 +6156,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.door-screen .code-text</span>
               <h3>Six-Slot Diagnostic Screen</h3>
+              <div class="exact-card-sample">
+                <div class="lock-diagnostic-row" style="width:min(310px,96%)">
+                  <b class="screen-title" style="margin:0">HACKCODE:</b>
+                  <span class="slot-strip"><i></i><i class="active"></i><i></i><i class="active"></i><i></i><i></i></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Screen</b><span class="value-pill">#140606, 1.8px #4a1818, radius 8px</span></li>
                 <li><b>Grid</b><span class="value-pill">repeat(6, clamp(40px, 5.4vw, 56px))</span></li>
@@ -5298,6 +6174,16 @@
             <article class="exact-element-card">
               <span class="selector-pill">.lock-cylinder-container</span>
               <h3>Cylinder Bay and Shear Line</h3>
+              <div class="exact-card-sample">
+                <div class="lock-cylinder-demo sample-cylinder">
+                  <div class="pin-demo picked"><span class="pin-spring-demo"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">A</span></div>
+                  <div class="pin-demo active"><span class="pin-spring-demo"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">S</span></div>
+                  <div class="pin-demo"><span class="pin-spring-demo"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">D</span></div>
+                  <div class="pin-demo picked"><span class="pin-spring-demo"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">F</span></div>
+                  <div class="pin-demo"><span class="pin-spring-demo"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">J</span></div>
+                  <div class="pin-demo"><span class="pin-spring-demo"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">K</span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Height</b><span class="value-pill">clamp(215px, 31vh, 235px)</span></li>
                 <li><b>Border</b><span class="value-pill">2px solid rgba(255,255,255,.1)</span></li>
@@ -5310,6 +6196,13 @@
             <article class="exact-element-card">
               <span class="selector-pill">.pin-chamber, .driver-pin, .key-pin</span>
               <h3>Pin Stack Parts</h3>
+              <div class="exact-card-sample">
+                <div class="sample-lock-row">
+                  <div class="pin-demo" style="width:42px;height:132px"><span class="pin-spring-demo" style="height:28px"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">A</span></div>
+                  <div class="pin-demo spool" style="width:42px;height:132px"><span class="pin-spring-demo" style="height:28px"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">S</span></div>
+                  <div class="pin-demo serrated active" style="width:42px;height:132px"><span class="pin-spring-demo" style="height:28px"></span><span class="driver-pin-demo"></span><span class="key-pin-demo">D</span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Chamber</b><span class="value-pill">height 190px, border 1.5px, radius 7px</span></li>
                 <li><b>Spring</b><span class="value-pill">18px x 42px coil</span></li>
@@ -5322,6 +6215,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.tension-meter, .lockpick-tool</span>
               <h3>Tension and Pick Feedback</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-meter-pick">
+                  <span class="tension-meter-demo"></span>
+                  <span class="lock-tool-line"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Meter</b><span class="value-pill">22px wide, min-height 96px</span></li>
                 <li><b>Meter fill</b><span class="value-pill">crimson to orange to green gradient</span></li>
@@ -5428,6 +6327,14 @@
             <article class="exact-element-card">
               <span class="selector-pill">.security-door</span>
               <h3>Biometric Door Shell</h3>
+              <div class="exact-card-sample">
+                <div class="sample-door-slab">
+                  <span class="door-rivet-demo tl"></span><span class="door-rivet-demo tr"></span><span class="door-rivet-demo bl"></span><span class="door-rivet-demo br"></span>
+                  <div class="sample-bio-panel">
+                    <div class="bio-screen-mini"><b>SCAN</b><span class="slot-strip"><i></i><i class="active"></i><i></i></span></div>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">width: clamp(400px, 88%, 520px)</span></li>
                 <li><b>Padding</b><span class="value-pill">24px 20px 20px</span></li>
@@ -5440,6 +6347,13 @@
             <article class="exact-element-card">
               <span class="selector-pill">.lock-workbench, .lock-panel</span>
               <h3>Scanner Workbench</h3>
+              <div class="exact-card-sample">
+                <div class="sample-bio-panel">
+                  <div class="panel-head" style="width:100%"><span class="mini-label">SCAN RIG</span><span class="led-row"><i class="led green"></i><i class="led orange"></i></span></div>
+                  <div class="bio-screen-mini"><b>BIOMETRIC</b><span class="slot-strip"><i></i><i class="active"></i><i></i></span></div>
+                  <div class="bio-scanner-demo"><span class="bio-laser-demo"></span><div class="bio-print-demo"></div></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Bench</b><span class="value-pill">width: clamp(300px, 92%, 420px)</span></li>
                 <li><b>Height</b><span class="value-pill">min-height: clamp(350px, 58vh, 490px)</span></li>
@@ -5452,6 +6366,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.door-screen, .char-box</span>
               <h3>Biometric Sequence Screen</h3>
+              <div class="exact-card-sample">
+                <div class="bio-screen-mini" style="width:min(290px,96%)">
+                  <b>BIOMETRIC SEQUENCE:</b>
+                  <span class="slot-strip"><i></i><i class="active"></i><i></i><i></i><i></i></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Screen</b><span class="value-pill">#0c0a05, 1.8px #4a3e14, radius 8px</span></li>
                 <li><b>Width</b><span class="value-pill">95%</span></li>
@@ -5464,6 +6384,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.scanner-bezel</span>
               <h3>Glass Scanner Bezel</h3>
+              <div class="exact-card-sample">
+                <div class="bio-scanner-demo sample-bezel">
+                  <span class="bio-laser-demo"></span>
+                  <div class="bio-print-demo sample-print"></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">width clamp(180px, 32vw, 210px)</span></li>
                 <li><b>Height</b><span class="value-pill">clamp(210px, 36vh, 245px)</span></li>
@@ -5476,6 +6402,11 @@
             <article class="exact-element-card">
               <span class="selector-pill">.laser-scanner-line, .laser-scanner-glow</span>
               <h3>Gold Laser Sweep</h3>
+              <div class="exact-card-sample compact">
+                <div class="bio-scanner-demo" style="width:min(230px,92%);height:76px;border-radius:10px">
+                  <span class="bio-laser-demo"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Line</b><span class="value-pill">3px high</span></li>
                 <li><b>Gradient</b><span class="value-pill">transparent to #ffcc00 to transparent</span></li>
@@ -5487,6 +6418,18 @@
             <article class="exact-element-card">
               <span class="selector-pill">.fingerprint-vector-wrapper, .scan-node-marker</span>
               <h3>Fingerprint Ridges and Nodes</h3>
+              <div class="exact-card-sample">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+                  <div class="bio-scanner-demo sample-bezel">
+                    <div class="bio-print-demo sample-print"></div>
+                  </div>
+                  <div class="scan-node-states">
+                    <span class="scan-node active">A</span>
+                    <span class="scan-node correct">S</span>
+                    <span class="scan-node wrong">F</span>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Print</b><span class="value-pill">140-170px wide, 170-205px tall</span></li>
                 <li><b>Idle ridge</b><span class="value-pill">rgba(255,255,255,.12)</span></li>
@@ -5588,6 +6531,9 @@
             <article class="exact-element-card">
               <span class="selector-pill">.game-container</span>
               <h3>16:9 Mission Frame</h3>
+              <div class="exact-card-sample">
+                <div class="sample-frame" style="border-color:#4d1c44;background:linear-gradient(135deg,#0b030b,#070207)"><span>16 : 9</span></div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">width 80vw, height 45vw</span></li>
                 <li><b>Max</b><span class="value-pill">142.22vh x 80vh</span></li>
@@ -5600,6 +6546,9 @@
             <article class="exact-element-card">
               <span class="selector-pill">.dossier-viewport</span>
               <h3>Scanner Bed</h3>
+              <div class="exact-card-sample">
+                <div class="sample-scanbed"></div>
+              </div>
               <ul class="value-list">
                 <li><b>Fill</b><span class="value-pill">#080309</span></li>
                 <li><b>Grid</b><span class="value-pill">80px x 80px</span></li>
@@ -5611,6 +6560,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.figma-ruler, .scanner-hud</span>
               <h3>Rulers and HUD Corners</h3>
+              <div class="exact-card-sample">
+                <div class="sample-hud">
+                  <span class="ruler-strip"></span>
+                  <div class="scanner-corners-demo"><span></span><span></span><span></span><span></span></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Ruler</b><span class="value-pill">16px thick, #18111d</span></li>
                 <li><b>Ruler line</b><span class="value-pill">1px #2e2235</span></li>
@@ -5623,6 +6578,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.scan-laser-line, .reticle-target</span>
               <h3>Scan and Target Overlays</h3>
+              <div class="exact-card-sample">
+                <div class="sample-overlay">
+                  <span class="redaction-laser-demo"></span>
+                  <span class="motion-reticle"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Laser</b><span class="value-pill">3px green line, opacity .3</span></li>
                 <li><b>Glow</b><span class="value-pill">0 0 10px + 0 0 20px green</span></li>
@@ -5635,6 +6596,9 @@
             <article class="exact-element-card">
               <span class="selector-pill">.classified-doc.manila-folder</span>
               <h3>Manila Folder</h3>
+              <div class="exact-card-sample">
+                <div class="sample-manila"></div>
+              </div>
               <ul class="value-list">
                 <li><b>Position</b><span class="value-pill">left 3%, top 4%</span></li>
                 <li><b>Size</b><span class="value-pill">width 94%, height 92%</span></li>
@@ -5647,6 +6611,13 @@
             <article class="exact-element-card">
               <span class="selector-pill">.folder-paper, .redacted-word</span>
               <h3>Paper and Redactions</h3>
+              <div class="exact-card-sample">
+                <div class="sample-paper">
+                  <div class="redaction-paper-head-demo"><span>VERTROUWELIJK</span><span class="redaction-stamp-demo">TOP SECRET</span></div>
+                  <div class="redaction-paper-line" style="width:84%"></div>
+                  <p style="margin:8px 0 0">Codenaam: <span class="redaction-blackout active"></span></p>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Paper</b><span class="value-pill">#fdfbf4, radius 3px, Courier New</span></li>
                 <li><b>Header</b><span class="value-pill">2px double #8f8579</span></li>
@@ -5751,6 +6722,18 @@
             <article class="exact-element-card">
               <span class="selector-pill">.keyboard-board-outer</span>
               <h3>PCB Board Surface</h3>
+              <div class="exact-card-sample">
+                <div class="sample-pcb">
+                  <svg viewBox="0 0 232 104" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M 12 32 H 92 C 110 32 116 56 140 56 H 220" style="stroke: rgba(68,215,117,0.05); stroke-width: 7;"></path>
+                    <path d="M 12 32 H 92 C 110 32 116 56 140 56 H 220" style="stroke: rgba(116,216,255,0.5); stroke-width: 2; filter: drop-shadow(0 0 3px rgba(116,216,255,0.4));"></path>
+                    <path d="M 12 78 H 130 C 150 78 156 52 220 52" style="stroke: rgba(68,215,117,0.05); stroke-width: 7;"></path>
+                  </svg>
+                  <span class="pcb-via-demo" style="left:16%;top:26%"></span>
+                  <span class="pcb-via-demo" style="right:14%;top:48%"></span>
+                  <span class="pcb-via-demo" style="left:22%;bottom:18%"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Fill</b><span class="value-pill">radial cyan light + #0b1a0e to #050d07 to #020503</span></li>
                 <li><b>Border</b><span class="value-pill">2px solid rgba(255,255,255,.12)</span></li>
@@ -5763,6 +6746,16 @@
             <article class="exact-element-card">
               <span class="selector-pill">.defense-core-visual</span>
               <h3>Central CPU Area</h3>
+              <div class="exact-card-sample">
+                <div class="sample-cpu ring">
+                  <div class="cpu-core-demo">
+                    <span class="cpu-notch-demo tl"></span><span class="cpu-notch-demo tr"></span><span class="cpu-notch-demo bl"></span><span class="cpu-notch-demo br"></span>
+                    <span class="cpu-gold-edge-demo left"></span><span class="cpu-gold-edge-demo right"></span>
+                    <span class="cpu-cap-demo c1"></span><span class="cpu-cap-demo c2"></span><span class="cpu-cap-demo c3"></span><span class="cpu-cap-demo c4"></span>
+                    <div class="cpu-ihs-demo"><div class="cpu-die-demo">CPU</div></div>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Width</b><span class="value-pill">min(460px, 56%)</span></li>
                 <li><b>Height</b><span class="value-pill">clamp(140px, 20vh, 180px)</span></li>
@@ -5774,6 +6767,15 @@
             <article class="exact-element-card">
               <span class="selector-pill">.supercomputer-core</span>
               <h3>CPU Substrate</h3>
+              <div class="exact-card-sample">
+                <div class="sample-cpu">
+                  <div class="cpu-core-demo">
+                    <span class="cpu-notch-demo tl"></span><span class="cpu-notch-demo tr"></span><span class="cpu-notch-demo bl"></span><span class="cpu-notch-demo br"></span>
+                    <span class="cpu-gold-edge-demo left"></span><span class="cpu-gold-edge-demo right"></span>
+                    <span class="cpu-cap-demo c1"></span><span class="cpu-cap-demo c2"></span><span class="cpu-cap-demo c3"></span><span class="cpu-cap-demo c4"></span>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">clamp(140px, 19vh, 160px)</span></li>
                 <li><b>Radius</b><span class="value-pill">6px</span></li>
@@ -5786,6 +6788,11 @@
             <article class="exact-element-card">
               <span class="selector-pill">.cpu-ihs, .core-crystal</span>
               <h3>Heat Spreader and Die</h3>
+              <div class="exact-card-sample">
+                <div class="sample-cpu">
+                  <div class="cpu-ihs-demo"><div class="cpu-die-demo">CPU</div></div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>IHS</b><span class="value-pill">calc(100% - 32px), radius 6px</span></li>
                 <li><b>IHS fill</b><span class="value-pill">#2d3139 to #1e2024 to #0d0f11</span></li>
@@ -5798,6 +6805,14 @@
             <article class="exact-element-card">
               <span class="selector-pill">.cpu-gold-edge-left, .cpu-surface-components .cap</span>
               <h3>Chip Details</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-chip-row">
+                  <span class="sample-gold-edge"></span>
+                  <span class="cpu-notch-demo" style="position:relative;top:auto;left:auto"></span>
+                  <span class="sample-cap"></span>
+                  <span class="status-circle small"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Gold edges</b><span class="value-pill">5px wide repeating #d97706 contacts</span></li>
                 <li><b>Notches</b><span class="value-pill">8px circles, #020503, 1px gold border</span></li>
@@ -5809,6 +6824,28 @@
             <article class="exact-element-card">
               <span class="selector-pill">.under-attack, packets, viruses</span>
               <h3>Attack and Defense States</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-state-row">
+                  <span class="virus-svg-demo" aria-hidden="true">
+                    <svg viewBox="-17 -17 34 34">
+                      <line x1="0" y1="0" x2="12" y2="0" stroke="#ff3b30" stroke-width="1.8"/><circle cx="14.5" cy="0" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="8.49" y2="8.49" stroke="#ff3b30" stroke-width="1.8"/><circle cx="10.25" cy="10.25" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="0" y2="12" stroke="#ff3b30" stroke-width="1.8"/><circle cx="0" cy="14.5" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="-8.49" y2="8.49" stroke="#ff3b30" stroke-width="1.8"/><circle cx="-10.25" cy="10.25" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="-12" y2="0" stroke="#ff3b30" stroke-width="1.8"/><circle cx="-14.5" cy="0" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="-8.49" y2="-8.49" stroke="#ff3b30" stroke-width="1.8"/><circle cx="-10.25" cy="-10.25" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="0" y2="-12" stroke="#ff3b30" stroke-width="1.8"/><circle cx="0" cy="-14.5" r="2" fill="#ff3b30"/>
+                      <line x1="0" y1="0" x2="8.49" y2="-8.49" stroke="#ff3b30" stroke-width="1.8"/><circle cx="10.25" cy="-10.25" r="2" fill="#ff3b30"/>
+                      <circle cx="0" cy="0" r="8" fill="#ff3b30" stroke="#ff3b30" stroke-width="1.6"/>
+                      <path d="M -5.5,-3.5 L -1.5,-2 C -1.5,-0.5 -3.5,0 -5.5,-1.5 Z" fill="#010502"/><circle cx="-3.5" cy="-2" r="0.8" fill="#fff"/>
+                      <path d="M 5.5,-3.5 L 1.5,-2 C 1.5,-0.5 3.5,0 5.5,-1.5 Z" fill="#010502"/><circle cx="3.5" cy="-2" r="0.8" fill="#fff"/>
+                      <path d="M -4.5,2.5 L -3,1 L -1.5,2.5 L 0,1 L 1.5,2.5 L 3,1 L 4.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span class="packet-demo"></span>
+                  <span class="status-circle error"></span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Defense</b><span class="value-pill">#44d775 glow packets and shield nodes</span></li>
                 <li><b>Data</b><span class="value-pill">#74d8ff trace/ring accents</span></li>
@@ -5918,6 +6955,9 @@
             <article class="exact-element-card">
               <span class="selector-pill">.game-container</span>
               <h3>Outer Console Frame</h3>
+              <div class="exact-card-sample">
+                <div class="sample-frame"><span>16 : 9</span></div>
+              </div>
               <ul class="value-list">
                 <li><b>Size</b><span class="value-pill">80vw x 45vw</span></li>
                 <li><b>Max</b><span class="value-pill">142.22vh x 80vh</span></li>
@@ -5930,6 +6970,24 @@
             <article class="exact-element-card">
               <span class="selector-pill">.exercise-panel</span>
               <h3>Terminal Exercise Panel</h3>
+              <div class="exact-card-sample">
+                <div class="typing-real term">
+                  <div class="terminal-header">
+                    <div class="terminal-header-info">
+                      <span class="terminal-title">TYPE CONSOLE</span>
+                      <span class="terminal-ping">VERBINDING ACTIEF</span>
+                    </div>
+                    <div class="terminal-win-controls"><span class="control-btn">&#8211;</span><span class="control-btn">&#9633;</span><span class="control-btn">&#10005;</span></div>
+                  </div>
+                  <div class="typewriter-body">
+                    <div class="text-scanlines"></div>
+                    <div class="typing-text-line">
+                      <div class="typing-text-row completed"><span class="char correct">f</span><span class="char correct">d</span><span class="char correct">j</span><span class="char correct">k</span></div>
+                      <div class="typing-text-row"><span class="char faded">d</span><span class="char faded">e</span><span class="char current">h</span><span class="char faded">u</span><span class="char faded">i</span><span class="char faded">s</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Height</b><span class="value-pill">clamp(240px, 36vh, 320px)</span></li>
                 <li><b>Fill</b><span class="value-pill">#141418</span></li>
@@ -5942,6 +7000,12 @@
             <article class="exact-element-card">
               <span class="selector-pill">.terminal-header, .typewriter-body</span>
               <h3>Terminal Chrome</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-term" style="width:min(240px,96%)">
+                  <div class="typing-terminal-head"><span>TYPE CONSOLE</span><span style="color:var(--green)">VERBONDEN</span></div>
+                  <div style="padding:10px 12px;font-family:'Roboto Mono',monospace;font-size:.74rem;color:#9296a8">fd jk <span class="char-block-demo current" style="display:inline-grid;width:22px;height:26px;font-size:.9rem;vertical-align:middle">f</span> dd</div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Header</b><span class="value-pill">36px high, #080808</span></li>
                 <li><b>Header border</b><span class="value-pill">1px solid var(--line)</span></li>
@@ -5954,6 +7018,22 @@
             <article class="exact-element-card">
               <span class="selector-pill">.metronome-deck, .metronome-core</span>
               <h3>Metronome Hardware Deck</h3>
+              <div class="exact-card-sample compact">
+                <div class="typing-real">
+                  <div class="metronome-deck">
+                    <div class="metronome-wrapper">
+                      <div class="metronome-core">
+                        <span class="metronome-pulse-wave"></span>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-left:2px"><path d="M8 5v14l11-7z"></path></svg>
+                      </div>
+                      <div class="metronome-meta">
+                        <span class="metronome-label">METRONOOM</span>
+                        <span class="metronome-status-text">STATUS: ONLINE</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Deck</b><span class="value-pill">linear-gradient(#101012, #0a0a0c)</span></li>
                 <li><b>Deck border</b><span class="value-pill">1px rgba(255,255,255,.06)</span></li>
@@ -5966,6 +7046,16 @@
             <article class="exact-element-card">
               <span class="selector-pill">.keyboard-perspective, .keyboard-container</span>
               <h3>Perspective Keyboard Deck</h3>
+              <div class="exact-card-sample">
+                <div class="sample-kbd">
+                  <div class="keyboard-perspective-demo">
+                    <div class="keyboard-sample">
+                      <div class="kbd-row"><span class="kbd-key finger-lp">A</span><span class="kbd-key finger-lr">Z</span><span class="kbd-key finger-lm">E</span><span class="kbd-key finger-li active">R</span><span class="kbd-key finger-ri">U</span><span class="kbd-key finger-rm">I</span><span class="kbd-key finger-rr">O</span><span class="kbd-key finger-rp">P</span></div>
+                      <div class="kbd-row"><span class="kbd-key finger-lp">Q</span><span class="kbd-key finger-lr">S</span><span class="kbd-key finger-lm">D</span><span class="kbd-key finger-li">F</span><span class="kbd-key finger-ri">J</span><span class="kbd-key finger-rm">K</span><span class="kbd-key finger-rr">L</span><span class="kbd-key finger-rp">M</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Wrapper</b><span class="value-pill">max-width 820px, perspective 800px</span></li>
                 <li><b>Deck</b><span class="value-pill">rotateX(24deg)</span></li>
@@ -5978,6 +7068,11 @@
             <article class="exact-element-card">
               <span class="selector-pill">.key, .key.active-target, finger classes</span>
               <h3>Keys and Finger Colors</h3>
+              <div class="exact-card-sample compact">
+                <div class="sample-key-row">
+                  <span class="kbd-key finger-lp">A</span><span class="kbd-key finger-lr">S</span><span class="kbd-key finger-lm">D</span><span class="kbd-key finger-li active">F</span><span class="kbd-key finger-ri">J</span><span class="kbd-key finger-rm">K</span>
+                </div>
+              </div>
               <ul class="value-list">
                 <li><b>Key</b><span class="value-pill">height clamp(34px,4.8vh,48px), radius 6px</span></li>
                 <li><b>Border</b><span class="value-pill">1.5px rgba(255,255,255,.05)</span></li>
@@ -6061,7 +7156,7 @@
                 <div class="motion-card"><span class="motion-shake"></span><span>Error shake</span></div>
                 <div class="motion-card"><span class="motion-reticle"></span><span>Target lock</span></div>
                 <div class="motion-card"><span class="motion-packet"></span><span>Packet hit</span></div>
-                <div class="motion-card"><span class="rhythm-wave-demo" style="width:110px"><i class="rhythm-dot-demo"></i></span><span>Metronome</span></div>
+                <div class="motion-card"><span class="typing-real" style="display:inline-flex"><span class="metronome-core"><span class="metronome-pulse-wave"></span><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style="margin-left:2px"><path d="M8 5v14l11-7z"></path></svg></span></span><span>Metronome</span></div>
               </div>
             </div>
             <div class="part-info">
@@ -6092,13 +7187,16 @@
         </div>
         <div class="part-grid">
           <article class="part-card">
-            <div class="part-demo">
+            <div class="part-demo" style="flex-direction:column;gap:16px">
               <div class="fingerprint-device">
                 <div class="fingerprint-core"></div>
                 <div class="fingerprint-laser"></div>
-                <span class="scan-node active" style="left:16%;top:43%">A</span>
-                <span class="scan-node" style="left:84%;top:43%">S</span>
-                <span class="scan-node" style="left:50%;top:84%">F</span>
+              </div>
+              <div class="scan-node-states">
+                <span class="scan-node active">A</span>
+                <span class="scan-node correct">S</span>
+                <span class="scan-node wrong">F</span>
+                <span class="scan-node-legend">active · correct · wrong</span>
               </div>
             </div>
             <div class="part-info">
@@ -6178,21 +7276,50 @@
         <div class="part-grid single">
           <article class="part-card">
             <div class="part-demo tall">
-              <div class="end-result-screen">
-                <header class="end-result-header">
-                  <p class="end-result-eyebrow">DECRYPTIE EVALUATIE // SYSTEM REPORT</p>
-                  <h3>DOSSIER VOLLEDIG HERSTELD!</h3>
-                  <div class="end-rank-bar"><span>EVALUATIE RANG:</span><strong>Master Cyber-Spion</strong></div>
-                </header>
-                <div class="end-dashboard-grid">
-                  <div class="end-dashboard-card"><span class="end-card-title">Characters per minute</span><span class="end-card-value">184</span><span class="end-card-footer">+12 credits</span></div>
-                  <div class="end-dashboard-card"><span class="end-card-title">Time</span><span class="end-card-value green">42.8s</span><span class="end-card-footer">Mission time</span></div>
-                  <div class="end-dashboard-card"><span class="end-card-title">Accuracy</span><span class="end-card-value green">96%</span><span class="end-card-footer">+20 credits</span></div>
-                  <div class="end-dashboard-card"><span class="end-card-title">Difficult keys</span><span class="end-card-value">S F</span><span class="end-card-footer">Review hint</span></div>
-                  <div class="end-dashboard-card"><span class="end-card-title">Mission status</span><span class="stamp-badge">GESLAAGD</span><span class="end-card-footer">+50 credits</span></div>
-                  <div class="end-dashboard-card highlight"><span class="end-card-title">Total credits</span><span class="end-card-value">82</span><span class="end-card-footer">Super Spy School</span></div>
+              <div class="result-real">
+                <div class="result-container">
+                  <header class="result-header">
+                    <p class="result-eyebrow">DECRYPTIE EVALUATIE // SYSTEM REPORT</p>
+                    <h2>DOSSIER VOLLEDIG HERSTELD!</h2>
+                    <div class="result-rank-bar"><span>EVALUATIE RANG:</span><strong class="rank-badge-text">Master Cyber-Spion</strong></div>
+                  </header>
+                  <div class="result-dashboard-grid">
+                    <div class="dashboard-card">
+                      <span class="card-title">Characters per minute</span>
+                      <div class="card-value-container"><span class="card-main-value">184</span></div>
+                      <div class="card-footer-reward">+12 <img src="../typegame-file-redacting/coin.svg" alt="" width="14" height="14"></div>
+                    </div>
+                    <div class="dashboard-card">
+                      <span class="card-title">Difficult keys</span>
+                      <div class="card-value-container"><span class="difficult-key-badge">S</span></div>
+                      <span class="card-footer-label">Meeste typfouten</span>
+                    </div>
+                    <div class="dashboard-card">
+                      <span class="card-title">Accuracy</span>
+                      <div class="card-value-container"><span class="card-main-value highlight-green">96%</span></div>
+                      <div class="card-footer-reward">+20 <img src="../typegame-file-redacting/coin.svg" alt="" width="14" height="14"></div>
+                    </div>
+                    <div class="dashboard-card">
+                      <span class="card-title">Flawless streak</span>
+                      <div class="card-value-container"><span class="streak-circle-value">7</span></div>
+                      <div class="card-footer-reward">+14 <img src="../typegame-file-redacting/coin.svg" alt="" width="14" height="14"></div>
+                    </div>
+                    <div class="dashboard-card">
+                      <span class="card-title">Mission status</span>
+                      <div class="card-value-container"><span class="status-success-badge">GESLAAGD</span></div>
+                      <div class="card-footer-reward">+50 <img src="../typegame-file-redacting/coin.svg" alt="" width="14" height="14"></div>
+                    </div>
+                    <div class="dashboard-card highlight-glow">
+                      <span class="card-title">Total credits</span>
+                      <div class="card-value-container credits-container"><img class="coin-total-img" src="../typegame-file-redacting/coin.svg" alt=""><span class="card-main-value">82</span></div>
+                      <span class="card-footer-label">Super Spy School munten</span>
+                    </div>
+                  </div>
+                  <div class="results-actions">
+                    <p class="spacebar-instruction">Druk op de spatiebalk om door te gaan</p>
+                    <button class="spacebar-btn-visual" type="button"><span class="spacebar-icon-line"></span></button>
+                  </div>
                 </div>
-                <div class="end-results-actions"><span>Druk op de spatiebalk om door te gaan</span><div class="spacebar"></div></div>
               </div>
             </div>
             <div class="part-info">
