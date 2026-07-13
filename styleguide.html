@@ -299,24 +299,23 @@ table.sg-table {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   SHARED GAME COMPONENTS — values copied 1:1 from the games
+   SHARED GAME COMPONENTS — extracted from the current game CSS
    ════════════════════════════════════════════════════════════════ */
 
 /* — Mission header (game-header) — */
 .game-header {
   width: 100%;
-  height: 60px;
+  height: clamp(54px, 7.5vh, 72px);
   padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--purple-soft);
   background: color-mix(in srgb, var(--purple) 95%, transparent);
-  border-radius: 8px 8px 0 0;
 }
 .brand-system {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.62rem;
+  font-size: clamp(0.55rem, 1vh, 0.65rem);
   font-weight: 700;
   color: var(--green);
   letter-spacing: 1px;
@@ -337,8 +336,8 @@ table.sg-table {
 
 /* — Buttons & dropdown — */
 .primary-button, .ghost-button, .dropdown-header {
-  min-height: 38px;
-  padding: 0 16px;
+  min-height: clamp(34px, 4.5vh, 42px);
+  padding: 0 clamp(12px, 2vh, 20px);
   border-radius: 6px;
   font-family: "Orbitron", sans-serif;
   font-size: 0.72rem;
@@ -361,7 +360,7 @@ table.sg-table {
 /* — HUD stat cards (door-hud-stats / hud-stat) — */
 .hud-stat {
   text-align: center;
-  min-width: 130px;
+  min-width: clamp(120px, 15vw, 150px);
   background: color-mix(in srgb, var(--purple) 60%, transparent);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -370,7 +369,7 @@ table.sg-table {
 .hud-stat .stat-value {
   display: block;
   font-family: "Orbitron", sans-serif;
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 2.8vh, 1.7rem);
   font-weight: 700;
   color: var(--accent, var(--orange));
 }
@@ -378,7 +377,7 @@ table.sg-table {
 .hud-stat .stat-value.is-red { color: var(--red); }
 .hud-stat .stat-label {
   display: block;
-  font-size: 0.7rem;
+  font-size: clamp(0.64rem, 1.1vh, 0.8rem);
   color: var(--muted);
   text-transform: uppercase;
   font-weight: 600;
@@ -387,13 +386,13 @@ table.sg-table {
 
 /* — Briefing card — */
 .briefing-panel {
-  max-width: 560px;
-  width: 100%;
+  max-width: 580px;
+  width: 95%;
   background: color-mix(in srgb, var(--purple) 40%, transparent);
   backdrop-filter: blur(12px);
   border: 1.5px solid var(--purple-soft);
   border-radius: 12px;
-  padding: 22px;
+  padding: clamp(16px, 3vh, 24px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -428,7 +427,7 @@ table.sg-table {
 }
 .briefing-slide-title {
   font-family: "Orbitron", sans-serif;
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 2vh, 1.15rem);
   font-weight: 500;
   line-height: 1.4;
   text-align: center;
@@ -644,17 +643,18 @@ table.sg-table {
 .system-tag-right { right: 6px; }
 
 /* — L4: typed code slots (char-box) — */
-.code-text { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.code-text { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 10px 0; }
 .char-box {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px; height: 52px;
+  width: clamp(35px, 6vh, 48px);
+  height: clamp(45px, 8vh, 60px);
   background: rgba(0, 0, 0, 0.4);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 6px;
   font-family: "Roboto Mono", monospace;
-  font-size: 1.45rem;
+  font-size: clamp(1.2rem, 3.4vh, 1.7rem);
   font-weight: 700;
   color: var(--muted, #9296a8);
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
@@ -670,9 +670,9 @@ table.sg-table {
 .keypad-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  width: 100%;
-  max-width: 240px;
+  gap: clamp(4px, 0.8vh, 8px);
+  width: 80%;
+  max-width: min(270px, 32vh);
 }
 .keypad-btn {
   position: relative;
@@ -690,15 +690,16 @@ table.sg-table {
 }
 .keypad-btn .btn-num {
   position: absolute;
-  top: 4px; left: 6px;
-  font-size: 0.6rem;
+  top: clamp(3px, 0.7vh, 5px);
+  left: clamp(4px, 0.9vh, 7px);
+  font-size: clamp(0.55rem, 1.3vh, 0.7rem);
   font-weight: 700;
   color: rgba(255, 255, 255, 0.35);
   font-family: "Roboto Mono", monospace;
   line-height: 1;
 }
 .keypad-btn .btn-char {
-  font-size: 1.45rem;
+  font-size: clamp(1.2rem, 3.2vh, 1.8rem);
   font-weight: 700;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.8), 1px 1px 0 rgba(255, 255, 255, 0.1);
@@ -2245,7 +2246,7 @@ table.sg-table {
   background: rgba(228, 142, 53, 0.08);
   color: var(--orange);
   font-family: "Orbitron", sans-serif;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.8vh, 1.2rem);
   font-weight: 900;
   box-shadow: 0 0 12px rgba(228, 142, 53, 0.35);
   animation: keyTargetPulseDemo 1.2s infinite alternate ease-in-out;
@@ -2367,29 +2368,1225 @@ table.sg-table {
   .briefing-flow-grid { grid-template-columns: 1fr; }
   .animation-demo-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
 }
+
+/* ==========================================================================
+   STYLE GUIDE V4 CHROME
+   A quieter documentation layer. Game specimen styles above remain isolated.
+   ========================================================================== */
+:root {
+  --sg-bg: #09090b;
+  --sg-nav-bg: #0c0c0f;
+  --sg-panel: #111216;
+  --sg-panel-2: #16171c;
+  --sg-panel-3: #1b1c22;
+  --sg-line: rgba(255, 255, 255, 0.105);
+  --sg-line-strong: rgba(255, 255, 255, 0.18);
+  --sg-text: #f4f2ed;
+  --sg-muted: #a4a3aa;
+  --sg-subtle: #74737b;
+  --sg-accent: #e48e35;
+  --sg-accent-soft: #f5b05f;
+  --sg-green: #9ad744;
+  --sg-red: #ff4b43;
+  --sg-radius-sm: 7px;
+  --sg-radius-md: 12px;
+  --sg-radius-lg: 18px;
+  --sg-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+}
+
+html { scroll-padding-top: 32px; }
+body {
+  font-size: 16px;
+  line-height: 1.65;
+  background:
+    radial-gradient(circle at 78% -10%, rgba(228, 142, 53, 0.055), transparent 34rem),
+    radial-gradient(circle at 40% 38rem, rgba(62, 77, 128, 0.035), transparent 42rem),
+    var(--sg-bg);
+}
+
+.sg-skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  transform: translateY(-160%);
+  padding: 10px 14px;
+  border-radius: var(--sg-radius-sm);
+  color: #111;
+  background: var(--sg-accent-soft);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+.sg-skip-link:focus { transform: translateY(0); }
+
+.sg-progress {
+  position: fixed;
+  z-index: 110;
+  top: 0;
+  left: 292px;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.sg-progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--sg-accent), var(--sg-accent-soft));
+  box-shadow: 0 0 10px rgba(228, 142, 53, 0.38);
+}
+
+.sg-shell { align-items: flex-start; }
+.sg-nav {
+  width: 292px;
+  padding: 0;
+  border-right-color: var(--sg-line);
+  background: rgba(12, 12, 15, 0.96);
+  backdrop-filter: blur(20px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.14) transparent;
+}
+.sg-nav-inner {
+  min-height: 100%;
+  padding: 30px 22px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.sg-brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 22px;
+}
+.sg-brand-mark {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(228, 142, 53, 0.36);
+  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(228,142,53,.12), rgba(228,142,53,.025));
+  box-shadow: inset 0 1px rgba(255,255,255,.06);
+  color: var(--sg-accent-soft);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.68rem, 1.2vh, 0.78rem);
+  font-weight: 900;
+}
+.sg-brand-copy { min-width: 0; }
+.sg-nav .sg-logo {
+  margin: 0 0 2px;
+  font-size: 0.86rem;
+  line-height: 1.2;
+  letter-spacing: 1.2px;
+}
+.sg-nav .sg-logo-sub {
+  margin: 0;
+  color: var(--sg-subtle);
+  font-size: 0.51rem;
+  line-height: 1.25;
+  letter-spacing: 1.15px;
+}
+
+.sg-nav-search-wrap { position: relative; margin: 0 0 22px; }
+.sg-nav-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  color: var(--sg-subtle);
+  pointer-events: none;
+}
+.sg-nav-search {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px 0 36px;
+  border: 1px solid var(--sg-line);
+  border-radius: 9px;
+  outline: none;
+  color: var(--sg-text);
+  background: rgba(255,255,255,.028);
+  font: 0.78rem "Roboto", sans-serif;
+}
+.sg-nav-search::placeholder { color: #6f6e76; }
+.sg-nav-search:focus {
+  border-color: rgba(228, 142, 53, 0.5);
+  box-shadow: 0 0 0 3px rgba(228, 142, 53, 0.08);
+}
+.sg-nav-group { margin-bottom: 18px; }
+.sg-nav-group[hidden], .sg-nav a[hidden] { display: none !important; }
+.sg-nav-group-title {
+  margin: 0 10px 6px;
+  color: #68676e;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.57rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
+.sg-nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  margin: 1px 0;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #929098;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.sg-nav a span {
+  width: 24px;
+  flex: 0 0 auto;
+  margin-right: 6px;
+  color: #66656c;
+  font: 0.58rem "Roboto Mono", monospace;
+}
+.sg-nav a:hover {
+  color: #dedce0;
+  background: rgba(255,255,255,.035);
+}
+.sg-nav a.active {
+  border-color: rgba(228, 142, 53, 0.13);
+  color: #fff;
+  background: linear-gradient(90deg, rgba(228,142,53,.11), rgba(228,142,53,.025));
+}
+.sg-nav a.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--sg-accent);
+}
+.sg-nav a.active span { color: var(--sg-accent-soft); }
+.sg-nav-footer {
+  margin-top: auto;
+  padding: 18px 8px 0;
+  border-top: 1px solid rgba(255,255,255,.07);
+  color: #68676e;
+  font: 0.58rem/1.55 "Roboto Mono", monospace;
+}
+.sg-nav-footer strong { display: block; color: #aaa8af; font-weight: 500; }
+
+.sg-mobile-toggle {
+  display: none;
+  position: fixed;
+  z-index: 150;
+  top: 14px;
+  left: 14px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--sg-line-strong);
+  border-radius: 10px;
+  color: var(--sg-text);
+  background: rgba(16,16,19,.92);
+  box-shadow: 0 10px 25px rgba(0,0,0,.3);
+  font-size: 1.1rem;
+}
+
+.sg-main {
+  width: calc(100% - 292px);
+  max-width: 1340px;
+  padding: 40px clamp(32px, 4.5vw, 72px) 140px;
+}
+.sg-section {
+  margin-bottom: 112px;
+  scroll-margin-top: 34px;
+}
+.sg-section > h2 {
+  max-width: 850px;
+  margin-bottom: 14px;
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.sg-section h3 {
+  margin-top: 46px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+.sg-section h4 { margin-top: 28px; }
+.sg-kicker {
+  margin-bottom: 10px;
+  color: var(--sg-accent-soft);
+  font: 700 0.61rem "Roboto Mono", monospace;
+  letter-spacing: 1.45px;
+}
+.sg-lead {
+  max-width: 820px;
+  margin-bottom: 30px;
+  color: #aaa8af;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+p.sg-note { max-width: 820px; color: #929098; font-size: 0.87rem; }
+.sg-note code, .sg-lead code, li code, td code {
+  border: 1px solid rgba(228,142,53,.09);
+  background: rgba(228,142,53,.075);
+  color: #efad69;
+}
+
+.sg-stage {
+  min-height: 180px;
+  margin: 16px 0 0;
+  padding: clamp(26px, 4vw, 48px);
+  gap: 28px;
+  border-color: var(--sg-line);
+  border-radius: var(--sg-radius-lg);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,.025), transparent 48%),
+    #090a0e;
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+.sg-caption {
+  margin: 0 0 32px;
+  padding: 12px 16px;
+  border: 1px solid var(--sg-line);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  color: #88868f;
+  background: rgba(255,255,255,.018);
+  font-size: 0.69rem;
+  line-height: 1.7;
+}
+.sg-caption b { color: #e8a766; }
+
+table.sg-table {
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 12px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: rgba(255,255,255,.012);
+}
+.sg-table th {
+  padding: 11px 13px;
+  border-bottom-color: var(--sg-line);
+  color: #838189;
+  background: rgba(255,255,255,.022);
+}
+.sg-table td { padding: 10px 13px; border-bottom-color: rgba(255,255,255,.052); }
+.sg-table tr:last-child td { border-bottom: 0; }
+.sg-swatch { width: 44px; height: 28px; border-radius: 6px; }
+
+.sg-details {
+  margin: 18px 0 28px;
+  border: 1px solid var(--sg-line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.014);
+}
+.sg-details summary {
+  padding: 14px 16px;
+  color: #d1cfd3;
+  cursor: pointer;
+  font: 700 0.67rem "Orbitron", sans-serif;
+  letter-spacing: .5px;
+  list-style: none;
+}
+.sg-details summary::-webkit-details-marker { display: none; }
+.sg-details summary::after { content: "+"; float: right; color: var(--sg-accent); font-size: 1rem; }
+.sg-details[open] summary::after { content: "-"; }
+.sg-details .sg-table { margin: 0; border: 0; border-top: 1px solid var(--sg-line); border-radius: 0 0 12px 12px; }
+
+/* Welcome / system map */
+.sg-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 460px;
+  margin-bottom: 108px;
+  padding: clamp(34px, 6vw, 76px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid var(--sg-line);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 84% 18%, rgba(228,142,53,.12), transparent 18rem),
+    linear-gradient(145deg, rgba(255,255,255,.025), transparent 42%),
+    #0e0f13;
+  box-shadow: var(--sg-shadow), inset 0 1px rgba(255,255,255,.05);
+}
+.sg-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #e48e35 0 28%, #9ad744 28% 45%, #8b9dfd 45% 61%, #ffcc00 61% 75%, #a65efc 75% 88%, #44d775 88%);
+  opacity: .9;
+}
+.sg-hero-orbit {
+  position: absolute;
+  top: -82px;
+  right: -80px;
+  width: 360px;
+  height: 360px;
+  border: 1px solid rgba(228,142,53,.1);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 54px rgba(228,142,53,.012), inset 0 0 0 110px rgba(228,142,53,.012);
+}
+.sg-hero-eyebrow {
+  position: relative;
+  margin: 0 0 14px;
+  color: var(--sg-accent-soft);
+  font: 700 0.63rem "Roboto Mono", monospace;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+.sg-hero h1 {
+  position: relative;
+  max-width: 870px;
+  margin: 0;
+  color: #fff;
+  font: 800 clamp(2.25rem, 4.25vw, 4rem)/1.04 "Orbitron", sans-serif;
+  letter-spacing: -0.045em;
+}
+.sg-hero h1 span {
+  color: transparent;
+  background: linear-gradient(90deg, #fff 5%, #f5b05f 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.sg-hero-copy {
+  position: relative;
+  max-width: 710px;
+  margin: 24px 0 28px;
+  color: #aaa9b0;
+  font-size: clamp(.96rem, 1.5vw, 1.08rem);
+  line-height: 1.75;
+}
+.sg-hero-actions { position: relative; display: flex; flex-wrap: wrap; gap: 10px; }
+.sg-doc-button {
+  min-height: 42px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(228,142,53,.32);
+  border-radius: 8px;
+  color: #f3c28d;
+  background: rgba(228,142,53,.09);
+  font: 700 .67rem "Orbitron", sans-serif;
+  letter-spacing: .35px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sg-doc-button:hover { border-color: rgba(228,142,53,.65); color: #fff; background: rgba(228,142,53,.15); }
+.sg-doc-button.secondary { border-color: var(--sg-line-strong); color: #aaa9b0; background: rgba(255,255,255,.026); }
+.sg-doc-button.secondary:hover { color: #fff; border-color: rgba(255,255,255,.28); }
+.sg-hero-stats {
+  position: absolute;
+  top: 30px;
+  left: clamp(34px, 6vw, 76px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sg-hero-stat {
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 6px;
+  color: #77757d;
+  background: rgba(0,0,0,.2);
+  font: .58rem "Roboto Mono", monospace;
+  letter-spacing: .4px;
+}
+.sg-hero-stat strong { color: #d9d7da; font-weight: 500; }
+
+/* Live, literal game renders */
+.sg-live-viewer {
+  overflow: hidden;
+  border: 1px solid var(--sg-line-strong);
+  border-radius: var(--sg-radius-lg);
+  background: #070709;
+  box-shadow: var(--sg-shadow);
+}
+.sg-game-tabs {
+  padding: 12px;
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--sg-line);
+  background: #111216;
+  scrollbar-width: thin;
+}
+.sg-game-tab {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: #7f7d85;
+  background: transparent;
+  font: 600 .68rem "Roboto", sans-serif;
+  cursor: pointer;
+}
+.sg-game-tab:hover { color: #d8d5d9; background: rgba(255,255,255,.035); }
+.sg-game-tab.active { color: #fff; border-color: rgba(228,142,53,.24); background: rgba(228,142,53,.1); }
+.sg-preview-toolbar {
+  min-height: 52px;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--sg-line);
+}
+.sg-preview-title { min-width: 0; }
+.sg-preview-title strong { display: block; color: #e4e1e4; font-size: .84rem; font-weight: 600; }
+.sg-preview-title span { display: block; overflow: hidden; color: #6f6d75; font: .59rem "Roboto Mono", monospace; text-overflow: ellipsis; white-space: nowrap; }
+.sg-preview-actions { display: flex; gap: 7px; flex: 0 0 auto; }
+.sg-preview-action {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--sg-line);
+  border-radius: 7px;
+  color: #a9a7ad;
+  background: rgba(255,255,255,.025);
+  font: 600 .62rem "Roboto", sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+button.sg-preview-action.active { color: #dff6c1; border-color: rgba(154,215,68,.28); background: rgba(154,215,68,.08); }
+a.sg-preview-action { display: inline-flex; align-items: center; }
+.sg-preview-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #030305;
+}
+.sg-preview-window::after {
+  content: "Live project render - enable interaction to use it";
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 6px;
+  color: rgba(255,255,255,.45);
+  background: rgba(0,0,0,.66);
+  backdrop-filter: blur(8px);
+  font: .56rem "Roboto Mono", monospace;
+  pointer-events: none;
+}
+.sg-preview-window.is-interactive::after { content: "Interaction enabled"; color: #aede6d; border-color: rgba(154,215,68,.25); }
+.sg-preview-window iframe { width: 100%; height: 100%; border: 0; pointer-events: none; }
+.sg-preview-window.is-interactive iframe { pointer-events: auto; }
+.sg-preview-meta {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  border-top: 1px solid var(--sg-line);
+  background: #101115;
+}
+.sg-meta-item { min-width: 0; padding: 10px 12px; border-radius: 8px; background: rgba(255,255,255,.024); }
+.sg-meta-item span { display: block; margin-bottom: 3px; color: #67656d; font: 700 .53rem "Roboto Mono", monospace; letter-spacing: .75px; text-transform: uppercase; }
+.sg-meta-item strong { display: block; overflow: hidden; color: #c9c6ca; font-size: .72rem; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.sg-source-note {
+  margin: 14px 0 0;
+  padding: 13px 15px;
+  display: flex;
+  gap: 10px;
+  border: 1px solid rgba(154,215,68,.13);
+  border-radius: 9px;
+  color: #9c9aa1;
+  background: rgba(154,215,68,.035);
+  font-size: .82rem;
+}
+.sg-source-note::before { content: "LIVE"; color: #9ad744; font: 800 .55rem "Roboto Mono", monospace; letter-spacing: 1px; padding-top: 4px; }
+
+/* Clear, large color documentation */
+.sg-semantic-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.sg-color-card {
+  overflow: hidden;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--sg-line);
+  border-radius: 13px;
+  background: var(--sg-panel);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.sg-color-card:hover { border-color: rgba(255,255,255,.2); transform: translateY(-1px); }
+.sg-color-field { min-height: 126px; flex: 1; position: relative; }
+.sg-color-field::after {
+  content: "Click to copy";
+  position: absolute;
+  right: 10px;
+  bottom: 9px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: rgba(255,255,255,.62);
+  background: rgba(0,0,0,.28);
+  font: .5rem "Roboto Mono", monospace;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.sg-color-card:hover .sg-color-field::after { opacity: 1; }
+.sg-color-card.copied .sg-color-field::after { content: "Copied"; opacity: 1; color: #dfffb0; }
+.sg-color-info { padding: 13px 14px 14px; }
+.sg-color-role { display: block; margin-bottom: 3px; color: #eeecef; font-size: .79rem; font-weight: 600; }
+.sg-color-value { display: block; color: #8f8d94; font: .64rem "Roboto Mono", monospace; }
+.sg-color-use { display: block; margin-top: 7px; color: #77757d; font-size: .68rem; line-height: 1.45; }
+
+.sg-palette-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+.sg-palette-card {
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 14px;
+  background: var(--sg-panel);
+}
+.sg-palette-head { padding: 15px 16px 13px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sg-palette-head strong { color: #e8e5e8; font: 700 .73rem "Orbitron", sans-serif; letter-spacing: .2px; }
+.sg-palette-head span { color: #68666e; font: .56rem "Roboto Mono", monospace; }
+.sg-palette-band { display: grid; grid-template-columns: repeat(6, 1fr); height: 98px; }
+.sg-palette-color { position: relative; border: 0; cursor: pointer; }
+.sg-palette-color:hover { z-index: 2; outline: 2px solid rgba(255,255,255,.55); outline-offset: -2px; }
+.sg-palette-color.copied { z-index: 3; outline: 2px solid #fff; outline-offset: -2px; }
+.sg-palette-color.copied::before {
+  content: "Copied";
+  position: absolute;
+  z-index: 4;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 6px;
+  border-radius: 4px;
+  color: #fff;
+  background: rgba(0,0,0,.72);
+  font: 700 .48rem "Roboto Mono", monospace;
+  white-space: nowrap;
+}
+.sg-palette-color::after {
+  content: attr(data-role);
+  position: absolute;
+  left: 7px;
+  bottom: 6px;
+  color: rgba(255,255,255,.68);
+  font: .46rem "Roboto Mono", monospace;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-shadow: 0 1px 3px #000;
+}
+.sg-palette-values { padding: 10px 14px 13px; display: flex; flex-wrap: wrap; gap: 5px 10px; }
+.sg-palette-values code {
+  padding: 3px 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #8d8b92;
+  font: .55rem "Roboto Mono", monospace;
+  cursor: pointer;
+}
+.sg-palette-values code:hover,
+.sg-palette-values code:focus-visible,
+#colors code[data-copy]:hover,
+#colors code[data-copy]:focus-visible {
+  border-color: rgba(228,142,53,.22);
+  outline: none;
+  color: #f0b06e;
+  background: rgba(228,142,53,.07);
+}
+#colors code[data-copy] { cursor: pointer; }
+#colors .sg-swatch[data-copy] {
+  cursor: pointer;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+#colors .sg-swatch[data-copy]:hover,
+#colors .sg-swatch[data-copy]:focus-visible {
+  transform: scale(1.08);
+  border-color: rgba(255,255,255,.55);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(228,142,53,.12);
+}
+.sg-copy-toast {
+  position: fixed;
+  z-index: 500;
+  right: 22px;
+  bottom: 22px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 11px 14px;
+  border: 1px solid rgba(154,215,68,.35);
+  border-radius: 8px;
+  color: #dfffb0;
+  background: rgba(12,16,11,.94);
+  box-shadow: 0 14px 35px rgba(0,0,0,.45);
+  font: 600 .68rem "Roboto Mono", monospace;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .16s ease, transform .16s ease;
+}
+.sg-copy-toast.show { opacity: 1; transform: translateY(0); }
+
+/* Typography documentation */
+.sg-font-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 44px;
+}
+.sg-font-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--sg-line);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,.025), transparent 58%), var(--sg-panel);
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+.sg-font-card.core { grid-column: span 2; }
+.sg-font-card.document { grid-column: span 3; }
+.sg-font-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sg-font-kind { color: var(--sg-accent-soft); font: 700 .54rem "Roboto Mono", monospace; letter-spacing: 1px; text-transform: uppercase; }
+.sg-font-source { color: #6d6b73; font: .52rem "Roboto Mono", monospace; }
+.sg-font-sample {
+  min-height: 88px;
+  margin: 16px 0 15px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: #f5f3f5;
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.sg-font-sample.orbitron { font-family: "Orbitron", sans-serif; font-weight: 800; letter-spacing: -.03em; }
+.sg-font-sample.roboto-mono { font-family: "Roboto Mono", monospace; font-weight: 700; color: #9ad744; }
+.sg-font-sample.roboto { font-family: "Roboto", sans-serif; font-weight: 400; }
+.sg-font-sample.courier { font-family: "Courier New", Courier, monospace; font-weight: 700; color: #1a1a1a; background: #f5f1e6; margin-inline: -8px; min-height: 88px; padding: 0 14px; transform: rotate(-.35deg); }
+.sg-font-sample.georgia { font-family: Georgia, serif; font-style: italic; font-weight: 700; color: #d8c9df; }
+.sg-font-card h3 { margin: 0 0 4px; font-size: .82rem; }
+.sg-font-card > p { margin: 0; color: #7e7c84; font-size: .72rem; line-height: 1.55; }
+.sg-font-roles { margin-top: 13px; display: flex; flex-wrap: wrap; gap: 5px; }
+.sg-font-roles span { padding: 4px 6px; border: 1px solid rgba(255,255,255,.075); border-radius: 5px; color: #9b999f; background: rgba(0,0,0,.16); font: .52rem "Roboto Mono", monospace; }
+
+.sg-type-section {
+  overflow: hidden;
+  margin: 16px 0;
+  border: 1px solid var(--sg-line);
+  border-radius: 16px;
+  background: rgba(255,255,255,.012);
+}
+.sg-type-section-head {
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid var(--sg-line);
+  background: rgba(255,255,255,.018);
+}
+.sg-type-section-number {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(228,142,53,.25);
+  border-radius: 8px;
+  color: var(--sg-accent-soft);
+  background: rgba(228,142,53,.06);
+  font: 700 .58rem "Roboto Mono", monospace;
+}
+.sg-type-section-head h3 { margin: 0 0 2px; font-size: .82rem; }
+.sg-type-section-head p { margin: 0; color: #77757d; font-size: .72rem; }
+.sg-type-spec-grid { padding: 12px; display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+.sg-type-spec {
+  min-width: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px;
+  background: #0b0c10;
+}
+.sg-type-spec-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sg-type-role { color: #d8d5d9; font: 600 .72rem "Roboto", sans-serif; }
+.sg-type-selector { overflow: hidden; color: #65636b; font: .52rem "Roboto Mono", monospace; text-overflow: ellipsis; white-space: nowrap; }
+.sg-type-demo {
+  min-height: 92px;
+  padding: 18px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+}
+.sg-type-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+.sg-type-meta span { padding: 4px 6px; border-radius: 5px; color: #8d8b92; background: rgba(255,255,255,.035); font: .52rem "Roboto Mono", monospace; }
+.sg-type-meta span:first-child { color: #e7a45f; background: rgba(228,142,53,.07); }
+.sg-type-use { margin: 9px 0 0; color: #74727a; font-size: .68rem; line-height: 1.5; }
+
+.sg-ts-system { color: #9ad744; font: 700 clamp(.58rem, 1vw, .7rem) "Orbitron", sans-serif; letter-spacing: 1px; }
+.sg-ts-title { color: transparent; background: linear-gradient(90deg,#fff,#e48e35); -webkit-background-clip: text; background-clip: text; font: 900 clamp(1rem,1.8vw,1.35rem) "Orbitron", sans-serif; letter-spacing: .5px; }
+.sg-ts-briefing { max-width: 440px; color: #fff; font: 500 clamp(.95rem,1.5vw,1.15rem)/1.4 "Orbitron", sans-serif; }
+.sg-ts-control { min-height: 40px; padding: 0 16px; display: inline-flex; align-items: center; border: 2px solid #e48e35; border-radius: 6px; color: #fff; background: #e48e35; font: 700 clamp(.68rem,1vw,.78rem) "Orbitron", sans-serif; }
+.sg-ts-stat { color: #e48e35; font: 700 clamp(1.45rem,2.4vw,1.75rem) "Orbitron", sans-serif; line-height: 1; }
+.sg-ts-stat-label { margin-top: 6px; color: #9296a8; font: 600 .68rem "Roboto", sans-serif; text-transform: uppercase; }
+.sg-ts-chars { display: flex; gap: 7px; }
+.sg-ts-char { width: 42px; height: 52px; display: grid; place-items: center; border: 2px solid rgba(255,255,255,.1); border-radius: 6px; color: #777b8d; background: rgba(0,0,0,.4); font: 700 1.35rem "Roboto Mono", monospace; text-transform: uppercase; }
+.sg-ts-char.correct { border-color: #9ad744; color: #9ad744; box-shadow: 0 0 9px rgba(154,215,68,.3); }
+.sg-ts-char.current { border-color: #e48e35; color: #e48e35; box-shadow: 0 0 9px rgba(228,142,53,.24); }
+.sg-ts-logbox { width: 100%; max-width: 380px; padding: 10px 12px; display: flex; flex-direction: column; gap: 5px; border: 1px solid #1f213d; border-radius: 6px; background: rgba(0,0,0,.25); font: 400 clamp(.56rem,.9vw,.66rem)/1.35 "Roboto Mono", monospace; }
+.sg-ts-logbox .ok { color: #9ad744; }
+.sg-ts-logbox .error { color: #ff3b30; }
+.sg-ts-micro { color: #9296a8; font: 700 clamp(.48rem,.8vw,.56rem) "Orbitron", sans-serif; letter-spacing: .8px; text-transform: uppercase; }
+.sg-ts-body { max-width: 430px; color: #a8a5ad; font: 400 .82rem/1.65 "Roboto", sans-serif; }
+.sg-ts-result-heading { color: #e48e35; font: 800 clamp(1.2rem,2.6vw,1.8rem) "Orbitron", sans-serif; letter-spacing: 1px; text-shadow: 0 0 10px rgba(228,142,53,.25); }
+.sg-ts-result-value { color: #9ad744; font: 900 clamp(1.8rem,3vw,2.4rem)/1.1 "Orbitron", sans-serif; text-shadow: 0 0 10px rgba(154,215,68,.35); }
+.sg-ts-stamp { padding: 3px 10px; border: 2px solid #9ad744; border-radius: 4px; color: #9ad744; font: 900 clamp(1.05rem,2vw,1.35rem) "Orbitron", sans-serif; letter-spacing: 1px; transform: rotate(-3deg); box-shadow: inset 0 0 8px rgba(154,215,68,.12), 0 0 8px rgba(154,215,68,.12); }
+.sg-ts-paper { width: 100%; max-width: 420px; padding: 14px 16px; color: #1a1a1a; background: #fdfbf4; border-radius: 2px; box-shadow: 0 7px 20px rgba(0,0,0,.35); font: 700 clamp(.68rem,1.2vw,.85rem)/1.45 "Courier New", Courier, monospace; }
+.sg-ts-paper strong { display: block; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #8f8579; font-size: clamp(.78rem,1.3vw,.98rem); text-transform: uppercase; }
+.sg-ts-signature { color: #4d1c44; font: italic 700 clamp(.9rem,1.7vw,1.2rem) Georgia, serif; }
+.sg-ts-paper-stamp { padding: 2px 7px; border: 2px solid #a12b1e; border-radius: 3px; color: #a12b1e; font: 900 clamp(.68rem,1.35vw,.82rem) "Orbitron", sans-serif; text-transform: uppercase; transform: rotate(-3deg); opacity: .9; }
+.sg-type-details { margin-top: 22px; }
+.sg-type-details .sg-table td:first-child { color: #e2dfe3; font-weight: 500; }
+
+/* Measured anatomy blocks */
+.sg-blueprint-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+.sg-blueprint-card {
+  padding: 21px;
+  border: 1px solid var(--sg-line);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,.025), transparent), var(--sg-panel);
+}
+.sg-blueprint-number { display: block; margin-bottom: 16px; color: var(--sg-accent); font: 700 .57rem "Roboto Mono", monospace; letter-spacing: 1px; }
+.sg-anatomy-visual {
+  position: relative;
+  min-height: 154px;
+  margin: 0 0 18px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 10px;
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    #08090d;
+  background-size: 20px 20px;
+  box-shadow: inset 0 1px rgba(255,255,255,.04);
+}
+.sg-radius-specimen { padding: 18px 12px 13px; display: flex; align-items: end; justify-content: center; gap: clamp(12px, 3vw, 24px); }
+.sg-radius-item { display: grid; justify-items: center; gap: 9px; color: #777b8d; font: 500 .43rem "Roboto Mono", monospace; }
+.sg-radius-shape { display: grid; place-items: center; border: 1px solid rgba(228,142,53,.72); color: #e7a35e; background: rgba(228,142,53,.08); font: 700 .46rem "Roboto Mono", monospace; }
+.sg-radius-shape.tag { width: 48px; height: 22px; border-radius: 3px; }
+.sg-radius-shape.field { width: 54px; height: 38px; border-radius: 6px; }
+.sg-radius-shape.key { width: 50px; height: 50px; border-radius: 8px; }
+.sg-radius-shape.panel { width: 74px; height: 66px; border-radius: 12px; }
+
+/* Exact measured specimens: these reuse the extracted game classes above. */
+.sg-anatomy-visual.sg-a-exact { min-height: 232px; padding: 18px; background-color: #050609; }
+.sg-anatomy-source {
+  margin: -7px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #68666e;
+  font: 500 .52rem "Roboto Mono", monospace;
+  letter-spacing: .3px;
+}
+.sg-anatomy-source::before { content: "SOURCE"; color: #9ad744; font-weight: 700; letter-spacing: .8px; }
+.sg-anatomy-source code { min-width: 0; color: #aaa7ad; overflow-wrap: anywhere; }
+
+.sg-a-ratio-diagram {
+  position: relative;
+  width: min(88%, 450px);
+  padding: 28px 34px 0 0;
+}
+.sg-a-ratio-diagram .sg-a-mission-shell { width: 100%; }
+.sg-a-ratio-line {
+  position: absolute;
+  z-index: 3;
+  color: #e99a43;
+  font: 600 .46rem "Roboto Mono", monospace;
+  letter-spacing: .4px;
+}
+.sg-a-ratio-line.horizontal {
+  top: 8px;
+  left: 0;
+  right: 34px;
+  height: 1px;
+  border-top: 1px solid rgba(233,154,67,.62);
+  text-align: center;
+}
+.sg-a-ratio-line.horizontal::before,
+.sg-a-ratio-line.horizontal::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 1px;
+  height: 8px;
+  background: rgba(233,154,67,.62);
+}
+.sg-a-ratio-line.horizontal::before { left: 0; }
+.sg-a-ratio-line.horizontal::after { right: 0; }
+.sg-a-ratio-line.horizontal span { position: relative; top: -6px; padding: 0 7px; background: #050609; }
+.sg-a-ratio-line.vertical {
+  top: 28px;
+  right: 12px;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px solid rgba(233,154,67,.62);
+}
+.sg-a-ratio-line.vertical::before,
+.sg-a-ratio-line.vertical::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  width: 8px;
+  height: 1px;
+  background: rgba(233,154,67,.62);
+}
+.sg-a-ratio-line.vertical::before { top: 0; }
+.sg-a-ratio-line.vertical::after { bottom: 0; }
+.sg-a-ratio-line.vertical span { position: absolute; top: 50%; left: -7px; padding: 6px 0; background: #050609; transform: translateY(-50%); writing-mode: vertical-rl; }
+
+.sg-a-mission-shell {
+  width: min(90%, 420px);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--purple-soft);
+  border-radius: 12px;
+  background: var(--purple-dark);
+  box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(109,205,239,.08);
+}
+.sg-a-mission-shell .game-header { height: 50px; min-height: 50px; padding: 0 14px; }
+.sg-a-mission-shell .brand-system { font-size: .38rem; }
+.sg-a-mission-shell .brand-title { font-size: .62rem; }
+.sg-a-stage { position: relative; flex: 1; display: grid; place-items: center; background: radial-gradient(circle at center, rgba(11,12,35,.95), rgba(4,4,11,.98)); }
+.sg-a-stage::before { content: ""; position: absolute; top: 16px; left: 0; right: 0; height: 2px; background: var(--orange); }
+.sg-a-canvas-brief {
+  width: 44%;
+  height: 88px;
+  margin-top: 18px;
+  padding: 5px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--purple) 40%, transparent);
+  box-shadow: 0 15px 35px rgba(0,0,0,.5), inset 0 0 15px rgba(139,141,253,.05);
+}
+.sg-a-canvas-brief-top { width: 100%; padding-bottom: 3px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); color: var(--orange); font: 700 .2rem "Orbitron",sans-serif; letter-spacing: .35px; }
+.sg-a-canvas-dots { display: flex; gap: 3px; }
+.sg-a-canvas-dots i { width: 4px; height: 4px; border: 1px solid var(--green); border-radius: 50%; }
+.sg-a-canvas-dots i:first-child { background: var(--green); box-shadow: 0 0 4px var(--green-glow); }
+.sg-a-canvas-brief strong { margin: 4px 0 3px; color: #fff; font: 500 .24rem/1.3 "Orbitron",sans-serif; text-align: center; }
+.sg-a-canvas-device { width: 22px; height: 28px; padding: 2px; display: grid; gap: 1px; border: 1px solid #5a5e65; border-radius: 3px; background: linear-gradient(135deg,#5a5e65,#1e2024); box-shadow: 0 3px 6px rgba(0,0,0,.65); }
+.sg-a-canvas-device span { border: 1px solid var(--purple-soft); border-radius: 2px; background: var(--terminal-bg); }
+.sg-a-canvas-device i { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; }
+.sg-a-canvas-device i::before, .sg-a-canvas-device i::after { content: ""; border-radius: 1px; background: rgba(255,255,255,.12); box-shadow: 8px 0 rgba(255,255,255,.12); }
+.sg-a-canvas-footer { width: 100%; height: 5px; margin-top: auto; border-top: 1px solid var(--line); position: relative; }
+.sg-a-canvas-footer::after { content: ""; position: absolute; left: 50%; bottom: -1px; width: 22px; height: 2px; border: 1px solid var(--purple-soft); border-radius: 2px; transform: translateX(-50%); }
+
+.sg-a-header .game-header { width: min(94%, 450px); box-shadow: 0 12px 28px rgba(0,0,0,.45); }
+.sg-a-header .game-branding { display: flex; align-items: center; }
+.sg-a-header .brand-title { font-size: clamp(.7rem, 1.35vw, .9rem); white-space: nowrap; }
+
+.sg-a-briefing .briefing-panel { max-width: 390px; padding: 14px 16px; }
+.sg-a-briefing .briefing-panel-header { padding-bottom: 8px; margin-bottom: 10px; }
+.sg-a-briefing .briefing-eyebrow { font-size: .48rem; }
+.sg-a-briefing .briefing-pagination { gap: 5px; }
+.sg-a-briefing .briefing-pagination .dot { width: 7px; height: 7px; }
+.sg-a-briefing .briefing-slide-title { font-size: .7rem; }
+.sg-a-briefing .briefing-slide-graphic { min-height: 84px; }
+.sg-a-briefing .briefing-footer { margin-top: 6px; padding-top: 8px; gap: 6px; }
+.sg-a-briefing .spacebar-instruction { font-size: .45rem; }
+.sg-a-briefing .spacebar-btn-visual { width: 78px; height: 20px; box-shadow: 0 2px 0 #202359, 0 4px 8px rgba(0,0,0,.6); }
+.sg-a-brief-device {
+  width: 58px;
+  height: 78px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1.5px solid rgba(255,255,255,.15);
+  border-radius: 7px;
+  background: linear-gradient(135deg, #5a5e65, #1e2024);
+  box-shadow: 0 8px 16px rgba(0,0,0,.65), inset 0 1px rgba(255,255,255,.2);
+}
+.sg-a-brief-screen { height: 16px; display: grid; place-items: center; border: 1px solid var(--purple-soft); border-radius: 3px; color: var(--orange); background: var(--terminal-bg); font: 700 .28rem "Orbitron", sans-serif; }
+.sg-a-brief-keys { flex: 1; display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; padding: 3px; border-radius: 4px; background: #0d0e12; }
+.sg-a-brief-keys i { border: 1px solid rgba(255,255,255,.08); border-radius: 2px; background: rgba(255,255,255,.04); }
+.sg-a-brief-keys i:nth-child(7), .sg-a-brief-keys i:nth-child(9) { border-color: rgba(228,142,53,.4); }
+
+.sg-a-device .device-panel { max-width: 224px; padding: 9px; gap: 7px; }
+.sg-a-device .door-screen { padding: 9px 7px 6px; gap: 2px; }
+.sg-a-device .door-screen-label { font-size: .44rem; }
+.sg-a-device .code-text { gap: 4px; margin: 4px 0; }
+.sg-a-device .char-box { width: 26px; height: 31px; border-width: 1.5px; border-radius: 4px; font-size: .72rem; }
+.sg-a-device .keypad-grid { width: 116px; max-width: none; gap: 4px; }
+.sg-a-device .keypad-btn { border-radius: 5px; }
+.sg-a-device .keypad-btn .btn-num { top: 2px; left: 3px; font-size: .37rem; }
+.sg-a-device .keypad-btn .btn-char { font-size: .72rem; }
+
+.sg-a-state-row { display: flex; align-items: end; justify-content: center; gap: clamp(10px,2vw,18px); }
+.sg-a-state { display: grid; justify-items: center; gap: 9px; color: #74727a; font: 500 .44rem "Roboto Mono", monospace; text-transform: uppercase; }
+.sg-a-state .char-box { width: 44px; height: 54px; font-size: 1.15rem; }
+
+.sg-a-terminal .terminal-panel {
+  max-width: 404px;
+  border-width: 1px;
+  background: #060714;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,.95), 0 0 12px rgba(109,205,239,.08), 0 6px 18px rgba(0,0,0,.5);
+}
+.sg-a-terminal .terminal-header {
+  height: 30px;
+  min-height: 30px;
+  padding: 0 0 0 12px;
+  border-bottom-width: 1px;
+  background: #040918;
+}
+.sg-a-terminal .terminal-header-info { display: flex; align-items: center; gap: 10px; }
+.sg-a-terminal .terminal-title { color: var(--muted); font-size: .55rem; white-space: nowrap; }
+.sg-a-terminal .terminal-ping { margin: 0; padding: 2px 5px; border-radius: 2px; background: rgba(154,215,68,.1); font-size: .43rem; letter-spacing: .35px; }
+.sg-a-terminal .terminal-win-controls { align-self: stretch; gap: 0; }
+.sg-a-terminal .terminal-win-controls .control-btn { width: 28px; height: 100%; display: grid; place-items: center; border: 0; border-radius: 0; color: rgba(146,150,168,.55); background: transparent; font: .42rem "Roboto Mono", monospace; }
+.sg-a-terminal-body { min-height: 92px; padding: 14px 14px 16px; font: .56rem/1.55 "Roboto Mono", monospace; }
+.sg-a-log { display: block; color: #777c91; }
+.sg-a-log.good { color: var(--green); }
+.sg-a-log.warn { color: var(--orange); }
+.sg-a-log.bad { color: var(--red); }
+
+.sg-a-hardware-row { width: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(38px,7vw,66px); }
+.sg-a-object { display: grid; justify-items: center; gap: 12px; color: #92909a; font: 500 .48rem "Roboto Mono", monospace; }
+.sg-a-mini-lock {
+  position: relative;
+  z-index: 1;
+  width: 130px;
+  height: 110px;
+  padding: 10px;
+  display: flex;
+  align-items: end;
+  border: 2px solid rgba(255,255,255,.18);
+  border-radius: 16px;
+  background: linear-gradient(135deg,#54585f,#1b1c1e);
+  box-shadow: 0 12px 25px rgba(0,0,0,.7), inset 0 1px rgba(255,255,255,.2), 0 0 0 1.5px rgba(0,0,0,.4);
+}
+.sg-a-mini-lock::before { content: ""; position: absolute; z-index: -1; top: -35px; left: 50%; width: 80px; height: 80px; border: 12px solid #6f747d; border-bottom: 0; border-radius: 40px 40px 0 0; box-shadow: inset -3px 0 3px rgba(0,0,0,.35), inset 3px 0 3px rgba(0,0,0,.35), inset 0 2px 2px rgba(255,255,255,.35); transform: translateX(-50%); }
+.sg-a-mini-lock::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent 22px,
+    #2f3135 22px, #1a1b1d 25px, #1a1b1d 37px, #2f3135 40px,
+    transparent 40px,
+    transparent 90px,
+    #2f3135 90px, #1a1b1d 93px, #1a1b1d 105px, #2f3135 108px,
+    transparent 108px);
+  pointer-events: none;
+}
+.sg-a-lock-inner { width: 100%; height: 82px; padding: 6px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; border: 1px solid rgba(0,0,0,.6); border-radius: 6px; background: #0f0a0a; box-shadow: inset 0 0 8px rgba(0,0,0,.8); }
+.sg-a-object-leds { width: 100%; display: flex; justify-content: flex-end; gap: 4px; }
+.sg-a-object-leds i { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.1); }
+.sg-a-object-leds .datalink { background: var(--green); box-shadow: 0 0 4px var(--green); animation: miniLedBlink 1s infinite alternate; }
+.sg-a-lock-leds .signal { background: var(--crimson); box-shadow: 0 0 4px var(--crimson-glow); animation: miniLedBlink .7s infinite alternate; }
+.sg-a-scanner-leds .signal { background: var(--orange); box-shadow: 0 0 4px rgba(228,142,53,.4); animation: miniLedBlink .7s infinite alternate; }
+.sg-a-lock-core { width: 34px; height: 34px; position: relative; border: 2px solid #885c00; border-radius: 50%; background: linear-gradient(135deg,#d4af37,#aa7c11); box-shadow: inset 0 1px 3px rgba(255,255,255,.4),0 2px 5px rgba(0,0,0,.5); }
+.sg-a-lock-core::after { content: ""; position: absolute; left: 13px; top: 7px; width: 4px; height: 16px; border-radius: 1px; background: #151010; }
+.sg-a-lock-display { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.sg-a-lock-pins { display: flex; gap: 3px; }
+.sg-a-lock-pins i { width: 3px; height: 3px; border-radius: 50%; background: var(--green); box-shadow: 0 0 4px var(--green); animation: pinDotPulse 1.5s infinite alternate ease-in-out; }
+.sg-a-lock-pins i:nth-child(2) { animation-delay: .3s; }
+.sg-a-lock-pins i:nth-child(3) { animation-delay: .6s; }
+.sg-a-lock-meta { color: var(--muted); font: .38rem "Orbitron",sans-serif; letter-spacing: .5px; }
+.sg-a-mini-scanner { width: 130px; height: 140px; padding: 8px; border: 1.5px solid rgba(255,255,255,.15); border-radius: 10px; background: linear-gradient(135deg,#5a5e65,#1e2024); box-shadow: 0 12px 25px rgba(0,0,0,.7), inset 0 1px rgba(255,255,255,.15), 0 0 0 1.5px rgba(0,0,0,.4); }
+.sg-a-scanner-inner { width: 100%; height: 100%; padding: 6px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; position: relative; border: 1px solid rgba(0,0,0,.6); border-radius: 8px; background: var(--purple-dark); box-shadow: inset 0 0 12px rgba(0,0,0,.95); }
+.sg-a-scanner-screen { position: relative; flex: 1; width: 90%; margin: 6px 0; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255,204,0,.25); border-radius: 6px; background: rgba(255,204,0,.05); }
+.sg-a-scanline { position: absolute; z-index: 5; top: 0; left: 0; width: 100%; height: 2px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: miniScanSweep 2.2s infinite ease-in-out; }
+.sg-a-fingerprint-svg { width: 40px; height: 50px; fill: var(--cyan); opacity: .85; }
+.sg-a-scanner-label { color: var(--cyan); font: .42rem "Orbitron", sans-serif; letter-spacing: .5px; }
+@keyframes miniLedBlink { 0% { opacity: .4; } 100% { opacity: 1; } }
+@keyframes pinDotPulse { 0% { opacity: .3; } 100% { opacity: 1; } }
+@keyframes miniScanSweep { 0% { top: 5%; } 50% { top: 95%; } 100% { top: 5%; } }
+
+.sg-a-document .manila-folder { width: min(86%,330px); margin: 12px 0 0; padding: 8px; }
+.sg-a-document .folder-tab { font-size: .45rem; }
+.sg-a-document .folder-paper { padding: 12px 14px 9px; }
+.sg-a-document .folder-paper p { margin: 0 0 7px; color: #1a1a1a; font: 700 .58rem/1.45 "Courier New", monospace; }
+.sg-a-document .paper-meta { font-size: .46rem; }
+.sg-a-document .paper-stamp { font-size: .48rem; }
+.sg-a-document .paper-progress { font-size: .43rem; }
+
+.sg-a-training-console { width: min(94%,430px); overflow: hidden; border: 2px solid #333; border-radius: 8px; background: #141418; box-shadow: inset 0 2px 10px rgba(0,0,0,.95), 0 0 10px rgba(228,142,53,.08), 0 4px 16px rgba(0,0,0,.6); }
+.sg-a-training-header { height: 34px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #222; background: #080808; color: #737373; font: 500 .45rem "Roboto Mono", monospace; }
+.sg-a-training-header b { color: #e48e35; font-family: "Orbitron",sans-serif; }
+.sg-a-training-screen { padding: 12px 18px 10px; border-bottom: 1px solid rgba(255,255,255,.04); }
+.sg-a-training-meta { margin-bottom: 7px; display: flex; justify-content: space-between; color: #64646c; font: 500 .4rem "Roboto Mono",monospace; }
+.sg-a-training-copy { padding: 0; color: #fff; font: 700 .9rem/1.55 "Roboto Mono",monospace; letter-spacing: .12em; }
+.sg-a-training-copy.dim { opacity: .42; font-size: .72rem; }
+.sg-a-training-copy .correct { color: #9ad744; text-shadow: 0 0 3px rgba(154,215,68,.4); }
+.sg-a-training-copy .current { padding: 0 2px; border-radius: 1px; color: #000; background: #e48e35; box-shadow: 0 0 8px rgba(228,142,53,.35); }
+.sg-a-training-copy .wrong { color: #ff3b30; border-bottom: 3px solid #ff3b30; background: rgba(255,59,48,.18); }
+.sg-a-training-keys { padding: 10px 14px 14px; display: flex; gap: 4px; }
+.sg-a-training-key { flex: 1; height: 30px; display: grid; place-items: center; border: 1.5px solid rgba(255,255,255,.05); border-radius: 6px; color: #7b786c; background: rgba(255,255,255,.02); box-shadow: 0 1px 2px rgba(0,0,0,.65), inset 0 1px rgba(255,255,255,.03); font: 700 .56rem "Roboto",sans-serif; }
+.sg-a-training-key.target { border-color: #40d9cf; color: #40d9cf; background: rgba(255,255,255,.1); box-shadow: 0 0 12px rgba(64,217,207,.4); }
+.sg-a-training-key.left { border-color: rgba(239,109,109,.55); }
+.sg-a-training-key.home { border-color: rgba(228,142,53,.55); }
+.sg-a-training-key.right { border-color: rgba(139,157,253,.55); }
+
+.sg-a-defense-layout { width: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(32px,7vw,64px); }
+.sg-a-defense .supercomputer-core { width: 112px; height: 112px; }
+.sg-a-defense .supercomputer-core::before { inset: -10px; border-width: 3px; }
+.sg-a-defense .cpu-ihs { width: calc(100% - 26px); height: calc(100% - 26px); }
+.sg-a-defense .core-crystal { width: 44px; height: 44px; }
+.sg-a-defense .core-crystal::before { font-size: 10px; }
+.sg-a-defense .sector-grid-demo { grid-template-columns: repeat(2,44px); grid-auto-rows: 40px; gap: 7px; }
+.sg-a-defense .cell-letter { font-size: 1rem; }
+
+.sg-a-material-row { display: flex; align-items: end; justify-content: center; gap: clamp(16px,4vw,34px); }
+.sg-a-material { display: grid; justify-items: center; gap: 9px; color: #77757d; font: 500 .43rem "Roboto Mono",monospace; }
+.sg-a-material-swatch { display: grid; place-items: center; color: #a9a7ad; font: 700 .45rem "Orbitron",sans-serif; }
+.sg-a-material-swatch.shell { width: 92px; height: 64px; border: 3px solid #1e224e; border-radius: 12px; background: #050206; box-shadow: 0 20px 34px rgba(0,0,0,.8),0 0 20px rgba(109,205,239,.08); }
+.sg-a-material-swatch.device { width: 78px; height: 70px; border: 2px solid rgba(255,255,255,.12); border-radius: 12px; background: #0d0e12; box-shadow: 0 8px 30px rgba(0,0,0,.7),inset 0 1px rgba(255,255,255,.06); }
+.sg-a-material-swatch.state { width: 62px; height: 54px; border: 2px solid #9ad744; border-radius: 6px; color: #9ad744; background: rgba(154,215,68,.08); box-shadow: 0 0 10px rgba(154,215,68,.4),inset 0 0 6px rgba(154,215,68,.4); }
+.sg-blueprint-card h3 { margin: 0 0 7px; font-size: .86rem; }
+.sg-blueprint-card p { margin: 0 0 16px; color: #8f8d94; font-size: .79rem; line-height: 1.6; }
+.sg-measures { display: flex; flex-wrap: wrap; gap: 6px; }
+.sg-measure { padding: 6px 8px; border: 1px solid rgba(255,255,255,.08); border-radius: 6px; color: #aaa7ad; background: rgba(0,0,0,.18); font: .57rem "Roboto Mono", monospace; }
+.sg-measure b { color: #e9a964; font-weight: 500; }
+
+.sg-spec-list { padding: 22px; border: 1px solid var(--sg-line); border-radius: 16px; background: var(--sg-panel); }
+.sg-spec-list h3 { margin: 0 0 16px; font-size: .9rem; }
+.sg-spec-row { padding: 12px 0; display: grid; grid-template-columns: 120px 1fr; gap: 14px; border-top: 1px solid rgba(255,255,255,.065); }
+.sg-spec-row:first-of-type { border-top: 0; padding-top: 0; }
+.sg-spec-row span { color: #77757d; font: .57rem "Roboto Mono", monospace; text-transform: uppercase; }
+.sg-spec-row code { color: #c3c0c5; font: .63rem/1.55 "Roboto Mono", monospace; }
+
+.sg-rule { padding: 15px 17px; border-color: var(--sg-line); border-left-width: 2px; border-radius: 10px; background: rgba(255,255,255,.018); color: #b5b3b8; }
+.sg-rule b { margin-bottom: 6px; }
+
+@media (max-width: 1180px) {
+  .sg-semantic-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .sg-preview-meta { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .sg-font-card.core, .sg-font-card.document { grid-column: span 3; }
+}
+
+@media (max-width: 1000px) {
+  .sg-nav {
+    display: block;
+    position: fixed;
+    z-index: 140;
+    left: 0;
+    transform: translateX(-102%);
+    transition: transform .2s ease;
+    box-shadow: 30px 0 70px rgba(0,0,0,.45);
+  }
+  .sg-nav.open { transform: translateX(0); }
+  .sg-mobile-toggle { display: block; }
+  .sg-progress { left: 0; }
+  .sg-main { width: 100%; max-width: 100%; padding-top: 72px; }
+  .sg-palette-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  body { overflow-x: hidden; }
+  .sg-shell, .sg-main, .sg-section { min-width: 0; max-width: 100%; }
+  .sg-main { width: 100vw; padding: 72px 18px 100px; overflow: hidden; }
+  .sg-hero { min-height: 560px; padding: 34px 24px; border-radius: 16px; }
+  .sg-hero-stats { top: 24px; left: 24px; right: 24px; }
+  .sg-hero h1 { font-size: clamp(2rem, 10vw, 2.7rem); letter-spacing: -0.035em; }
+  .sg-hero-copy { font-size: .9rem; }
+  .sg-hero-actions { flex-direction: column; align-items: stretch; }
+  .sg-doc-button { width: 100%; }
+  .sg-semantic-grid { grid-template-columns: 1fr; }
+  .sg-color-card { min-height: 160px; display: grid; grid-template-columns: 42% 58%; }
+  .sg-color-field { min-height: 158px; }
+  .sg-blueprint-grid { grid-template-columns: 1fr; }
+  .sg-font-card.core, .sg-font-card.document { grid-column: span 6; }
+  .sg-type-spec-grid { grid-template-columns: 1fr; }
+  .sg-preview-meta { grid-template-columns: 1fr 1fr; }
+  .sg-preview-window::after { display: none; }
+  .sg-preview-actions .sg-preview-action:first-child { display: none; }
+  .sg-section { margin-bottom: 84px; }
+  .sg-stage { padding: 22px 14px; }
+  table.sg-table { display: block; max-width: 100%; overflow-x: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
 </style>
 </head>
 <body>
+<a class="sg-skip-link" href="#main-content">Skip to the guide</a>
+<div class="sg-progress" aria-hidden="true"><span class="sg-progress-fill"></span></div>
+<button class="sg-mobile-toggle" type="button" aria-label="Open guide navigation" aria-expanded="false">&#9776;</button>
 <div class="sg-shell">
 
-<nav class="sg-nav">
-  <span class="sg-logo">TYPEMISSION</span>
-  <span class="sg-logo-sub">DESIGN SYSTEM V3.0</span>
-  <a href="#identity"><span>01</span>Identity &amp; rules</a>
-  <a href="#colors"><span>02</span>Color system</a>
-  <a href="#type"><span>03</span>Typography</a>
-  <a href="#frame"><span>04</span>Frame &amp; flow</a>
-  <a href="#layers"><span>05</span>The layer stack</a>
-  <a href="#components"><span>06</span>Core components</a>
-  <a href="#inputs"><span>07</span>Typing &amp; input states</a>
-  <a href="#results"><span>08</span>Result screen</a>
-  <a href="#objects"><span>09</span>Game object library</a>
-  <a href="#feedback"><span>10</span>Feedback &amp; motion</a>
-  <a href="#themes"><span>11</span>Theme variants</a>
-  <a href="#css"><span>12</span>New game checklist</a>
+<nav class="sg-nav" aria-label="Style guide sections">
+  <div class="sg-nav-inner">
+    <div class="sg-brand-lockup">
+      <div class="sg-brand-mark">TM</div>
+      <div class="sg-brand-copy">
+        <span class="sg-logo">TYPEMISSION</span>
+        <span class="sg-logo-sub">VISUAL SYSTEM / V4.0</span>
+      </div>
+    </div>
+    <div class="sg-nav-search-wrap">
+      <svg class="sg-nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+      <input class="sg-nav-search" type="search" placeholder="Find a section..." aria-label="Filter guide sections">
+    </div>
+    <div class="sg-nav-group">
+      <p class="sg-nav-group-title">Start here</p>
+      <a href="#top"><span>00</span>Welcome</a>
+      <a href="#atlas"><span>01</span>Live game atlas</a>
+      <a href="#identity"><span>02</span>Identity &amp; rules</a>
+    </div>
+    <div class="sg-nav-group">
+      <p class="sg-nav-group-title">Foundations</p>
+      <a href="#colors"><span>03</span>Color system</a>
+      <a href="#type"><span>04</span>Typography</a>
+      <a href="#anatomy"><span>05</span>Measured anatomy</a>
+      <a href="#frame"><span>06</span>Frame &amp; flow</a>
+      <a href="#layers"><span>07</span>Layer stack</a>
+    </div>
+    <div class="sg-nav-group">
+      <p class="sg-nav-group-title">Game UI</p>
+      <a href="#components"><span>08</span>Core components</a>
+      <a href="#inputs"><span>09</span>Input states</a>
+      <a href="#results"><span>10</span>Result report</a>
+      <a href="#objects"><span>11</span>Object library</a>
+      <a href="#feedback"><span>12</span>Feedback &amp; motion</a>
+    </div>
+    <div class="sg-nav-group">
+      <p class="sg-nav-group-title">Reference</p>
+      <a href="#themes"><span>13</span>Theme variants</a>
+      <a href="#css"><span>14</span>New game checklist</a>
+    </div>
+    <div class="sg-nav-footer">
+      <strong>8 game interfaces audited</strong>
+      Source of truth: each project's HTML + CSS
+    </div>
+  </div>
 </nav>
 
-<main class="sg-main">
+<main class="sg-main" id="main-content">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <linearGradient id="springGrad" x1="0%" y1="0%" x2="100%" y2="0%">
     <stop offset="0%" stop-color="#4b5059"/><stop offset="30%" stop-color="#bfc5cf"/><stop offset="50%" stop-color="#ffffff"/><stop offset="70%" stop-color="#bfc5cf"/><stop offset="100%" stop-color="#3a3e45"/>
@@ -2401,20 +3598,81 @@ table.sg-table {
     <stop offset="0%" stop-color="#cfd4dc"/><stop offset="25%" stop-color="#ffffff"/><stop offset="50%" stop-color="#7f8590"/><stop offset="85%" stop-color="#3e434c"/><stop offset="100%" stop-color="#24272c"/>
   </linearGradient>
 </defs></svg>
+
+<header class="sg-hero" id="top">
+  <div class="sg-hero-orbit" aria-hidden="true"></div>
+  <div class="sg-hero-stats" aria-label="Guide coverage">
+    <span class="sg-hero-stat"><strong>08</strong> live game builds</span>
+    <span class="sg-hero-stat"><strong>06</strong> mission palettes</span>
+    <span class="sg-hero-stat"><strong>04</strong> feedback states</span>
+  </div>
+  <p class="sg-hero-eyebrow">TypeMission visual style guide / v4.0</p>
+  <h1>The visual system behind <span>every mission.</span></h1>
+  <p class="sg-hero-copy">The implementation reference for mission shells, hardware layers, typography, color, input feedback and results. The live atlas renders each game build directly, so the source of truth stays one-to-one with the projects.</p>
+  <div class="sg-hero-actions">
+    <a class="sg-doc-button" href="#atlas">Browse live games <span aria-hidden="true">&darr;</span></a>
+    <a class="sg-doc-button secondary" href="#colors">Start with foundations</a>
+  </div>
+</header>
+
+<section class="sg-section" id="atlas">
+  <p class="sg-kicker">01 / Source of truth</p>
+  <h2>Live game atlas</h2>
+  <p class="sg-lead">These are the real project pages running inside the guide. Nothing in this viewer is redrawn or restyled. Use it to compare the isolated specimens later in this document against the canonical implementation.</p>
+
+  <div class="sg-live-viewer">
+    <div class="sg-game-tabs" role="tablist" aria-label="Choose a live project">
+      <button class="sg-game-tab active" type="button" role="tab" aria-selected="true"
+        data-src="typegame-door-Lockpicking/index.html" data-name="Door lockpicking" data-family="Door mission" data-palette="Red / brown" data-viewport="Responsive 16:9">Lockpicking</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="typegame-door-keypad/index.html" data-name="Door keypad" data-family="Door mission" data-palette="Indigo" data-viewport="Responsive 16:9">Keypad</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="typegame-door-fingerprint/index.html" data-name="Fingerprint bypass" data-family="Door mission" data-palette="Amber" data-viewport="Responsive 16:9">Fingerprint</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="typegame-file-redacting/index.html" data-name="File redacting" data-family="Document mission" data-palette="Purple" data-viewport="Responsive 16:9">Redacting</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="typegame-typeoefening-losse-letters/index.html" data-name="Type training" data-family="Practice console" data-palette="Neutral / orange" data-viewport="Responsive 16:9">Training</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="supercomputer-varianten/typegame-supercomputer-defense-grid/index.html" data-name="Supercomputer / grid" data-family="Defense mission" data-palette="Green" data-viewport="Responsive 16:9">Defense grid</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="supercomputer-varianten/typegame-supercomputer-defense-no-grid/index.html" data-name="Supercomputer / no grid" data-family="Defense variant" data-palette="Green" data-viewport="Responsive 16:9">No grid</button>
+      <button class="sg-game-tab" type="button" role="tab" aria-selected="false"
+        data-src="supercomputer-varianten/typegame-supercomputer-defense-only-grid/index.html" data-name="Supercomputer / only grid" data-family="Defense variant" data-palette="Green" data-viewport="Responsive 16:9">Only grid</button>
+    </div>
+    <div class="sg-preview-toolbar">
+      <div class="sg-preview-title">
+        <strong id="preview-name">Door lockpicking</strong>
+        <span id="preview-path">typegame-door-Lockpicking/index.html</span>
+      </div>
+      <div class="sg-preview-actions">
+        <button class="sg-preview-action" id="preview-interaction" type="button" aria-pressed="false">Enable interaction</button>
+        <a class="sg-preview-action" id="preview-open" href="typegame-door-Lockpicking/index.html" target="_blank" rel="noopener">Open full size</a>
+      </div>
+    </div>
+    <div class="sg-preview-window">
+      <iframe id="game-preview" src="typegame-door-Lockpicking/index.html" title="Live door lockpicking preview" loading="lazy"></iframe>
+    </div>
+    <div class="sg-preview-meta">
+      <div class="sg-meta-item"><span>Family</span><strong id="preview-family">Door mission</strong></div>
+      <div class="sg-meta-item"><span>Palette</span><strong id="preview-palette">Red / brown</strong></div>
+      <div class="sg-meta-item"><span>Canvas</span><strong id="preview-viewport">Responsive 16:9</strong></div>
+      <div class="sg-meta-item"><span>Rendering</span><strong>Live HTML + CSS + JS</strong></div>
+    </div>
+  </div>
+  <p class="sg-source-note">The atlas includes all five typing-game concepts and all three supercomputer variants. Reloading or switching a tab resets that project to its initial state.</p>
+</section>
 <!-- ═══════════════ 01 IDENTITY ═══════════════ -->
 <section class="sg-section" id="identity">
-  <p class="sg-kicker">01 — System overview</p>
+  <p class="sg-kicker">02 / System overview</p>
   <h2>Identity &amp; rules</h2>
   <p class="sg-lead">
-    TYPEMISSION games are <strong>spy-mission typing games</strong>. Every game is a dark, 16:9 tactical
-    interface in which the player hacks one physical machine by typing. The machine is always built the same way:
-    a <strong>light grey metal plate</strong>, with a <strong>dark device panel</strong> bolted on top,
-    holding a <strong>CRT screen with scanlines</strong> and the <strong>input parts</strong> the player types on.
-    Section <a href="#layers" style="color:#f5b05f">05</a> documents that stack layer by layer.
+    TYPEMISSION is a family of <strong>spy-mission typing games</strong>. Each game uses a dark 16:9 tactical
+    frame in which the player operates one physical machine by typing. The shared system covers the mission
+    header, briefing flow, hardware layers, input states and system report; the center object gives each game its identity.
   </p>
   <div class="sg-rules">
-    <div class="sg-rule"><b>One hue per game</b>Each game owns exactly one background hue (red, indigo, amber, purple, grey, green). All panel, border and muted-text colors are tints of that hue. See section 02.</div>
-    <div class="sg-rule"><b>Shared accents everywhere</b>Orange <code>#e48e35</code> = the active target. Green <code>#9ad744</code> = correct/unlocked. Red <code>#ff3b30</code> = mistake/threat. These never change per game.</div>
+    <div class="sg-rule"><b>One mission hue</b>Each mission owns one background hue (red, indigo, amber, purple, grey or green). Panel, border and muted-text roles are derived from that hue.</div>
+    <div class="sg-rule"><b>Semantic accents</b>Orange <code>#e48e35</code> means active/action, green means correct/available and red means error/threat. Fingerprint and defense promote their local yellow or green accents where documented.</div>
     <div class="sg-rule"><b>Panels are machines</b>Every panel earns hardware details: rivets, LEDs, ports, signal bars, etched serial text. Nothing looks like a generic website card.</div>
     <div class="sg-rule"><b>Same flow, always</b>Briefing cards → game arena → in-machine feedback → system report. The player advances with the spacebar at every step.</div>
     <div class="sg-rule"><b>Glow is meaning</b>A glow is feedback, not decoration: orange = type this now, green = done, red = wrong. Idle parts stay matte.</div>
@@ -2427,13 +3685,13 @@ table.sg-table {
     <tr><td><code>typegame-door-fingerprint</code></td><td><code>SYSTEM: FINGERPRINT_BYPASS_V2.0</code></td><td>TYPEMISSION // FINGERPRINT</td><td>Dark amber</td></tr>
     <tr><td><code>typegame-file-redacting</code></td><td><code>SYSTEM: DECRYPTER_V2.9</code></td><td>TYPEMISSION // FILE REDACTING</td><td>Dark purple</td></tr>
     <tr><td><code>typegame-typeoefening-losse-letters</code></td><td>—</td><td>TYPEMISSION // TYPE TRAINING</td><td>Neutral grey</td></tr>
-    <tr><td><code>typegame-supercomputer-defense</code> (varianten)</td><td><code>SYSTEM: CPU_FIREWALL_V4.8</code></td><td>TYPEMISSION // SUPERCOMPUTER DEFENSE</td><td>Dark green</td></tr>
+    <tr><td><code>supercomputer-varianten/*</code> (3 builds)</td><td><code>SYSTEM: CPU_FIREWALL_V4.8</code></td><td>TYPEMISSION // SUPERCOMPUTER DEFENSE</td><td>Dark green</td></tr>
   </table>
 </section>
 
 <!-- ═══════════════ 02 COLORS ═══════════════ -->
 <section class="sg-section" id="colors">
-  <p class="sg-kicker">02 — Extracted from each game's <code>:root</code></p>
+  <p class="sg-kicker">03 / Extracted from each game's <code>:root</code></p>
   <h2>Color system</h2>
   <p class="sg-lead">
     Every game fills in the <strong>same set of color roles</strong> with different values. That is the whole theming
@@ -2441,7 +3699,30 @@ table.sg-table {
     color, hairline color, screen background, dim text. A new game only needs its own set of values for those roles.
   </p>
 
-  <h3>Shared accents (identical in every game)</h3>
+  <h3>Shared semantic accents</h3>
+  <p class="sg-note">Large swatches show the colors at a useful scale. Click any swatch to copy its exact value.</p>
+  <div class="sg-semantic-grid" aria-label="Shared semantic colors">
+    <button class="sg-color-card" type="button" data-copy="#e48e35" aria-label="Copy action orange hex value">
+      <span class="sg-color-field" style="background:#e48e35"></span>
+      <span class="sg-color-info"><span class="sg-color-role">Action orange</span><span class="sg-color-value">#e48e35</span><span class="sg-color-use">Current target, primary action, active values.</span></span>
+    </button>
+    <button class="sg-color-card" type="button" data-copy="#f5b05f" aria-label="Copy soft orange hex value">
+      <span class="sg-color-field" style="background:#f5b05f"></span>
+      <span class="sg-color-info"><span class="sg-color-role">Soft orange</span><span class="sg-color-value">#f5b05f</span><span class="sg-color-use">Hover highlight and warm gradient stop.</span></span>
+    </button>
+    <button class="sg-color-card" type="button" data-copy="#9ad744" aria-label="Copy success green hex value">
+      <span class="sg-color-field" style="background:#9ad744"></span>
+      <span class="sg-color-info"><span class="sg-color-role">Success green</span><span class="sg-color-value">#9ad744</span><span class="sg-color-use">Correct input, unlocked, connected, available.</span></span>
+    </button>
+    <button class="sg-color-card" type="button" data-copy="#ff3b30" aria-label="Copy alarm red hex value">
+      <span class="sg-color-field" style="background:#ff3b30"></span>
+      <span class="sg-color-info"><span class="sg-color-role">Alarm red</span><span class="sg-color-value">#ff3b30</span><span class="sg-color-use">Mistake, damaged state, threat and mission failure.</span></span>
+    </button>
+    <button class="sg-color-card" type="button" data-copy="#ffffff" aria-label="Copy text white hex value">
+      <span class="sg-color-field" style="background:#ffffff"></span>
+      <span class="sg-color-info"><span class="sg-color-role">Text white</span><span class="sg-color-value">#ffffff</span><span class="sg-color-use">Primary content; soften with opacity for secondary text.</span></span>
+    </button>
+  </div>
   <table class="sg-table">
     <tr><th></th><th>Role</th><th>Value</th><th>Used for</th></tr>
     <tr><td><span class="sg-swatch" style="background:#e48e35"></span></td><td>Action orange</td><td><code>#e48e35</code></td><td>Active target: the letter/slot/word the player must type now. Also stat values, briefing eyebrows, screen labels.</td></tr>
@@ -2453,6 +3734,80 @@ table.sg-table {
   <p class="sg-note">Glows are always the accent color itself at roughly 30–50% opacity — green glow, red glow and orange glow are just softened versions of the accents above, never a different hue.</p>
 
   <h3>Per-game theme values</h3>
+  <div class="sg-palette-grid" aria-label="Project theme palettes">
+    <article class="sg-palette-card">
+      <div class="sg-palette-head"><strong>Lockpicking</strong><span>red / brown</span></div>
+      <div class="sg-palette-band">
+        <button class="sg-palette-color" data-copy="#050206" data-role="page" style="background:#050206" aria-label="Copy lockpicking page color"></button>
+        <button class="sg-palette-color" data-copy="#120505" data-role="panel" style="background:#120505" aria-label="Copy lockpicking panel color"></button>
+        <button class="sg-palette-color" data-copy="#300f0f" data-role="edge" style="background:#300f0f" aria-label="Copy lockpicking edge color"></button>
+        <button class="sg-palette-color" data-copy="#3c1b1b" data-role="surface" style="background:#3c1b1b" aria-label="Copy lockpicking surface color"></button>
+        <button class="sg-palette-color" data-copy="#a89292" data-role="muted" style="background:#a89292" aria-label="Copy lockpicking muted color"></button>
+        <button class="sg-palette-color" data-copy="#fd8b8b" data-role="light" style="background:#fd8b8b" aria-label="Copy lockpicking light color"></button>
+      </div>
+      <div class="sg-palette-values"><code>#050206</code><code>#120505</code><code>#300f0f</code><code>#3c1b1b</code><code>#a89292</code><code>#fd8b8b</code></div>
+    </article>
+    <article class="sg-palette-card">
+      <div class="sg-palette-head"><strong>Keypad</strong><span>indigo</span></div>
+      <div class="sg-palette-band">
+        <button class="sg-palette-color" data-copy="#050206" data-role="page" style="background:#050206" aria-label="Copy keypad page color"></button>
+        <button class="sg-palette-color" data-copy="#0f102b" data-role="panel" style="background:#0f102b" aria-label="Copy keypad panel color"></button>
+        <button class="sg-palette-color" data-copy="#1e224e" data-role="edge" style="background:#1e224e" aria-label="Copy keypad edge color"></button>
+        <button class="sg-palette-color" data-copy="#1b1e3c" data-role="surface" style="background:#1b1e3c" aria-label="Copy keypad surface color"></button>
+        <button class="sg-palette-color" data-copy="#9296a8" data-role="muted" style="background:#9296a8" aria-label="Copy keypad muted color"></button>
+        <button class="sg-palette-color" data-copy="#8b9dfd" data-role="light" style="background:#8b9dfd" aria-label="Copy keypad light color"></button>
+      </div>
+      <div class="sg-palette-values"><code>#050206</code><code>#0f102b</code><code>#1e224e</code><code>#1b1e3c</code><code>#9296a8</code><code>#8b9dfd</code></div>
+    </article>
+    <article class="sg-palette-card">
+      <div class="sg-palette-head"><strong>Fingerprint</strong><span>amber</span></div>
+      <div class="sg-palette-band">
+        <button class="sg-palette-color" data-copy="#050206" data-role="page" style="background:#050206" aria-label="Copy fingerprint page color"></button>
+        <button class="sg-palette-color" data-copy="#1c1809" data-role="panel" style="background:#1c1809" aria-label="Copy fingerprint panel color"></button>
+        <button class="sg-palette-color" data-copy="#4a3e14" data-role="edge" style="background:#4a3e14" aria-label="Copy fingerprint edge color"></button>
+        <button class="sg-palette-color" data-copy="#241e0d" data-role="surface" style="background:#241e0d" aria-label="Copy fingerprint surface color"></button>
+        <button class="sg-palette-color" data-copy="#a8a392" data-role="muted" style="background:#a8a392" aria-label="Copy fingerprint muted color"></button>
+        <button class="sg-palette-color" data-copy="#ffcc00" data-role="scan" style="background:#ffcc00" aria-label="Copy fingerprint scan color"></button>
+      </div>
+      <div class="sg-palette-values"><code>#050206</code><code>#1c1809</code><code>#4a3e14</code><code>#241e0d</code><code>#a8a392</code><code>#ffcc00</code></div>
+    </article>
+    <article class="sg-palette-card">
+      <div class="sg-palette-head"><strong>File redacting</strong><span>purple</span></div>
+      <div class="sg-palette-band">
+        <button class="sg-palette-color" data-copy="#0b030b" data-role="page" style="background:#0b030b" aria-label="Copy redacting page color"></button>
+        <button class="sg-palette-color" data-copy="#1a0819" data-role="panel" style="background:#1a0819" aria-label="Copy redacting panel color"></button>
+        <button class="sg-palette-color" data-copy="#4d1c44" data-role="edge" style="background:#4d1c44" aria-label="Copy redacting edge color"></button>
+        <button class="sg-palette-color" data-copy="#283754" data-role="surface" style="background:#283754" aria-label="Copy redacting surface color"></button>
+        <button class="sg-palette-color" data-copy="#a092a7" data-role="muted" style="background:#a092a7" aria-label="Copy redacting muted color"></button>
+        <button class="sg-palette-color" data-copy="#6dcdef" data-role="light" style="background:#6dcdef" aria-label="Copy redacting light color"></button>
+      </div>
+      <div class="sg-palette-values"><code>#0b030b</code><code>#1a0819</code><code>#4d1c44</code><code>#283754</code><code>#a092a7</code><code>#6dcdef</code></div>
+    </article>
+    <article class="sg-palette-card">
+      <div class="sg-palette-head"><strong>Type training</strong><span>neutral / orange</span></div>
+      <div class="sg-palette-band">
+        <button class="sg-palette-color" data-copy="#080808" data-role="page" style="background:#080808" aria-label="Copy training page color"></button>
+        <button class="sg-palette-color" data-copy="#181818" data-role="panel" style="background:#181818" aria-label="Copy training panel color"></button>
+        <button class="sg-palette-color" data-copy="#333333" data-role="edge" style="background:#333333" aria-label="Copy training edge color"></button>
+        <button class="sg-palette-color" data-copy="#1c1c1c" data-role="surface" style="background:#1c1c1c" aria-label="Copy training surface color"></button>
+        <button class="sg-palette-color" data-copy="#7a7a7a" data-role="muted" style="background:#7a7a7a" aria-label="Copy training muted color"></button>
+        <button class="sg-palette-color" data-copy="#e48e35" data-role="active" style="background:#e48e35" aria-label="Copy training action color"></button>
+      </div>
+      <div class="sg-palette-values"><code>#080808</code><code>#181818</code><code>#333333</code><code>#1c1c1c</code><code>#7a7a7a</code><code>#e48e35</code></div>
+    </article>
+    <article class="sg-palette-card">
+      <div class="sg-palette-head"><strong>Supercomputer</strong><span>green / cyan</span></div>
+      <div class="sg-palette-band">
+        <button class="sg-palette-color" data-copy="#020503" data-role="page" style="background:#020503" aria-label="Copy defense page color"></button>
+        <button class="sg-palette-color" data-copy="#091a0c" data-role="panel" style="background:#091a0c" aria-label="Copy defense panel color"></button>
+        <button class="sg-palette-color" data-copy="#15331c" data-role="edge" style="background:#15331c" aria-label="Copy defense edge color"></button>
+        <button class="sg-palette-color" data-copy="#1d3d25" data-role="line" style="background:#1d3d25" aria-label="Copy defense line color"></button>
+        <button class="sg-palette-color" data-copy="#44d775" data-role="success" style="background:#44d775" aria-label="Copy defense green color"></button>
+        <button class="sg-palette-color" data-copy="#74d8ff" data-role="data" style="background:#74d8ff" aria-label="Copy defense cyan color"></button>
+      </div>
+      <div class="sg-palette-values"><code>#020503</code><code>#091a0c</code><code>#15331c</code><code>#1d3d25</code><code>#44d775</code><code>#74d8ff</code></div>
+    </article>
+  </div>
   <p class="sg-note">The same seven roles, filled in per game — these are the real extracted values.</p>
   <table class="sg-table">
     <tr><th>Role</th><th>Lockpicking</th><th>Keypad</th><th>Fingerprint</th><th>Redacting</th><th>Practice</th><th>Supercomputer</th></tr>
@@ -2520,75 +3875,554 @@ table.sg-table {
 
 <!-- ═══════════════ 03 TYPOGRAPHY ═══════════════ -->
 <section class="sg-section" id="type">
-  <p class="sg-kicker">03 — Three fonts, fixed jobs</p>
+  <p class="sg-kicker">04 / Three core families, two document exceptions</p>
   <h2>Typography</h2>
-  <p class="sg-lead">
-    One Google Fonts import serves every game:
-    <code>Orbitron</code> (600/700/900) for everything tactical, <code>Roboto Mono</code> (400/500/700) for typed
-    letters and machine data, <code>Roboto</code> (300–700) for plain body text. The redacting game adds
-    <code>Courier New</code> for document paper only.
-  </p>
-  <div class="theme t-keypad">
-    <div class="sg-stage" style="flex-direction:column; align-items:flex-start; gap:20px;">
-      <div>
-        <span class="brand-system">SYSTEM: KEYPAD_BREAKER_V1.4</span>
-        <h1 class="brand-title" style="font-size:1.25rem;">TYPEMISSION // DOOR KEYPAD</h1>
-        <div class="sg-tag" style="margin-top:4px; font-family:'Roboto Mono'; font-size:0.6rem; color:var(--sg-muted);">system label → Orbitron 700 · 0.55–0.65rem · success green · spaced caps &nbsp;&nbsp;|&nbsp;&nbsp; game title → Orbitron 900 · 0.95–1.2rem · white→orange gradient fill</div>
-      </div>
-      <div>
-        <p class="briefing-slide-title" style="text-align:left;">Kraak de keypad code van de beveiligde deur</p>
-        <div class="sg-tag" style="margin-top:4px; font-family:'Roboto Mono'; font-size:0.6rem; color:var(--sg-muted);">briefing instruction → Orbitron 500 · 0.95–1.15rem · line-height 1.4</div>
-      </div>
-      <div style="display:flex; align-items:flex-end; gap:28px; flex-wrap:wrap;">
-        <div>
-          <span style="font-family:'Orbitron'; font-size:1.6rem; font-weight:700; color:var(--orange); display:block;">98%</span>
-          <span style="font-size:0.68rem; color:var(--muted); text-transform:uppercase; font-weight:600;">Nauwkeurigheid</span>
-        </div>
-        <div class="code-text">
-          <span class="char-box correct">k</span><span class="char-box current">r</span><span class="char-box faded">a</span>
-        </div>
-        <div class="terminal-logs" style="border:1px solid var(--line); border-radius:6px; min-width:230px;">
-          <span class="log-line success">&gt; BYPASS 04 GESLAAGD...</span>
-          <span class="log-line danger">&gt; FOUT: verkeerde toets [x]</span>
-        </div>
-      </div>
-    </div>
+  <p class="sg-lead">Typography has a strict division of work. Orbitron gives the interface its tactical voice, Roboto Mono carries typed input and machine data, and Roboto keeps supporting text readable. File redacting adds Courier New for the document and Georgia for the handwritten signature.</p>
+
+  <h3>Typeface roles</h3>
+  <p class="sg-note">The first three families are shared by every game. The two document families are local exceptions and should not appear elsewhere.</p>
+  <div class="sg-font-grid">
+    <article class="sg-font-card core">
+      <div class="sg-font-card-head"><span class="sg-font-kind">Core 01 / Display</span><span class="sg-font-source">Google Fonts</span></div>
+      <div class="sg-font-sample orbitron">AGENT 04</div>
+      <h3>Orbitron</h3>
+      <p>Weights 500, 600, 700, 800 and 900. Use for interface hierarchy and controls, never for paragraphs.</p>
+      <div class="sg-font-roles"><span>titles</span><span>labels</span><span>stats</span><span>buttons</span><span>stamps</span></div>
+    </article>
+    <article class="sg-font-card core">
+      <div class="sg-font-card-head"><span class="sg-font-kind">Core 02 / Data</span><span class="sg-font-source">Google Fonts</span></div>
+      <div class="sg-font-sample roboto-mono">SYS_OK 98%</div>
+      <h3>Roboto Mono</h3>
+      <p>Weights 400, 500 and 700. Use wherever alignment, code-like rhythm or individual characters matter.</p>
+      <div class="sg-font-roles"><span>typed letters</span><span>logs</span><span>serials</span><span>tokens</span></div>
+    </article>
+    <article class="sg-font-card core">
+      <div class="sg-font-card-head"><span class="sg-font-kind">Core 03 / Reading</span><span class="sg-font-source">Google Fonts</span></div>
+      <div class="sg-font-sample roboto">Mission support text</div>
+      <h3>Roboto</h3>
+      <p>Imported at 300, 400, 500 and 700. Existing secondary labels sometimes request a synthesized 600.</p>
+      <div class="sg-font-roles"><span>body</span><span>helper text</span><span>subtitles</span><span>stat labels</span></div>
+    </article>
+    <article class="sg-font-card document">
+      <div class="sg-font-card-head"><span class="sg-font-kind">Document 01 / Typewritten</span><span class="sg-font-source">System font</span></div>
+      <div class="sg-font-sample courier">CLASSIFIED FILE</div>
+      <h3>Courier New</h3>
+      <p>Bold document headings, paragraphs and redacted words in file redacting only.</p>
+      <div class="sg-font-roles"><span>paper heading</span><span>document copy</span><span>redactions</span></div>
+    </article>
+    <article class="sg-font-card document">
+      <div class="sg-font-card-head"><span class="sg-font-kind">Document 02 / Signature</span><span class="sg-font-source">System font</span></div>
+      <div class="sg-font-sample georgia">Agent Vermeer</div>
+      <h3>Georgia</h3>
+      <p>Bold italic signature treatment in file redacting only. It should feel handwritten, not tactical.</p>
+      <div class="sg-font-roles"><span>signature only</span><span>italic</span><span>bold</span></div>
+    </article>
   </div>
-  <p class="sg-caption">Stat numbers: <b>Orbitron 700–900, orange or themed accent</b> · typed letters: <b>Roboto Mono 700, uppercase</b> · terminal logs: <b>Roboto Mono ~0.6rem</b></p>
-  <table class="sg-table">
-    <tr><th>Role</th><th>Font / weight</th><th>Size</th><th>Color</th><th>Extras</th></tr>
-    <tr><td>System label</td><td>Orbitron 700</td><td>≈0.55–0.65rem</td><td>success green</td><td>letter-spacing 1px</td></tr>
-    <tr><td>Game title</td><td>Orbitron 900</td><td>≈0.95–1.2rem</td><td>white→orange gradient</td><td>gradient fills the letters</td></tr>
-    <tr><td>Section eyebrows</td><td>Orbitron 700</td><td>0.6–0.65rem</td><td>orange / dim text</td><td>wide letter-spacing, uppercase</td></tr>
-    <tr><td>Briefing instruction</td><td>Orbitron 500</td><td>≈0.95–1.15rem</td><td>white</td><td>line-height 1.4, centered</td></tr>
-    <tr><td>Stat value</td><td>Orbitron 700</td><td>≈1.3–1.7rem</td><td>accent</td><td></td></tr>
-    <tr><td>Result value</td><td>Orbitron 900</td><td>≈1.8–2.4rem</td><td>white / green / red</td><td>soft self-glow</td></tr>
-    <tr><td>Result heading</td><td>Orbitron 800</td><td>≈1.2–1.8rem</td><td>orange</td><td>letter-spacing 1px</td></tr>
-    <tr><td>Typed letters</td><td>Roboto Mono 700</td><td>≈1.2–1.7rem</td><td>state color</td><td>uppercase</td></tr>
-    <tr><td>Keypad main letter</td><td>Orbitron 700</td><td>≈1.2–1.8rem</td><td>90% white</td><td>uppercase, emboss shadow</td></tr>
-    <tr><td>Terminal logs / tags</td><td>Roboto Mono 400–700</td><td>0.55–0.66rem (corner tags 7px)</td><td>state color / 25% white</td><td></td></tr>
-    <tr><td>Body / subtitles</td><td>Roboto 300–500</td><td>0.7–0.85rem</td><td>dim text</td><td></td></tr>
-    <tr><td>Document paper</td><td>Courier New bold</td><td>0.68–0.85rem</td><td><code>#1a1a1a</code></td><td>redacting game only</td></tr>
-  </table>
+
+  <h3>Type roles in context</h3>
+  <p class="sg-note">Each specimen is isolated so the font, weight, size and treatment can be compared without competing UI around it.</p>
+
+  <section class="sg-type-section" aria-labelledby="type-interface-title">
+    <div class="sg-type-section-head">
+      <span class="sg-type-section-number">01</span>
+      <div><h3 id="type-interface-title">Interface voice</h3><p>Branding, mission guidance and player controls.</p></div>
+    </div>
+    <div class="sg-type-spec-grid">
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">System label</span><code class="sg-type-selector">.brand-system</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-system">SYSTEM: KEYPAD_BREAKER_V1.4</span></div>
+        <div class="sg-type-meta"><span>Orbitron 700</span><span>0.55–0.65rem</span><span>tracking 1px</span><span>success green</span></div>
+        <p class="sg-type-use">Identifies the active machine above the game title.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Game title</span><code class="sg-type-selector">.brand-title</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-title">TYPEMISSION // DOOR KEYPAD</span></div>
+        <div class="sg-type-meta"><span>Orbitron 900</span><span>0.95–1.2rem</span><span>tracking .5px</span><span>white → orange</span></div>
+        <p class="sg-type-use">Permanent title in the mission header.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Briefing instruction</span><code class="sg-type-selector">.briefing-slide-title</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-briefing">Kraak de keypad code van de beveiligde deur</span></div>
+        <div class="sg-type-meta"><span>Orbitron 500</span><span>0.95–1.15rem</span><span>line-height 1.4</span><span>white</span></div>
+        <p class="sg-type-use">One clear instruction per briefing card.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Control label</span><code class="sg-type-selector">.primary-button</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-control">START MISSIE</span></div>
+        <div class="sg-type-meta"><span>Orbitron 700</span><span>0.68–0.78rem</span><span>compact caps</span><span>white</span></div>
+        <p class="sg-type-use">Primary buttons, ghost buttons and mode selectors.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sg-type-section" aria-labelledby="type-gameplay-title">
+    <div class="sg-type-section-head">
+      <span class="sg-type-section-number">02</span>
+      <div><h3 id="type-gameplay-title">Gameplay and machine data</h3><p>Live values, typed input, terminal output and supporting copy.</p></div>
+    </div>
+    <div class="sg-type-spec-grid">
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">HUD statistic</span><code class="sg-type-selector">.hud-stat</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-stat">98%</span><span class="sg-ts-stat-label">Nauwkeurigheid</span></div>
+        <div class="sg-type-meta"><span>Orbitron 700</span><span>1.3–1.7rem</span><span>Roboto 600 label</span><span>accent</span></div>
+        <p class="sg-type-use">Large value first; small neutral label second.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Typed characters</span><code class="sg-type-selector">.char-box</code></div>
+        <div class="sg-type-demo"><div class="sg-ts-chars"><span class="sg-ts-char correct">K</span><span class="sg-ts-char current">R</span><span class="sg-ts-char">A</span></div></div>
+        <div class="sg-type-meta"><span>Roboto Mono 700</span><span>1.2–1.7rem</span><span>uppercase</span><span>state color</span></div>
+        <p class="sg-type-use">Monospacing keeps every input slot optically stable.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Terminal output</span><code class="sg-type-selector">.terminal-logs</code></div>
+        <div class="sg-type-demo"><div class="sg-ts-logbox"><span class="ok">&gt; BYPASS 04 GESLAAGD...</span><span class="error">&gt; FOUT: verkeerde toets [x]</span></div></div>
+        <div class="sg-type-meta"><span>Roboto Mono 400–700</span><span>0.56–0.66rem</span><span>line-height 1.35</span><span>state color</span></div>
+        <p class="sg-type-use">Short machine events; never use paragraph typography here.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Machine microcopy</span><code class="sg-type-selector">.keyboard-instruction-tag</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-micro">TYPE DE OPLICHTENDE LETTERS</span></div>
+        <div class="sg-type-meta"><span>Orbitron 700</span><span>0.48–0.56rem</span><span>tracking .8px</span><span>muted</span></div>
+        <p class="sg-type-use">Etched labels, tiny hardware instructions and legends.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Body and helper text</span><code class="sg-type-selector">body / descriptions</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-body">Typ de gemarkeerde letters om het beveiligingssysteem stap voor stap te omzeilen.</span></div>
+        <div class="sg-type-meta"><span>Roboto 300–500</span><span>0.7–0.85rem</span><span>line-height 1.5–1.65</span><span>dim text</span></div>
+        <p class="sg-type-use">Readable explanations that should not compete with the tactical hierarchy.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="sg-type-section" aria-labelledby="type-results-title">
+    <div class="sg-type-section-head">
+      <span class="sg-type-section-number">03</span>
+      <div><h3 id="type-results-title">Results and documents</h3><p>Completion hierarchy plus the file-redacting typography exceptions.</p></div>
+    </div>
+    <div class="sg-type-spec-grid">
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Result heading</span><code class="sg-type-selector">.result-header h2</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-result-heading">TOEGANG VERLEEND</span></div>
+        <div class="sg-type-meta"><span>Orbitron 800</span><span>1.2–1.8rem</span><span>tracking 1px</span><span>orange</span></div>
+        <p class="sg-type-use">Primary completion statement at the top of the report.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Result metric</span><code class="sg-type-selector">.card-main-value</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-result-value">187 CPM</span></div>
+        <div class="sg-type-meta"><span>Orbitron 900</span><span>1.8–2.4rem</span><span>line-height 1.1</span><span>semantic glow</span></div>
+        <p class="sg-type-use">Largest numerical emphasis inside dashboard cards.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Status stamp</span><code class="sg-type-selector">.status-success-badge</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-stamp">MISSIE VOLTOOID</span></div>
+        <div class="sg-type-meta"><span>Orbitron 900</span><span>1.05–1.35rem</span><span>tracking 1px</span><span>rotate −3°</span></div>
+        <p class="sg-type-use">A physical stamp treatment, reserved for the final status.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Document body</span><code class="sg-type-selector">.document-text-paragraphs</code></div>
+        <div class="sg-type-demo"><div class="sg-ts-paper"><strong>Operation Nightfall</strong>Agent █████ entered the facility at 22:40. The access protocol remains classified.</div></div>
+        <div class="sg-type-meta"><span>Courier New bold</span><span>0.68–0.85rem</span><span>line-height 1.45</span><span>#1a1a1a</span></div>
+        <p class="sg-type-use">File redacting only: headings, paragraphs and revealed words.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Document signature</span><code class="sg-type-selector">.signature-font</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-signature">Agent Vermeer</span></div>
+        <div class="sg-type-meta"><span>Georgia bold italic</span><span>0.64–0.78rem</span><span>natural case</span><span>purple ink</span></div>
+        <p class="sg-type-use">The only Georgia role in the system; file redacting only.</p>
+      </article>
+      <article class="sg-type-spec">
+        <div class="sg-type-spec-top"><span class="sg-type-role">Paper classification stamp</span><code class="sg-type-selector">.paper-stamp</code></div>
+        <div class="sg-type-demo"><span class="sg-ts-paper-stamp">TOP SECRET</span></div>
+        <div class="sg-type-meta"><span>Orbitron 900</span><span>0.68–0.82rem</span><span>uppercase</span><span>rotate −3°</span></div>
+        <p class="sg-type-use">Tactical type placed on the paper as a physical red ink stamp.</p>
+      </article>
+    </div>
+  </section>
+
+  <details class="sg-details sg-type-details">
+    <summary>Open complete typography specification</summary>
+    <table class="sg-table">
+      <tr><th>Role</th><th>Font / weight</th><th>Size</th><th>Treatment</th><th>Source selector</th></tr>
+      <tr><td>System label</td><td>Orbitron 700</td><td>0.55–0.65rem</td><td>green, tracking 1px</td><td><code>.brand-system</code></td></tr>
+      <tr><td>Game title</td><td>Orbitron 900</td><td>0.95–1.2rem</td><td>white→orange gradient</td><td><code>.brand-title</code></td></tr>
+      <tr><td>Section eyebrow</td><td>Orbitron 700</td><td>0.6–0.72rem</td><td>uppercase, wide tracking</td><td><code>.briefing-eyebrow</code></td></tr>
+      <tr><td>Briefing instruction</td><td>Orbitron 500</td><td>0.95–1.15rem</td><td>centered, line-height 1.4</td><td><code>.briefing-slide-title</code></td></tr>
+      <tr><td>Control label</td><td>Orbitron 700</td><td>0.68–0.78rem</td><td>compact caps</td><td><code>.primary-button</code></td></tr>
+      <tr><td>Spacebar prompt</td><td>Orbitron 400</td><td>0.72–0.82rem</td><td>white 80%, tracking .5px</td><td><code>.spacebar-instruction</code></td></tr>
+      <tr><td>Machine microcopy</td><td>Orbitron 700</td><td>0.48–0.56rem</td><td>muted, uppercase</td><td><code>.keyboard-instruction-tag</code></td></tr>
+      <tr><td>HUD value</td><td>Orbitron 700</td><td>1.3–1.7rem</td><td>semantic accent</td><td><code>.stat-value</code></td></tr>
+      <tr><td>Typed characters</td><td>Roboto Mono 700</td><td>1.2–1.7rem</td><td>uppercase, state color</td><td><code>.char-box</code></td></tr>
+      <tr><td>Terminal output</td><td>Roboto Mono 400–700</td><td>0.56–0.66rem</td><td>line-height 1.35</td><td><code>.terminal-logs</code></td></tr>
+      <tr><td>Body and helper text</td><td>Roboto 300–500</td><td>0.7–0.85rem</td><td>dim text, open leading</td><td><code>body / descriptions</code></td></tr>
+      <tr><td>Result heading</td><td>Orbitron 800</td><td>1.2–1.8rem</td><td>orange, tracking 1px</td><td><code>.result-header h2</code></td></tr>
+      <tr><td>Result metric</td><td>Orbitron 900</td><td>1.8–2.4rem</td><td>semantic glow</td><td><code>.card-main-value</code></td></tr>
+      <tr><td>Status stamp</td><td>Orbitron 900</td><td>1.05–1.35rem</td><td>2px border, rotate −3°</td><td><code>.status-success-badge</code></td></tr>
+      <tr><td>Document body</td><td>Courier New bold</td><td>0.68–0.85rem</td><td>paper ink, line-height 1.45</td><td><code>.document-text-paragraphs</code></td></tr>
+      <tr><td>Paper stamp</td><td>Orbitron 900</td><td>0.68–0.82rem</td><td>red border, rotate −3°</td><td><code>.paper-stamp</code></td></tr>
+      <tr><td>Document signature</td><td>Georgia bold italic</td><td>0.64–0.78rem</td><td>purple ink, natural case</td><td><code>.signature-font</code></td></tr>
+    </table>
+  </details>
 </section>
 
 <!-- ═══════════════ 04 FRAME & FLOW ═══════════════ -->
+<section class="sg-section" id="anatomy">
+  <p class="sg-kicker">05 / Measured from the projects</p>
+  <h2>Measured anatomy</h2>
+  <p class="sg-lead">Use these as implementation recipes, not visual guesses. Values are taken from the current project CSS; when games intentionally differ, the source game is named instead of pretending the component is universal.</p>
+  <div class="sg-blueprint-grid">
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">01 / MISSION CANVAS</span>
+      <div class="sg-anatomy-visual sg-a-exact theme t-keypad" aria-hidden="true">
+        <div class="sg-a-ratio-diagram">
+          <span class="sg-a-ratio-line horizontal"><span>16 units</span></span>
+          <span class="sg-a-ratio-line vertical"><span>9 units</span></span>
+          <div class="sg-a-mission-shell">
+            <header class="game-header">
+              <div class="game-branding"><div class="branding-text">
+                <span class="brand-system">SYSTEM: KEYPAD_BREAKER_V1.4</span>
+                <span class="brand-title">TYPEMISSION // DOOR KEYPAD</span>
+              </div></div>
+            </header>
+            <div class="sg-a-stage">
+              <div class="sg-a-canvas-brief">
+                <div class="sg-a-canvas-brief-top"><span>MISSIE INTRODUCTIE</span><span class="sg-a-canvas-dots"><i></i><i></i><i></i></span></div>
+                <strong>Kraak de keypad code van de beveiligde deur</strong>
+                <span class="sg-a-canvas-device"><span></span><i></i><i></i></span>
+                <span class="sg-a-canvas-footer"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-keypad/styles.css · .game-container</code></div>
+      <h3>The centered 16:9 frame</h3>
+      <p>The frame scales with the available space while keeping one non-negotiable rule: its canvas always remains 16:9.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">aspect-ratio <b>16 / 9</b></span>
+        <span class="sg-measure">sizing <b>responsive</b></span>
+        <span class="sg-measure">border <b>3px</b></span>
+        <span class="sg-measure">radius <b>12px</b></span>
+        <span class="sg-measure">overflow <b>hidden</b></span>
+        <span class="sg-measure">shadow <b>0 20px 60px rgba(0,0,0,.8)</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">02 / MISSION HEADER</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-header theme t-keypad" aria-hidden="true">
+        <header class="game-header">
+          <div class="game-branding"><div class="branding-text">
+            <span class="brand-system">SYSTEM: KEYPAD_BREAKER_V1.4</span>
+            <span class="brand-title">TYPEMISSION // DOOR KEYPAD</span>
+          </div></div>
+          <div class="header-controls"></div>
+        </header>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-keypad/styles.css · .game-header</code></div>
+      <h3>System label over title</h3>
+      <p>The base mission header has no decorative window buttons. It holds only branding and, when a game needs it, one real control such as the supercomputer mode selector.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">height <b>clamp(54px, 7.5vh, 72px)</b></span>
+        <span class="sg-measure">padding-x <b>24px</b></span>
+        <span class="sg-measure">divider <b>2px theme edge</b></span>
+        <span class="sg-measure">title <b>#fff &rarr; #e48e35</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">03 / BRIEFING PANEL</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-briefing theme t-keypad" aria-hidden="true">
+        <div class="briefing-panel">
+          <div class="briefing-panel-header">
+            <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+            <span class="briefing-pagination"><i class="dot active"></i><i class="dot"></i><i class="dot"></i></span>
+          </div>
+          <h4 class="briefing-slide-title">Kraak de keypad code van de beveiligde deur</h4>
+          <div class="briefing-slide-graphic">
+            <div class="sg-a-brief-device">
+              <span class="sg-a-brief-screen">BYPASS READY</span>
+              <span class="sg-a-brief-keys"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+          </div>
+          <div class="briefing-footer">
+            <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+            <span class="spacebar-btn-visual"><i class="spacebar-icon-line"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-keypad/styles.css · .briefing-panel</code></div>
+      <h3>Glass card inside the mission</h3>
+      <p>This now mirrors the complete in-game card: header divider, three pagination dots, centered mission sentence, hardware illustration and the separated spacebar footer.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">max-width <b>580px</b></span>
+        <span class="sg-measure">width <b>95%</b></span>
+        <span class="sg-measure">padding <b>clamp(16px, 3vh, 24px)</b></span>
+        <span class="sg-measure">border <b>1.5px</b></span>
+        <span class="sg-measure">radius <b>12px</b></span>
+        <span class="sg-measure">blur <b>12px</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">04 / KEYPAD HARDWARE</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-device theme t-keypad" aria-hidden="true">
+        <div class="device-panel">
+          <div class="door-screen">
+            <span class="system-tag-left">SYS_LINK_OK</span><span class="system-tag-right">PORT_04</span>
+            <span class="door-screen-label">ENTER ACCESS SEQUENCE</span>
+            <div class="code-text"><span class="char-box correct">k</span><span class="char-box current">r</span><span class="char-box faded">a</span><span class="char-box faded">k</span></div>
+            <span class="screen-scanlines"></span>
+          </div>
+          <div class="keypad-grid">
+            <span class="keypad-btn hacked-green"><i class="btn-num">1</i><b class="btn-char">K</b></span>
+            <span class="keypad-btn active-target"><i class="btn-num">2</i><b class="btn-char">R</b></span>
+            <span class="keypad-btn"><i class="btn-num">3</i><b class="btn-char">A</b></span>
+            <span class="keypad-btn"><i class="btn-num">4</i><b class="btn-char">D</b></span>
+            <span class="keypad-btn"><i class="btn-num">5</i><b class="btn-char">E</b></span>
+            <span class="keypad-btn"><i class="btn-num">6</i><b class="btn-char">U</b></span>
+            <span class="keypad-btn"><i class="btn-num">7</i><b class="btn-char">R</b></span>
+            <span class="keypad-btn"><i class="btn-num">8</i><b class="btn-char">C</b></span>
+            <span class="keypad-btn"><i class="btn-num">9</i><b class="btn-char">O</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-keypad/styles.css · .keypad-panel + .door-screen</code></div>
+      <h3>Panel, grid and keys</h3>
+      <p>The full nesting is visible: dark device housing, inset CRT screen, typed code slots and keys with a small numeric coordinate plus a large letter. States use the game classes.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">panel radius <b>12px</b></span>
+        <span class="sg-measure">panel border <b>2px</b></span>
+        <span class="sg-measure">key radius <b>8px</b></span>
+        <span class="sg-measure">key border <b>1.5px</b></span>
+        <span class="sg-measure">grid gap <b>clamp(4px, .8vh, 8px)</b></span>
+        <span class="sg-measure">grid max <b>min(270px, 32vh)</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">05 / INPUT STATES</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-state-row theme t-keypad" aria-hidden="true">
+        <div class="sg-a-state"><span class="char-box">A</span><span>idle</span></div>
+        <div class="sg-a-state"><span class="char-box current">R</span><span>current</span></div>
+        <div class="sg-a-state"><span class="char-box correct">K</span><span>correct</span></div>
+        <div class="sg-a-state"><span class="char-box wrong">X</span><span>wrong</span></div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-keypad/styles.css · .char-box states</code></div>
+      <h3>One geometry, four meanings</h3>
+      <p>Feedback changes border, text, glow and sometimes motion—never the slot size. This keeps the code line stable while the player types.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">slot <b>35–48px × 45–60px</b></span>
+        <span class="sg-measure">border <b>2px</b></span>
+        <span class="sg-measure">radius <b>6px</b></span>
+        <span class="sg-measure">current <b>#e48e35</b></span>
+        <span class="sg-measure">correct <b>#9ad744</b></span>
+        <span class="sg-measure">wrong <b>#ff3b30</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">06 / TERMINAL PANEL</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-terminal theme t-keypad" aria-hidden="true">
+        <div class="terminal-panel">
+          <div class="terminal-header">
+            <span class="terminal-header-info"><b class="terminal-title">BYPASS TERMINAL</b><span class="terminal-ping">SYS_LINK_OK</span></span>
+            <span class="terminal-win-controls"><span class="control-btn">—</span><span class="control-btn">□</span><span class="control-btn">×</span></span>
+          </div>
+          <div class="sg-a-terminal-body">
+            <span class="sg-a-log">&gt; verbinding met deurmodule...</span>
+            <span class="sg-a-log good">&gt; HANDSHAKE GESLAAGD [OK]</span>
+            <span class="sg-a-log warn">&gt; WACHT OP TOETS: R_</span>
+            <span class="sg-a-log bad">&gt; FOUT: verkeerde toets [x]</span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-keypad/styles.css · .terminal-panel</code></div>
+      <h3>Window chrome and machine output</h3>
+      <p>The title belongs to Orbitron, but every log line is Roboto Mono. A 38px header, inset terminal body and semantic line colors create the software layer inside the hardware.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">header <b>38px</b></span>
+        <span class="sg-measure">panel border <b>2px</b></span>
+        <span class="sg-measure">radius <b>8px</b></span>
+        <span class="sg-measure">logs <b>Roboto Mono .56–.66rem</b></span>
+        <span class="sg-measure">body inset <b>0 2px 10px rgba(0,0,0,.95)</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">07 / MISSION OBJECTS</span>
+      <div class="sg-anatomy-visual sg-a-exact" aria-hidden="true">
+        <div class="sg-a-hardware-row">
+          <div class="sg-a-object theme t-lockpick">
+            <div class="sg-a-mini-lock"><div class="sg-a-lock-inner">
+              <span class="sg-a-object-leds sg-a-lock-leds"><i class="datalink"></i><i class="signal"></i></span>
+              <span class="sg-a-lock-display">
+                <span class="sg-a-lock-core"></span>
+                <span class="sg-a-lock-pins"><i></i><i></i><i></i></span>
+              </span>
+              <span class="sg-a-lock-meta">SECURE CORE v2.1</span>
+            </div></div>
+            <span>LOCKPICKING / 130×110</span>
+          </div>
+          <div class="sg-a-object theme t-fingerprint">
+            <div class="sg-a-mini-scanner"><div class="sg-a-scanner-inner">
+              <span class="sg-a-object-leds sg-a-scanner-leds"><i class="datalink"></i><i class="signal"></i></span>
+              <div class="sg-a-scanner-screen">
+                <span class="sg-a-scanline"></span>
+                <svg viewBox="0 0 512 512" class="sg-a-fingerprint-svg">
+                  <path d="M390.42,75.28a10.45,10.45,0,0,1-5.32-1.44C340.72,50.08,302.35,40,256.35,40c-45.77,0-89.23,11.28-128.76,33.84C122,77,115.11,74.8,111.87,69a12.4,12.4,0,0,1,4.63-16.32A281.81,281.81,0,0,1,256.35,16c49.23,0,92.23,11.28,139.39,36.48a12,12,0,0,1,4.85,16.08A11.3,11.3,0,0,1,390.42,75.28Z"/>
+                  <path d="M59.63,201.28a11.73,11.73,0,0,1-6.7-2.16,12.26,12.26,0,0,1-2.78-16.8c22.89-33.6,52-60,86.69-78.48C209.42,65,302.35,64.72,375.16,103.6c34.68,18.48,63.8,44.64,86.69,78a12.29,12.29,0,0,1-2.78,16.8,11.26,11.26,0,0,1-16.18-2.88c-20.8-30.24-47.15-54-78.36-70.56-66.34-35.28-151.18-35.28-217.29.24-31.44,16.8-57.79,40.8-78.59,71A10,10,0,0,1,59.63,201.28Z"/>
+                  <path d="M204.1,491a10.66,10.66,0,0,1-8.09-3.6C175.9,466.48,165,453,149.55,424c-16-29.52-24.27-65.52-24.27-104.16,0-71.28,58.71-129.36,130.84-129.36S387,248.56,387,319.84a11.56,11.56,0,1,1-23.11,0c0-58.08-48.32-105.36-107.72-105.36S148.4,261.76,148.4,319.84c0,34.56,7.39,66.48,21.49,92.4,14.8,27.6,25,39.36,42.77,58.08a12.67,12.67,0,0,1,0,17A12.44,12.44,0,0,1,204.1,491Z"/>
+                  <path d="M369.85,446.56c-27.51,0-51.78-7.2-71.66-21.36a129.1,129.1,0,0,1-55-105.36,11.57,11.57,0,1,1,23.12,0,104.28,104.28,0,0,0,44.84,85.44c16.41,11.52,35.6,17,58.72,17a147.41,147.41,0,0,0,24-2.4c6.24-1.2,12.25,3.12,13.4,9.84a11.92,11.92,0,0,1-9.47,13.92A152.28,152.28,0,0,1,369.85,446.56Z"/>
+                  <path d="M323.38,496a13,13,0,0,1-3-.48c-36.76-10.56-60.8-24.72-86-50.4-32.37-33.36-50.16-77.76-50.16-125.28,0-38.88,31.9-70.56,71.19-70.56s71.19,31.68,71.19,70.56c0,25.68,21.5,46.56,48.08,46.56s48.08-20.88,48.08-46.56c0-90.48-75.13-163.92-167.59-163.92-65.65,0-125.75,37.92-152.79,96.72-9,19.44-13.64,42.24-13.64,67.2,0,18.72,1.61,48.24,15.48,86.64,2.32,6.24-.69,13.2-6.7,15.36a11.34,11.34,0,0,1-14.79-7,276.39,276.39,0,0,1-16.88-95c0-28.8,5.32-55,15.72-77.76,30.75-67,98.94-110.4,173.6-110.4,105.18,0,190.71,84.24,190.71,187.92,0,38.88-31.9,70.56-71.2,70.56s-71.2-31.68-71.2-70.56C303.5,293.92,282,273,255.42,273s-48.08,20.88-48.08,46.56c0,41,15.26,79.44,43.23,108.24,22,22.56,43,35,75.59,44.4,6.24,1.68,9.71,8.4,8.09,14.64A11.39,11.39,0,0,1,323.38,496Z"/>
+                </svg>
+              </div>
+              <span class="sg-a-scanner-label">SCANNER BYPASS</span>
+            </div></div>
+            <span>FINGERPRINT / 130×140</span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-door-Lockpicking + typegame-door-fingerprint · briefing hardware</code></div>
+      <h3>The briefing objects keep real proportions</h3>
+      <p>The lock and scanner are no longer generic icons. Their metal gradients, multi-layer housing, inner cavity, shackle or scan bed and exact briefing proportions come from their game CSS.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">metal <b>#5a5e65 → #1e2024</b></span>
+        <span class="sg-measure">outer radius <b>10–16px</b></span>
+        <span class="sg-measure">object shadow <b>0 12px 25px rgba(0,0,0,.7)</b></span>
+        <span class="sg-measure">scanner accent <b>#ffcc00</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">08 / DOCUMENT MATERIAL</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-document theme t-redact" aria-hidden="true">
+        <div class="manila-folder">
+          <span class="folder-tab">DOSSIER #7741-C</span>
+          <div class="folder-paper">
+            <div class="paper-header"><span class="paper-meta">MEMO 7741-C — <span>STRIKT GEHEIM</span></span><span class="paper-stamp">Classified</span></div>
+            <p>Het doelwit gebruikt de schuilnaam <span class="redacted-word">nachtuil</span> en opereert vanuit <span class="redacted-word active-redaction">rotterdam</span>.</p>
+            <p>De overdracht vindt plaats om <span class="redacted-word decrypting-glow">23:40</span> bij de <span class="redacted-word decrypted">haven</span>.</p>
+            <div class="paper-progress"><span class="p-title">Ontcijfering:</span><span class="p-track"><span class="p-fill"></span></span><span class="p-value">3/5</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-file-redacting/styles.css · .manila-folder + .folder-paper</code></div>
+      <h3>The light-surface exception</h3>
+      <p>File redacting deliberately breaks from dark hardware. The document uses a manila shell, warm paper, Courier text and four distinct redaction states; the surrounding UI remains purple hardware.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">folder <b>#dca75e</b></span>
+        <span class="sg-measure">paper <b>#fdfbf4</b></span>
+        <span class="sg-measure">paper radius <b>3px</b></span>
+        <span class="sg-measure">paper shadow <b>0 3px 8px rgba(0,0,0,.18)</b></span>
+        <span class="sg-measure">body <b>Courier New 700</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">09 / TYPE TRAINING</span>
+      <div class="sg-anatomy-visual sg-a-exact theme t-practice" aria-hidden="true">
+        <div class="sg-a-training-console">
+          <div class="sg-a-training-header"><b>TYPE CONSOLE</b><span>VINGERZETTING ACTIEF</span></div>
+          <div class="sg-a-training-screen">
+            <div class="sg-a-training-meta"><span>REGEL 1 VAN 5</span><span>DOELLETTER: J</span></div>
+            <div class="sg-a-training-copy"><span class="correct">f</span><span class="correct">f</span> <span class="current">j</span>jj <span class="wrong">d</span>dd kkk</div>
+            <div class="sg-a-training-copy dim">fd jk df kj &nbsp; fd jk df kj</div>
+          </div>
+          <div class="sg-a-training-keys">
+            <span class="sg-a-training-key">A</span><span class="sg-a-training-key left">S</span><span class="sg-a-training-key left">D</span><span class="sg-a-training-key home">F</span><span class="sg-a-training-key">G</span><span class="sg-a-training-key">H</span><span class="sg-a-training-key target">J</span><span class="sg-a-training-key right">K</span><span class="sg-a-training-key right">L</span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-typeoefening-losse-letters/styles.css · .exercise-panel + .key</code></div>
+      <h3>Console text and physical keyboard agree</h3>
+      <p>The typing cursor is a filled orange block, correct characters turn green, errors get a red underline, and the matching keyboard target uses its assigned finger color.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">console <b>#141418</b></span>
+        <span class="sg-measure">console radius <b>8px</b></span>
+        <span class="sg-measure">typed text <b>Roboto Mono 700</b></span>
+        <span class="sg-measure">key height <b>34–48px</b></span>
+        <span class="sg-measure">key radius <b>6px</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">10 / DEFENSE HARDWARE</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-a-defense theme t-super" aria-hidden="true">
+        <div class="sg-a-defense-layout">
+          <div class="supercomputer-core">
+            <span class="cpu-notch tl"></span><span class="cpu-notch tr"></span><span class="cpu-notch bl"></span><span class="cpu-notch br"></span>
+            <span class="cpu-gold-edge-left"></span><span class="cpu-gold-edge-right"></span>
+            <div class="cpu-ihs"><span class="cpu-serial">TM-QUANTUM X9</span><span class="core-crystal"></span><span class="cpu-status-led"></span></div>
+          </div>
+          <div class="sector-grid-demo">
+            <span class="sector-cell"><i class="cell-led"></i><b class="cell-letter">a</b></span>
+            <span class="sector-cell hacked"><i class="cell-led"></i><b class="cell-letter">s</b><i class="cell-fuse"></i></span>
+            <span class="sector-cell repaired"><i class="cell-led"></i><b class="cell-letter">d</b></span>
+            <span class="sector-cell crashed"><i class="cell-led"></i><b class="cell-letter">f</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>typegame-supercomputer-defense-grid/styles.css · .supercomputer-core + .sector-cell</code></div>
+      <h3>Nested CPU and flat sector states</h3>
+      <p>The CPU is built from clamp, substrate, heat spreader and die. The surrounding sectors stay deliberately flatter, using border, LED and a bottom fuse bar to communicate status.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">CPU substrate <b>150×150px</b></span>
+        <span class="sg-measure">retention clamp <b>inset −14px</b></span>
+        <span class="sg-measure">sector radius <b>4px</b></span>
+        <span class="sg-measure">sector LED <b>5px</b></span>
+        <span class="sg-measure">fuse bar <b>3px</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">11 / DEPTH RECIPE</span>
+      <div class="sg-anatomy-visual sg-a-exact theme t-keypad" aria-hidden="true">
+        <div class="sg-a-material-row">
+          <div class="sg-a-material"><span class="sg-a-material-swatch shell">SHELL</span><span>frame depth</span></div>
+          <div class="sg-a-material"><span class="sg-a-material-swatch device">DEVICE</span><span>shadow + inset</span></div>
+          <div class="sg-a-material"><span class="sg-a-material-swatch state">LIVE</span><span>semantic glow</span></div>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>shared shell + keypad device + char-box.correct</code></div>
+      <h3>Depth changes with physical hierarchy</h3>
+      <p>The shell, hardware and feedback states do not share one generic shadow. Shells use the longest drop; devices add a faint top inset; state glow is reserved for live information.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">shell <b>0 20px 60px rgba(0,0,0,.8)</b></span>
+        <span class="sg-measure">device <b>0 8px 30px rgba(0,0,0,.7)</b></span>
+        <span class="sg-measure">device inset <b>0 1px rgba(255,255,255,.06)</b></span>
+        <span class="sg-measure">state glow <b>0 0 10px semantic color</b></span>
+      </div>
+    </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">12 / RADIUS SCALE</span>
+      <div class="sg-anatomy-visual sg-a-exact sg-radius-specimen" aria-hidden="true">
+        <div class="sg-radius-item"><span class="sg-radius-shape tag">TAG</span><span>3px</span></div>
+        <div class="sg-radius-item"><span class="sg-radius-shape field">STAT</span><span>6px</span></div>
+        <div class="sg-radius-item"><span class="sg-radius-shape key">KEY</span><span>8px</span></div>
+        <div class="sg-radius-item"><span class="sg-radius-shape panel">PANEL</span><span>12px</span></div>
+      </div>
+      <div class="sg-anatomy-source"><code>measured across all included game CSS</code></div>
+      <h3>Corner radius follows physical scale</h3>
+      <p>Small machine labels stay nearly square; controls are modestly rounded; only enclosing shells and large launcher cards reach the largest radii.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">tags <b>2-3px</b></span>
+        <span class="sg-measure">stats / fields <b>6px</b></span>
+        <span class="sg-measure">buttons / keys <b>6-8px</b></span>
+        <span class="sg-measure">mission panels <b>12px</b></span>
+        <span class="sg-measure">briefings <b>12px</b></span>
+        <span class="sg-measure">game canvas <b>12px</b></span>
+      </div>
+    </article>
+  </div>
+  <p class="sg-source-note"><strong>LIVE SOURCE CHECK:</strong> Shared shell measurements come from <code>typegame-door-keypad/styles.css</code>; every game-specific specimen names its own source and selector directly beneath the preview. The examples reuse the extracted component classes wherever the games share them.</p>
+</section>
+
 <section class="sg-section" id="frame">
-  <p class="sg-kicker">04 — One shell, three views</p>
+  <p class="sg-kicker">06 / One shell, three views</p>
   <h2>Frame &amp; flow</h2>
   <p class="sg-lead">
     Every game lives inside one fixed 16:9 frame, centered on a near-black page with a matrix-rain canvas
     behind it. Inside the frame a header stays fixed on top and the stage below it swaps between exactly
     three views.
   </p>
-  <p class="sg-note">Frame recipe: 16:9 ratio (80vw × 45vw, capped at 80% of the screen height), page-hue background, <strong>3px border in the theme's soft tint</strong>, corner radius 12, heavy drop shadow, content clipped. The header sits on top; the stage fills the rest.</p>
+  <p class="sg-note">Frame recipe: a responsive <strong>16:9 aspect ratio</strong>, page-hue background, <strong>3px border in the theme's soft tint</strong>, corner radius 12, heavy drop shadow and clipped content. The header sits on top; the stage fills the rest.</p>
   <div class="theme t-keypad">
     <div class="sg-stage" style="padding:16px;">
       <div style="width:100%; max-width:720px; aspect-ratio:16/9; background:var(--purple-dark); border:3px solid var(--purple-soft); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.8);">
         <header class="game-header" style="border-radius:0; flex-shrink:0;">
           <div>
             <span class="brand-system">SYSTEM: KEYPAD_BREAKER_V1.4</span>
-            <h1 class="brand-title" style="font-size:0.95rem;">TYPEMISSION // DOOR KEYPAD</h1>
+            <h1 class="brand-title">TYPEMISSION // DOOR KEYPAD</h1>
           </div>
           <div class="header-controls">
             <span class="dropdown-header" style="min-height:30px; font-size:0.6rem;">Niveau: Basis
@@ -2800,7 +4634,7 @@ table.sg-table {
 
 <!-- ═══════════════ 05 LAYER STACK ═══════════════ -->
 <section class="sg-section" id="layers">
-  <p class="sg-kicker">05 — Machine anatomy</p>
+  <p class="sg-kicker">07 / Machine anatomy</p>
   <h2>The layer stack</h2>
   <p class="sg-lead">
     Every machine in the door games is the same sandwich. Build it in this order and it will look like the
@@ -2947,23 +4781,24 @@ table.sg-table {
 
 <!-- ═══════════════ 06 CORE COMPONENTS ═══════════════ -->
 <section class="sg-section" id="components">
-  <p class="sg-kicker">06 — Shared UI</p>
+  <p class="sg-kicker">08 / Shared UI</p>
   <h2>Core components</h2>
   <p class="sg-lead">The recurring interface pieces around the machine. All of them are theme-driven: drop them in any game and they recolor through that game's palette.</p>
+  <p class="sg-source-note">The live atlas is the full-screen source of truth. The isolated components below use the same class structure, responsive values, radii, borders and gradients; only the documentation stage around them is guide-specific.</p>
 
   <h3>Mission header</h3>
   <div class="theme t-lockpick">
     <div class="sg-stage" style="padding:16px;">
-      <header class="game-header" style="max-width:680px; border-radius:8px;">
+      <header class="game-header" style="max-width:680px;">
         <div>
           <span class="brand-system">SYSTEM: LOCKPICK_BYPASS_V2.1</span>
-          <h1 class="brand-title" style="font-size:1rem;">TYPEMISSION // DOOR LOCKPICKING</h1>
+          <h1 class="brand-title">TYPEMISSION // DOOR LOCKPICKING</h1>
         </div>
         <div class="header-controls">
-          <span class="dropdown-header" style="font-size:0.62rem;">Niveau: Basis (Letters)
+          <span class="dropdown-header">Niveau: Basis (Letters)
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </span>
-          <span class="ghost-button" style="font-size:0.62rem;">HERSTART</span>
+          <span class="ghost-button">HERSTART</span>
         </div>
       </header>
     </div>
@@ -3023,7 +4858,7 @@ table.sg-table {
 
 <!-- ═══════════════ 07 TYPING & INPUT STATES ═══════════════ -->
 <section class="sg-section" id="inputs">
-  <p class="sg-kicker">07 — Where the player types</p>
+  <p class="sg-kicker">09 / Where the player types</p>
   <h2>Typing &amp; input states</h2>
   <p class="sg-lead">
     Two input primitives repeat across all games: <strong>code slots</strong> on screens,
@@ -3083,7 +4918,7 @@ table.sg-table {
 
 <!-- ═══════════════ 08 RESULT SCREEN ═══════════════ -->
 <section class="sg-section" id="results">
-  <p class="sg-kicker">08 — System report</p>
+  <p class="sg-kicker">10 / System report</p>
   <h2>Result screen</h2>
   <p class="sg-lead">
     Full-frame view on <code>rgba(4,8,20,0.985)</code>. Everything is centered and enters staggered:
@@ -3146,7 +4981,7 @@ table.sg-table {
 
 <!-- ═══════════════ 09 GAME OBJECT LIBRARY ═══════════════ -->
 <section class="sg-section" id="objects">
-  <p class="sg-kicker">09 — One machine per game</p>
+  <p class="sg-kicker">11 / One machine per game</p>
   <h2>Game object library</h2>
   <p class="sg-lead">
     Each game swaps its own input object into layer L4 of the stack. These are the exact looks, each shown in its
@@ -3599,7 +5434,7 @@ table.sg-table {
 
 <!-- ═══════════════ 10 FEEDBACK & MOTION ═══════════════ -->
 <section class="sg-section" id="feedback">
-  <p class="sg-kicker">10 — Interaction grammar</p>
+  <p class="sg-kicker">12 / Interaction grammar</p>
   <h2>Feedback &amp; motion</h2>
   <p class="sg-lead">Feedback is instant, local and color-coded. The same five moments exist in every game:</p>
   <table class="sg-table">
@@ -3681,7 +5516,7 @@ table.sg-table {
 
 <!-- ═══════════════ 11 THEME VARIANTS ═══════════════ -->
 <section class="sg-section" id="themes">
-  <p class="sg-kicker">11 — Same parts, six moods</p>
+  <p class="sg-kicker">13 / Same parts, six moods</p>
   <h2>Theme variants</h2>
   <p class="sg-lead">
     Proof of the system: the identical stat card + code slots, re-rendered in each game's theme. Only the color
@@ -3724,7 +5559,7 @@ table.sg-table {
 
 <!-- ═══════════════ 12 NEW GAME CHECKLIST ═══════════════ -->
 <section class="sg-section" id="css">
-  <p class="sg-kicker">12 — Building a new game</p>
+  <p class="sg-kicker">14 / Building a new game</p>
   <h2>New game checklist</h2>
   <p class="sg-lead">The shortest path to a game that fits the set, in any tech stack:</p>
   <table class="sg-table">
@@ -3742,5 +5577,192 @@ table.sg-table {
 
 </main>
 </div>
+<script>
+(function () {
+  const nav = document.querySelector('.sg-nav');
+  const navLinks = Array.from(document.querySelectorAll('.sg-nav a[href^="#"]'));
+  const search = document.querySelector('.sg-nav-search');
+  const mobileToggle = document.querySelector('.sg-mobile-toggle');
+  const progressFill = document.querySelector('.sg-progress-fill');
+
+  function updateProgress() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const value = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    progressFill.style.width = (value * 100) + '%';
+  }
+  updateProgress();
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+
+  const observed = navLinks
+    .map(link => document.querySelector(link.getAttribute('href')))
+    .filter(Boolean);
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!visible) return;
+    navLinks.forEach(link => {
+      const active = link.getAttribute('href') === '#' + visible.target.id;
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }, { rootMargin: '-12% 0px -70% 0px', threshold: [0, .08, .25] });
+  observed.forEach(section => observer.observe(section));
+
+  if (search) {
+    search.addEventListener('input', () => {
+      const query = search.value.trim().toLowerCase();
+      document.querySelectorAll('.sg-nav-group').forEach(group => {
+        const links = Array.from(group.querySelectorAll('a'));
+        links.forEach(link => { link.hidden = !!query && !link.textContent.toLowerCase().includes(query); });
+        group.hidden = links.every(link => link.hidden);
+      });
+    });
+  }
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      mobileToggle.setAttribute('aria-expanded', String(open));
+      mobileToggle.setAttribute('aria-label', open ? 'Close guide navigation' : 'Open guide navigation');
+      mobileToggle.innerHTML = open ? '&times;' : '&#9776;';
+    });
+    navLinks.forEach(link => link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      mobileToggle.setAttribute('aria-label', 'Open guide navigation');
+      mobileToggle.innerHTML = '&#9776;';
+    }));
+  }
+
+  const tabs = Array.from(document.querySelectorAll('.sg-game-tab'));
+  const preview = document.getElementById('game-preview');
+  const previewWindow = document.querySelector('.sg-preview-window');
+  const interaction = document.getElementById('preview-interaction');
+  const previewOpen = document.getElementById('preview-open');
+  const previewName = document.getElementById('preview-name');
+  const previewPath = document.getElementById('preview-path');
+  const previewFamily = document.getElementById('preview-family');
+  const previewPalette = document.getElementById('preview-palette');
+  const previewViewport = document.getElementById('preview-viewport');
+
+  function setInteraction(enabled) {
+    previewWindow.classList.toggle('is-interactive', enabled);
+    interaction.classList.toggle('active', enabled);
+    interaction.setAttribute('aria-pressed', String(enabled));
+    interaction.textContent = enabled ? 'Disable interaction' : 'Enable interaction';
+  }
+  interaction.addEventListener('click', () => setInteraction(!previewWindow.classList.contains('is-interactive')));
+
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(item => {
+      const active = item === tab;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-selected', String(active));
+    });
+    setInteraction(false);
+    preview.src = tab.dataset.src;
+    preview.title = 'Live ' + tab.dataset.name + ' preview';
+    previewOpen.href = tab.dataset.src;
+    previewName.textContent = tab.dataset.name;
+    previewPath.textContent = tab.dataset.src;
+    previewFamily.textContent = tab.dataset.family;
+    previewPalette.textContent = tab.dataset.palette;
+    previewViewport.textContent = tab.dataset.viewport;
+  }));
+
+  function fallbackCopy(value) {
+    const area = document.createElement('textarea');
+    area.value = value;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    area.remove();
+  }
+
+  const colorSection = document.getElementById('colors');
+  const colorValuePattern = /#[0-9a-f]{3,8}\b|rgba?\([^)]*\)/ig;
+  colorSection.querySelectorAll('code').forEach(code => {
+    const values = code.textContent.match(colorValuePattern);
+    if (!values || code.dataset.copy) return;
+    code.dataset.copy = values.join(' / ');
+    code.setAttribute('role', 'button');
+    code.setAttribute('tabindex', '0');
+    code.setAttribute('aria-label', 'Copy color ' + code.dataset.copy);
+  });
+  colorSection.querySelectorAll('.sg-swatch').forEach(swatch => {
+    if (swatch.dataset.copy) return;
+    const cell = swatch.closest('td');
+    const row = swatch.closest('tr');
+    const source = (cell && cell.querySelector('code[data-copy]')) || (row && row.querySelector('code[data-copy]'));
+    const inlineValues = (swatch.getAttribute('style') || '').match(colorValuePattern);
+    const value = source ? source.dataset.copy : (inlineValues ? inlineValues.join(' / ') : '');
+    if (!value) return;
+    swatch.dataset.copy = value;
+    swatch.setAttribute('role', 'button');
+    swatch.setAttribute('tabindex', '0');
+    swatch.setAttribute('aria-label', 'Copy color ' + value);
+  });
+
+  const copyToast = document.createElement('div');
+  copyToast.className = 'sg-copy-toast';
+  copyToast.setAttribute('role', 'status');
+  copyToast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(copyToast);
+  let copyToastTimer;
+  function showCopyToast(value) {
+    window.clearTimeout(copyToastTimer);
+    copyToast.textContent = 'Copied ' + value;
+    copyToast.classList.add('show');
+    copyToastTimer = window.setTimeout(() => copyToast.classList.remove('show'), 1500);
+  }
+
+  document.querySelectorAll('[data-copy]').forEach(swatch => {
+    swatch.addEventListener('click', async () => {
+      const value = swatch.dataset.copy;
+      try {
+        if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(value);
+      } catch (error) {
+        fallbackCopy(value);
+      }
+      const feedbackTarget = swatch.closest('.sg-color-card') || swatch;
+      feedbackTarget.classList.add('copied');
+      window.setTimeout(() => feedbackTarget.classList.remove('copied'), 1200);
+      showCopyToast(value);
+    });
+    if (swatch.tagName !== 'BUTTON') {
+      swatch.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        swatch.click();
+      });
+    }
+  });
+
+  const colorTables = Array.from(document.querySelectorAll('#colors > table.sg-table'));
+  const tableLabels = ['Open compact accent matrix', 'Open full cross-game token matrix', 'Open game-specific token list'];
+  colorTables.forEach((table, index) => {
+    const details = document.createElement('details');
+    details.className = 'sg-details';
+    const summary = document.createElement('summary');
+    summary.textContent = tableLabels[index] || 'Open exact values';
+    table.before(details);
+    details.append(summary, table);
+  });
+
+  if (window.location.hash) {
+    window.setTimeout(() => {
+      const target = document.querySelector(window.location.hash);
+      if (target) target.scrollIntoView({ block: 'start' });
+    }, 80);
+  }
+}());
+</script>
 </body>
 </html>
