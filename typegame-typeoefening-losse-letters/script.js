@@ -576,11 +576,30 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start subtle dotted wave background animation
-  initDottedWaveBackground();
+  const styleguidePreview = new URLSearchParams(window.location.search).has("styleguide-preview");
+  if (styleguidePreview) {
+    soundEnabled = false;
+    lettersVisible = true;
+    cursorIndex = 5;
+    typedStates = Array(currentTextLine.length).fill(null);
+    renderKeyboard();
+    renderPrompt();
 
-  // Start the rhythm visualizer wave loop
-  animateRhythmWave();
+    const pulsePreviewKey = () => {
+      const key = keyboardContainer.querySelector('[data-key="j"]');
+      if (!key) return;
+      key.classList.add("pressed");
+      window.setTimeout(() => key.classList.remove("pressed"), 180);
+    };
+    pulsePreviewKey();
+    window.setInterval(pulsePreviewKey, 1800);
+  } else {
+    // Start subtle dotted wave background animation
+    initDottedWaveBackground();
+
+    // Start the rhythm visualizer wave loop
+    animateRhythmWave();
+  }
 });
 
 // ── KEYBOARD FINGER MAPPING HELPERS ──

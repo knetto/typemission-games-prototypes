@@ -4,6 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    const styleguidePreviewMode = new URLSearchParams(window.location.search).get('styleguide-preview');
+    if (styleguidePreviewMode !== null) {
+      document.documentElement.classList.add('training-specimen');
+    }
+    if (styleguidePreviewMode === 'terminal') {
+      document.documentElement.classList.add('terminal-specimen');
+    }
+  </script>
   <title>TypeMission — Typetraining</title>
   <meta name="description" content="Typetraining om blind te leren typen in de TypeMission stijl.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +20,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2.5">
+  <link rel="stylesheet" href="styles.css?v=2.6">
 </head>
 
 <body>

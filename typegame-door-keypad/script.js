@@ -1436,6 +1436,52 @@ function resetOnboardingDemoAnimation() {
 
 // ── INIT ──
 function initBriefing() {
+  const specimenParams = new URLSearchParams(window.location.search);
+  if (specimenParams.has("machine-preview")) {
+    soundEnabled = false;
+    onboardingComplete = true;
+    storyStage.hidden = true;
+    storyStage.classList.remove("active");
+    missionLayout.hidden = false;
+    missionLayout.classList.add("active");
+
+    resetTest();
+    currentCode = "kalfjp";
+    codeCursor = 1;
+    typedStates = ["correct"];
+    renderPrompt();
+    updateActiveKeypadButton();
+
+    const completedKey = getKeypadNumForChar(currentCode[0]);
+    keypadGrid.querySelectorAll(".keypad-btn").forEach(btn => {
+      btn.classList.toggle("hacked-green", btn.dataset.num === completedKey);
+    });
+    typingInput.disabled = true;
+    return;
+  }
+
+  const previewValue = specimenParams.get("briefing-preview");
+  if (previewValue !== null) {
+    const previewSlide = Math.max(0, Math.min(2, Number.parseInt(previewValue, 10) || 0));
+    activeBriefingSlide = previewSlide;
+    soundEnabled = false;
+
+    document.querySelectorAll(".briefing-slide").forEach((slide, index) => {
+      slide.classList.toggle("active", index === previewSlide);
+    });
+    document.querySelectorAll("#briefingPagination .dot").forEach((dot, index) => {
+      dot.classList.toggle("active", index === previewSlide);
+    });
+
+    if (previewSlide === 2) {
+      const instruction = document.querySelector(".spacebar-instruction");
+      if (instruction) instruction.textContent = "Druk op de spatiebalk om de missie te starten!";
+      resetOnboardingDemoAnimation();
+      startOnboardingDemoAnimation();
+    }
+    return;
+  }
+
   initDottedWaveBackground();
 }
 

@@ -3024,3 +3024,110 @@ body::before {
 .practice-main-workspace.toets-mode .loose-letter-block .block-finger-hint {
   display: none !important;
 }
+
+/* Source-accurate center-console specimen used by the visual style guide. */
+html.training-specimen,
+html.training-specimen body {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+html.training-specimen body {
+  display: block;
+  background: #050609;
+}
+
+html.training-specimen body::before,
+html.training-specimen #matrix-canvas,
+html.training-specimen .game-header,
+html.training-specimen .bottom-controls-bar,
+html.training-specimen .tactical-select-wrapper,
+html.training-specimen .hud-wing,
+html.training-specimen .focus-overlay,
+html.training-specimen .stage-glow,
+html.training-specimen .morph-flash {
+  display: none !important;
+}
+
+html.training-specimen .game-container {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html.training-specimen .viewport-content {
+  --scale: 1 !important;
+  width: 100%;
+  height: 100%;
+  transform: none !important;
+  transition: none;
+}
+
+html.training-specimen .mission-stage,
+html.training-specimen .practice-layout,
+html.training-specimen .practice-main-workspace {
+  width: 100%;
+  height: 100%;
+}
+
+html.training-specimen .practice-layout {
+  padding: 16px 24px;
+}
+
+html.training-specimen .practice-main-workspace {
+  justify-content: center;
+  gap: 0;
+}
+
+html.training-specimen .hud-center-console {
+  width: 100%;
+  max-width: 952px;
+  height: 100%;
+  flex: none;
+}
+
+html.training-specimen .exercise-panel {
+  min-height: 260px;
+  max-height: 260px;
+  flex: none;
+}
+
+html.training-specimen .input-deck-section {
+  height: 270px;
+  margin: auto 0 0;
+  flex: none;
+}
+
+html.training-specimen .keyboard-perspective {
+  max-width: 900px;
+}
+
+/* Terminal-only crop for the source-accurate style-guide specimen. */
+html.training-specimen.terminal-specimen .practice-layout {
+  padding: 18px 24px;
+}
+
+html.training-specimen.terminal-specimen .hud-center-console {
+  width: 100%;
+  max-width: 952px;
+  height: 100%;
+}
+
+html.training-specimen.terminal-specimen .exercise-panel {
+  min-height: 0;
+  max-height: none;
+  height: 100%;
+  flex: 1;
+}
+
+html.training-specimen.terminal-specimen .input-deck-section,
+html.training-specimen.terminal-specimen .loose-letters-stage {
+  display: none !important;
+}

@@ -514,7 +514,7 @@ table.sg-table {
 .rivet.br { bottom: 10px; right: 10px; }
 .door-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.6rem;
+  font-size: clamp(0.55rem, 1.1vh, 0.65rem);
   font-weight: 900;
   color: rgba(255, 255, 255, 0.25);
   letter-spacing: 3px;
@@ -523,21 +523,143 @@ table.sg-table {
   padding: 3px 14px;
   border-radius: 3px;
   background: rgba(0, 0, 0, 0.15);
+  margin-bottom: clamp(8px, 1.5vh, 12px);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+  z-index: 7;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.security-locks { display: flex; gap: 10px; }
+.security-locks {
+  display: flex;
+  gap: clamp(8px, 1.5vh, 12px);
+  margin-bottom: clamp(8px, 1.5vh, 12px);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
 .lock-indicator {
-  width: 32px; height: 32px;
+  width: clamp(28px, 5vh, 38px);
+  height: clamp(28px, 5vh, 38px);
   border-radius: 50%;
   border: 2.5px solid var(--green);
   background: rgba(154, 215, 68, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .lock-indicator svg { width: 60%; height: 60%; stroke: var(--green); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.6; }
-.lock-indicator.error { border-color: var(--red); background: rgba(255, 59, 48, 0.15); }
+.lock-indicator.error { border-color: var(--red); background: rgba(255, 59, 48, 0.15); animation: lockError 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
 .lock-indicator.error svg { stroke: var(--red); opacity: 1; }
+@keyframes lockError {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  60% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.l1-breakdown-grid,
+.layer-breakdown-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.layer-breakdown-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.l1-part-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 10px;
+  background: rgba(255,255,255,.018);
+}
+.l1-part-preview {
+  min-height: 166px;
+  padding: 18px;
+  display: grid;
+  place-items: center;
+  border-bottom: 1px solid var(--sg-line);
+  background: #050609;
+}
+.l1-part-copy { padding: 14px 15px 16px; }
+.l1-part-id {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--sg-accent);
+  font: 700 .52rem "Roboto Mono", monospace;
+  letter-spacing: .8px;
+}
+.l1-part-copy h4 { margin: 0 0 7px; color: #fff; font-size: .75rem; }
+.l1-part-copy p { margin: 0 0 10px; color: #aaa8b0; font-size: .7rem; line-height: 1.55; }
+.l1-token-line { color: #74727b; font: .51rem/1.55 "Roboto Mono", monospace; }
+.l1-metal-only { width: 154px; height: 116px; padding: 0; }
+.l1-rivet-map {
+  position: relative;
+  width: 154px;
+  height: 116px;
+  border: 1px dashed rgba(255,255,255,.11);
+  border-radius: 8px;
+  background: rgba(255,255,255,.018);
+}
+.l1-rivet-map::after {
+  content: "10px corner inset";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  color: #68666f;
+  font: .48rem "Roboto Mono", monospace;
+  transform: translate(-50%,-50%);
+  white-space: nowrap;
+}
+.l1-indicator-demo { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.l1-indicator-demo .security-locks { margin: 0; }
+.l1-state-caption { color: #77757e; font: .5rem "Roboto Mono",monospace; }
+.l1-label-stack { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.l1-label-stack .door-label { margin: 0; }
+.l1-label-stack .door-status { margin: 0; }
+.l1-label-stack .door-status.unlocked { animation: none; }
+.l1-assembled-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(290px, .9fr) minmax(260px, 1.1fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 72px);
+}
+.l1-assembled-plate {
+  width: min(100%, 340px);
+  min-height: 330px;
+  justify-content: flex-start;
+  gap: 9px;
+}
+.l1-assembled-plate .security-locks { margin: 0 0 2px; }
+.l1-device-space {
+  width: 82%;
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255,255,255,.12);
+  border-radius: 10px;
+  color: rgba(255,255,255,.24);
+  background: rgba(0,0,0,.12);
+  font: .5rem "Roboto Mono", monospace;
+  letter-spacing: .6px;
+}
+.l1-assembled-plate .door-status { margin: 2px 0 0; }
+.l1-assembly-list { display: grid; gap: 10px; }
+.l1-assembly-row {
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  border: 1px solid var(--sg-line);
+  border-radius: 7px;
+  background: rgba(255,255,255,.018);
+}
+.l1-assembly-row b { color: var(--sg-accent); font: 700 .58rem "Roboto Mono",monospace; }
+.l1-assembly-row span { color: #aaa8b0; font-size: .68rem; line-height: 1.5; }
+@media (max-width: 1050px) { .l1-breakdown-grid, .layer-breakdown-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px) {
+  .l1-breakdown-grid, .layer-breakdown-grid, .l1-assembled-layout { grid-template-columns: 1fr; }
+  .l1-assembled-plate { margin-inline: auto; }
+}
 
 /* — L2: dark device panel (keypad-panel / lock-panel) — */
 .device-panel {
@@ -545,14 +667,15 @@ table.sg-table {
   background: #0d0e12;
   border: 2px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  padding: 10px;
+  padding: clamp(8px, 1.5vh, 12px) 10px;
   width: 100%;
-  max-width: 340px;
+  max-width: 410px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: clamp(6px, 1.2vh, 10px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .panel-hardware-header {
   width: 100%;
@@ -560,17 +683,19 @@ table.sg-table {
   justify-content: space-between;
   align-items: center;
   padding: 0 6px 6px;
+  background: transparent;
   border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 2px;
 }
 .rig-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.6rem;
+  font-size: clamp(0.55rem, 1vh, 0.65rem);
   font-weight: 700;
   color: var(--muted, #9296a8);
   letter-spacing: 1px;
 }
 .hardware-leds { display: flex; gap: 6px; }
-.hardware-leds .led { width: 6px; height: 6px; border-radius: 50%; background: #111; }
+.hardware-leds .led { width: 6px; height: 6px; border-radius: 50%; background: #111; box-shadow: inset 0 1px 1px rgba(0,0,0,.5); position: relative; }
 .hardware-leds .led.datalink { background: var(--green); box-shadow: 0 0 6px var(--green); animation: datalinkBlink 0.3s infinite alternate; }
 .hardware-leds .led.signal { background: var(--orange); box-shadow: 0 0 6px var(--orange); animation: signalPulse 1.2s infinite ease-in-out; }
 .panel-hardware-footer {
@@ -578,8 +703,9 @@ table.sg-table {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 6px 0;
+  padding-top: 8px;
   border-top: 1.5px solid rgba(255, 255, 255, 0.08);
+  margin-top: 2px;
 }
 .voltage-signal { display: flex; align-items: flex-end; gap: 3px; height: 12px; }
 .signal-bar { width: 3px; background: var(--orange); border-radius: 1px; animation: signalBarGrowth 0.8s infinite ease-in-out alternate; }
@@ -596,6 +722,53 @@ table.sg-table {
   border: 1.5px solid rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
 }
+.bypass-legend {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.48rem, 0.9vh, 0.56rem);
+  color: var(--green);
+  opacity: .85;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.layer-assembled-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(310px, 1fr) minmax(260px, .9fr);
+  align-items: center;
+  gap: clamp(28px, 6vw, 72px);
+}
+.l2-shell-only { width: 174px; height: 116px; padding: 0; }
+.l2-strip-sample {
+  width: min(100%, 380px);
+  padding: 11px 10px 9px;
+  border: 2px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  background: #0d0e12;
+  box-shadow: 0 8px 24px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+}
+.l2-strip-sample .panel-hardware-header,
+.l2-strip-sample .panel-hardware-footer { margin: 0; }
+.l2-led-isolate { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.l2-led-isolate .hardware-leds { padding: 14px 18px; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; background: #0d0e12; }
+.l2-assembled-panel { width: min(100%, 410px); max-width: none; min-height: 318px; }
+.l2-mount-stack { width: 100%; flex: 1; display: grid; grid-template-rows: .8fr 1.2fr; gap: 8px; }
+.l2-mount-slot {
+  display: grid;
+  place-items: center;
+  min-height: 78px;
+  border: 1px dashed rgba(255,255,255,.11);
+  border-radius: 8px;
+  color: rgba(255,255,255,.26);
+  background: rgba(0,0,0,.16);
+  font: .48rem "Roboto Mono", monospace;
+  letter-spacing: .5px;
+}
 
 /* — L3: screen (door-screen + CRT scanlines + system tags) — */
 .door-screen {
@@ -604,7 +777,7 @@ table.sg-table {
   background: var(--terminal-bg, #060714);
   border: 1.8px solid var(--purple-soft, #1e224e);
   border-radius: 8px;
-  padding: 14px 10px 10px;
+  padding: clamp(6px, 1.2vh, 10px) 10px;
   width: 100%;
   box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(109, 205, 239, 0.15);
   display: flex;
@@ -614,7 +787,7 @@ table.sg-table {
 }
 .door-screen-label {
   font-family: "Orbitron", sans-serif;
-  font-size: 0.62rem;
+  font-size: clamp(0.55rem, 1vh, 0.7rem);
   color: var(--orange);
   letter-spacing: 0.8px;
   font-weight: 700;
@@ -641,6 +814,42 @@ table.sg-table {
 }
 .system-tag-left { left: 6px; }
 .system-tag-right { right: 6px; }
+.door-screen .code-text { display: flex; justify-content: center; align-items: center; gap: 4px; margin: 4px 0 0; width: 100%; }
+.door-screen .char-box {
+  width: clamp(34px, 5.8vw, 48px);
+  height: clamp(38px, 6.2vh, 56px);
+  font-size: clamp(1.2rem, 2.5vh, 1.8rem);
+  border-width: 2px;
+  border-radius: 6px;
+  margin: 0 4px;
+}
+.keyboard-instruction-tag {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.48rem, .9vh, .56rem);
+  color: var(--muted, #9296a8);
+  letter-spacing: .8px;
+  margin-top: 3px;
+  text-transform: uppercase;
+  animation: gentlePulse 2s infinite alternate ease-in-out;
+  pointer-events: none;
+}
+.l3-glass-only { width: 220px; height: 116px; padding: 0; }
+.l3-tags-isolate {
+  position: relative;
+  width: 230px;
+  height: 78px;
+  border: 1px dashed rgba(255,255,255,.11);
+  border-radius: 8px;
+  background: #060714;
+}
+.l3-copy-isolate { width: min(100%, 410px); }
+.l3-scanline-isolate { position: relative; width: 230px; height: 96px; overflow: hidden; border: 1.8px solid #1e224e; border-radius: 8px; background: #060714; }
+.l3-scanline-isolate::after { content: "3px repeating CRT field"; position: absolute; inset: 50% auto auto 50%; z-index: 11; transform: translate(-50%,-50%); color: rgba(255,255,255,.48); font: .48rem "Roboto Mono",monospace; white-space: nowrap; }
+.l3-assembled-screen { width: min(100%, 410px); }
+@media (max-width: 760px) {
+  .layer-assembled-layout { grid-template-columns: 1fr; }
+  .l2-assembled-panel, .l3-assembled-screen { margin-inline: auto; }
+}
 
 /* — L4: typed code slots (char-box) — */
 .code-text { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 10px 0; }
@@ -714,11 +923,47 @@ table.sg-table {
 .keypad-btn.error-flash .btn-char { color: var(--red); }
 
 /* — Cables — */
-.cable-demo { width: 100%; max-width: 420px; height: 70px; display: block; }
+.cable-demo { width: 100%; max-width: 460px; height: 260px; display: block; overflow: visible; }
 .cable-path { fill: none; stroke-width: 2.8; stroke-linecap: round; }
 .cable-path.green-wire { stroke: var(--green); filter: drop-shadow(0 0 4px var(--green-glow)); }
 .cable-path.orange-wire { stroke: var(--orange); filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.5)); }
 .cable-path.red-wire { stroke: var(--red); filter: drop-shadow(0 0 4px var(--red-glow)); }
+.cable-demo-panel { fill: #0d0e12; stroke: rgba(255,255,255,.12); stroke-width: .55; filter: drop-shadow(0 3px 7px rgba(0,0,0,.8)); }
+.cable-demo-panel-line { stroke: rgba(255,255,255,.08); stroke-width: .4; }
+.full-stack-live-viewport {
+  position: relative;
+  width: min(100%, 720px);
+  height: clamp(500px, 58vw, 640px);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  background: #02050f;
+}
+.full-stack-live-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 560px;
+  height: 680px;
+  max-width: none;
+  border: 0;
+  background: #02050f;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.full-stack-live-badge {
+  position: absolute;
+  right: 10px;
+  bottom: 9px;
+  z-index: 2;
+  padding: 4px 7px;
+  border: 1px solid rgba(154,215,68,.2);
+  border-radius: 4px;
+  color: rgba(174,222,109,.78);
+  background: rgba(0,0,0,.75);
+  font: .47rem "Roboto Mono",monospace;
+  letter-spacing: .03em;
+}
 
 /* — Terminal panel & logs — */
 .terminal-panel {
@@ -773,6 +1018,40 @@ table.sg-table {
 .log-line.success { color: var(--green); text-shadow: 0 0 4px var(--green-glow); }
 .log-line.warning { color: var(--orange); text-shadow: 0 0 4px rgba(228, 142, 53, 0.25); }
 .log-line.danger { color: var(--red); text-shadow: 0 0 4px var(--red-glow); }
+.terminal-live-viewport {
+  position: relative;
+  width: min(100%, 1000px);
+  height: clamp(300px, 35vw, 390px);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  background: #050609;
+}
+.terminal-live-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1000px;
+  height: 360px;
+  max-width: none;
+  border: 0;
+  background: #050609;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.terminal-live-badge {
+  position: absolute;
+  right: 10px;
+  bottom: 9px;
+  z-index: 2;
+  padding: 4px 7px;
+  border: 1px solid rgba(228,142,53,.2);
+  border-radius: 4px;
+  color: rgba(244,173,84,.8);
+  background: rgba(0,0,0,.76);
+  font: .47rem "Roboto Mono",monospace;
+  letter-spacing: .03em;
+}
 
 /* — Result screen pieces — */
 .result-eyebrow {
@@ -1533,7 +1812,138 @@ table.sg-table {
     repeating-linear-gradient(to bottom, transparent 0 6px, rgba(0, 0, 0, 0.65) 6px 8px, rgba(255, 255, 255, 0.12) 8px 9px),
     linear-gradient(180deg, #414852, #2a3038);
 }
-.lockpick-svg-demo { width: 100%; max-width: 420px; height: auto; display: block; }
+.lockpick-svg-demo { width: 100%; max-width: 600px; height: auto; display: block; filter: drop-shadow(0 7px 8px rgba(0,0,0,.8)); }
+
+/* Lockpicking source specimen. Geometry and state values mirror the game. */
+.lockpick-specimen {
+  --pin-slot-width: 58px;
+  --pin-gap: 8px;
+  width: min(100%, 760px);
+  margin-inline: auto;
+  padding: 14px;
+  border: 2px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #121318, #08090b);
+  box-shadow: inset 0 0 20px rgba(0,0,0,.9), 0 15px 35px rgba(0,0,0,.48);
+}
+.lp-rig-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: var(--muted, #9296a8);
+  font: 700 .62rem/1 "Orbitron", sans-serif;
+  letter-spacing: 1px;
+}
+.lp-leds { display: flex; gap: 6px; }
+.lp-leds i { width: 6px; height: 6px; border-radius: 50%; display: block; }
+.lp-leds i:first-child { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.lp-leds i:last-child { background: var(--orange); box-shadow: 0 0 6px rgba(228,142,53,.5); }
+.lp-code-screen {
+  position: relative;
+  overflow: hidden;
+  margin-top: 8px;
+  padding: 7px 8px 8px;
+  border: 1.8px solid #4a1818;
+  border-radius: 8px;
+  background: #140606;
+  box-shadow: inset 0 0 15px rgba(0,0,0,.95), 0 0 10px rgba(228,53,53,.2);
+  text-align: center;
+}
+.lp-code-screen::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(rgba(8,16,32,0) 50%, rgba(0,0,0,.25) 50%);
+  background-size: 100% 3px; opacity: .96;
+}
+.lp-code-screen .door-screen-label { position: relative; z-index: 2; display: block; }
+.lp-screen-tags { position: absolute; inset: 4px 6px auto; z-index: 2; display: flex; justify-content: space-between; color: rgba(255,255,255,.25); font: 400 7px/1 "Roboto Mono", monospace; letter-spacing: .5px; }
+.lp-code-row { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(6, var(--pin-slot-width)); justify-content: center; gap: var(--pin-gap); margin-top: 6px; }
+.lp-code-row .char-box { width: 100%; height: 42px; margin: 0; font-size: 1.25rem; }
+.lp-code-row .char-box.correct { border-color: var(--orange); color: var(--orange); box-shadow: 0 0 10px rgba(228,142,53,.4), inset 0 0 6px rgba(228,142,53,.4); text-shadow: 0 0 5px var(--orange); }
+.lp-progress { display: grid; grid-template-columns: repeat(6, var(--pin-slot-width)); justify-content: center; gap: var(--pin-gap); margin: 7px 0; }
+.lp-progress .pin-progress-node { min-width: 0; width: 100%; }
+.lockpick-specimen .lock-cylinder-demo {
+  --shear-line-y: 70px;
+  width: 100%;
+  height: 235px;
+  padding: 8px 16px 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, transparent 0 67px, rgba(5,6,8,.98) 67px, #000 70px, rgba(255,255,255,.06) 73px, transparent 73px),
+    linear-gradient(180deg, rgba(14,15,18,.98), rgba(6,7,10,.99)),
+    radial-gradient(circle at 50% 84%, rgba(228,142,53,.06), transparent 44%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 22px);
+}
+.lockpick-specimen .shear-line-indicator { top: var(--shear-line-y); }
+.lockpick-specimen .lock-cylinder-row {
+  display: grid;
+  grid-template-columns: repeat(6, var(--pin-slot-width));
+  justify-content: center;
+  gap: var(--pin-gap);
+  width: 95%;
+  height: 190px;
+  margin: 8px auto 0;
+}
+.lockpick-specimen .pin-chamber {
+  --driver-height: 50px;
+  --key-height: 55px;
+  --pin-lift: -20px;
+  --picked-spring-height: 0px;
+  position: relative;
+  width: auto;
+  height: 190px;
+  overflow: hidden;
+}
+.lockpick-specimen .pin-chamber::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 51px; height: 6px; z-index: 3;
+  border-top: 1px solid rgba(0,0,0,.95); border-bottom: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(5,6,8,.98), #000 50%, rgba(30,33,40,.95) 70%, rgba(255,255,255,.06));
+}
+.lockpick-specimen .spring-container-demo { width: 18px; height: 42px; position: relative; margin: 2px 0 0; transition: height .2s cubic-bezier(.19,1,.22,1); }
+.lockpick-specimen .driver-pin { width: min(68%, 32px); height: var(--driver-height); z-index: 5; transition: transform .2s cubic-bezier(.19,1,.22,1); }
+.lockpick-specimen .key-pin { width: min(68%, 32px); height: var(--key-height); z-index: 6; transition: transform .2s cubic-bezier(.19,1,.22,1), background .3s; }
+.lockpick-specimen .pin-spool .driver-pin {
+  width: min(34%, 16px); position: relative; overflow: visible; border-block: 0; border-radius: 0; box-shadow: none;
+  background: linear-gradient(180deg, #30363e, #1a1e24);
+}
+.lockpick-specimen .pin-spool .driver-pin::before,
+.lockpick-specimen .pin-spool .driver-pin::after {
+  content: ""; position: absolute; left: 50%; transform: translateX(-50%); width: min(200%, 32px); height: 22%;
+  border: 1px solid rgba(207,212,220,.18); background: linear-gradient(180deg, #414852, #30363e);
+}
+.lockpick-specimen .pin-spool .driver-pin::before { top: 0; border-radius: 2px 2px 0 0; box-shadow: inset 0 1px rgba(255,255,255,.09); }
+.lockpick-specimen .pin-spool .driver-pin::after { bottom: 0; border-radius: 0 0 2px 2px; background: linear-gradient(180deg,#2a3038,#1a1e24); box-shadow: 0 2px 5px rgba(0,0,0,.48); }
+.lockpick-specimen .pin-serrated .driver-pin {
+  background: repeating-linear-gradient(to bottom, transparent 0 6px, rgba(0,0,0,.65) 6px 8px, rgba(255,255,255,.12) 8px 9px), linear-gradient(180deg,#414852,#2a3038);
+}
+.lockpick-specimen .pin-chamber.picked .spring-container-demo { height: var(--picked-spring-height); }
+.lockpick-specimen .pin-chamber.picked .driver-pin { transform: translateY(var(--pin-lift)) translateX(var(--picked-driver-x,-2px)) rotate(var(--picked-driver-rot,-1.5deg)); transform-origin: 50% 100%; }
+.lockpick-specimen .pin-chamber.picked .key-pin { transform: translateY(var(--pin-lift)); background: linear-gradient(180deg,#f5b05f,var(--orange)); border-color: #c67520; box-shadow: inset 0 1px rgba(255,255,255,.15), 0 0 8px rgba(228,142,53,.32); }
+.lp-tool-in-cylinder { position: absolute; z-index: 12; top: 158px; left: calc(50% - 538px); width: 600px; height: 60px; pointer-events: none; }
+.lp-tool-in-cylinder svg { width: 100%; height: 100%; filter: drop-shadow(0 6px 6px rgba(0,0,0,.75)); }
+.lp-variant-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+.lp-variant-card { min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+.lp-variant-preview { position: relative; min-height: 225px; display: grid; place-items: center; overflow: hidden; border-bottom: 1px solid var(--border); background: linear-gradient(180deg,#0e0f12,#06070a); }
+.lp-variant-preview::after { content: "SHEAR LINE"; position: absolute; top: 78px; left: 0; right: 0; padding-right: 8px; height: 1px; text-align: right; color: var(--orange); font: 500 7px/1 "Roboto Mono", monospace; letter-spacing: .7px; background: repeating-linear-gradient(90deg,var(--orange) 0 4px,transparent 4px 10px); opacity: .65; }
+.lp-variant-preview .pin-chamber { width: 62px; height: 190px; margin-top: 8px; }
+.lp-variant-copy { padding: 14px; }
+.lp-variant-copy h4 { margin: 0 0 7px; font-size: .78rem; }
+.lp-variant-copy p { margin: 0; color: var(--dim); font-size: .76rem; line-height: 1.55; }
+.lp-variant-meta { display: block; margin-top: 9px; color: var(--muted); font: 500 .62rem/1.55 "Roboto Mono", monospace; }
+.lp-mechanics { display: grid; grid-template-columns: 1.1fr .9fr; gap: 16px; margin-top: 16px; padding: 18px; border: 1px solid rgba(154,215,68,.2); border-radius: 10px; background: rgba(154,215,68,.035); }
+.lp-mechanics h4 { margin: 0 0 8px; }
+.lp-mechanics p { margin: 0; color: var(--dim); font-size: .82rem; line-height: 1.65; }
+.lp-mechanics ol { margin: 0; padding-left: 20px; color: var(--dim); font-size: .76rem; line-height: 1.6; }
+.lp-tool-card { margin-top: 16px; padding: 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); }
+.lp-tool-card .lockpick-svg-demo { margin: 8px auto 4px; }
+.lp-tool-notes { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 12px; }
+.lp-tool-notes span { padding: 9px 10px; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font: 500 .62rem/1.45 "Roboto Mono", monospace; }
+@media (max-width: 760px) {
+  .lockpick-specimen { --pin-slot-width: min(11vw, 52px); --pin-gap: min(1.2vw, 6px); padding: 10px; }
+  .lp-variant-grid, .lp-mechanics, .lp-tool-notes { grid-template-columns: 1fr; }
+  .lp-tool-in-cylinder { left: calc(50% - 538px); }
+}
 
 /* — Fingerprint scan node pulse ring — */
 .scan-node-marker .pulse-ring {
@@ -1796,13 +2206,46 @@ table.sg-table {
   background: rgba(255, 255, 255, 0.018);
 }
 .briefing-flow-preview {
-  min-height: 220px;
-  padding: 12px;
+  position: relative;
+  min-height: 0;
+  aspect-ratio: 1.25 / 1;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   border-bottom: 1px solid var(--sg-line);
-  background: #070814;
+  background: #04040b;
+}
+.briefing-flow-preview > .briefing-panel { display: none; }
+.briefing-flow-preview.briefing-live-unavailable > .briefing-panel { display: flex; }
+.briefing-flow-preview.briefing-live-unavailable > .briefing-live-frame,
+.briefing-flow-preview.briefing-live-unavailable > .briefing-live-source { display: none; }
+.briefing-live-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 640px;
+  height: 500px;
+  max-width: none;
+  border: 0;
+  background: #04040b;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.briefing-live-source {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  z-index: 2;
+  padding: 4px 6px;
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, .52);
+  background: rgba(0, 0, 0, .72);
+  font: .46rem "Roboto Mono", monospace;
+  letter-spacing: .02em;
+  pointer-events: none;
 }
 .briefing-panel.mini-briefing-panel {
   max-width: none;
@@ -2869,6 +3312,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #030305;
+  contain: layout paint;
 }
 .sg-preview-window::after {
   content: "Live project render - enable interaction to use it";
@@ -2885,7 +3329,19 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   pointer-events: none;
 }
 .sg-preview-window.is-interactive::after { content: "Interaction enabled"; color: #aede6d; border-color: rgba(154,215,68,.25); }
-.sg-preview-window iframe { width: 100%; height: 100%; border: 0; pointer-events: none; }
+.sg-preview-window iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  max-width: none;
+  border: 0;
+  background: #030305;
+  transform: scale(var(--sg-preview-scale, 1));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
 .sg-preview-window.is-interactive iframe { pointer-events: auto; }
 .sg-preview-meta {
   padding: 15px;
@@ -3448,6 +3904,33 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 .sg-a-training-key.left { border-color: rgba(239,109,109,.55); }
 .sg-a-training-key.home { border-color: rgba(228,142,53,.55); }
 .sg-a-training-key.right { border-color: rgba(139,157,253,.55); }
+.sg-training-live { min-height: 340px !important; padding: 0 !important; }
+.sg-training-live > .sg-a-training-console { display: none; }
+.sg-training-live-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1000px;
+  height: 620px;
+  max-width: none;
+  border: 0;
+  background: #050609;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.sg-training-live-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  z-index: 2;
+  padding: 4px 6px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 4px;
+  color: rgba(255,255,255,.52);
+  background: rgba(0,0,0,.72);
+  font: .46rem "Roboto Mono", monospace;
+  letter-spacing: .02em;
+}
 
 .sg-a-defense-layout { width: 100%; display: flex; align-items: center; justify-content: center; gap: clamp(32px,7vw,64px); }
 .sg-a-defense .supercomputer-core { width: 112px; height: 112px; }
@@ -3597,6 +4080,11 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   <linearGradient id="pickMetalGrad" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="#cfd4dc"/><stop offset="25%" stop-color="#ffffff"/><stop offset="50%" stop-color="#7f8590"/><stop offset="85%" stop-color="#3e434c"/><stop offset="100%" stop-color="#24272c"/>
   </linearGradient>
+  <linearGradient id="handleInsertGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#15171a"/><stop offset="50%" stop-color="#252930"/><stop offset="100%" stop-color="#0b0c0d"/>
+  </linearGradient>
+  <path id="sg-spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/>
+  <path id="sg-spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5 M 2 41.5 C 2 42.5, 16 42.5, 16 41.5"/>
 </defs></svg>
 
 <header class="sg-hero" id="top">
@@ -3650,7 +4138,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       </div>
     </div>
     <div class="sg-preview-window">
-      <iframe id="game-preview" src="typegame-door-Lockpicking/index.html" title="Live door lockpicking preview" loading="lazy"></iframe>
+      <iframe id="game-preview" src="typegame-door-Lockpicking/index.html" title="Live door lockpicking preview" width="1920" height="1080" loading="lazy"></iframe>
     </div>
     <div class="sg-preview-meta">
       <div class="sg-meta-item"><span>Family</span><strong id="preview-family">Door mission</strong></div>
@@ -4312,7 +4800,9 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     </article>
     <article class="sg-blueprint-card">
       <span class="sg-blueprint-number">09 / TYPE TRAINING</span>
-      <div class="sg-anatomy-visual sg-a-exact theme t-practice" aria-hidden="true">
+      <div class="sg-anatomy-visual sg-a-exact sg-training-live theme t-practice" aria-hidden="true">
+        <iframe class="sg-training-live-frame" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=console" title="Live Type Training console and keyboard specimen" width="1000" height="620" loading="lazy"></iframe>
+        <span class="sg-training-live-badge">LIVE GAME · LESSON 01</span>
         <div class="sg-a-training-console">
           <div class="sg-a-training-header"><b>TYPE CONSOLE</b><span>VINGERZETTING ACTIEF</span></div>
           <div class="sg-a-training-screen">
@@ -4325,13 +4815,14 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
           </div>
         </div>
       </div>
-      <div class="sg-anatomy-source"><code>typegame-typeoefening-losse-letters/styles.css · .exercise-panel + .key</code></div>
-      <h3>Console text and physical keyboard agree</h3>
-      <p>The typing cursor is a filled orange block, correct characters turn green, errors get a red underline, and the matching keyboard target uses its assigned finger color.</p>
+      <div class="sg-anatomy-source"><code>typegame-typeoefening-losse-letters/index.html?styleguide-preview=console · live source</code></div>
+      <h3>The real lesson console and keyboard</h3>
+      <p>This is lesson one rendered by the game itself: the real multi-line terminal viewport, active orange cursor and full five-row AZERTY keyboard with the same finger mapping and pressed-key feedback.</p>
       <div class="sg-measures">
         <span class="sg-measure">console <b>#141418</b></span>
         <span class="sg-measure">console radius <b>8px</b></span>
-        <span class="sg-measure">typed text <b>Roboto Mono 700</b></span>
+        <span class="sg-measure">typed text <b>Roboto Mono 700 / 30px</b></span>
+        <span class="sg-measure">terminal header <b>36px</b></span>
         <span class="sg-measure">key height <b>34–48px</b></span>
         <span class="sg-measure">key radius <b>6px</b></span>
       </div>
@@ -4450,12 +4941,14 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     <tr><td>4</td><td>Results</td><td>Centered system report: eyebrow, orange heading, rank pill, 3×2 dashboard cards (staggered entry), GESLAAGD/MISLUKT stamp, credits, spacebar prompt.</td></tr>
   </table>
   <h3>Introduction briefing example</h3>
-  <p class="sg-note">Every intro uses this same three-card rhythm: show the object, lock in the hand position, then preview the action loop. Keep each card visual first and one sentence long.</p>
+  <p class="sg-note">These are the three real keypad briefing slides, rendered directly from the game. They document the shared rhythm: introduce the mission object, explain the hand position, then demonstrate the input loop.</p>
   <div class="theme t-keypad">
     <div class="sg-stage" style="align-items:stretch;">
       <div class="briefing-flow-grid">
         <article class="briefing-flow-card">
           <div class="briefing-flow-preview">
+            <iframe class="briefing-live-frame" data-briefing-slide="0" src="typegame-door-keypad/index.html?briefing-preview=0" title="Live keypad briefing slide 1" width="640" height="500" loading="lazy"></iframe>
+            <span class="briefing-live-source">LIVE GAME · SLIDE 01</span>
             <div class="briefing-panel mini-briefing-panel">
               <div class="briefing-panel-header">
                 <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
@@ -4491,6 +4984,8 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
         <article class="briefing-flow-card">
           <div class="briefing-flow-preview">
+            <iframe class="briefing-live-frame" data-briefing-slide="1" src="typegame-door-keypad/index.html?briefing-preview=1" title="Live keypad briefing slide 2" width="640" height="500" loading="lazy"></iframe>
+            <span class="briefing-live-source">LIVE GAME · SLIDE 02</span>
             <div class="briefing-panel mini-briefing-panel">
               <div class="briefing-panel-header">
                 <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
@@ -4585,14 +5080,16 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
             <h4>Base hand position</h4>
             <table class="briefing-spec-table">
               <tr><th>Always</th><td>This step is fixed in every typing game intro.</td></tr>
-              <tr><th>Keyboard</th><td>Use the full Typeoefening AZERTY layout, not a two-row crop.</td></tr>
-              <tr><th>Highlight</th><td>Only the anchor keys <code>F</code> and <code>J</code> glow green here.</td></tr>
+              <tr><th>Keyboard</th><td>The keypad game uses its complete 580×220 keyboard SVG with all five rows.</td></tr>
+              <tr><th>Highlight</th><td><code>F</code> and <code>J</code> use green home-key outlines; translucent hand silhouettes show placement.</td></tr>
             </table>
           </div>
         </article>
 
         <article class="briefing-flow-card">
           <div class="briefing-flow-preview">
+            <iframe class="briefing-live-frame" data-briefing-slide="2" src="typegame-door-keypad/index.html?briefing-preview=2" title="Live animated keypad briefing slide 3" width="640" height="500" loading="lazy"></iframe>
+            <span class="briefing-live-source">LIVE GAME · ANIMATED</span>
             <div class="briefing-panel mini-briefing-panel">
               <div class="briefing-panel-header">
                 <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
@@ -4619,9 +5116,9 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
             <span class="briefing-step-number">3</span>
             <h4>Action preview</h4>
             <table class="briefing-spec-table">
-              <tr><th>Example</th><td>Keypad mission: show slots, active button and locked status together.</td></tr>
-              <tr><th>Animation</th><td>Use one readable loop showing a slot filling and a key activating.</td></tr>
-              <tr><th>Timing</th><td>About <code>1-2s</code> per loop.</td></tr>
+              <tr><th>Example</th><td>The six slots, mapped keypad buttons and door status stay visible together.</td></tr>
+              <tr><th>Animation</th><td>The real loop types <code>kalfjp</code>, converts it to <code>542861</code>, then unlocks the door.</td></tr>
+              <tr><th>Timing</th><td>500ms per input, an 8-frame number scramble, then a 2.5s unlocked hold.</td></tr>
             </table>
           </div>
         </article>
@@ -4643,140 +5140,324 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </p>
 
   <h3>L1 — Light grey metal plate</h3>
-  <p class="sg-note">The physical carrier. Vertical grey gradient, thick lighter border, four rivets, an etched label, and the three mistake indicators. It never glows — until the mission is complete, when its border turns green.</p>
+  <p class="sg-note">Build this carrier from four separate parts before combining them: the metal shell, four corner rivets, the three-circle mistake budget, and the etched/status text. Keeping them separate makes every state and measurement unambiguous.</p>
   <div class="theme t-keypad">
-    <div class="sg-stage">
-      <div class="sg-item">
-        <div class="metal-plate" style="width:250px; height:190px; justify-content:flex-start; gap:12px;">
-          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
-          <span class="door-label">Beveiligde Deur</span>
-          <div class="security-locks">
-            <span class="lock-indicator"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
-            <span class="lock-indicator"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
-            <span class="lock-indicator error"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+    <div class="sg-stage" style="align-items:stretch;">
+      <div class="l1-breakdown-grid">
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="metal-plate l1-metal-only" aria-label="Bare metal plate surface"></div>
           </div>
-        </div>
-        <span class="sg-tag">neutral — 1 mistake made</span>
-      </div>
-      <div class="sg-item">
-        <div class="metal-plate completed" style="width:250px; height:190px; justify-content:flex-start; gap:12px;">
-          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
-          <span class="door-label" style="color:rgba(154,215,68,0.7); border-color:rgba(154,215,68,0.3);">Ontgrendeld</span>
-        </div>
-        <span class="sg-tag">completed — green border + glow</span>
-      </div>
-      <div class="sg-item" style="gap:18px;">
-        <span class="door-status"><span class="status-dot"></span>VERGRENDELD</span>
-        <span class="door-status unlocked"><span class="status-dot"></span>ONTGRENDELD</span>
-        <span class="sg-tag">status label — sits below the device panel</span>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">01 / CARRIER</span>
+            <h4>Metal shell only</h4>
+            <p>The neutral physical surface—no screws, indicators or text yet. Only completion changes its border to green.</p>
+            <span class="l1-token-line">gradient #4a4d52 → #33363b → #2a2d32<br>border 2.5px #5a5e65 · radius 8px</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l1-rivet-map" aria-label="Four rivets positioned ten pixels from each corner">
+              <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">02 / FASTENERS</span>
+            <h4>Four corner rivets</h4>
+            <p>Each 8px radial metal screw sits exactly 10px from its two nearest edges.</p>
+            <span class="l1-token-line">8×8px circle · radial #6a6e75 → #3a3d42<br>white inset highlight + black drop</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l1-indicator-demo">
+              <div class="security-locks" aria-label="Two available mistake indicators and one used indicator">
+                <span class="lock-indicator"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg></span>
+                <span class="lock-indicator"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg></span>
+                <span class="lock-indicator error"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg></span>
+              </div>
+              <span class="l1-state-caption">2 available · 1 mistake used</span>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">03 / ERROR BUDGET</span>
+            <h4>Three mistake circles</h4>
+            <p>These are status rings—not lock icons. A mistake flips one outer ring and its small inner circle from green to red.</p>
+            <span class="l1-token-line">28–38px outer · border 2.5px<br>SVG inner circle r4 · 60% frame</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l1-label-stack">
+              <span class="door-label">RESTRICTED ACCESS</span>
+              <span class="door-status"><span class="status-dot"></span>VERGRENDELD</span>
+              <span class="door-status unlocked"><span class="status-dot"></span>ONTGRENDELD</span>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">04 / TEXT</span>
+            <h4>Etched label and live status</h4>
+            <p>The top label stays dim and physical. The smaller status below the device changes red → green with its 6px dot.</p>
+            <span class="l1-token-line">label Orbitron 900 · tracking 3px<br>status Orbitron 700 · tracking 1.5px</span>
+          </div>
+        </article>
       </div>
     </div>
   </div>
-  <p class="sg-note">The plate also carries a small <strong>status label</strong> under the device panel: red spaced-caps text with a blinking 6px dot while locked; both flip to steady green when the mission completes.</p>
-  <p class="sg-caption">Values: vertical gradient <b>#4a4d52 → #33363b (40%) → #2a2d32</b> · border <b>2.5px #5a5e65</b>, radius 8 · inner top highlight (10% white) + inner bottom shading · rivets are 8px radial circles (<b>#6a6e75 → #3a3d42</b>) set 10px from each corner · the label is <b>etched, never glowing</b>: Orbitron 900, 25%-white text, 3px letter-spacing, faint dark chip behind it · the 3 lock circles are the error budget — green (8% green fill) flipping to red (15% red fill) per mistake, with a quick scale "shock" bounce.</p>
+
+  <h4>L1 assembled — all carrier parts together</h4>
+  <p class="sg-note">This final specimen shows their real order: rivets at the corners, etched label first, mistake budget above the L2 mounting area, then the live door status below it.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="l1-assembled-layout">
+        <div class="metal-plate l1-assembled-plate">
+          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+          <span class="door-label">RESTRICTED ACCESS</span>
+          <div class="security-locks">
+            <span class="lock-indicator"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg></span>
+            <span class="lock-indicator error"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg></span>
+            <span class="lock-indicator"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle></svg></span>
+          </div>
+          <div class="l1-device-space">L2 DEVICE MOUNT AREA</div>
+          <span class="door-status"><span class="status-dot"></span>VERGRENDELD</span>
+        </div>
+        <div class="l1-assembly-list">
+          <div class="l1-assembly-row"><b>01</b><span><strong>Carrier:</strong> gradient, 2.5px edge, 8px corner radius and inset depth.</span></div>
+          <div class="l1-assembly-row"><b>02</b><span><strong>Fasteners:</strong> four 8px rivets, each inset 10px from the corner.</span></div>
+          <div class="l1-assembly-row"><b>03</b><span><strong>Mistakes:</strong> three circle-in-circle indicators; one red state means one error.</span></div>
+          <div class="l1-assembly-row"><b>04</b><span><strong>Text:</strong> etched access label above, blinking locked status below the device.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Source: <b>typegame-door-keypad</b> · <code>.security-door</code>, <code>.rivet</code>, <code>.door-label</code>, <code>.security-locks</code>, <code>.lock-indicator</code> and <code>.door-status</code>. The inner mark is the game’s simple SVG circle—not a padlock pictogram.</p>
 
   <h3>L2 — Dark device panel</h3>
-  <p class="sg-note">The hacking rig bolted onto the metal. Near-black (<code>#0d0e12</code>), thin white-ish border, and always framed by hardware: a header strip (rig label + two blinking LEDs) and a footer strip (animated signal bars + port jacks). The middle stays empty at this layer.</p>
+  <p class="sg-note">Build the device housing from four readable parts: its charcoal chassis, the upper identity rail, the two live LEDs, and the lower I/O rail. The screen and controls belong to later layers and are only mounted after this hardware frame is complete.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage" style="align-items:stretch;">
+      <div class="layer-breakdown-grid">
+        <article class="l1-part-card">
+          <div class="l1-part-preview"><div class="device-panel l2-shell-only" aria-label="Empty charcoal device chassis"></div></div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">01 / CHASSIS</span>
+            <h4>Charcoal housing only</h4>
+            <p>The hardware base stays neutral and nearly black. Its thin light edge and inset highlight create the physical depth.</p>
+            <span class="l1-token-line">fill #0d0e12 · border 2px / 12% white<br>radius 12px · drop 0 8px 30px / 70% black</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l2-strip-sample">
+              <div class="panel-hardware-header"><span class="rig-label">BYPASS RIG v1.02</span></div>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">02 / IDENTITY RAIL</span>
+            <h4>Rig label and divider</h4>
+            <p>The real game name sits left on a transparent rail; a 1.5px hairline separates hardware from screen content.</p>
+            <span class="l1-token-line">Orbitron 700 · .55–.65rem · tracking 1px<br>padding bottom 6px · divider 8% white</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l2-led-isolate">
+              <div class="hardware-leds" aria-label="Animated data and signal lights"><span class="led datalink"></span><span class="led signal"></span></div>
+              <span class="l1-state-caption">datalink · signal lock</span>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">03 / LIVE LIGHTS</span>
+            <h4>Two six-pixel LEDs</h4>
+            <p>Green blinks between 30–100% opacity every .3s. Orange breathes in scale and opacity over 1.2s.</p>
+            <span class="l1-token-line">6×6px · gap 6px · matching 6px glow<br>green .3s alternate · orange 1.2s ease</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l2-strip-sample">
+              <div class="panel-hardware-footer">
+                <div class="voltage-signal"><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span></div>
+                <span class="bypass-legend">TOETSENBORD MAPPING ACTIEF</span>
+                <div class="bypass-ports"><span class="port-jack"></span><span class="port-jack"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">04 / I/O RAIL</span>
+            <h4>Signal, legend and two ports</h4>
+            <p>The footer is a three-part readout: five animated orange bars, the real green mapping label, and exactly two dark jacks.</p>
+            <span class="l1-token-line">top divider 1.5px · five bars 3–9px<br>legend .48–.56rem · ports 8×8px / gap 6px</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <h4>L2 assembled — the empty hardware frame</h4>
+  <p class="sg-note">The assembled L2 remains deliberately empty in the middle. Those two reserved zones show where L3 and L4 are mounted without pretending they are part of the chassis itself.</p>
   <div class="theme t-keypad">
     <div class="sg-stage">
-      <div class="device-panel" style="min-height:170px;">
-        <div class="panel-hardware-header">
-          <span class="rig-label">BYPASS RIG V2</span>
-          <div class="hardware-leds"><span class="led datalink"></span><span class="led signal"></span></div>
+      <div class="layer-assembled-layout">
+        <div class="device-panel l2-assembled-panel">
+          <div class="panel-hardware-header">
+            <span class="rig-label">BYPASS RIG v1.02</span>
+            <div class="hardware-leds"><span class="led datalink"></span><span class="led signal"></span></div>
+          </div>
+          <div class="l2-mount-stack">
+            <div class="l2-mount-slot">L3 · SCREEN MOUNT</div>
+            <div class="l2-mount-slot">L4 · INPUT MOUNT</div>
+          </div>
+          <div class="panel-hardware-footer">
+            <div class="voltage-signal"><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span></div>
+            <span class="bypass-legend">TOETSENBORD MAPPING ACTIEF</span>
+            <div class="bypass-ports"><span class="port-jack"></span><span class="port-jack"></span></div>
+          </div>
         </div>
-        <div style="flex:1; display:flex; align-items:center; justify-content:center; color:var(--muted); font-family:'Roboto Mono'; font-size:0.6rem; min-height:60px;">← screen + inputs mount here (L3/L4) →</div>
-        <div class="panel-hardware-footer">
-          <div class="voltage-signal"><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span></div>
-          <div class="bypass-ports"><span class="port-jack"></span><span class="port-jack"></span><span class="port-jack"></span></div>
+        <div class="l1-assembly-list">
+          <div class="l1-assembly-row"><b>01</b><span><strong>Chassis:</strong> #0d0e12 shell, 2px edge, 12px radius and restrained inset depth.</span></div>
+          <div class="l1-assembly-row"><b>02</b><span><strong>Header:</strong> real rig label left, animated status pair right, divider underneath.</span></div>
+          <div class="l1-assembly-row"><b>03</b><span><strong>Mounts:</strong> L3 screen above L4 controls inside the flexible central column.</span></div>
+          <div class="l1-assembly-row"><b>04</b><span><strong>Footer:</strong> voltage bars, mapping status and two port jacks in one line.</span></div>
         </div>
       </div>
     </div>
   </div>
-  <p class="sg-caption">Values: background <b>#0d0e12</b> (charcoal — deliberately <b>not</b> the theme hue) · border 2px at 12% white, radius 12 · deep drop shadow + a 1px inner top light. Header strip: rig name in Orbitron over a faint hairline, plus two 6px LEDs — <b>green data LED blinking fast (0.3s)</b>, <b>orange signal LED breathing (1.2s)</b>. Footer strip: five 3px orange voltage bars (3–9px tall, growing alternately) and 8px dark port jacks with inset shadow.</p>
+  <p class="sg-caption">Source: <b>typegame-door-keypad</b> · <code>.keypad-panel</code>, <code>.panel-hardware-header</code>, <code>.hardware-leds</code>, <code>.panel-hardware-footer</code>, <code>.bypass-legend</code> and <code>.port-jack</code>. Text, port count, timing and measurements match the live game.</p>
 
   <h3>L3 — Screen with scanlines</h3>
-  <p class="sg-note">The CRT. Uses the theme's screen background, an orange uppercase label, tiny 7px system tags in the corners, and — <strong>always</strong> — the scanline overlay with a 0.15s flicker. This is the "TV lines" effect; do not skip it on any screen surface.</p>
+  <p class="sg-note">Treat the screen as four stable parts: recessed glass, two system tags, the complete display content, and the CRT scanline field. Part 03 includes the real six-letter input row; only the physical keypad controls remain in L4.</p>
   <div class="theme t-keypad">
-    <div class="sg-stage">
-      <div class="door-screen" style="max-width:300px;">
-        <span class="system-tag-left">SIG.4A// SECURE</span>
-        <span class="system-tag-right">NODE_7</span>
-        <span class="door-screen-label">HACKCODE:</span>
-        <div class="code-text" style="margin-top:4px;">
-          <span class="char-box correct" style="width:34px;height:42px;font-size:1.15rem;">c</span>
-          <span class="char-box correct" style="width:34px;height:42px;font-size:1.15rem;">o</span>
-          <span class="char-box current" style="width:34px;height:42px;font-size:1.15rem;">d</span>
-          <span class="char-box faded" style="width:34px;height:42px;font-size:1.15rem;">e</span>
-        </div>
-        <div class="screen-scanlines"></div>
+    <div class="sg-stage" style="align-items:stretch;">
+      <div class="layer-breakdown-grid">
+        <article class="l1-part-card">
+          <div class="l1-part-preview"><div class="door-screen l3-glass-only" aria-label="Bare recessed terminal glass"></div></div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">01 / GLASS</span>
+            <h4>Recessed screen surface</h4>
+            <p>The terminal is deep indigo-black, held by a thin purple edge and a heavy inner shadow.</p>
+            <span class="l1-token-line">fill #060714 · border 1.8px #1e224e<br>radius 8px · inset black 15px + cyan outer haze</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l3-tags-isolate">
+              <span class="system-tag-left">SYS_RECOVERY</span><span class="system-tag-right">PORT_01</span>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">02 / SYSTEM TAGS</span>
+            <h4>Two corner identifiers</h4>
+            <p>Use the real game strings at the actual top offsets—not invented node or signal labels.</p>
+            <span class="l1-token-line">Roboto Mono 7px · 25% white · tracking .5px<br>top 4px · left/right 6px</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="door-screen l3-copy-isolate">
+              <div class="door-screen-label">HACKCODE:</div>
+              <div class="code-text" aria-label="Example six-letter code kalfjp">
+                <span class="char-box current">k</span>
+                <span class="char-box faded">a</span>
+                <span class="char-box faded">l</span>
+                <span class="char-box faded">f</span>
+                <span class="char-box faded">j</span>
+                <span class="char-box faded">p</span>
+              </div>
+              <div class="keyboard-instruction-tag">TYP LETTERS OP JE TOETSENBORD</div>
+            </div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">03 / DISPLAY CONTENT</span>
+            <h4>Label, six slots and instruction</h4>
+            <p>The complete content layer: orange readout label, six generated character boxes, and the muted keyboard instruction.</p>
+            <span class="l1-token-line">slots 34–48 × 38–56px · radius 6px<br>Roboto Mono 700 · current / correct / wrong / faded</span>
+          </div>
+        </article>
+
+        <article class="l1-part-card">
+          <div class="l1-part-preview">
+            <div class="l3-scanline-isolate"><div class="screen-scanlines"></div></div>
+          </div>
+          <div class="l1-part-copy">
+            <span class="l1-part-id">04 / CRT FIELD</span>
+            <h4>Scanlines and flicker</h4>
+            <p>A full-screen overlay repeats transparent and 25%-black halves. Its opacity shifts subtly; the surface never jumps.</p>
+            <span class="l1-token-line">stripe period 3px · overlay z10<br>opacity .94 → 1 → .96 · 150ms infinite</span>
+          </div>
+        </article>
       </div>
     </div>
   </div>
-  <p class="sg-caption">Values: background = the theme's screen black · border ≈2px in the theme border tint, radius 8 · strong inner black shadow so it sits <b>behind</b> the glass. Scanlines = a full overlay of repeating 3px horizontal stripes (top half clear, bottom half 25% black) flickering at 0.15s between 94–100% opacity. Corner tags are tiny 7px monospace text at 25% white.</p>
 
-  <h3>Cables — behind the device panel</h3>
-  <p class="sg-note">SVG paths clipped behind the panel, connecting it to the metal plate edges. Always the trio green / orange / red, stroke 2.8, round caps, each with its own glow.</p>
+  <h4>L3 assembled — the real active code screen</h4>
+  <p class="sg-note">This is the gameplay state the previous example was missing. The game renders six generated letters as <code>.char-box</code> elements: the current target is orange, completed letters turn green, and upcoming letters remain dim.</p>
   <div class="theme t-keypad">
     <div class="sg-stage">
-      <svg class="cable-demo" viewBox="0 0 420 70">
-        <path class="cable-path green-wire" d="M10,15 C90,15 120,45 210,45 C300,45 330,15 410,15"/>
-        <path class="cable-path orange-wire" d="M10,35 C90,35 130,58 210,58 C290,58 330,35 410,35"/>
-        <path class="cable-path red-wire" d="M10,55 C80,55 140,30 210,30 C280,30 340,55 410,55"/>
+      <div class="layer-assembled-layout">
+        <div class="door-screen l3-assembled-screen">
+          <div class="screen-scanlines"></div>
+          <span class="system-tag-left">SYS_RECOVERY</span>
+          <span class="system-tag-right">PORT_01</span>
+          <div class="door-screen-label">HACKCODE:</div>
+          <div class="code-text" aria-label="Example six-letter code kalfjp">
+            <span class="char-box current">k</span>
+            <span class="char-box faded">a</span>
+            <span class="char-box faded">l</span>
+            <span class="char-box faded">f</span>
+            <span class="char-box faded">j</span>
+            <span class="char-box faded">p</span>
+          </div>
+          <div class="keyboard-instruction-tag">TYP LETTERS OP JE TOETSENBORD</div>
+        </div>
+        <div class="l1-assembly-list">
+          <div class="l1-assembly-row"><b>01</b><span><strong>Glass:</strong> #060714 surface, 1.8px purple edge, 8px radius and recessed depth.</span></div>
+          <div class="l1-assembly-row"><b>02</b><span><strong>Tags:</strong> SYS_RECOVERY and PORT_01 stay pinned 4px from the top.</span></div>
+          <div class="l1-assembly-row"><b>03</b><span><strong>Content:</strong> orange label, six generated letter boxes and the muted keyboard instruction.</span></div>
+          <div class="l1-assembly-row"><b>04</b><span><strong>CRT:</strong> the scanline overlay covers every other screen element at z-index 10.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Source: <b>typegame-door-keypad</b> · <code>.door-screen</code>, <code>.system-tag-left</code>, <code>.system-tag-right</code>, <code>.door-screen-label</code>, <code>.code-text</code>, <code>.char-box</code>, <code>.keyboard-instruction-tag</code> and <code>.screen-scanlines</code>. The six-slot example follows the game’s real <code>renderPrompt()</code> state logic.</p>
+
+  <h3>Cables — behind the device panel</h3>
+  <p class="sg-note">These are the six real game paths: three enter from the left and three from the right, then disappear behind the keypad housing. Their <code>2.8</code> stroke is measured inside the game’s normalized 0–100 SVG—not in page pixels.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <svg class="cable-demo" viewBox="0 0 100 100" preserveAspectRatio="none" aria-label="Six source-accurate cables entering behind a device panel">
+        <path class="cable-path green-wire" d="M -2,38 C 2,48 5,58 12,50"/>
+        <path class="cable-path orange-wire" d="M -2,45 C 1,57 4,67 12,56"/>
+        <path class="cable-path red-wire" d="M -2,52 C 0,66 3,76 12,62"/>
+        <path class="cable-path orange-wire" d="M 88,50 C 95,58 98,48 102,38"/>
+        <path class="cable-path green-wire" d="M 88,56 C 96,67 99,57 102,45"/>
+        <path class="cable-path red-wire" d="M 88,62 C 97,76 100,66 102,52"/>
+        <rect class="cable-demo-panel" x="12" y="20" width="76" height="68" rx="4"/>
+        <line class="cable-demo-panel-line" x1="15" y1="29" x2="85" y2="29"/>
+        <line class="cable-demo-panel-line" x1="15" y1="78" x2="85" y2="78"/>
       </svg>
     </div>
   </div>
-  <p class="sg-caption">Stroke width 2.8, rounded caps, each wire in its accent color (green / orange / red) with a soft matching glow. Curved paths, never straight lines.</p>
+  <p class="sg-caption">Source: <b>typegame-door-keypad</b> · <code>.bypass-cables</code> and its six exact path definitions. Stroke <b>2.8 SVG units</b> scales with the 0–100 machine overlay, producing the visibly heavier in-game cable; round caps and a 4-unit colored glow finish each wire.</p>
 
   <h3>The full stack assembled</h3>
   <div class="theme t-keypad">
     <div class="sg-stage">
-      <div class="metal-plate" style="width:320px; gap:10px;">
-        <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
-        <span class="door-label">Beveiligde Deur</span>
-        <div class="security-locks" style="margin:2px 0 6px;">
-          <span class="lock-indicator" style="width:26px;height:26px;"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
-          <span class="lock-indicator" style="width:26px;height:26px;"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
-          <span class="lock-indicator" style="width:26px;height:26px;"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
-        </div>
-        <svg style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1;" viewBox="0 0 320 340" preserveAspectRatio="none">
-          <path class="cable-path green-wire" d="M6,120 C30,120 30,170 60,175"/>
-          <path class="cable-path orange-wire" d="M6,180 C30,180 30,200 60,205"/>
-          <path class="cable-path red-wire" d="M314,150 C285,150 290,185 260,190"/>
-        </svg>
-        <div class="device-panel" style="z-index:4; max-width:280px;">
-          <div class="panel-hardware-header">
-            <span class="rig-label">BYPASS RIG V2</span>
-            <div class="hardware-leds"><span class="led datalink"></span><span class="led signal"></span></div>
-          </div>
-          <div class="door-screen">
-            <span class="system-tag-left">SIG.4A</span>
-            <span class="system-tag-right">NODE_7</span>
-            <span class="door-screen-label">HACKCODE:</span>
-            <div class="code-text" style="margin-top:2px;">
-              <span class="char-box correct" style="width:28px;height:36px;font-size:1rem;">k</span>
-              <span class="char-box current" style="width:28px;height:36px;font-size:1rem;">r</span>
-              <span class="char-box faded" style="width:28px;height:36px;font-size:1rem;">a</span>
-              <span class="char-box faded" style="width:28px;height:36px;font-size:1rem;">k</span>
-            </div>
-            <div class="screen-scanlines"></div>
-          </div>
-          <div class="keypad-grid" style="max-width:190px; gap:5px;">
-            <span class="keypad-btn"><span class="btn-num">1</span><span class="btn-char" style="font-size:1rem;">a</span></span>
-            <span class="keypad-btn active-target"><span class="btn-num">2</span><span class="btn-char" style="font-size:1rem;">r</span></span>
-            <span class="keypad-btn"><span class="btn-num">3</span><span class="btn-char" style="font-size:1rem;">d</span></span>
-            <span class="keypad-btn hacked-green"><span class="btn-num">4</span><span class="btn-char" style="font-size:1rem;">k</span></span>
-            <span class="keypad-btn"><span class="btn-num">5</span><span class="btn-char" style="font-size:1rem;">g</span></span>
-            <span class="keypad-btn"><span class="btn-num">6</span><span class="btn-char" style="font-size:1rem;">h</span></span>
-          </div>
-          <div class="panel-hardware-footer">
-            <div class="voltage-signal"><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span></div>
-            <div class="bypass-ports"><span class="port-jack"></span><span class="port-jack"></span><span class="port-jack"></span></div>
-          </div>
-        </div>
+      <div class="full-stack-live-viewport">
+        <iframe class="full-stack-live-frame" src="typegame-door-keypad/index.html?machine-preview=1" title="Live source render of the complete keypad machine" width="560" height="680" loading="lazy"></iframe>
+        <span class="full-stack-live-badge">LIVE GAME · REAL MACHINE STACK</span>
       </div>
     </div>
   </div>
-  <p class="sg-caption">L1 metal plate + label + mistake locks → cables → L2 device panel → L3 screen with scanlines → L4 inputs. Swap L4 for pins, a scanner or a document console and you have a different game.</p>
+  <p class="sg-caption">This is no longer a redrawn approximation. It is the actual <b>typegame-door-keypad</b> HTML, CSS and JavaScript in a fixed specimen state: full metal carrier, all six cables, real panel proportions, six code slots, the complete twelve-key grid, hardware footer and locked status.</p>
 </section>
 
 <!-- ═══════════════ 06 CORE COMPONENTS ═══════════════ -->
@@ -4890,30 +5571,15 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   <p class="sg-caption">Square keys: <b>rgba(255,255,255,0.04) bg + 1.5px rgba(255,255,255,0.08) border</b>, radius 8. Small corner digit = Roboto Mono at 35% white; big central letter = Orbitron 700 at 90% white with emboss shadow. The active key letter scales 1→1.08 in a slow pulse.</p>
 
   <h3>Terminal console</h3>
-  <div class="theme t-keypad">
+  <div class="theme t-practice">
     <div class="sg-stage">
-      <div class="terminal-panel">
-        <div class="terminal-header">
-          <div><span class="terminal-title">DECRYPTIE CONSOLE</span><span class="terminal-ping">● VERBINDING ACTIEF</span></div>
-          <div class="terminal-win-controls"><span class="control-btn"></span><span class="control-btn"></span><span class="control-btn"></span></div>
-        </div>
-        <div style="position:relative; padding:16px 12px; text-align:center;">
-          <span class="door-screen-label" style="display:block; margin-bottom:8px;">TOEGANGSCODE:</span>
-          <div class="code-text">
-            <span class="char-box correct">b</span><span class="char-box correct">y</span><span class="char-box current">p</span><span class="char-box faded">a</span><span class="char-box faded">s</span><span class="char-box faded">s</span>
-          </div>
-          <div class="screen-scanlines"></div>
-        </div>
-        <div class="terminal-logs">
-          <span class="log-line info">&gt; verbinding met slot-node 7 stabiel...</span>
-          <span class="log-line warning">&gt; firewall vertraagt decryptie</span>
-          <span class="log-line success">&gt; segment 02 gekraakt [OK]</span>
-          <span class="log-line danger">&gt; FOUT: onjuiste toets — alarmniveau +1</span>
-        </div>
+      <div class="terminal-live-viewport">
+        <iframe class="terminal-live-frame" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=terminal" title="Live source render of the Type Training terminal console" width="1000" height="360" loading="lazy"></iframe>
+        <span class="terminal-live-badge">LIVE GAME · TYPE CONSOLE</span>
       </div>
     </div>
   </div>
-  <p class="sg-caption">Terminal = header (title + green ping + window buttons) / screen body with scanlines / <b>log feed</b> (Roboto Mono ≈0.6rem, color-coded info·warning·success·danger, new lines fade in 0.15s).</p>
+  <p class="sg-caption">Source: <b>typegame-typeoefening-losse-letters</b> · the real <code>.exercise-panel.terminal-panel</code>. It keeps the actual 36px black header, <code>TYPE CONSOLE</code> label, green connection pill, three functional window icons, line indicator, multi-line typing text, active cursor, scrollbar, scanlines and vignette. The previous keypad slots and invented log feed were not part of this game and have been removed.</p>
 </section>
 
 <!-- ═══════════════ 08 RESULT SCREEN ═══════════════ -->
@@ -4988,7 +5654,84 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     own game theme.
   </p>
 
-  <h3>Lockpicking — pin chambers</h3>
+  <h3>Lockpicking — randomized pin chambers</h3>
+  <p class="sg-note">This specimen uses the same six-slot construction, security-pin classes, height ranges, progress states and complete pick SVG as the lockpicking game. The arrangement below is <strong>one valid roll</strong>, not a fixed recipe: every reset assigns each chamber a new type and key-pin height.</p>
+
+  <div class="theme t-lockpick">
+    <div class="lockpick-specimen">
+      <div class="lp-rig-header">
+        <span>MANUAL PICK RIG v2.10</span>
+        <span class="lp-leds" aria-label="Datalink and signal active"><i></i><i></i></span>
+      </div>
+      <div class="lp-code-screen">
+        <span class="lp-screen-tags"><span>SYS_RECOVERY</span><span>PORT_01</span></span>
+        <span class="door-screen-label">BINDING PINS:</span>
+        <div class="lp-code-row" aria-label="Example randomized code K H J J O G">
+          <span class="char-box correct">K</span><span class="char-box correct">H</span><span class="char-box correct">J</span><span class="char-box current">J</span><span class="char-box faded">O</span><span class="char-box faded">G</span>
+        </div>
+      </div>
+      <div class="lp-progress" aria-label="Three pins set, fourth pin active">
+        <span class="pin-progress-node set">01</span><span class="pin-progress-node set">02</span><span class="pin-progress-node set">03</span><span class="pin-progress-node active">04</span><span class="pin-progress-node">05</span><span class="pin-progress-node">06</span>
+      </div>
+      <div class="lock-cylinder-demo">
+        <div class="shear-line-indicator"></div>
+        <div class="lock-cylinder-row">
+          <div class="pin-chamber pin-standard picked" style="--key-height:63px;--driver-height:47px;--picked-spring-height:3px;--pin-lift:0px;--picked-driver-rot:-1.65deg;--picked-driver-x:-1.82px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">K</span></div></div>
+          <div class="pin-chamber pin-spool picked" style="--key-height:60px;--driver-height:50px;--picked-spring-height:0px;--pin-lift:0px;--picked-driver-rot:1.28deg;--picked-driver-x:1.46px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">H</span></div></div>
+          <div class="pin-chamber pin-serrated picked" style="--key-height:48px;--driver-height:62px;--picked-spring-height:0px;--pin-lift:-12px;--picked-driver-rot:-1.92deg;--picked-driver-x:-2.08px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">J</span></div></div>
+          <div class="pin-chamber pin-standard active-chamber" style="--key-height:54px;--driver-height:56px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">J</span></div></div>
+          <div class="pin-chamber pin-spool" style="--key-height:68px;--driver-height:42px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">O</span></div></div>
+          <div class="pin-chamber pin-serrated" style="--key-height:44px;--driver-height:66px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">G</span></div></div>
+        </div>
+        <div class="lp-tool-in-cylinder" aria-hidden="true">
+          <svg viewBox="0 0 600 60">
+            <path d="M455 31 H528 C545 31 556 26 573 12" fill="none" stroke="rgba(0,0,0,.65)" stroke-width="12" stroke-linecap="round"/>
+            <path d="M455 30 H528 C544 30 555 25 571 11" fill="none" stroke="url(#pickMetalGrad)" stroke-width="7" stroke-linecap="round"/>
+            <rect x="0" y="20" width="460" height="20" rx="6" fill="url(#handleMetalGrad)" stroke="rgba(255,255,255,.2)"/>
+            <rect x="25" y="24" width="410" height="12" rx="4" fill="url(#handleInsertGrad)" stroke="rgba(0,0,0,.4)"/>
+            <path d="M120 26v8 M140 26v8 M160 26v8 M180 26v8 M280 26v8 M300 26v8 M320 26v8 M340 26v8" stroke="rgba(255,255,255,.08)" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="50" cy="30" r="3" fill="url(#pickMetalGrad)" stroke="rgba(0,0,0,.4)"/><circle cx="230" cy="30" r="3" fill="url(#pickMetalGrad)" stroke="rgba(0,0,0,.4)"/><circle cx="410" cy="30" r="3" fill="url(#pickMetalGrad)" stroke="rgba(0,0,0,.4)"/>
+          </svg>
+        </div>
+      </div>
+      <p class="sg-caption" style="margin:0;">Live state recipe: pins <b>01–03</b> are set and lean left or right, <b>04</b> is active, and the pick tip sits below that active chamber. The type order shown here can change completely on the next reset.</p>
+
+      <div class="lp-variant-grid" aria-label="All three driver-pin variants in their picked state">
+        <article class="lp-variant-card">
+          <div class="lp-variant-preview"><div class="pin-chamber pin-standard picked" style="--key-height:52px;--driver-height:58px;--picked-spring-height:0px;--pin-lift:-8px;--picked-driver-rot:-1.35deg;--picked-driver-x:-1.55px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">K</span></div></div></div>
+          <div class="lp-variant-copy"><h4>Standard driver</h4><p>A plain cylindrical driver with one clean boundary. In the game this is the quietest, most direct silhouette.</p><span class="lp-variant-meta">.pin-standard · picked lean −1.35°</span></div>
+        </article>
+        <article class="lp-variant-card">
+          <div class="lp-variant-preview"><div class="pin-chamber pin-spool picked" style="--key-height:62px;--driver-height:48px;--picked-spring-height:2px;--pin-lift:0px;--picked-driver-rot:1.72deg;--picked-driver-x:1.94px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">A</span></div></div></div>
+          <div class="lp-variant-copy"><h4>Spool driver</h4><p>The narrow waist and wide caps create the hourglass profile associated with a false set and counter-rotation feedback.</p><span class="lp-variant-meta">.pin-spool · picked lean +1.72°</span></div>
+        </article>
+        <article class="lp-variant-card">
+          <div class="lp-variant-preview"><div class="pin-chamber pin-serrated picked" style="--key-height:46px;--driver-height:64px;--picked-spring-height:0px;--pin-lift:-14px;--picked-driver-rot:-1.98deg;--picked-driver-x:-2.16px"><div class="spring-container-demo"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><use class="spring-back" href="#sg-spring-back"/><use class="spring-front" href="#sg-spring-front"/></svg></div><div class="driver-pin"></div><div class="key-pin"><span class="pin-char">L</span></div></div></div>
+          <div class="lp-variant-copy"><h4>Serrated driver</h4><p>Horizontal grooves create several possible catches and therefore a stepped, click-like feedback profile.</p><span class="lp-variant-meta">.pin-serrated · picked lean −1.98°</span></div>
+        </article>
+      </div>
+
+      <div class="lp-mechanics">
+        <div><h4>Why a set driver pin leans</h4><p>Light torque on the plug makes the plug and housing bores sit slightly out of alignment. Because real locks have tiny manufacturing tolerances, one pin stack binds first. When its key-pin/driver-pin boundary reaches the shear line, the plug can rotate a fraction and hold the driver above that line; the next stack then becomes the binding pin. The guide exaggerates that trapped state with a small left-or-right lean so it remains legible at game scale.</p></div>
+        <ol><li><strong>Pick:</strong> lifts the active key pin.</li><li><strong>Torque:</strong> comes from a tension tool, not from the pick itself.</li><li><strong>Set:</strong> the driver clears the shear line and catches above it.</li><li><strong>Transfer:</strong> slight plug rotation makes another stack bind.</li></ol>
+      </div>
+
+      <div class="lp-tool-card">
+        <h4>The complete in-game pick</h4>
+        <p class="sg-note">This is the actual 600×60 SVG from the game, including the dark inset grip, texture cuts, three rivets, shadow and seven-pixel upturned blade. The earlier guide showed only the outer handle and therefore read as a generic rod.</p>
+        <svg class="lockpick-svg-demo" viewBox="0 0 600 60" role="img" aria-label="Brushed metal lockpick used in the lockpicking game">
+          <path d="M455 31 H528 C545 31 556 26 573 12" fill="none" stroke="rgba(0,0,0,.65)" stroke-width="12" stroke-linecap="round"/><path d="M455 30 H528 C544 30 555 25 571 11" fill="none" stroke="url(#pickMetalGrad)" stroke-width="7" stroke-linecap="round"/>
+          <rect x="0" y="20" width="460" height="20" rx="6" fill="url(#handleMetalGrad)" stroke="rgba(255,255,255,.2)"/><rect x="25" y="24" width="410" height="12" rx="4" fill="url(#handleInsertGrad)" stroke="rgba(0,0,0,.4)"/>
+          <path d="M120 26v8 M140 26v8 M160 26v8 M180 26v8 M280 26v8 M300 26v8 M320 26v8 M340 26v8" stroke="rgba(255,255,255,.08)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="50" cy="30" r="3" fill="url(#pickMetalGrad)" stroke="rgba(0,0,0,.4)"/><circle cx="230" cy="30" r="3" fill="url(#pickMetalGrad)" stroke="rgba(0,0,0,.4)"/><circle cx="410" cy="30" r="3" fill="url(#pickMetalGrad)" stroke="rgba(0,0,0,.4)"/>
+        </svg>
+        <div class="lp-tool-notes"><span>handle 460×20 · radius 6</span><span>inset grip 410×12 · radius 4</span><span>blade stroke 7 · tip at x571/y11</span></div>
+      </div>
+      <p class="sg-caption" style="margin:16px 0 0;">Randomization source: <b>typegame-door-Lockpicking/script.js → randomizePins()</b>. Each of the six chambers independently selects <code>pin-standard</code>, <code>pin-spool</code> or <code>pin-serrated</code>; key-pin height is <b>40–70px</b>, driver height completes the pair to <b>110px</b>, and a set driver receives a randomized <b>±0.8–2.0°</b> lean plus <b>1.0–2.2px</b> lateral shift. In the current build these security types change the visual profile and feedback language; the six-letter input rule remains the same.</p>
+    </div>
+  </div>
+
+  <div hidden aria-hidden="true">
   <p class="sg-note">Six vertical chambers inside a dark cylinder housing. Each chamber holds, top to bottom: a silver <strong>coil spring</strong>, a grey metal <strong>driver pin</strong> and an orange <strong>key pin</strong> carrying the letter. A dashed orange <strong>shear line</strong> crosses the housing as an alignment guide. Typing the letter lifts the pin pair so the seam between driver and key pin meets the shear line; the picked pin turns brighter orange, a fully solved pin turns green, and the spring stays compressed. Pin heights differ per chamber — the lock looks mechanical, not uniform.</p>
   <div class="theme t-lockpick">
     <div class="sg-stage">
@@ -5043,6 +5786,8 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     </div>
   </div>
   <p class="sg-caption">The side column of the workbench stacks: this ID plate (crimson <b>#e43535</b> target name, tiny etched labels) · the tension meter (22px wide, red→orange→green fill with tick marks). Under the screen sits the pin progress strip; the horizontal lockpick tool sits at pin height and shifts one chamber to the right per solved pin.</p>
+
+  </div>
 
   <h3>Fingerprint — biometric scanner</h3>
   <p class="sg-note">A tall rounded bezel with an 8px yellow-tinted micro-grid, a grey fingerprint ridge graphic, <strong>numbered scan nodes (01–06)</strong> pinned to fixed points on the print, and a <strong>yellow laser line</strong> (with a wide soft glow band) sweeping top-to-bottom in 3s. The letters themselves are typed on the device panel's screen above the scanner — the label reads <strong>BIOMETRIC SEQUENCE:</strong> — and each correct letter activates the next node. Completed ridges flood green from the top (a wipe that follows progress).</p>
@@ -5243,7 +5988,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </div>
   <p class="sg-caption">Virus anatomy (SVG, generated in script): core circle r8 <b>#ff3b30</b> + 8 spikes ending in dot heads (r2 at 14.5) + a random cartoon face (9 variants, near-black + white shapes) + a dotted radar ring rotating 8s + the letter in white Orbitron 900 above. Everything glitches via a brightness/opacity flicker. When the player types its letter the whole virus recolors to orange. Traces: wide faint green base <b>rgba(68,215,117,~0.04)</b> under a thin cyan data line <b>rgba(116,216,255,0.15)</b>; a trace carrying a virus turns red.</p>
   <h4>Supercomputer HUD — telemetry, shields &amp; infiltration bar</h4>
-  <p class="sg-note">This game replaces the floating stat cards with green-glass <strong>telemetry tiles</strong> (each has a diagonal glare sheen), swaps the three lock circles for <strong>shield nodes</strong> above the CPU, and adds an <strong>INFILTRATIE bar</strong> that fills as viruses reach the core — green, then orange from ~50%, then flashing red from ~80%.</p>
+  <p class="sg-note">This game replaces the floating stat cards with green-glass <strong>telemetry tiles</strong> (each has a diagonal glare sheen), swaps the three mistake circles for <strong>shield nodes</strong> above the CPU, and adds an <strong>INFILTRATIE bar</strong> that fills as viruses reach the core — green, then orange from ~50%, then flashing red from ~80%.</p>
   <div class="theme t-super">
     <div class="sg-stage">
       <div class="sg-item">
@@ -5648,6 +6393,37 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   const previewPalette = document.getElementById('preview-palette');
   const previewViewport = document.getElementById('preview-viewport');
 
+  const previewCanvas = { width: 1920, height: 1080 };
+  let previewFitFrame;
+  function fitPreviewCanvas() {
+    window.cancelAnimationFrame(previewFitFrame);
+    previewFitFrame = window.requestAnimationFrame(() => {
+      const availableWidth = previewWindow.clientWidth;
+      const availableHeight = previewWindow.clientHeight;
+      if (!availableWidth || !availableHeight) return;
+
+      const scale = Math.min(
+        availableWidth / previewCanvas.width,
+        availableHeight / previewCanvas.height
+      );
+      const offsetX = (availableWidth - previewCanvas.width * scale) / 2;
+      const offsetY = (availableHeight - previewCanvas.height * scale) / 2;
+
+      preview.style.setProperty('--sg-preview-scale', scale);
+      preview.style.left = offsetX + 'px';
+      preview.style.top = offsetY + 'px';
+    });
+  }
+
+  if ('ResizeObserver' in window) {
+    const previewObserver = new ResizeObserver(fitPreviewCanvas);
+    previewObserver.observe(previewWindow);
+  } else {
+    window.addEventListener('resize', fitPreviewCanvas, { passive: true });
+  }
+  preview.addEventListener('load', fitPreviewCanvas);
+  fitPreviewCanvas();
+
   function setInteraction(enabled) {
     previewWindow.classList.toggle('is-interactive', enabled);
     interaction.classList.toggle('active', enabled);
@@ -5672,6 +6448,111 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     previewPalette.textContent = tab.dataset.palette;
     previewViewport.textContent = tab.dataset.viewport;
   }));
+
+  const briefingFrames = Array.from(document.querySelectorAll('.briefing-live-frame'));
+  const briefingCanvas = { width: 640, height: 500 };
+  function fitBriefingFrame(frame) {
+    const viewport = frame.closest('.briefing-flow-preview');
+    if (!viewport) return;
+    const inset = 10;
+    const scale = Math.min(
+      (viewport.clientWidth - inset * 2) / briefingCanvas.width,
+      (viewport.clientHeight - inset * 2) / briefingCanvas.height
+    );
+    frame.style.transform = 'scale(' + scale + ')';
+    frame.style.left = ((viewport.clientWidth - briefingCanvas.width * scale) / 2) + 'px';
+    frame.style.top = ((viewport.clientHeight - briefingCanvas.height * scale) / 2) + 'px';
+  }
+
+  const briefingObserver = 'ResizeObserver' in window
+    ? new ResizeObserver(entries => entries.forEach(entry => {
+        const frame = entry.target.querySelector('.briefing-live-frame');
+        if (frame) fitBriefingFrame(frame);
+      }))
+    : null;
+
+  briefingFrames.forEach(frame => {
+    const viewport = frame.closest('.briefing-flow-preview');
+    if (briefingObserver && viewport) briefingObserver.observe(viewport);
+    frame.addEventListener('load', () => fitBriefingFrame(frame));
+    fitBriefingFrame(frame);
+  });
+  if (!briefingObserver) window.addEventListener('resize', () => briefingFrames.forEach(fitBriefingFrame), { passive: true });
+
+  const trainingFrame = document.querySelector('.sg-training-live-frame');
+  const trainingViewport = trainingFrame && trainingFrame.closest('.sg-training-live');
+  function fitTrainingFrame() {
+    if (!trainingFrame || !trainingViewport) return;
+    const canvas = { width: 1000, height: 620 };
+    const inset = 12;
+    const scale = Math.min(
+      (trainingViewport.clientWidth - inset * 2) / canvas.width,
+      (trainingViewport.clientHeight - inset * 2) / canvas.height
+    );
+    trainingFrame.style.transform = 'scale(' + scale + ')';
+    trainingFrame.style.left = ((trainingViewport.clientWidth - canvas.width * scale) / 2) + 'px';
+    trainingFrame.style.top = ((trainingViewport.clientHeight - canvas.height * scale) / 2) + 'px';
+  }
+  if (trainingFrame && trainingViewport) {
+    trainingFrame.addEventListener('load', fitTrainingFrame);
+    fitTrainingFrame();
+    if ('ResizeObserver' in window) {
+      const trainingObserver = new ResizeObserver(fitTrainingFrame);
+      trainingObserver.observe(trainingViewport);
+    } else {
+      window.addEventListener('resize', fitTrainingFrame, { passive: true });
+    }
+  }
+
+  const fullStackFrame = document.querySelector('.full-stack-live-frame');
+  const fullStackViewport = fullStackFrame && fullStackFrame.closest('.full-stack-live-viewport');
+  function fitFullStackFrame() {
+    if (!fullStackFrame || !fullStackViewport) return;
+    const canvas = { width: 560, height: 680 };
+    const inset = 12;
+    const scale = Math.min(
+      (fullStackViewport.clientWidth - inset * 2) / canvas.width,
+      (fullStackViewport.clientHeight - inset * 2) / canvas.height
+    );
+    fullStackFrame.style.transform = 'scale(' + scale + ')';
+    fullStackFrame.style.left = ((fullStackViewport.clientWidth - canvas.width * scale) / 2) + 'px';
+    fullStackFrame.style.top = ((fullStackViewport.clientHeight - canvas.height * scale) / 2) + 'px';
+  }
+  if (fullStackFrame && fullStackViewport) {
+    fullStackFrame.addEventListener('load', fitFullStackFrame);
+    fitFullStackFrame();
+    if ('ResizeObserver' in window) {
+      const fullStackObserver = new ResizeObserver(fitFullStackFrame);
+      fullStackObserver.observe(fullStackViewport);
+    } else {
+      window.addEventListener('resize', fitFullStackFrame, { passive: true });
+    }
+  }
+
+  const terminalFrame = document.querySelector('.terminal-live-frame');
+  const terminalViewport = terminalFrame && terminalFrame.closest('.terminal-live-viewport');
+  function fitTerminalFrame() {
+    if (!terminalFrame || !terminalViewport) return;
+    const canvas = { width: 1000, height: 360 };
+    const inset = 12;
+    const scale = Math.min(
+      (terminalViewport.clientWidth - inset * 2) / canvas.width,
+      (terminalViewport.clientHeight - inset * 2) / canvas.height
+    );
+    terminalFrame.style.transform = 'scale(' + scale + ')';
+    terminalFrame.style.left = ((terminalViewport.clientWidth - canvas.width * scale) / 2) + 'px';
+    terminalFrame.style.top = ((terminalViewport.clientHeight - canvas.height * scale) / 2) + 'px';
+  }
+  if (terminalFrame && terminalViewport) {
+    terminalFrame.addEventListener('load', fitTerminalFrame);
+    fitTerminalFrame();
+    if ('ResizeObserver' in window) {
+      const terminalObserver = new ResizeObserver(fitTerminalFrame);
+      terminalObserver.observe(terminalViewport);
+    } else {
+      window.addEventListener('resize', fitTerminalFrame, { passive: true });
+    }
+  }
 
   function fallbackCopy(value) {
     const area = document.createElement('textarea');

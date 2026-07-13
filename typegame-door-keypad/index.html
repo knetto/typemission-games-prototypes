@@ -4,6 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    const previewParams = new URLSearchParams(window.location.search);
+    if (previewParams.has('briefing-preview')) {
+      document.documentElement.classList.add('briefing-specimen');
+    }
+    if (previewParams.has('machine-preview')) {
+      document.documentElement.classList.add('machine-specimen');
+    }
+  </script>
   <title>TypeMission — Door Keypad Cracker (16:9 Fullscreen Game)</title>
   <meta name="description" content="Kraak de beveiligde deur door de 4-cijferige keypad code te hacken. Typ 6 letters per cijfer met maximaal 3 fouten!">
   <link rel="preconnect" href="https://fonts.googleapis.com">
