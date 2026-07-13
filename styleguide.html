@@ -1,0 +1,3746 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TYPEMISSION — Visual Styleguide</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap");
+
+/* ════════════════════════════════════════════════════════════════
+   GUIDE CHROME (sg- prefix = styleguide page only, never in games)
+   ════════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: dark;
+  --sg-bg: #050206;
+  --sg-panel: #0d0a10;
+  --sg-line: rgba(255, 255, 255, 0.08);
+  --sg-text: #ffffff;
+  --sg-muted: #98909e;
+  --sg-accent: #e48e35;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--sg-bg); scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--sg-text);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(228, 142, 53, 0.04), transparent 40%),
+    var(--sg-bg);
+}
+
+.sg-shell { display: flex; min-height: 100vh; }
+
+/* Sidebar nav */
+.sg-nav {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  overflow-y: auto;
+  width: 230px;
+  flex-shrink: 0;
+  padding: 28px 18px;
+  border-right: 1px solid var(--sg-line);
+  background: rgba(5, 2, 6, 0.85);
+}
+.sg-nav .sg-logo {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #ffffff, #e48e35);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  margin-bottom: 4px;
+}
+.sg-nav .sg-logo-sub {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #9ad744;
+  display: block;
+  margin-bottom: 24px;
+}
+.sg-nav a {
+  display: block;
+  padding: 6px 10px;
+  margin: 1px 0;
+  border-radius: 5px;
+  color: var(--sg-muted);
+  text-decoration: none;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  transition: all 0.15s ease;
+}
+.sg-nav a:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+.sg-nav a span { color: var(--sg-accent); margin-right: 6px; }
+
+.sg-main {
+  flex: 1;
+  min-width: 0;
+  max-width: 1060px;
+  padding: 48px clamp(24px, 4vw, 64px) 120px;
+}
+
+/* Section headings */
+.sg-section { margin-bottom: 96px; scroll-margin-top: 32px; }
+.sg-kicker {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--sg-accent);
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+.sg-section > h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+}
+.sg-section h3 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 40px 0 8px;
+  color: #fff;
+}
+.sg-section h4 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 24px 0 8px;
+  color: var(--sg-muted);
+  text-transform: uppercase;
+}
+.sg-lead { color: var(--sg-muted); max-width: 720px; margin: 0 0 24px; }
+p.sg-note { color: var(--sg-muted); font-size: 0.85rem; max-width: 720px; }
+.sg-note strong, .sg-lead strong { color: #fff; font-weight: 500; }
+.sg-note code, .sg-lead code, li code, td code {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.78em;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #f5b05f;
+}
+
+/* Demo stage: every live example sits on one of these */
+.sg-stage {
+  position: relative;
+  background:
+    linear-gradient(rgba(154, 215, 68, 0.012) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(154, 215, 68, 0.012) 1.5px, transparent 1.5px),
+    #02050f;
+  background-size: 28px 28px, 28px 28px, 100% 100%;
+  border: 1px solid var(--sg-line);
+  border-radius: 10px;
+  padding: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin: 12px 0;
+}
+.sg-stage.left { justify-content: flex-start; }
+.sg-caption {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.68rem;
+  color: var(--sg-muted);
+  margin: 4px 2px 28px;
+}
+.sg-caption b { color: #f5b05f; font-weight: 500; }
+
+/* Labeled demo item */
+.sg-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.sg-item > .sg-tag {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.5px;
+  color: var(--sg-muted);
+}
+
+/* Tables */
+table.sg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin: 12px 0 28px;
+}
+.sg-table th {
+  text-align: left;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--sg-muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--sg-line);
+}
+.sg-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #d9d3de;
+  vertical-align: middle;
+}
+.sg-swatch {
+  display: inline-block;
+  width: 30px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  vertical-align: middle;
+}
+
+/* Do / don't chips */
+.sg-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; margin: 16px 0; }
+.sg-rule {
+  border: 1px solid var(--sg-line);
+  border-left: 3px solid #9ad744;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.015);
+  font-size: 0.84rem;
+  color: #d9d3de;
+}
+.sg-rule.bad { border-left-color: #ff3b30; }
+.sg-rule b {
+  display: block;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #9ad744;
+  margin-bottom: 4px;
+}
+.sg-rule.bad b { color: #ff3b30; }
+
+/* ════════════════════════════════════════════════════════════════
+   GAME THEMES — exact :root values from each game's styles.css.
+   Apply one theme class on a wrapper; every component below reads
+   the same variable names the games use.
+   ════════════════════════════════════════════════════════════════ */
+.theme {
+  --orange: #e48e35;
+  --orange-soft: #f5b05f;
+  --green: #9ad744;
+  --green-glow: rgba(154, 215, 68, 0.4);
+  --red: #ff3b30;
+  --red-glow: rgba(255, 59, 48, 0.4);
+  --text: #ffffff;
+  color: var(--text);
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+}
+/* typegame-door-Lockpicking — dark red/brown */
+.t-lockpick {
+  --purple: #120505; --purple-dark: #050206; --purple-soft: #300f0f;
+  --panel-blue: #3c1b1b; --blue: #ec8888; --sky: #fd8b8b; --ice: #1f0e0e;
+  --text-dark: #ede0e0; --muted: #a89292; --line: #3d1f1f;
+  --terminal-bg: #140606; --accent: var(--orange);
+  --crimson: #e43535; --crimson-glow: rgba(228, 53, 53, 0.5);
+}
+/* typegame-door-keypad — dark blue/indigo */
+.t-keypad {
+  --purple: #0f102b; --purple-dark: #050206; --purple-soft: #1e224e;
+  --panel-blue: #1b1e3c; --blue: #888bec; --sky: #8b9dfd; --ice: #0e101f;
+  --text-dark: #e0e2ed; --muted: #9296a8; --line: #1f213d;
+  --terminal-bg: #060714; --accent: var(--orange);
+  --keypad-bg: #0d0e12;
+}
+/* typegame-door-fingerprint — dark amber/yellow */
+.t-fingerprint {
+  --purple: #1c1809; --purple-dark: #050206; --purple-soft: #4a3e14;
+  --panel-blue: #241e0d; --blue: #ecd288; --sky: #fdd98b; --ice: #141006;
+  --text-dark: #edebe0; --muted: #a8a392; --line: #382f12;
+  --terminal-bg: #0c0a05; --accent: var(--cyan);
+  --cyan: #ffcc00; --cyan-glow: rgba(255, 204, 0, 0.4);
+}
+/* typegame-file-redacting — dark purple/magenta */
+.t-redact {
+  --purple: #1a0819; --purple-dark: #0b030b; --purple-soft: #4d1c44;
+  --panel-blue: #283754; --blue: #88a4ec; --sky: #6dcdef; --ice: #141c27;
+  --text-dark: #e5deea; --muted: #a092a7; --line: #3b283f;
+  --terminal-bg: #0a050d; --accent: var(--orange);
+  --paper: #ffffff; --manila-bg: #dca75e; --manila-dark: #b8853f;
+}
+/* typegame-typeoefening-losse-letters — neutral grey */
+.t-practice {
+  --purple: #181818; --purple-dark: #080808; --purple-soft: #333333;
+  --panel-blue: #1c1c1c; --blue: #b0b0b0; --sky: #e0e0e0; --ice: #121212;
+  --text-dark: #d0d0d0; --muted: #7a7a7a; --line: #222222;
+  --terminal-bg: #050505; --accent: var(--orange);
+  --cyan: #e48e35; --cyan-glow: rgba(228, 142, 53, 0.35);
+}
+/* typegame-supercomputer-defense — dark green/cyber */
+.t-super {
+  --purple: #091a0c; --purple-dark: #020503; --purple-soft: #15331c;
+  --panel-blue: #0b1c0e; --blue: #74d8ff; --sky: #9ad744; --ice: #09140b;
+  --text-dark: #d5eedc; --muted: #799a80; --line: #1d3d25;
+  --terminal-bg: #060f0a; --accent: var(--green);
+  --green: #44d775; --green-glow: rgba(68, 215, 117, 0.45);
+  --green-dim: #258f4a; --red-glow: rgba(255, 59, 48, 0.45); --red-dim: #a61c14;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED GAME COMPONENTS — values copied 1:1 from the games
+   ════════════════════════════════════════════════════════════════ */
+
+/* — Mission header (game-header) — */
+.game-header {
+  width: 100%;
+  height: 60px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--purple-soft);
+  background: color-mix(in srgb, var(--purple) 95%, transparent);
+  border-radius: 8px 8px 0 0;
+}
+.brand-system {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 1px;
+  display: block;
+}
+.brand-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff, #e48e35);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header-controls { display: flex; align-items: center; gap: 12px; }
+
+/* — Buttons & dropdown — */
+.primary-button, .ghost-button, .dropdown-header {
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 6px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.primary-button { border: 2px solid var(--orange); background: var(--orange); color: #fff; }
+.primary-button:hover { border-color: var(--orange-soft); background: var(--orange-soft); }
+.ghost-button { border: 2px solid var(--purple-soft); background: transparent; color: var(--text-dark); }
+.ghost-button:hover { border-color: var(--orange); color: #fff; }
+.dropdown-header { border: 2px solid var(--purple-soft); background: transparent; color: var(--text); }
+.dropdown-header:hover { border-color: var(--orange); }
+.dropdown-header svg { width: 14px; height: 14px; }
+
+/* — HUD stat cards (door-hud-stats / hud-stat) — */
+.hud-stat {
+  text-align: center;
+  min-width: 130px;
+  background: color-mix(in srgb, var(--purple) 60%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px 24px;
+}
+.hud-stat .stat-value {
+  display: block;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent, var(--orange));
+}
+.hud-stat .stat-value.is-green { color: var(--green); }
+.hud-stat .stat-value.is-red { color: var(--red); }
+.hud-stat .stat-label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* — Briefing card — */
+.briefing-panel {
+  max-width: 560px;
+  width: 100%;
+  background: color-mix(in srgb, var(--purple) 40%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 12px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(139, 141, 253, 0.05);
+}
+.briefing-panel-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid var(--line);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+.briefing-eyebrow {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 1.5px;
+}
+.briefing-pagination { display: flex; gap: 8px; }
+.briefing-pagination .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--green);
+  background: transparent;
+}
+.briefing-pagination .dot.active {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
+}
+.briefing-slide-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.briefing-slide-graphic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  width: 100%;
+}
+.briefing-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 15px;
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+}
+.spacebar-instruction {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  letter-spacing: 0.5px;
+  animation: gentlePulse 2s infinite alternate ease-in-out;
+  text-align: center;
+}
+.spacebar-btn-visual {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 30px;
+  background: #0f172a;
+  border: 1.5px solid var(--purple-soft);
+  border-radius: 6px;
+  box-shadow: 0 3px 0 #202359, 0 5px 12px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: all 0.08s ease;
+}
+.spacebar-btn-visual:active { transform: translateY(2.5px); box-shadow: 0 0.5px 0 #202359, 0 2px 6px rgba(0, 0, 0, 0.6); }
+.spacebar-icon-line {
+  width: 36%;
+  height: 2.5px;
+  background: var(--orange);
+  box-shadow: 0 0 4px var(--orange);
+  border-radius: 99px;
+}
+
+/* — L1: light grey metal plate (security-door) — */
+.metal-plate {
+  position: relative;
+  background: linear-gradient(180deg, #4a4d52 0%, #33363b 40%, #2a2d32 100%);
+  border-radius: 8px;
+  border: 2.5px solid #5a5e65;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 14px 20px;
+}
+.metal-plate.completed {
+  border-color: var(--green);
+  box-shadow: 0 0 25px var(--green-glow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.rivet {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #6a6e75 30%, #3a3d42 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.rivet.tl { top: 10px; left: 10px; }
+.rivet.tr { top: 10px; right: 10px; }
+.rivet.bl { bottom: 10px; left: 10px; }
+.rivet.br { bottom: 10px; right: 10px; }
+.door-label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3px 14px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.security-locks { display: flex; gap: 10px; }
+.lock-indicator {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2.5px solid var(--green);
+  background: rgba(154, 215, 68, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lock-indicator svg { width: 60%; height: 60%; stroke: var(--green); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.6; }
+.lock-indicator.error { border-color: var(--red); background: rgba(255, 59, 48, 0.15); }
+.lock-indicator.error svg { stroke: var(--red); opacity: 1; }
+
+/* — L2: dark device panel (keypad-panel / lock-panel) — */
+.device-panel {
+  position: relative;
+  background: #0d0e12;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.panel-hardware-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6px 6px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+.rig-label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--muted, #9296a8);
+  letter-spacing: 1px;
+}
+.hardware-leds { display: flex; gap: 6px; }
+.hardware-leds .led { width: 6px; height: 6px; border-radius: 50%; background: #111; }
+.hardware-leds .led.datalink { background: var(--green); box-shadow: 0 0 6px var(--green); animation: datalinkBlink 0.3s infinite alternate; }
+.hardware-leds .led.signal { background: var(--orange); box-shadow: 0 0 6px var(--orange); animation: signalPulse 1.2s infinite ease-in-out; }
+.panel-hardware-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 6px 0;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+.voltage-signal { display: flex; align-items: flex-end; gap: 3px; height: 12px; }
+.signal-bar { width: 3px; background: var(--orange); border-radius: 1px; animation: signalBarGrowth 0.8s infinite ease-in-out alternate; }
+.signal-bar:nth-child(1) { height: 3px; animation-delay: 0.1s; }
+.signal-bar:nth-child(2) { height: 6px; animation-delay: 0.3s; }
+.signal-bar:nth-child(3) { height: 9px; animation-delay: 0.2s; }
+.signal-bar:nth-child(4) { height: 5px; animation-delay: 0.5s; }
+.signal-bar:nth-child(5) { height: 8px; animation-delay: 0.4s; }
+.bypass-ports { display: flex; gap: 6px; }
+.port-jack {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #181920;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* — L3: screen (door-screen + CRT scanlines + system tags) — */
+.door-screen {
+  position: relative;
+  overflow: hidden;
+  background: var(--terminal-bg, #060714);
+  border: 1.8px solid var(--purple-soft, #1e224e);
+  border-radius: 8px;
+  padding: 14px 10px 10px;
+  width: 100%;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95), 0 0 10px rgba(109, 205, 239, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.door-screen-label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  color: var(--orange);
+  letter-spacing: 0.8px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.screen-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(rgba(8, 16, 32, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 3px;
+  z-index: 10;
+  animation: crtFlicker 0.15s infinite;
+}
+.system-tag-left, .system-tag-right {
+  position: absolute;
+  top: 4px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.5px;
+  z-index: 5;
+  pointer-events: none;
+}
+.system-tag-left { left: 6px; }
+.system-tag-right { right: 6px; }
+
+/* — L4: typed code slots (char-box) — */
+.code-text { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.char-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px; height: 52px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--muted, #9296a8);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+.char-box.correct { border-color: var(--green); color: var(--green); box-shadow: 0 0 10px var(--green-glow), inset 0 0 6px var(--green-glow); text-shadow: 0 0 5px var(--green); }
+.char-box.wrong { border-color: var(--red); color: var(--red); box-shadow: 0 0 10px var(--red-glow), inset 0 0 6px var(--red-glow); text-shadow: 0 0 5px var(--red); }
+.char-box.current { border-color: var(--orange); color: var(--orange); animation: activeBoxPulse 1s infinite alternate; }
+.char-box.faded { opacity: 0.6; color: var(--text-dark, #e0e2ed); }
+
+/* — Keypad buttons — */
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 240px;
+}
+.keypad-btn {
+  position: relative;
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Orbitron", sans-serif;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+.keypad-btn .btn-num {
+  position: absolute;
+  top: 4px; left: 6px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: "Roboto Mono", monospace;
+  line-height: 1;
+}
+.keypad-btn .btn-char {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.8), 1px 1px 0 rgba(255, 255, 255, 0.1);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.keypad-btn.active-target { border-color: var(--orange); box-shadow: 0 0 12px rgba(228, 142, 53, 0.3); }
+.keypad-btn.active-target .btn-char { color: var(--orange); text-shadow: 0 0 4px rgba(228, 142, 53, 0.4); animation: targetKeyPulse 0.8s infinite alternate ease-in-out; }
+.keypad-btn.hacked-green { background: rgba(154, 215, 68, 0.12); border-color: var(--green); box-shadow: 0 0 8px var(--green-glow); }
+.keypad-btn.hacked-green .btn-num, .keypad-btn.hacked-green .btn-char { color: var(--green); text-shadow: 0 0 5px var(--green); }
+.keypad-btn.error-flash { background: rgba(255, 59, 48, 0.15); border-color: var(--red); box-shadow: 0 0 12px var(--red-glow); animation: btnShake 0.3s ease; }
+.keypad-btn.error-flash .btn-char { color: var(--red); }
+
+/* — Cables — */
+.cable-demo { width: 100%; max-width: 420px; height: 70px; display: block; }
+.cable-path { fill: none; stroke-width: 2.8; stroke-linecap: round; }
+.cable-path.green-wire { stroke: var(--green); filter: drop-shadow(0 0 4px var(--green-glow)); }
+.cable-path.orange-wire { stroke: var(--orange); filter: drop-shadow(0 0 4px rgba(228, 142, 53, 0.5)); }
+.cable-path.red-wire { stroke: var(--red); filter: drop-shadow(0 0 4px var(--red-glow)); }
+
+/* — Terminal panel & logs — */
+.terminal-panel {
+  width: 100%;
+  max-width: 460px;
+  background: var(--terminal-bg, #060714);
+  border: 1.5px solid var(--purple-soft, #1e224e);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1.5px solid var(--line, #1f213d);
+  background: color-mix(in srgb, var(--purple, #0f102b) 70%, transparent);
+}
+.terminal-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-dark, #e0e2ed);
+}
+.terminal-ping {
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.55rem;
+  color: var(--green);
+  margin-left: 10px;
+}
+.terminal-win-controls { display: flex; gap: 6px; }
+.terminal-win-controls .control-btn {
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  display: inline-block;
+}
+.terminal-logs {
+  padding: 8px 12px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 0.64rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+.log-line.info { color: var(--muted, #9296a8); }
+.log-line.success { color: var(--green); text-shadow: 0 0 4px var(--green-glow); }
+.log-line.warning { color: var(--orange); text-shadow: 0 0 4px rgba(228, 142, 53, 0.25); }
+.log-line.danger { color: var(--red); text-shadow: 0 0 4px var(--red-glow); }
+
+/* — Result screen pieces — */
+.result-eyebrow {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.66rem;
+  color: var(--muted, #9296a8);
+  letter-spacing: 2px;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+.result-heading {
+  font-size: 1.5rem;
+  color: var(--orange);
+  margin: 0 0 6px;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(228, 142, 53, 0.25);
+}
+.result-rank-bar {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.74rem;
+  color: var(--text);
+  background: rgba(109, 205, 239, 0.1);
+  border: 1px solid rgba(109, 205, 239, 0.3);
+  padding: 4px 16px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.rank-badge-text { color: var(--green); text-shadow: 0 0 8px var(--green-glow); }
+.result-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 700px;
+}
+.dashboard-card {
+  background: linear-gradient(135deg, rgba(9, 17, 36, 0.7) 0%, rgba(4, 8, 20, 0.85) 100%);
+  border: 1px solid var(--purple-soft, #1e224e);
+  border-radius: 12px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  min-height: 118px;
+  box-shadow: inset 0 0 15px rgba(109, 205, 239, 0.05), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+.dashboard-card.highlight-glow {
+  border-color: var(--orange);
+  background: linear-gradient(135deg, rgba(38, 16, 12, 0.85) 0%, rgba(20, 8, 5, 0.95) 100%);
+  box-shadow: inset 0 0 20px rgba(228, 142, 53, 0.2), 0 4px 20px rgba(228, 142, 53, 0.1);
+}
+.card-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  color: var(--muted, #9296a8);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.card-main-value {
+  font-family: "Orbitron", sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
+}
+.card-main-value.highlight-green { color: var(--green); text-shadow: 0 0 10px var(--green-glow); }
+.card-main-value.highlight-red { color: var(--red); text-shadow: 0 0 10px var(--red-glow); }
+.card-footer-label {
+  font-size: 0.55rem;
+  color: var(--muted, #9296a8);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.card-footer-reward {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.72rem;
+  color: var(--orange);
+  font-weight: 700;
+}
+.status-success-badge, .status-failed-badge {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  padding: 2px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+.status-success-badge {
+  color: var(--green);
+  border: 2px solid var(--green);
+  box-shadow: inset 0 0 8px rgba(80, 250, 123, 0.15), 0 0 8px rgba(80, 250, 123, 0.15);
+}
+.status-failed-badge {
+  color: var(--red);
+  border: 2px solid var(--red);
+  box-shadow: inset 0 0 8px rgba(255, 59, 48, 0.15), 0 0 8px rgba(255, 59, 48, 0.15);
+}
+
+/* — Overlay states (in-machine success/fail) — */
+.code-overlay-demo {
+  width: 100%;
+  max-width: 320px;
+  padding: 22px 16px;
+  border-radius: 8px;
+  text-align: center;
+  background: rgba(4, 8, 20, 0.98);
+  border: 2px solid transparent;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.code-overlay-demo.overlay-complete { border-color: var(--green); box-shadow: inset 0 0 30px rgba(154, 215, 68, 0.15); color: var(--green); text-shadow: 0 0 8px var(--green-glow); }
+.code-overlay-demo.overlay-failed { background: rgba(13, 5, 5, 0.98); border-color: var(--red); box-shadow: inset 0 0 30px rgba(255, 59, 48, 0.15); color: var(--red); text-shadow: 0 0 8px var(--red-glow); }
+.code-overlay-demo .finish-space-hint {
+  display: block;
+  font-size: 0.6rem;
+  color: var(--muted, #9296a8);
+  margin-top: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   GAME-SPECIFIC OBJECTS
+   ════════════════════════════════════════════════════════════════ */
+
+/* — Lockpicking: pin chambers — */
+.lock-cylinder-demo {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(14, 15, 18, 0.98), rgba(6, 7, 10, 0.99)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 22px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 14px 16px 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.52), inset 0 0 18px rgba(0, 0, 0, 0.92);
+  overflow: hidden;
+}
+.shear-line-indicator {
+  position: absolute;
+  left: 0; right: 0;
+  top: 70px;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--orange) 0 4px, transparent 4px 10px);
+  box-shadow: 0 0 5px var(--orange), 0 0 10px rgba(228, 142, 53, 0.4);
+  opacity: 0.65;
+  z-index: 10;
+  pointer-events: none;
+}
+.lock-cylinder-row { display: flex; gap: 6px; position: relative; z-index: 4; }
+.pin-chamber {
+  position: relative;
+  width: 48px;
+  height: 170px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)), rgba(255, 255, 255, 0.025);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.72);
+  transition: all 0.25s ease;
+}
+.pin-chamber.active-chamber {
+  background: rgba(228, 142, 53, 0.1);
+  border-color: var(--orange);
+  box-shadow: 0 0 14px rgba(228, 142, 53, 0.36), inset 0 0 10px rgba(228, 142, 53, 0.2);
+}
+.spring-visual {
+  width: 16px;
+  flex-shrink: 0;
+  background: repeating-linear-gradient(180deg, #565c66 0 2px, transparent 2px 6px);
+  border-radius: 2px;
+  margin-top: 3px;
+  opacity: 0.9;
+}
+.driver-pin {
+  width: 30px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #414852, #2a3038);
+  border: 1px solid rgba(207, 212, 220, 0.18);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 2px 5px rgba(0, 0, 0, 0.48);
+}
+.key-pin {
+  width: 30px;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, #d48735, #8f4d18);
+  border: 1px solid rgba(245, 176, 95, 0.38);
+  border-radius: 2px 2px 5px 5px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 2px 6px rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pin-chamber.active-chamber .key-pin {
+  border-color: var(--orange);
+  background: linear-gradient(180deg, #f5b05f, #a95e20);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 12px rgba(228, 142, 53, 0.5);
+}
+.pin-chamber.decrypted .key-pin {
+  background: linear-gradient(180deg, #9ad744, #527f18);
+  border-color: #6da21a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 8px rgba(154, 215, 68, 0.32);
+}
+.pin-char {
+  font-family: "Roboto Mono", monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #160a03;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+}
+.pin-chamber.active-chamber .pin-char { color: #fff; text-shadow: 0 0 6px var(--orange); }
+.pin-chamber.decrypted .pin-char { color: #0b1a03; }
+.tension-meter-demo {
+  width: 22px;
+  height: 150px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  border: 1px solid rgba(253, 139, 139, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 59, 48, 0.2), rgba(228, 142, 53, 0.12), rgba(154, 215, 68, 0.08)),
+    rgba(0, 0, 0, 0.55);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.85);
+}
+.tension-meter-demo span {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 55%;
+  background: linear-gradient(180deg, #e43535, var(--orange), var(--green));
+  box-shadow: 0 0 16px rgba(228, 53, 53, 0.55);
+}
+
+/* — Fingerprint: scanner — */
+.scanner-bezel {
+  width: 190px;
+  height: 225px;
+  background: rgba(15, 16, 20, 0.85);
+  border: 2px solid var(--line, #382f12);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.95), 0 10px 25px rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.scanner-bezel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 204, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 204, 0, 0.015) 1px, transparent 1px);
+  background-size: 8px 8px;
+  pointer-events: none;
+  z-index: 2;
+}
+.laser-scanner-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--cyan, #ffcc00), transparent);
+  box-shadow: 0 0 8px var(--cyan, #ffcc00), 0 0 18px var(--cyan-glow, rgba(255, 204, 0, 0.4));
+  z-index: 12;
+  pointer-events: none;
+  animation: laserSweep 3s infinite ease-in-out;
+}
+.laser-scanner-glow {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(255, 204, 0, 0) 0%, rgba(255, 204, 0, 0.25) 35%, rgba(255, 204, 0, 0.6) 50%, rgba(255, 204, 0, 0.25) 65%, rgba(255, 204, 0, 0) 100%);
+  mix-blend-mode: screen;
+  z-index: 11;
+  pointer-events: none;
+  transform: translateY(-50%);
+  animation: laserSweep 3s infinite ease-in-out;
+}
+.fingerprint-vector-wrapper {
+  position: relative;
+  width: 140px;
+  height: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fingerprint-svg {
+  width: 100%;
+  height: 100%;
+  z-index: 6;
+}
+.fingerprint-svg .ridge-line {
+  fill: rgba(255, 255, 255, 0.12);
+  stroke: none;
+  transition: fill 0.35s ease, filter 0.35s ease;
+}
+.fingerprint-svg .ridge-group.cracked .ridge-line {
+  fill: var(--green, #9ad744) !important;
+  filter: drop-shadow(0 0 6px rgba(154, 215, 68, 0.85)) !important;
+}
+.fingerprint-svg .ridge-group.active .ridge-line {
+  fill: var(--cyan, #ffcc00) !important;
+  filter: drop-shadow(0 0 5px rgba(255, 204, 0, 0.75)) !important;
+}
+.scan-nodes-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 13;
+  pointer-events: none;
+}
+.scan-node-marker {
+  position: absolute;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(2, 5, 11, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%);
+  z-index: 13;
+}
+.scan-node-marker .node-label { font-family: "Roboto Mono", monospace; font-size: 7px; font-weight: 700; color: var(--muted, #a8a392); }
+.scan-node-marker.active-node { border-color: var(--cyan, #ffcc00); box-shadow: 0 0 8px var(--cyan-glow, rgba(255, 204, 0, 0.4)); transform: translate(-50%, -50%) scale(1.15); }
+.scan-node-marker.active-node .node-label { color: var(--cyan, #ffcc00); }
+.scan-node-marker.correct-node { border-color: var(--cyan, #ffcc00); background: rgba(255, 204, 0, 0.25); }
+
+/* — Redacting: manila folder + paper — */
+.manila-folder {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--manila-bg, #dca75e);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+.folder-tab {
+  position: absolute;
+  bottom: 100%;
+  left: 10px;
+  background: var(--manila-bg, #dca75e);
+  padding: 4px 12px 1px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 12px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: rgba(30, 9, 29, 0.7);
+  margin-bottom: -1px;
+}
+.folder-paper {
+  background: #fdfbf4;
+  border-radius: 3px;
+  padding: 16px 20px 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  font-family: "Courier New", Courier, monospace;
+  color: #1a1a1a;
+}
+.paper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px double #8f8579;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+.paper-meta { font-size: 0.66rem; font-weight: bold; letter-spacing: 0.5px; color: #7c7265; }
+.paper-meta span { color: #a12b1e; }
+.paper-stamp {
+  border: 2px solid #a12b1e;
+  color: #a12b1e;
+  padding: 1px 5px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 900;
+  transform: rotate(-3deg);
+  text-transform: uppercase;
+  border-radius: 3px;
+  opacity: 0.85;
+}
+.paper-stamp.unlocked { border-color: #9ad744; color: #6da21a; transform: rotate(3deg); }
+.folder-paper p { margin: 0 0 8px; font-size: 0.78rem; line-height: 1.5; text-align: justify; }
+.redacted-word {
+  display: inline-block;
+  background: #111;
+  color: transparent;
+  user-select: none;
+  padding: 0 3px;
+  border-radius: 1.5px;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  white-space: pre;
+  transition: all 0.4s ease;
+}
+.redacted-word.active-redaction { background: var(--orange, #e48e35); box-shadow: 0 0 5px var(--orange, #e48e35); }
+.redacted-word.decrypting-glow { background: #0d2b0d; color: #9ad744; text-shadow: 0 0 5px rgba(154, 215, 68, 0.4); box-shadow: 0 0 8px rgba(154, 215, 68, 0.4); }
+.redacted-word.decrypted { background: transparent; color: #111; }
+
+/* — Supercomputer: CPU stack — */
+.pcb-board {
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(116, 216, 255, 0.06), transparent 36%),
+    linear-gradient(135deg, #0b1a0e 0%, #050d07 52%, #020503 100%);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 26px rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.supercomputer-core {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at center, rgba(16, 29, 20, 0.98) 0%, rgba(6, 12, 8, 1) 100%),
+    repeating-linear-gradient(45deg, rgba(68, 215, 117, 0.02) 0 1px, transparent 1px 4px);
+  border: 2px solid rgba(217, 119, 6, 0.45);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8), 0 0 20px rgba(68, 215, 117, 0.05), inset 0 0 12px rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.supercomputer-core::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3f3f46 0%, #1e1b1b 50%, #09090b 100%);
+  border: 3.5px solid #52525b;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), inset 0 0 10px rgba(0, 0, 0, 0.95);
+  z-index: -1;
+}
+.supercomputer-core.under-attack {
+  border-color: var(--red, #ff3b30);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.85), 0 0 24px rgba(255, 59, 48, 0.45), inset 0 0 12px rgba(255, 59, 48, 0.25);
+}
+.cpu-notch { position: absolute; width: 8px; height: 8px; background: #020503; border: 1px solid rgba(217, 119, 6, 0.3); border-radius: 50%; z-index: 3; }
+.cpu-notch.tl { top: -4px; left: -4px; }
+.cpu-notch.tr { top: -4px; right: -4px; }
+.cpu-notch.bl { bottom: -4px; left: -4px; }
+.cpu-notch.br { bottom: -4px; right: -4px; }
+.cpu-gold-edge-left, .cpu-gold-edge-right {
+  position: absolute;
+  top: 10%;
+  height: 80%;
+  width: 5px;
+  background: repeating-linear-gradient(to bottom, #d97706 0 3px, transparent 3px 6px);
+  opacity: 0.85;
+  z-index: 3;
+}
+.cpu-gold-edge-left { left: 2px; }
+.cpu-gold-edge-right { right: 2px; }
+.cpu-cap {
+  position: absolute;
+  width: 6px; height: 4px;
+  background: #475569;
+  border-left: 1.5px solid #cbd5e1;
+  border-right: 1.5px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  z-index: 3;
+}
+.cpu-ihs {
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #2d3139 0%, #1e2024 45%, #15171a 55%, #0d0f11 100%);
+  border: 2.5px solid #4a505a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 4;
+}
+.cpu-serial {
+  position: absolute;
+  top: 6px;
+  font-family: "Roboto Mono", monospace;
+  font-size: 5.5px;
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.cpu-status-led {
+  position: absolute;
+  bottom: 6px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #44d775;
+  box-shadow: 0 0 6px rgba(68, 215, 117, 0.45);
+  animation: gentlePulse 1.2s infinite alternate ease-in-out;
+}
+.core-crystal {
+  width: 58px; height: 58px;
+  border-radius: 4px;
+  background: radial-gradient(circle at center, #05141e 0%, #010408 100%);
+  border: 2px solid #233545;
+  box-shadow: 0 0 10px rgba(116, 216, 255, 0.12), inset 0 0 8px rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.core-crystal::before {
+  content: "CPU";
+  font-family: "Orbitron", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  color: #74d8ff;
+  text-shadow: 0 0 4px #74d8ff, 0 0 12px rgba(116, 216, 255, 0.6);
+  letter-spacing: 1px;
+  animation: neonCpuPulse 2.5s infinite ease-in-out alternate;
+}
+.core-crystal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.core-ring { position: absolute; border: 1.5px solid rgba(116, 216, 255, 0.14); border-radius: 6px; pointer-events: none; aspect-ratio: 1; }
+.core-ring.ring-two { border-style: dashed; border-color: rgba(116, 216, 255, 0.08); }
+.core-ring.ring-three { border: 1px dotted rgba(116, 216, 255, 0.05); }
+
+/* — Supercomputer: sector cells — */
+.sector-grid-demo { display: grid; grid-template-columns: repeat(6, 52px); grid-auto-rows: 46px; gap: 8px; }
+.sector-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: rgba(8, 14, 20, 0.92);
+  border: 1px solid rgba(116, 216, 255, 0.22);
+  overflow: hidden;
+  user-select: none;
+}
+.cell-led { position: absolute; top: 6px; left: 6px; width: 5px; height: 5px; border-radius: 50%; background: #44d775; }
+.sector-cell.hacked { border-color: rgba(255, 59, 48, 0.55); }
+.sector-cell.hacked .cell-led { background: #ff3b30; }
+.sector-cell.crashed { opacity: 0.55; }
+.sector-cell.crashed .cell-led { background: #440a07; }
+.sector-cell.repaired .cell-led { background: #a3f7be; }
+.cell-letter { font-family: "Roboto Mono", monospace; font-size: 1.3rem; font-weight: 700; color: rgba(205, 235, 255, 0.85); }
+.sector-cell.crashed .cell-letter { color: rgba(205, 235, 255, 0.3); }
+.cell-fuse { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #ff3b30; transform-origin: left center; }
+.sector-cell.hacked .cell-fuse { transform: scaleX(0.6); }
+
+/* — Supercomputer: virus + traces — */
+.virus-svg { overflow: visible; }
+.virus-svg .virus-body-core { stroke: #ff3b30; stroke-width: 1.6; fill: #ff3b30; filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85)); }
+.virus-svg .virus-spike-line { stroke: #ff3b30; stroke-width: 1.8; fill: none; filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85)); }
+.virus-svg .virus-spike-head { stroke: #ff3b30; stroke-width: 1.2; fill: #ff3b30; filter: drop-shadow(0 0 5px rgba(255, 59, 48, 0.85)); }
+.virus-svg .virus-outer-ring { fill: none; stroke: rgba(255, 59, 48, 0.45); stroke-dasharray: 4 2; stroke-width: 1.25; transform-origin: center; animation: rotateRing 8s linear infinite; }
+.virus-svg .virus-text { font-family: "Orbitron", sans-serif; font-size: 11px; font-weight: 900; fill: #ffffff; text-anchor: middle; }
+.virus-svg.targeted .virus-body-core, .virus-svg.targeted .virus-spike-head { stroke: #e48e35; fill: #e48e35; filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85)); }
+.virus-svg.targeted .virus-spike-line { stroke: #e48e35; filter: drop-shadow(0 0 5px rgba(228, 142, 53, 0.85)); }
+.virus-svg.targeted .virus-outer-ring { stroke: rgba(228, 142, 53, 0.45); }
+.virus-svg .virus-graphic { animation: virusGlitch 1.5s infinite linear; }
+.trace-svg .circuit-trace-base { fill: none; stroke: rgba(68, 215, 117, 0.06); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.trace-svg .circuit-trace { fill: none; stroke: rgba(116, 216, 255, 0.25); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 2px rgba(116, 216, 255, 0.25)); }
+.trace-svg .circuit-trace.compromised { stroke: #ff3b30; filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.45)); }
+.trace-svg .pcb-reference-pad { fill: rgba(4, 14, 6, 0.9); stroke: rgba(116, 216, 255, 0.3); stroke-width: 1.1; }
+.projectile-packet circle { fill: #44d775; stroke: #ffffff; stroke-width: 1; filter: drop-shadow(0 0 6px #44d775); }
+.projectile-text { font-family: "Orbitron", sans-serif; font-size: 8px; font-weight: 900; fill: #000000; text-anchor: middle; }
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED KEYFRAMES — names + timings copied from the games
+   ════════════════════════════════════════════════════════════════ */
+@keyframes gentlePulse { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+@keyframes datalinkBlink { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+@keyframes signalPulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 1; } }
+@keyframes signalBarGrowth { 0% { transform: scaleY(0.4); opacity: 0.5; } 100% { transform: scaleY(1.2); opacity: 1; } }
+@keyframes crtFlicker { 0% { opacity: 0.94; } 50% { opacity: 1; } 100% { opacity: 0.96; } }
+@keyframes activeBoxPulse {
+  0% { border-color: rgba(228, 142, 53, 0.4); box-shadow: 0 0 4px rgba(228, 142, 53, 0.1); }
+  100% { border-color: var(--orange, #e48e35); box-shadow: 0 0 12px rgba(228, 142, 53, 0.4); }
+}
+@keyframes targetKeyPulse { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+@keyframes btnShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+@keyframes laserSweep { 0% { top: 3%; } 50% { top: 97%; } 100% { top: 3%; } }
+@keyframes neonCpuPulse {
+  0% { opacity: 0.8; filter: brightness(0.9); }
+  100% { opacity: 1; filter: brightness(1.25); }
+}
+@keyframes rotateRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes virusGlitch {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  10% { opacity: 0.8; filter: brightness(1.3); }
+  48% { opacity: 0.6; filter: brightness(1.5); }
+  50% { opacity: 1; filter: brightness(2.2); }
+  53% { opacity: 0.85; filter: brightness(1); }
+  85% { opacity: 0.7; filter: brightness(0.85); }
+}
+@keyframes stampEffect {
+  0% { transform: rotate(-3deg) scale(2.4); opacity: 0; }
+  100% { transform: rotate(-3deg) scale(1); opacity: 1; }
+}
+@keyframes cardEntry {
+  0% { opacity: 0; transform: translateY(25px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* — Door status label (keypad + fingerprint doors) — */
+.door-status {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.door-status .status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red-glow);
+  animation: blinkText 1s infinite alternate;
+}
+.door-status.unlocked { color: var(--green); }
+.door-status.unlocked .status-dot { background: var(--green); box-shadow: 0 0 6px var(--green-glow); animation: none; }
+@keyframes blinkText { 0% { opacity: 0.35; } 100% { opacity: 1; } }
+
+/* — Success side panel (won layout) — */
+.success-panel-right {
+  width: 240px;
+  background: var(--purple-dark, #050206);
+  border: 2px solid rgba(154, 215, 68, 0.2);
+  border-radius: 12px;
+  padding: 22px 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.success-panel-icon { stroke: var(--green); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 8px var(--green-glow)); margin-bottom: 12px; }
+.success-panel-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-glow);
+  letter-spacing: 1px;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+/* — Lockpicking extras — */
+.lock-id-plate {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-family: "Orbitron", sans-serif;
+  line-height: 1;
+  min-width: 130px;
+}
+.lock-id-plate .plate-eyebrow, .lock-id-plate .plate-footer {
+  font-size: 0.5rem;
+  color: var(--muted, #a89292);
+  letter-spacing: 1.2px;
+  font-weight: 800;
+}
+.lock-id-plate strong {
+  font-size: 0.88rem;
+  color: #e43535;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(228, 53, 53, 0.5);
+}
+.pin-progress-row { display: flex; gap: 6px; }
+.pin-progress-node {
+  height: 20px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.46);
+  color: var(--muted, #a89292);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.65);
+}
+.pin-progress-node.active { color: #fff; border-color: #e43535; background: rgba(228, 53, 53, 0.14); box-shadow: 0 0 12px rgba(228, 53, 53, 0.24); }
+.pin-progress-node.set { color: var(--green); border-color: rgba(154, 215, 68, 0.65); background: rgba(154, 215, 68, 0.12); box-shadow: 0 0 10px rgba(154, 215, 68, 0.22); }
+.pin-progress-node.fault { color: var(--red); border-color: rgba(255, 59, 48, 0.7); background: rgba(255, 59, 48, 0.14); }
+.spring-container-demo { width: 18px; overflow: visible; flex-shrink: 0; margin-top: 3px; }
+.spring-coil { display: block; width: 100%; height: 100%; overflow: visible; }
+.spring-coil path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.spring-coil .spring-back { stroke: #23262c; stroke-width: 1.8px; }
+.spring-coil .spring-front { stroke: url(#springGrad); stroke-width: 2.8px; filter: drop-shadow(0 1.5px 2px rgba(0, 0, 0, 0.65)); }
+.driver-pin.spool {
+  width: 14px;
+  background: linear-gradient(180deg, #30363e, #1a1e24);
+  border-top: none; border-bottom: none;
+  border-radius: 0;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+.driver-pin.spool::before, .driver-pin.spool::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 22%;
+  background: linear-gradient(180deg, #414852, #30363e);
+  border: 1px solid rgba(207, 212, 220, 0.18);
+}
+.driver-pin.spool::before { top: 0; border-radius: 2px 2px 0 0; box-shadow: inset 0 1px 0 rgba(255,255,255,0.09); }
+.driver-pin.spool::after { bottom: 0; background: linear-gradient(180deg, #2a3038, #1a1e24); border-radius: 0 0 2px 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.48); }
+.driver-pin.serrated {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 6px, rgba(0, 0, 0, 0.65) 6px 8px, rgba(255, 255, 255, 0.12) 8px 9px),
+    linear-gradient(180deg, #414852, #2a3038);
+}
+.lockpick-svg-demo { width: 100%; max-width: 420px; height: auto; display: block; }
+
+/* — Fingerprint scan node pulse ring — */
+.scan-node-marker .pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--cyan, #ffcc00);
+  opacity: 0;
+  pointer-events: none;
+}
+.scan-node-marker.active-node .pulse-ring { animation: nodePulseRing 1.4s infinite ease-out; }
+@keyframes nodePulseRing {
+  0% { opacity: 0.9; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* — Redacting viewport targeting HUD (green) — */
+.viewport-demo {
+  position: relative;
+  background: #080309;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  min-height: 210px;
+}
+.viewport-demo .ruler-h, .viewport-demo .ruler-v { position: absolute; background: #18111d; z-index: 15; }
+.viewport-demo .ruler-h {
+  top: 0; left: 18px; right: 0; height: 18px;
+  background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.22) 0 1px, transparent 1px 40px), repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0 1px, transparent 1px 10px);
+  background-color: #18111d;
+}
+.viewport-demo .ruler-v {
+  top: 18px; left: 0; bottom: 0; width: 18px;
+  background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0 1px, transparent 1px 40px), repeating-linear-gradient(0deg, rgba(255,255,255,0.1) 0 1px, transparent 1px 10px);
+  background-color: #18111d;
+}
+.viewport-demo .ruler-corner { position: absolute; top: 0; left: 0; width: 18px; height: 18px; background: #18111d; z-index: 16; }
+.hud-corners div {
+  position: absolute;
+  width: 16px; height: 16px;
+  border: 2.5px solid var(--green, #9ad744);
+  opacity: 0.85;
+  filter: drop-shadow(0 0 3px var(--green-glow, rgba(154,215,68,0.4)));
+  z-index: 12;
+}
+.hud-corners .tl { top: 26px; left: 26px; border-right: none; border-bottom: none; }
+.hud-corners .tr { top: 26px; right: 10px; border-left: none; border-bottom: none; }
+.hud-corners .bl { bottom: 10px; left: 26px; border-right: none; border-top: none; }
+.hud-corners .br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+.scan-laser-line {
+  position: absolute;
+  left: 0; right: 0;
+  top: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--green, #9ad744), transparent);
+  box-shadow: 0 0 10px var(--green, #9ad744), 0 0 20px var(--green, #9ad744);
+  opacity: 0.3;
+  z-index: 5;
+}
+.reticle-target {
+  position: absolute;
+  border: 1.5px solid var(--green, #9ad744);
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(154, 215, 68, 0.4), inset 0 0 10px rgba(154, 215, 68, 0.2);
+  z-index: 10;
+}
+.reticle-label {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  background: var(--green, #9ad744);
+  color: #0b030b;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.paper-progress { display: flex; align-items: center; gap: 6px; border-top: 1px dashed #8f8579; padding-top: 8px; margin-top: 10px; }
+.paper-progress .p-title, .paper-progress .p-value { font-size: 0.66rem; font-weight: bold; color: #7c7265; font-family: "Courier New", Courier, monospace; }
+.paper-progress .p-track { width: 100px; height: 8px; background: #e2dacd; border-radius: 99px; overflow: hidden; }
+.paper-progress .p-fill { height: 100%; width: 60%; background: #9ad744; border-radius: 99px; }
+
+/* — Supercomputer HUD — */
+.hud-telemetry-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(12, 25, 15, 0.85), rgba(5, 8, 6, 0.9)),
+    radial-gradient(circle at 50% 0%, rgba(68, 215, 117, 0.08), transparent 50%);
+  border: 1px solid rgba(68, 215, 117, 0.15);
+  border-radius: 6px;
+  padding: 9px 16px;
+  min-width: 100px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 6px 18px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+.hud-telemetry-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.045) 42%, transparent 55%);
+  pointer-events: none;
+}
+.tel-val { font-family: "Orbitron", sans-serif; font-size: 1.4rem; font-weight: 900; color: #fff; line-height: 1; }
+.tel-val.is-red { color: var(--red, #ff3b30); text-shadow: 0 0 8px var(--red-glow, rgba(255,59,48,0.45)); }
+.tel-label { font-family: "Orbitron", sans-serif; font-size: 0.55rem; font-weight: 700; color: rgba(213, 238, 220, 0.68); letter-spacing: 0.8px; margin-top: 3px; }
+.shield-node {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2.5px solid #44d775;
+  background: rgba(68, 215, 117, 0.08);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 10px rgba(68, 215, 117, 0.15);
+}
+.shield-node svg { width: 60%; height: 60%; stroke: #44d775; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0.7; }
+.shield-node.lost { border-color: var(--red, #ff3b30); background: rgba(255, 59, 48, 0.16); box-shadow: 0 0 14px rgba(255, 59, 48, 0.45), inset 0 0 9px rgba(255, 59, 48, 0.16); }
+.shield-node.lost svg { stroke: var(--red, #ff3b30); opacity: 1; }
+.hack-progress-demo { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 300px; }
+.hack-progress-meta { display: flex; justify-content: space-between; align-items: center; }
+.hack-progress-demo .progress-title { font-family: "Orbitron", sans-serif; font-size: 0.6rem; font-weight: 700; color: #799a80; letter-spacing: 0.5px; }
+.progress-pct {
+  min-height: 22px;
+  padding: 3px 12px;
+  border-radius: 4px;
+  border: 1.5px solid #15331c;
+  background: #060f0a;
+  color: #44d775;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.95), 0 0 4px rgba(68, 215, 117, 0.1);
+  text-shadow: 0 0 4px rgba(68, 215, 117, 0.45);
+  display: inline-flex;
+  align-items: center;
+}
+.progress-pct.warning { color: #e48e35; border-color: rgba(228, 142, 53, 0.4); text-shadow: 0 0 5px rgba(228, 142, 53, 0.6); }
+.progress-pct.danger { color: #ff3b30; border-color: rgba(255, 59, 48, 0.4); text-shadow: 0 0 6px rgba(255, 59, 48, 0.45); }
+.progress-bar-track {
+  height: 10px;
+  background: rgba(12, 45, 18, 0.25);
+  border: 1.5px solid #15331c;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+.progress-bar-fill { height: 100%; background: #44d775; box-shadow: 0 0 8px rgba(68, 215, 117, 0.45); }
+.progress-bar-fill.warning { background: #e48e35; box-shadow: 0 0 8px rgba(228, 142, 53, 0.5); }
+.progress-bar-fill.danger { background: #ff3b30; box-shadow: 0 0 12px rgba(255, 59, 48, 0.45); }
+
+/* — Practice: inline typing, keyboard keys, scanner gate, rhythm — */
+.typing-line-demo {
+  font-family: "Roboto Mono", monospace;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: pre;
+  color: #fff;
+  background: #050505;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 18px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.typing-line-demo .char { border-bottom: 3.5px solid transparent; }
+.typing-line-demo .char.correct { color: #9ad744; text-shadow: 0 0 3px rgba(154, 215, 68, 0.4); }
+.typing-line-demo .char.wrong { color: #ff3b30; text-shadow: 0 0 3px rgba(255, 59, 48, 0.4); background: rgba(255, 59, 48, 0.18); border-bottom-color: #ff3b30; }
+.typing-line-demo .char.faded { opacity: 0.85; }
+.typing-line-demo .char.current {
+  color: #000;
+  background: #e48e35;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.35);
+  animation: cursorBlockBlink 0.8s infinite steps(2, start);
+}
+@keyframes cursorBlockBlink {
+  0%, 100% { background: #e48e35; color: #000; }
+  50% { background: transparent; color: #fff; }
+}
+.kbd-row { display: flex; gap: 6px; }
+.kbd-key-demo {
+  width: 44px; height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  color: #d0d0d0;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  user-select: none;
+}
+.kbd-key-demo.home { border-color: rgba(255, 255, 255, 0.2); }
+.kbd-key-demo.active-target {
+  border-color: #e48e35;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e48e35;
+  animation: keyTargetPulseDemo 1.2s infinite alternate ease-in-out;
+}
+@keyframes keyTargetPulseDemo {
+  0% { box-shadow: 0 1.5px 0 rgba(0,0,0,0.85), 0 0 6px rgba(228, 142, 53, 0.35); }
+  100% { box-shadow: 0 1.5px 0 rgba(0,0,0,0.85), 0 0 18px rgba(228, 142, 53, 0.35); }
+}
+.scanner-gate-demo {
+  width: 90px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.gate-bracket {
+  width: 100%;
+  height: 8px;
+  border: 2px solid #e48e35;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(228, 142, 53, 0.35);
+  background: rgba(228, 142, 53, 0.05);
+}
+.gate-laser {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, #e48e35, transparent);
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.5);
+  animation: gentlePulse 1.2s infinite alternate;
+}
+.rhythm-wave-demo { width: 180px; height: 64px; }
+.rhythm-wave-demo path { fill: none; stroke: #e48e35; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(228, 142, 53, 0.35)); }
+
+/* Briefing flow examples */
+.briefing-flow-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.briefing-flow-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.018);
+}
+.briefing-flow-preview {
+  min-height: 220px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--sg-line);
+  background: #070814;
+}
+.briefing-panel.mini-briefing-panel {
+  max-width: none;
+  min-height: 196px;
+  padding: 10px 14px 12px;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), inset 0 0 12px rgba(139, 141, 253, 0.05);
+}
+.mini-briefing-panel .briefing-panel-header {
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+}
+.mini-briefing-panel .briefing-eyebrow { font-size: 0.48rem; }
+.mini-briefing-panel .briefing-pagination { gap: 5px; }
+.mini-briefing-panel .briefing-pagination .dot {
+  width: 6px;
+  height: 6px;
+  border-width: 1px;
+}
+.mini-briefing-panel .briefing-slide-title {
+  font-size: 0.7rem;
+  line-height: 1.32;
+}
+.mini-briefing-panel .briefing-slide-graphic {
+  min-height: 92px;
+  margin-top: 4px;
+}
+.mini-briefing-panel .briefing-footer {
+  gap: 7px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.mini-briefing-panel .spacebar-instruction { font-size: 0.46rem; }
+.mini-briefing-panel .spacebar-btn-visual {
+  width: 58px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0;
+}
+.mini-keypad-device {
+  width: 70px;
+  padding: 8px 7px;
+  border: 2px solid #555b61;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #4c5258, #272b30);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 18px rgba(0, 0, 0, 0.45);
+}
+.mini-keypad-screen {
+  height: 22px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid rgba(228, 142, 53, 0.3);
+  border-radius: 3px;
+  background: #070407;
+  color: var(--orange);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.34rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.mini-keypad-screen .mini-slot {
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.55);
+}
+.mini-keypad-screen .mini-slot.filled {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+}
+.mini-keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+.mini-keypad-key {
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+  background: #16192b;
+  color: rgba(255, 255, 255, 0.72);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.44rem;
+  font-weight: 800;
+}
+.mini-keypad-key.active {
+  border-color: var(--orange);
+  color: var(--orange);
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.45);
+  animation: keyTargetPulseDemo 1.2s infinite alternate ease-in-out;
+}
+.briefing-flow-body { padding: 14px 16px 16px; }
+.briefing-step-number {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  border: 2px solid var(--orange);
+  border-radius: 50%;
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.35);
+}
+.briefing-flow-body h4 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 0.78rem;
+}
+.briefing-spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.68rem;
+}
+.briefing-spec-table th,
+.briefing-spec-table td {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  vertical-align: top;
+}
+.briefing-spec-table th {
+  width: 36%;
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.56rem;
+  letter-spacing: 0.8px;
+  text-align: left;
+  text-transform: uppercase;
+}
+.briefing-spec-table td { color: #d9d3de; }
+
+/* Typeoefening 1:1 key deck */
+.practice-keyboard-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 18px 4px 34px;
+}
+.practice-keyboard-demo {
+  --key-h: clamp(34px, 4.8vh, 48px);
+  --row-gap: 4px;
+  --key-gap: 5px;
+  --key-pad-y: 6px;
+  --key-pad-x: 8px;
+  --key-radius: 6px;
+  --key-font: clamp(1rem, 2vh, 1.3rem);
+  --mod-font: 0.7rem;
+  width: 100%;
+  max-width: 820px;
+  min-width: 720px;
+  margin: 0 auto;
+  perspective: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.practice-keyboard-demo.is-briefing {
+  --key-h: 18px;
+  --row-gap: 2px;
+  --key-gap: 2px;
+  --key-pad-y: 4px;
+  --key-pad-x: 5px;
+  --key-radius: 3px;
+  --key-font: 0.46rem;
+  --mod-font: 0.36rem;
+  min-width: 240px;
+  max-width: 320px;
+  perspective: 560px;
+}
+.practice-keyboard-demo::before {
+  content: "";
+  position: absolute;
+  inset: 0 10%;
+  background: radial-gradient(ellipse at center, rgba(228, 142, 53, 0.04) 0%, transparent 70%);
+  transform: rotateX(24deg) translateZ(-10px);
+  pointer-events: none;
+  z-index: 0;
+}
+.practice-keyboard-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  padding: var(--key-pad-y) var(--key-pad-x);
+  border: 2px solid var(--purple-soft);
+  border-radius: 8px;
+  background: rgba(20, 20, 20, 0.75);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(228, 142, 53, 0.04);
+  transform: rotateX(24deg) translateZ(0);
+  transform-style: preserve-3d;
+}
+.practice-keyboard-demo.is-briefing .practice-keyboard-container {
+  border-width: 1px;
+  border-radius: 5px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.75), inset 0 0 12px rgba(228, 142, 53, 0.035);
+}
+.practice-keyboard-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--key-gap);
+}
+.practice-key {
+  height: var(--key-h);
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--key-radius);
+  background: rgba(255, 255, 255, 0.02);
+  color: #7b786c;
+  font-family: "Roboto", sans-serif;
+  font-size: var(--key-font);
+  font-weight: 700;
+  user-select: none;
+  transform: translateY(0) translateZ(0);
+  transform-style: preserve-3d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition: transform 0.1s ease, background-color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease, color 0.14s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.practice-key .key-code {
+  pointer-events: none;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+.practice-key.key-wide-1 { flex: 1.3; }
+.practice-key.key-wide-2 { flex: 1.6; }
+.practice-key.key-wide-3 { flex: 2; }
+.practice-key.key-wide-4 { flex: 2.3; }
+.practice-key.key-space { flex: 8.5; }
+.practice-key.modifier,
+.practice-key.key-wide-1,
+.practice-key.key-wide-2,
+.practice-key.key-wide-3,
+.practice-key.key-wide-4 {
+  background: rgba(255, 255, 255, 0.01);
+  border-color: rgba(255, 255, 255, 0.03);
+  box-shadow: none;
+}
+.practice-key.modifier .key-code,
+.practice-key.key-wide-1 .key-code,
+.practice-key.key-wide-2 .key-code,
+.practice-key.key-wide-3 .key-code,
+.practice-key.key-wide-4 .key-code {
+  opacity: 0.45;
+  font-size: var(--mod-font);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.practice-key.left-home,
+.practice-key.right-home { border-color: rgba(255, 255, 255, 0.2); }
+.practice-key.home-anchor {
+  border-color: rgba(154, 215, 68, 0.8) !important;
+  color: #9ad744 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 8px rgba(154, 215, 68, 0.42) !important;
+}
+.practice-key.finger-lp,
+.practice-key.finger-rp {
+  --finger-color: #d4a33b;
+  --finger-color-glow: rgba(212, 163, 59, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(212, 163, 59, 0.5);
+  color: #d4a33b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+}
+.practice-key.finger-lr,
+.practice-key.finger-rr {
+  --finger-color: #48b861;
+  --finger-color-glow: rgba(72, 184, 97, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(72, 184, 97, 0.5);
+  color: #48b861;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+}
+.practice-key.finger-lm,
+.practice-key.finger-rm {
+  --finger-color: #e86b6b;
+  --finger-color-glow: rgba(232, 107, 107, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(232, 107, 107, 0.5);
+  color: #e86b6b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+}
+.practice-key.finger-li {
+  --finger-color: #2ebbb0;
+  --finger-color-glow: rgba(46, 187, 176, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(46, 187, 176, 0.5);
+  color: #2ebbb0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+}
+.practice-key.finger-ri {
+  --finger-color: #4d82eb;
+  --finger-color-glow: rgba(77, 130, 235, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(77, 130, 235, 0.5);
+  color: #4d82eb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+}
+.practice-key.finger-t {
+  --finger-color: #b55feb;
+  --finger-color-glow: rgba(181, 95, 235, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(181, 95, 235, 0.5);
+  color: #b55feb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 0 4px var(--finger-color-glow);
+}
+.practice-key.active-target {
+  border-color: var(--finger-color, var(--cyan)) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--finger-color, var(--cyan)) !important;
+  font-weight: 700;
+  animation: keyTargetPulseDemo 1.2s infinite alternate ease-in-out;
+  opacity: 1 !important;
+}
+.practice-key.pressed {
+  transform: translateY(1.2px) translateZ(0) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border-color: var(--finger-color, var(--cyan)) !important;
+  text-shadow: 0 0 8px var(--finger-color, var(--cyan)) !important;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.01), 0 0 15px var(--finger-color, var(--cyan)), 0 0 5px var(--finger-color, var(--cyan)), inset 0 0 8px var(--finger-color-glow, var(--cyan-glow)) !important;
+  transition: transform 0.04s cubic-bezier(0.1, 0.9, 0.2, 1), background-color 0.04s ease, border-color 0.04s ease, box-shadow 0.04s ease, text-shadow 0.04s ease;
+}
+
+/* Animation examples */
+.animation-demo-grid {
+  width: 100%;
+  max-width: 760px;
+  margin: 18px auto 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 12px;
+}
+.animation-demo-card {
+  min-height: 132px;
+  padding: 16px 12px 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.24);
+}
+.animation-demo-label {
+  color: var(--sg-muted);
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.demo-leds { display: flex; gap: 8px; }
+.demo-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #111;
+}
+.demo-led.green {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: datalinkBlink 0.3s infinite alternate;
+}
+.demo-led.orange {
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+  animation: signalPulse 1.2s infinite ease-in-out;
+}
+.demo-signal-bars {
+  height: 34px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+.demo-signal-bars span {
+  width: 5px;
+  height: 24px;
+  border-radius: 2px;
+  background: var(--orange);
+  box-shadow: 0 0 8px rgba(228, 142, 53, 0.45);
+  transform-origin: bottom;
+  animation: signalBarGrowth 0.8s infinite ease-in-out alternate;
+}
+.demo-signal-bars span:nth-child(1) { height: 8px; animation-delay: 0.1s; }
+.demo-signal-bars span:nth-child(2) { height: 17px; animation-delay: 0.3s; }
+.demo-signal-bars span:nth-child(3) { height: 28px; animation-delay: 0.2s; }
+.demo-signal-bars span:nth-child(4) { height: 13px; animation-delay: 0.5s; }
+.demo-signal-bars span:nth-child(5) { height: 22px; animation-delay: 0.4s; }
+.demo-scanner {
+  position: relative;
+  width: 54px;
+  height: 66px;
+  border: 1px solid rgba(228, 142, 53, 0.24);
+  border-radius: 5px;
+  background: rgba(228, 142, 53, 0.04);
+  overflow: hidden;
+}
+.demo-scanner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  height: 3px;
+  background: var(--orange);
+  box-shadow: 0 0 10px rgba(228, 142, 53, 0.7);
+  animation: demoScannerSweep 2.2s infinite ease-in-out;
+}
+.demo-active-key {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--orange);
+  border-radius: 7px;
+  background: rgba(228, 142, 53, 0.08);
+  color: var(--orange);
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  box-shadow: 0 0 12px rgba(228, 142, 53, 0.35);
+  animation: keyTargetPulseDemo 1.2s infinite alternate ease-in-out;
+}
+.demo-error-box {
+  width: 72px;
+  height: 42px;
+  border: 2px solid var(--red);
+  border-radius: 6px;
+  background: rgba(255, 59, 48, 0.12);
+  box-shadow: 0 0 14px rgba(255, 59, 48, 0.38);
+  animation: demoErrorShake 1.4s infinite ease-in-out;
+}
+.demo-lock-box {
+  width: 78px;
+  height: 40px;
+  border: 2px solid var(--green);
+  border-radius: 6px;
+  background: rgba(154, 215, 68, 0.06);
+  box-shadow: 0 0 12px rgba(154, 215, 68, 0.4), inset 0 0 10px rgba(154, 215, 68, 0.08);
+  animation: demoTargetLock 1.2s infinite alternate ease-in-out;
+}
+.demo-packet-track {
+  position: relative;
+  width: 104px;
+  height: 42px;
+}
+.demo-packet-track::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 20px;
+  height: 2px;
+  background: rgba(116, 216, 255, 0.24);
+}
+.demo-packet {
+  position: absolute;
+  top: 12px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(154, 215, 68, 0.55);
+  animation: demoPacketHit 1.5s infinite ease-in-out;
+}
+.demo-packet-target {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  width: 34px;
+  height: 34px;
+  border: 2px solid rgba(154, 215, 68, 0.5);
+  border-radius: 50%;
+}
+.demo-metronome {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  color: var(--green);
+  box-shadow: 0 0 10px rgba(154, 215, 68, 0.4);
+}
+.demo-metronome .play-symbol {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.44rem;
+  font-weight: 900;
+  letter-spacing: 0.4px;
+}
+.demo-metronome::before,
+.demo-metronome::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(154, 215, 68, 0.65);
+  border-radius: 50%;
+  opacity: 0;
+  animation: demoMetronomeRing 1.2s infinite ease-out;
+}
+.demo-metronome::after { animation-delay: 0.45s; }
+@keyframes demoScannerSweep {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(50px); }
+}
+@keyframes demoErrorShake {
+  0%, 68%, 100% { transform: translateX(0); }
+  72% { transform: translateX(-3px); }
+  76% { transform: translateX(3px); }
+  80% { transform: translateX(-2px); }
+  84% { transform: translateX(2px); }
+}
+@keyframes demoTargetLock {
+  0% { box-shadow: 0 0 7px rgba(154, 215, 68, 0.3), inset 0 0 6px rgba(154, 215, 68, 0.05); }
+  100% { box-shadow: 0 0 18px rgba(154, 215, 68, 0.58), inset 0 0 12px rgba(154, 215, 68, 0.12); }
+}
+@keyframes demoPacketHit {
+  0% { transform: translateX(0) scale(1); opacity: 0.7; }
+  62% { transform: translateX(68px) scale(1); opacity: 1; }
+  78% { transform: translateX(68px) scale(1.35); opacity: 1; }
+  100% { transform: translateX(68px) scale(0.7); opacity: 0; }
+}
+@keyframes demoMetronomeRing {
+  0% { opacity: 0.75; transform: scale(0.72); }
+  100% { opacity: 0; transform: scale(1.45); }
+}
+
+/* Guide-only demo helpers */
+.sg-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; justify-content: center; width: 100%; }
+.sg-minw { min-width: 0; }
+@media (max-width: 900px) {
+  .sg-nav { display: none; }
+  .result-dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+  .sector-grid-demo { grid-template-columns: repeat(4, 52px); }
+  .briefing-flow-grid { grid-template-columns: 1fr; }
+  .animation-demo-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+}
+</style>
+</head>
+<body>
+<div class="sg-shell">
+
+<nav class="sg-nav">
+  <span class="sg-logo">TYPEMISSION</span>
+  <span class="sg-logo-sub">DESIGN SYSTEM V3.0</span>
+  <a href="#identity"><span>01</span>Identity &amp; rules</a>
+  <a href="#colors"><span>02</span>Color system</a>
+  <a href="#type"><span>03</span>Typography</a>
+  <a href="#frame"><span>04</span>Frame &amp; flow</a>
+  <a href="#layers"><span>05</span>The layer stack</a>
+  <a href="#components"><span>06</span>Core components</a>
+  <a href="#inputs"><span>07</span>Typing &amp; input states</a>
+  <a href="#results"><span>08</span>Result screen</a>
+  <a href="#objects"><span>09</span>Game object library</a>
+  <a href="#feedback"><span>10</span>Feedback &amp; motion</a>
+  <a href="#themes"><span>11</span>Theme variants</a>
+  <a href="#css"><span>12</span>New game checklist</a>
+</nav>
+
+<main class="sg-main">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="springGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="#4b5059"/><stop offset="30%" stop-color="#bfc5cf"/><stop offset="50%" stop-color="#ffffff"/><stop offset="70%" stop-color="#bfc5cf"/><stop offset="100%" stop-color="#3a3e45"/>
+  </linearGradient>
+  <linearGradient id="handleMetalGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#8f95a0"/><stop offset="20%" stop-color="#dce1eb"/><stop offset="50%" stop-color="#6b717d"/><stop offset="80%" stop-color="#3b3f47"/><stop offset="100%" stop-color="#1f2126"/>
+  </linearGradient>
+  <linearGradient id="pickMetalGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#cfd4dc"/><stop offset="25%" stop-color="#ffffff"/><stop offset="50%" stop-color="#7f8590"/><stop offset="85%" stop-color="#3e434c"/><stop offset="100%" stop-color="#24272c"/>
+  </linearGradient>
+</defs></svg>
+<!-- ═══════════════ 01 IDENTITY ═══════════════ -->
+<section class="sg-section" id="identity">
+  <p class="sg-kicker">01 — System overview</p>
+  <h2>Identity &amp; rules</h2>
+  <p class="sg-lead">
+    TYPEMISSION games are <strong>spy-mission typing games</strong>. Every game is a dark, 16:9 tactical
+    interface in which the player hacks one physical machine by typing. The machine is always built the same way:
+    a <strong>light grey metal plate</strong>, with a <strong>dark device panel</strong> bolted on top,
+    holding a <strong>CRT screen with scanlines</strong> and the <strong>input parts</strong> the player types on.
+    Section <a href="#layers" style="color:#f5b05f">05</a> documents that stack layer by layer.
+  </p>
+  <div class="sg-rules">
+    <div class="sg-rule"><b>One hue per game</b>Each game owns exactly one background hue (red, indigo, amber, purple, grey, green). All panel, border and muted-text colors are tints of that hue. See section 02.</div>
+    <div class="sg-rule"><b>Shared accents everywhere</b>Orange <code>#e48e35</code> = the active target. Green <code>#9ad744</code> = correct/unlocked. Red <code>#ff3b30</code> = mistake/threat. These never change per game.</div>
+    <div class="sg-rule"><b>Panels are machines</b>Every panel earns hardware details: rivets, LEDs, ports, signal bars, etched serial text. Nothing looks like a generic website card.</div>
+    <div class="sg-rule"><b>Same flow, always</b>Briefing cards → game arena → in-machine feedback → system report. The player advances with the spacebar at every step.</div>
+    <div class="sg-rule"><b>Glow is meaning</b>A glow is feedback, not decoration: orange = type this now, green = done, red = wrong. Idle parts stay matte.</div>
+    <div class="sg-rule bad"><b>Never</b>Light backgrounds (except document paper), rounded pill buttons, blue hyperlinks, generic web inputs, more than one accent glowing at once on the same object.</div>
+  </div>
+  <table class="sg-table">
+    <tr><th>Game folder</th><th>System label</th><th>Title</th><th>Theme</th></tr>
+    <tr><td><code>typegame-door-Lockpicking</code></td><td><code>SYSTEM: LOCKPICK_BYPASS_V2.1</code></td><td>TYPEMISSION // DOOR LOCKPICKING</td><td>Dark red/brown</td></tr>
+    <tr><td><code>typegame-door-keypad</code></td><td><code>SYSTEM: KEYPAD_BREAKER_V1.4</code></td><td>TYPEMISSION // DOOR KEYPAD</td><td>Dark indigo</td></tr>
+    <tr><td><code>typegame-door-fingerprint</code></td><td><code>SYSTEM: FINGERPRINT_BYPASS_V2.0</code></td><td>TYPEMISSION // FINGERPRINT</td><td>Dark amber</td></tr>
+    <tr><td><code>typegame-file-redacting</code></td><td><code>SYSTEM: DECRYPTER_V2.9</code></td><td>TYPEMISSION // FILE REDACTING</td><td>Dark purple</td></tr>
+    <tr><td><code>typegame-typeoefening-losse-letters</code></td><td>—</td><td>TYPEMISSION // TYPE TRAINING</td><td>Neutral grey</td></tr>
+    <tr><td><code>typegame-supercomputer-defense</code> (varianten)</td><td><code>SYSTEM: CPU_FIREWALL_V4.8</code></td><td>TYPEMISSION // SUPERCOMPUTER DEFENSE</td><td>Dark green</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════ 02 COLORS ═══════════════ -->
+<section class="sg-section" id="colors">
+  <p class="sg-kicker">02 — Extracted from each game's <code>:root</code></p>
+  <h2>Color system</h2>
+  <p class="sg-lead">
+    Every game fills in the <strong>same set of color roles</strong> with different values. That is the whole theming
+    system: components never hard-code a color, they take it from the game's role palette — panel color, border
+    color, hairline color, screen background, dim text. A new game only needs its own set of values for those roles.
+  </p>
+
+  <h3>Shared accents (identical in every game)</h3>
+  <table class="sg-table">
+    <tr><th></th><th>Role</th><th>Value</th><th>Used for</th></tr>
+    <tr><td><span class="sg-swatch" style="background:#e48e35"></span></td><td>Action orange</td><td><code>#e48e35</code></td><td>Active target: the letter/slot/word the player must type now. Also stat values, briefing eyebrows, screen labels.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#f5b05f"></span></td><td>Soft orange</td><td><code>#f5b05f</code></td><td>Hover states of orange, gradient tops of picked pins.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#9ad744"></span></td><td>Success green</td><td><code>#9ad744</code></td><td>Correct input, unlocked state, system-OK labels, briefing dots. Supercomputer uses <code>#44d775</code>.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#ff3b30"></span></td><td>Alarm red</td><td><code>#ff3b30</code></td><td>Mistakes, alarms, viruses, failed missions.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#ffffff"></span></td><td>Text white</td><td><code>#ffffff</code></td><td>Primary text.</td></tr>
+  </table>
+  <p class="sg-note">Glows are always the accent color itself at roughly 30–50% opacity — green glow, red glow and orange glow are just softened versions of the accents above, never a different hue.</p>
+
+  <h3>Per-game theme values</h3>
+  <p class="sg-note">The same seven roles, filled in per game — these are the real extracted values.</p>
+  <table class="sg-table">
+    <tr><th>Role</th><th>Lockpicking</th><th>Keypad</th><th>Fingerprint</th><th>Redacting</th><th>Practice</th><th>Supercomputer</th></tr>
+    <tr><td>Panel color</td>
+      <td><span class="sg-swatch" style="background:#120505"></span> <code>#120505</code></td>
+      <td><span class="sg-swatch" style="background:#0f102b"></span> <code>#0f102b</code></td>
+      <td><span class="sg-swatch" style="background:#1c1809"></span> <code>#1c1809</code></td>
+      <td><span class="sg-swatch" style="background:#1a0819"></span> <code>#1a0819</code></td>
+      <td><span class="sg-swatch" style="background:#181818"></span> <code>#181818</code></td>
+      <td><span class="sg-swatch" style="background:#091a0c"></span> <code>#091a0c</code></td></tr>
+    <tr><td>Page background</td>
+      <td><span class="sg-swatch" style="background:#050206"></span> <code>#050206</code></td>
+      <td><span class="sg-swatch" style="background:#050206"></span> <code>#050206</code></td>
+      <td><span class="sg-swatch" style="background:#050206"></span> <code>#050206</code></td>
+      <td><span class="sg-swatch" style="background:#0b030b"></span> <code>#0b030b</code></td>
+      <td><span class="sg-swatch" style="background:#080808"></span> <code>#080808</code></td>
+      <td><span class="sg-swatch" style="background:#020503"></span> <code>#020503</code></td></tr>
+    <tr><td>Border color</td>
+      <td><span class="sg-swatch" style="background:#300f0f"></span> <code>#300f0f</code></td>
+      <td><span class="sg-swatch" style="background:#1e224e"></span> <code>#1e224e</code></td>
+      <td><span class="sg-swatch" style="background:#4a3e14"></span> <code>#4a3e14</code></td>
+      <td><span class="sg-swatch" style="background:#4d1c44"></span> <code>#4d1c44</code></td>
+      <td><span class="sg-swatch" style="background:#333333"></span> <code>#333333</code></td>
+      <td><span class="sg-swatch" style="background:#15331c"></span> <code>#15331c</code></td></tr>
+    <tr><td>Light accent</td>
+      <td><span class="sg-swatch" style="background:#fd8b8b"></span> <code>#fd8b8b</code></td>
+      <td><span class="sg-swatch" style="background:#8b9dfd"></span> <code>#8b9dfd</code></td>
+      <td><span class="sg-swatch" style="background:#fdd98b"></span> <code>#fdd98b</code></td>
+      <td><span class="sg-swatch" style="background:#6dcdef"></span> <code>#6dcdef</code></td>
+      <td><span class="sg-swatch" style="background:#e0e0e0"></span> <code>#e0e0e0</code></td>
+      <td><span class="sg-swatch" style="background:#9ad744"></span> <code>#9ad744</code></td></tr>
+    <tr><td>Dim text</td>
+      <td><span class="sg-swatch" style="background:#a89292"></span> <code>#a89292</code></td>
+      <td><span class="sg-swatch" style="background:#9296a8"></span> <code>#9296a8</code></td>
+      <td><span class="sg-swatch" style="background:#a8a392"></span> <code>#a8a392</code></td>
+      <td><span class="sg-swatch" style="background:#a092a7"></span> <code>#a092a7</code></td>
+      <td><span class="sg-swatch" style="background:#7a7a7a"></span> <code>#7a7a7a</code></td>
+      <td><span class="sg-swatch" style="background:#799a80"></span> <code>#799a80</code></td></tr>
+    <tr><td>Hairlines / dividers</td>
+      <td><span class="sg-swatch" style="background:#3d1f1f"></span> <code>#3d1f1f</code></td>
+      <td><span class="sg-swatch" style="background:#1f213d"></span> <code>#1f213d</code></td>
+      <td><span class="sg-swatch" style="background:#382f12"></span> <code>#382f12</code></td>
+      <td><span class="sg-swatch" style="background:#3b283f"></span> <code>#3b283f</code></td>
+      <td><span class="sg-swatch" style="background:#222222"></span> <code>#222222</code></td>
+      <td><span class="sg-swatch" style="background:#1d3d25"></span> <code>#1d3d25</code></td></tr>
+    <tr><td>Screen background</td>
+      <td><span class="sg-swatch" style="background:#140606"></span> <code>#140606</code></td>
+      <td><span class="sg-swatch" style="background:#060714"></span> <code>#060714</code></td>
+      <td><span class="sg-swatch" style="background:#0c0a05"></span> <code>#0c0a05</code></td>
+      <td><span class="sg-swatch" style="background:#0a050d"></span> <code>#0a050d</code></td>
+      <td><span class="sg-swatch" style="background:#050505"></span> <code>#050505</code></td>
+      <td><span class="sg-swatch" style="background:#060f0a"></span> <code>#060f0a</code></td></tr>
+  </table>
+
+  <h3>Game-specific extras</h3>
+  <table class="sg-table">
+    <tr><th></th><th>Role</th><th>Value</th><th>Game &amp; use</th></tr>
+    <tr><td><span class="sg-swatch" style="background:#ffcc00"></span></td><td>Biometric yellow</td><td><code>#ffcc00</code></td><td>Fingerprint — the scan accent: laser line, active scan nodes, stat values.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#e43535"></span></td><td>Crimson</td><td><code>#e43535</code></td><td>Lockpicking — lock ID plate text, tension meter.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#74d8ff"></span></td><td>Neon cyan</td><td><code>#74d8ff</code></td><td>Supercomputer — glowing CPU label, circuit data lines, sector cell borders and letters.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:#dca75e"></span></td><td>Manila</td><td><code>#dca75e</code></td><td>Redacting — the folder. Paper is <code>#fdfbf4</code>, ink <code>#1a1a1a</code>, classified stamp <code>#a12b1e</code>.</td></tr>
+    <tr><td><span class="sg-swatch" style="background:linear-gradient(180deg,#4a4d52,#2a2d32)"></span></td><td>Metal greys</td><td><code>#5a5e65 / #3a3d42 / #1e2024</code></td><td>Door games — light, mid and dark tones of the grey metal plate (see section 05).</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════ 03 TYPOGRAPHY ═══════════════ -->
+<section class="sg-section" id="type">
+  <p class="sg-kicker">03 — Three fonts, fixed jobs</p>
+  <h2>Typography</h2>
+  <p class="sg-lead">
+    One Google Fonts import serves every game:
+    <code>Orbitron</code> (600/700/900) for everything tactical, <code>Roboto Mono</code> (400/500/700) for typed
+    letters and machine data, <code>Roboto</code> (300–700) for plain body text. The redacting game adds
+    <code>Courier New</code> for document paper only.
+  </p>
+  <div class="theme t-keypad">
+    <div class="sg-stage" style="flex-direction:column; align-items:flex-start; gap:20px;">
+      <div>
+        <span class="brand-system">SYSTEM: KEYPAD_BREAKER_V1.4</span>
+        <h1 class="brand-title" style="font-size:1.25rem;">TYPEMISSION // DOOR KEYPAD</h1>
+        <div class="sg-tag" style="margin-top:4px; font-family:'Roboto Mono'; font-size:0.6rem; color:var(--sg-muted);">system label → Orbitron 700 · 0.55–0.65rem · success green · spaced caps &nbsp;&nbsp;|&nbsp;&nbsp; game title → Orbitron 900 · 0.95–1.2rem · white→orange gradient fill</div>
+      </div>
+      <div>
+        <p class="briefing-slide-title" style="text-align:left;">Kraak de keypad code van de beveiligde deur</p>
+        <div class="sg-tag" style="margin-top:4px; font-family:'Roboto Mono'; font-size:0.6rem; color:var(--sg-muted);">briefing instruction → Orbitron 500 · 0.95–1.15rem · line-height 1.4</div>
+      </div>
+      <div style="display:flex; align-items:flex-end; gap:28px; flex-wrap:wrap;">
+        <div>
+          <span style="font-family:'Orbitron'; font-size:1.6rem; font-weight:700; color:var(--orange); display:block;">98%</span>
+          <span style="font-size:0.68rem; color:var(--muted); text-transform:uppercase; font-weight:600;">Nauwkeurigheid</span>
+        </div>
+        <div class="code-text">
+          <span class="char-box correct">k</span><span class="char-box current">r</span><span class="char-box faded">a</span>
+        </div>
+        <div class="terminal-logs" style="border:1px solid var(--line); border-radius:6px; min-width:230px;">
+          <span class="log-line success">&gt; BYPASS 04 GESLAAGD...</span>
+          <span class="log-line danger">&gt; FOUT: verkeerde toets [x]</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Stat numbers: <b>Orbitron 700–900, orange or themed accent</b> · typed letters: <b>Roboto Mono 700, uppercase</b> · terminal logs: <b>Roboto Mono ~0.6rem</b></p>
+  <table class="sg-table">
+    <tr><th>Role</th><th>Font / weight</th><th>Size</th><th>Color</th><th>Extras</th></tr>
+    <tr><td>System label</td><td>Orbitron 700</td><td>≈0.55–0.65rem</td><td>success green</td><td>letter-spacing 1px</td></tr>
+    <tr><td>Game title</td><td>Orbitron 900</td><td>≈0.95–1.2rem</td><td>white→orange gradient</td><td>gradient fills the letters</td></tr>
+    <tr><td>Section eyebrows</td><td>Orbitron 700</td><td>0.6–0.65rem</td><td>orange / dim text</td><td>wide letter-spacing, uppercase</td></tr>
+    <tr><td>Briefing instruction</td><td>Orbitron 500</td><td>≈0.95–1.15rem</td><td>white</td><td>line-height 1.4, centered</td></tr>
+    <tr><td>Stat value</td><td>Orbitron 700</td><td>≈1.3–1.7rem</td><td>accent</td><td></td></tr>
+    <tr><td>Result value</td><td>Orbitron 900</td><td>≈1.8–2.4rem</td><td>white / green / red</td><td>soft self-glow</td></tr>
+    <tr><td>Result heading</td><td>Orbitron 800</td><td>≈1.2–1.8rem</td><td>orange</td><td>letter-spacing 1px</td></tr>
+    <tr><td>Typed letters</td><td>Roboto Mono 700</td><td>≈1.2–1.7rem</td><td>state color</td><td>uppercase</td></tr>
+    <tr><td>Keypad main letter</td><td>Orbitron 700</td><td>≈1.2–1.8rem</td><td>90% white</td><td>uppercase, emboss shadow</td></tr>
+    <tr><td>Terminal logs / tags</td><td>Roboto Mono 400–700</td><td>0.55–0.66rem (corner tags 7px)</td><td>state color / 25% white</td><td></td></tr>
+    <tr><td>Body / subtitles</td><td>Roboto 300–500</td><td>0.7–0.85rem</td><td>dim text</td><td></td></tr>
+    <tr><td>Document paper</td><td>Courier New bold</td><td>0.68–0.85rem</td><td><code>#1a1a1a</code></td><td>redacting game only</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════ 04 FRAME & FLOW ═══════════════ -->
+<section class="sg-section" id="frame">
+  <p class="sg-kicker">04 — One shell, three views</p>
+  <h2>Frame &amp; flow</h2>
+  <p class="sg-lead">
+    Every game lives inside one fixed 16:9 frame, centered on a near-black page with a matrix-rain canvas
+    behind it. Inside the frame a header stays fixed on top and the stage below it swaps between exactly
+    three views.
+  </p>
+  <p class="sg-note">Frame recipe: 16:9 ratio (80vw × 45vw, capped at 80% of the screen height), page-hue background, <strong>3px border in the theme's soft tint</strong>, corner radius 12, heavy drop shadow, content clipped. The header sits on top; the stage fills the rest.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage" style="padding:16px;">
+      <div style="width:100%; max-width:720px; aspect-ratio:16/9; background:var(--purple-dark); border:3px solid var(--purple-soft); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,0.8);">
+        <header class="game-header" style="border-radius:0; flex-shrink:0;">
+          <div>
+            <span class="brand-system">SYSTEM: KEYPAD_BREAKER_V1.4</span>
+            <h1 class="brand-title" style="font-size:0.95rem;">TYPEMISSION // DOOR KEYPAD</h1>
+          </div>
+          <div class="header-controls">
+            <span class="dropdown-header" style="min-height:30px; font-size:0.6rem;">Niveau: Basis
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </span>
+            <span class="ghost-button" style="min-height:30px; font-size:0.6rem;">HERSTART</span>
+          </div>
+        </header>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; gap:14px; background:radial-gradient(circle at center, rgba(11,12,35,0.5) 0%, transparent 100%); flex-wrap:wrap; padding:14px;">
+          <div style="text-align:center; font-family:'Orbitron'; font-size:0.6rem; color:var(--muted); border:1px dashed var(--line); border-radius:8px; padding:18px 14px; width:26%;">VIEW 1<br><span style="color:var(--orange)">BRIEFING</span><br><span style="font-size:0.5rem;">2–3 kaarten<br>spatie = verder</span></div>
+          <div style="text-align:center; font-family:'Orbitron'; font-size:0.6rem; color:var(--muted); border:1px dashed var(--line); border-radius:8px; padding:18px 14px; width:26%;">VIEW 2<br><span style="color:var(--orange)">GAME ARENA</span><br><span style="font-size:0.5rem;">stats + machine<br>typen op letters</span></div>
+          <div style="text-align:center; font-family:'Orbitron'; font-size:0.6rem; color:var(--muted); border:1px dashed var(--line); border-radius:8px; padding:18px 14px; width:26%;">VIEW 3<br><span style="color:var(--orange)">RESULTS</span><br><span style="font-size:0.5rem;">rapport + credits<br>spatie = opnieuw</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">The real shell at reduced scale: header bar (54–72px tall, 2px bottom border) + the three swappable views.</p>
+
+  <h3>Flow rules</h3>
+  <table class="sg-table">
+    <tr><th>Step</th><th>View</th><th>What is on screen</th></tr>
+    <tr><td>1</td><td>Briefing</td><td>Centered briefing panel, 2–3 slides with pagination dots: mission instruction + a miniature version of the machine, keyboard hand-position diagram, typing demo. Footer: "druk op spatiebalk" + spacebar visual.</td></tr>
+    <tr><td>2</td><td>Game arena</td><td>Floating HUD stat cards on top (time, CPM/accuracy, mistakes), the machine centered on a faint 28px grid backdrop.</td></tr>
+    <tr><td>3</td><td>In-machine feedback</td><td>Success: object turns green + green overlay/flash. Failure: red lockout alarm flash. Both inside the machine, before leaving the view.</td></tr>
+    <tr><td>4</td><td>Results</td><td>Centered system report: eyebrow, orange heading, rank pill, 3×2 dashboard cards (staggered entry), GESLAAGD/MISLUKT stamp, credits, spacebar prompt.</td></tr>
+  </table>
+  <h3>Introduction briefing example</h3>
+  <p class="sg-note">Every intro uses this same three-card rhythm: show the object, lock in the hand position, then preview the action loop. Keep each card visual first and one sentence long.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage" style="align-items:stretch;">
+      <div class="briefing-flow-grid">
+        <article class="briefing-flow-card">
+          <div class="briefing-flow-preview">
+            <div class="briefing-panel mini-briefing-panel">
+              <div class="briefing-panel-header">
+                <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+                <div class="briefing-pagination"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+              </div>
+              <h2 class="briefing-slide-title">Kraak de keypad code van de beveiligde deur</h2>
+              <div class="briefing-slide-graphic">
+                <div class="mini-keypad-device">
+                  <div class="mini-keypad-screen">BYPASS</div>
+                  <div class="mini-keypad-grid">
+                    <span class="mini-keypad-key">1</span><span class="mini-keypad-key">2</span><span class="mini-keypad-key">3</span>
+                    <span class="mini-keypad-key">4</span><span class="mini-keypad-key">5</span><span class="mini-keypad-key">6</span>
+                    <span class="mini-keypad-key active">*</span><span class="mini-keypad-key">0</span><span class="mini-keypad-key">#</span>
+                  </div>
+                </div>
+              </div>
+              <div class="briefing-footer">
+                <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+                <span class="spacebar-btn-visual"><span class="spacebar-icon-line"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="briefing-flow-body">
+            <span class="briefing-step-number">1</span>
+            <h4>Object and objective</h4>
+            <table class="briefing-spec-table">
+              <tr><th>Example</th><td>Keypad mission: show the bypass device and door objective first.</td></tr>
+              <tr><th>Visual</th><td>One clear device, file, keypad, scanner or screen piece.</td></tr>
+              <tr><th>Copy</th><td>One sentence explaining what the player will solve.</td></tr>
+            </table>
+          </div>
+        </article>
+
+        <article class="briefing-flow-card">
+          <div class="briefing-flow-preview">
+            <div class="briefing-panel mini-briefing-panel">
+              <div class="briefing-panel-header">
+                <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+                <div class="briefing-pagination"><span class="dot"></span><span class="dot active"></span><span class="dot"></span></div>
+              </div>
+              <h2 class="briefing-slide-title">Plaats je handen in de basispositie</h2>
+              <div class="briefing-slide-graphic">
+                <div class="practice-keyboard-demo is-briefing">
+                  <div class="practice-keyboard-container">
+                    <div class="practice-keyboard-row">
+                      <span class="practice-key modifier"><span class="key-code">esc</span></span>
+                      <span class="practice-key finger-lp"><span class="key-code">&amp;</span></span>
+                      <span class="practice-key finger-lr"><span class="key-code">&Eacute;</span></span>
+                      <span class="practice-key finger-lm"><span class="key-code">&quot;</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">'</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">(</span></span>
+                      <span class="practice-key finger-ri"><span class="key-code">&sect;</span></span>
+                      <span class="practice-key finger-ri"><span class="key-code">&Egrave;</span></span>
+                      <span class="practice-key finger-rm"><span class="key-code">!</span></span>
+                      <span class="practice-key finger-rr"><span class="key-code">&Ccedil;</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">&Agrave;</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">)</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">-</span></span>
+                      <span class="practice-key key-wide-3"><span class="key-code">back</span></span>
+                    </div>
+                    <div class="practice-keyboard-row">
+                      <span class="practice-key key-wide-2"><span class="key-code">tab</span></span>
+                      <span class="practice-key finger-lp"><span class="key-code">A</span></span>
+                      <span class="practice-key finger-lr"><span class="key-code">Z</span></span>
+                      <span class="practice-key finger-lm"><span class="key-code">E</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">R</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">T</span></span>
+                      <span class="practice-key finger-ri"><span class="key-code">Y</span></span>
+                      <span class="practice-key finger-ri"><span class="key-code">U</span></span>
+                      <span class="practice-key finger-rm"><span class="key-code">I</span></span>
+                      <span class="practice-key finger-rr"><span class="key-code">O</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">P</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">^</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">$</span></span>
+                      <span class="practice-key key-wide-3"><span class="key-code">enter</span></span>
+                    </div>
+                    <div class="practice-keyboard-row">
+                      <span class="practice-key key-wide-2"><span class="key-code">caps</span></span>
+                      <span class="practice-key finger-lp"><span class="key-code">Q</span></span>
+                      <span class="practice-key finger-lr"><span class="key-code">S</span></span>
+                      <span class="practice-key finger-lm"><span class="key-code">D</span></span>
+                      <span class="practice-key finger-li left-home home-anchor"><span class="key-code">F</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">G</span></span>
+                      <span class="practice-key finger-ri"><span class="key-code">H</span></span>
+                      <span class="practice-key finger-ri right-home home-anchor"><span class="key-code">J</span></span>
+                      <span class="practice-key finger-rm"><span class="key-code">K</span></span>
+                      <span class="practice-key finger-rr"><span class="key-code">L</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">M</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">&Ugrave;</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">%</span></span>
+                    </div>
+                    <div class="practice-keyboard-row">
+                      <span class="practice-key key-wide-3"><span class="key-code">shift</span></span>
+                      <span class="practice-key finger-lp"><span class="key-code">&lt;</span></span>
+                      <span class="practice-key finger-lp"><span class="key-code">W</span></span>
+                      <span class="practice-key finger-lr"><span class="key-code">X</span></span>
+                      <span class="practice-key finger-lm"><span class="key-code">C</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">V</span></span>
+                      <span class="practice-key finger-li"><span class="key-code">B</span></span>
+                      <span class="practice-key finger-ri"><span class="key-code">N</span></span>
+                      <span class="practice-key finger-rm"><span class="key-code">,</span></span>
+                      <span class="practice-key finger-rr"><span class="key-code">;</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">:</span></span>
+                      <span class="practice-key finger-rp"><span class="key-code">=</span></span>
+                      <span class="practice-key key-wide-4"><span class="key-code">shift</span></span>
+                    </div>
+                    <div class="practice-keyboard-row">
+                      <span class="practice-key key-wide-1"><span class="key-code">ctrl</span></span>
+                      <span class="practice-key key-wide-1"><span class="key-code">win</span></span>
+                      <span class="practice-key key-wide-1"><span class="key-code">alt</span></span>
+                      <span class="practice-key finger-t key-space"><span class="key-code">space</span></span>
+                      <span class="practice-key key-wide-1"><span class="key-code">alt</span></span>
+                      <span class="practice-key key-wide-1"><span class="key-code">fn</span></span>
+                      <span class="practice-key key-wide-1"><span class="key-code">ctrl</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="briefing-footer">
+                <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+                <span class="spacebar-btn-visual"><span class="spacebar-icon-line"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="briefing-flow-body">
+            <span class="briefing-step-number">2</span>
+            <h4>Base hand position</h4>
+            <table class="briefing-spec-table">
+              <tr><th>Always</th><td>This step is fixed in every typing game intro.</td></tr>
+              <tr><th>Keyboard</th><td>Use the full Typeoefening AZERTY layout, not a two-row crop.</td></tr>
+              <tr><th>Highlight</th><td>Only the anchor keys <code>F</code> and <code>J</code> glow green here.</td></tr>
+            </table>
+          </div>
+        </article>
+
+        <article class="briefing-flow-card">
+          <div class="briefing-flow-preview">
+            <div class="briefing-panel mini-briefing-panel">
+              <div class="briefing-panel-header">
+                <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+                <div class="briefing-pagination"><span class="dot"></span><span class="dot"></span><span class="dot active"></span></div>
+              </div>
+              <h2 class="briefing-slide-title">Typ de letters op het scherm om het slot te kraken</h2>
+              <div class="briefing-slide-graphic">
+                <div class="mini-keypad-device">
+                  <div class="mini-keypad-screen"><span class="mini-slot filled"></span><span class="mini-slot filled"></span><span class="mini-slot"></span><span class="mini-slot"></span></div>
+                  <div class="mini-keypad-grid">
+                    <span class="mini-keypad-key">1</span><span class="mini-keypad-key active">2</span><span class="mini-keypad-key">3</span>
+                    <span class="mini-keypad-key">4</span><span class="mini-keypad-key">5</span><span class="mini-keypad-key">6</span>
+                    <span class="mini-keypad-key">*</span><span class="mini-keypad-key">0</span><span class="mini-keypad-key">#</span>
+                  </div>
+                </div>
+              </div>
+              <div class="briefing-footer">
+                <p class="spacebar-instruction">Druk op de spatiebalk om de missie te starten</p>
+                <span class="spacebar-btn-visual"><span class="spacebar-icon-line"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="briefing-flow-body">
+            <span class="briefing-step-number">3</span>
+            <h4>Action preview</h4>
+            <table class="briefing-spec-table">
+              <tr><th>Example</th><td>Keypad mission: show slots, active button and locked status together.</td></tr>
+              <tr><th>Animation</th><td>Use one readable loop showing a slot filling and a key activating.</td></tr>
+              <tr><th>Timing</th><td>About <code>1-2s</code> per loop.</td></tr>
+            </table>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Briefing rhythm: object and objective, base hand position, action preview. The player advances with the spacebar on cards 1 and 2; card 3 starts the mission.</p>
+  <p class="sg-note">The arena backdrop grid: 1.5px green lines at ~1.5% opacity, horizontal + vertical, every 28px, on near-black <code>#02050f</code> — barely visible, just texture.</p>
+</section>
+
+<!-- ═══════════════ 05 LAYER STACK ═══════════════ -->
+<section class="sg-section" id="layers">
+  <p class="sg-kicker">05 — Machine anatomy</p>
+  <h2>The layer stack</h2>
+  <p class="sg-lead">
+    Every machine in the door games is the same sandwich. Build it in this order and it will look like the
+    existing games: <strong>L1 metal plate → L2 device panel → L3 screen → L4 inputs</strong>, with neon
+    cables running behind the device panel. Each layer is shown here <strong>on its own</strong> first, then assembled.
+  </p>
+
+  <h3>L1 — Light grey metal plate</h3>
+  <p class="sg-note">The physical carrier. Vertical grey gradient, thick lighter border, four rivets, an etched label, and the three mistake indicators. It never glows — until the mission is complete, when its border turns green.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="sg-item">
+        <div class="metal-plate" style="width:250px; height:190px; justify-content:flex-start; gap:12px;">
+          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+          <span class="door-label">Beveiligde Deur</span>
+          <div class="security-locks">
+            <span class="lock-indicator"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+            <span class="lock-indicator"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+            <span class="lock-indicator error"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          </div>
+        </div>
+        <span class="sg-tag">neutral — 1 mistake made</span>
+      </div>
+      <div class="sg-item">
+        <div class="metal-plate completed" style="width:250px; height:190px; justify-content:flex-start; gap:12px;">
+          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+          <span class="door-label" style="color:rgba(154,215,68,0.7); border-color:rgba(154,215,68,0.3);">Ontgrendeld</span>
+        </div>
+        <span class="sg-tag">completed — green border + glow</span>
+      </div>
+      <div class="sg-item" style="gap:18px;">
+        <span class="door-status"><span class="status-dot"></span>VERGRENDELD</span>
+        <span class="door-status unlocked"><span class="status-dot"></span>ONTGRENDELD</span>
+        <span class="sg-tag">status label — sits below the device panel</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-note">The plate also carries a small <strong>status label</strong> under the device panel: red spaced-caps text with a blinking 6px dot while locked; both flip to steady green when the mission completes.</p>
+  <p class="sg-caption">Values: vertical gradient <b>#4a4d52 → #33363b (40%) → #2a2d32</b> · border <b>2.5px #5a5e65</b>, radius 8 · inner top highlight (10% white) + inner bottom shading · rivets are 8px radial circles (<b>#6a6e75 → #3a3d42</b>) set 10px from each corner · the label is <b>etched, never glowing</b>: Orbitron 900, 25%-white text, 3px letter-spacing, faint dark chip behind it · the 3 lock circles are the error budget — green (8% green fill) flipping to red (15% red fill) per mistake, with a quick scale "shock" bounce.</p>
+
+  <h3>L2 — Dark device panel</h3>
+  <p class="sg-note">The hacking rig bolted onto the metal. Near-black (<code>#0d0e12</code>), thin white-ish border, and always framed by hardware: a header strip (rig label + two blinking LEDs) and a footer strip (animated signal bars + port jacks). The middle stays empty at this layer.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="device-panel" style="min-height:170px;">
+        <div class="panel-hardware-header">
+          <span class="rig-label">BYPASS RIG V2</span>
+          <div class="hardware-leds"><span class="led datalink"></span><span class="led signal"></span></div>
+        </div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center; color:var(--muted); font-family:'Roboto Mono'; font-size:0.6rem; min-height:60px;">← screen + inputs mount here (L3/L4) →</div>
+        <div class="panel-hardware-footer">
+          <div class="voltage-signal"><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span></div>
+          <div class="bypass-ports"><span class="port-jack"></span><span class="port-jack"></span><span class="port-jack"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Values: background <b>#0d0e12</b> (charcoal — deliberately <b>not</b> the theme hue) · border 2px at 12% white, radius 12 · deep drop shadow + a 1px inner top light. Header strip: rig name in Orbitron over a faint hairline, plus two 6px LEDs — <b>green data LED blinking fast (0.3s)</b>, <b>orange signal LED breathing (1.2s)</b>. Footer strip: five 3px orange voltage bars (3–9px tall, growing alternately) and 8px dark port jacks with inset shadow.</p>
+
+  <h3>L3 — Screen with scanlines</h3>
+  <p class="sg-note">The CRT. Uses the theme's screen background, an orange uppercase label, tiny 7px system tags in the corners, and — <strong>always</strong> — the scanline overlay with a 0.15s flicker. This is the "TV lines" effect; do not skip it on any screen surface.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="door-screen" style="max-width:300px;">
+        <span class="system-tag-left">SIG.4A// SECURE</span>
+        <span class="system-tag-right">NODE_7</span>
+        <span class="door-screen-label">HACKCODE:</span>
+        <div class="code-text" style="margin-top:4px;">
+          <span class="char-box correct" style="width:34px;height:42px;font-size:1.15rem;">c</span>
+          <span class="char-box correct" style="width:34px;height:42px;font-size:1.15rem;">o</span>
+          <span class="char-box current" style="width:34px;height:42px;font-size:1.15rem;">d</span>
+          <span class="char-box faded" style="width:34px;height:42px;font-size:1.15rem;">e</span>
+        </div>
+        <div class="screen-scanlines"></div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Values: background = the theme's screen black · border ≈2px in the theme border tint, radius 8 · strong inner black shadow so it sits <b>behind</b> the glass. Scanlines = a full overlay of repeating 3px horizontal stripes (top half clear, bottom half 25% black) flickering at 0.15s between 94–100% opacity. Corner tags are tiny 7px monospace text at 25% white.</p>
+
+  <h3>Cables — behind the device panel</h3>
+  <p class="sg-note">SVG paths clipped behind the panel, connecting it to the metal plate edges. Always the trio green / orange / red, stroke 2.8, round caps, each with its own glow.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <svg class="cable-demo" viewBox="0 0 420 70">
+        <path class="cable-path green-wire" d="M10,15 C90,15 120,45 210,45 C300,45 330,15 410,15"/>
+        <path class="cable-path orange-wire" d="M10,35 C90,35 130,58 210,58 C290,58 330,35 410,35"/>
+        <path class="cable-path red-wire" d="M10,55 C80,55 140,30 210,30 C280,30 340,55 410,55"/>
+      </svg>
+    </div>
+  </div>
+  <p class="sg-caption">Stroke width 2.8, rounded caps, each wire in its accent color (green / orange / red) with a soft matching glow. Curved paths, never straight lines.</p>
+
+  <h3>The full stack assembled</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="metal-plate" style="width:320px; gap:10px;">
+        <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+        <span class="door-label">Beveiligde Deur</span>
+        <div class="security-locks" style="margin:2px 0 6px;">
+          <span class="lock-indicator" style="width:26px;height:26px;"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <span class="lock-indicator" style="width:26px;height:26px;"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <span class="lock-indicator" style="width:26px;height:26px;"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+        </div>
+        <svg style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1;" viewBox="0 0 320 340" preserveAspectRatio="none">
+          <path class="cable-path green-wire" d="M6,120 C30,120 30,170 60,175"/>
+          <path class="cable-path orange-wire" d="M6,180 C30,180 30,200 60,205"/>
+          <path class="cable-path red-wire" d="M314,150 C285,150 290,185 260,190"/>
+        </svg>
+        <div class="device-panel" style="z-index:4; max-width:280px;">
+          <div class="panel-hardware-header">
+            <span class="rig-label">BYPASS RIG V2</span>
+            <div class="hardware-leds"><span class="led datalink"></span><span class="led signal"></span></div>
+          </div>
+          <div class="door-screen">
+            <span class="system-tag-left">SIG.4A</span>
+            <span class="system-tag-right">NODE_7</span>
+            <span class="door-screen-label">HACKCODE:</span>
+            <div class="code-text" style="margin-top:2px;">
+              <span class="char-box correct" style="width:28px;height:36px;font-size:1rem;">k</span>
+              <span class="char-box current" style="width:28px;height:36px;font-size:1rem;">r</span>
+              <span class="char-box faded" style="width:28px;height:36px;font-size:1rem;">a</span>
+              <span class="char-box faded" style="width:28px;height:36px;font-size:1rem;">k</span>
+            </div>
+            <div class="screen-scanlines"></div>
+          </div>
+          <div class="keypad-grid" style="max-width:190px; gap:5px;">
+            <span class="keypad-btn"><span class="btn-num">1</span><span class="btn-char" style="font-size:1rem;">a</span></span>
+            <span class="keypad-btn active-target"><span class="btn-num">2</span><span class="btn-char" style="font-size:1rem;">r</span></span>
+            <span class="keypad-btn"><span class="btn-num">3</span><span class="btn-char" style="font-size:1rem;">d</span></span>
+            <span class="keypad-btn hacked-green"><span class="btn-num">4</span><span class="btn-char" style="font-size:1rem;">k</span></span>
+            <span class="keypad-btn"><span class="btn-num">5</span><span class="btn-char" style="font-size:1rem;">g</span></span>
+            <span class="keypad-btn"><span class="btn-num">6</span><span class="btn-char" style="font-size:1rem;">h</span></span>
+          </div>
+          <div class="panel-hardware-footer">
+            <div class="voltage-signal"><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span><span class="signal-bar"></span></div>
+            <div class="bypass-ports"><span class="port-jack"></span><span class="port-jack"></span><span class="port-jack"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">L1 metal plate + label + mistake locks → cables → L2 device panel → L3 screen with scanlines → L4 inputs. Swap L4 for pins, a scanner or a document console and you have a different game.</p>
+</section>
+
+<!-- ═══════════════ 06 CORE COMPONENTS ═══════════════ -->
+<section class="sg-section" id="components">
+  <p class="sg-kicker">06 — Shared UI</p>
+  <h2>Core components</h2>
+  <p class="sg-lead">The recurring interface pieces around the machine. All of them are theme-driven: drop them in any game and they recolor through that game's palette.</p>
+
+  <h3>Mission header</h3>
+  <div class="theme t-lockpick">
+    <div class="sg-stage" style="padding:16px;">
+      <header class="game-header" style="max-width:680px; border-radius:8px;">
+        <div>
+          <span class="brand-system">SYSTEM: LOCKPICK_BYPASS_V2.1</span>
+          <h1 class="brand-title" style="font-size:1rem;">TYPEMISSION // DOOR LOCKPICKING</h1>
+        </div>
+        <div class="header-controls">
+          <span class="dropdown-header" style="font-size:0.62rem;">Niveau: Basis (Letters)
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+          <span class="ghost-button" style="font-size:0.62rem;">HERSTART</span>
+        </div>
+      </header>
+    </div>
+  </div>
+  <p class="sg-caption">Header bar: theme bg at 95% opacity, <b>2px bottom border in the theme border color</b>, green system label over the gradient title, controls right. Height ≈54–72px, side padding 24px.</p>
+
+  <h3>HUD stat cards</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="hud-stat"><span class="stat-value">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="hud-stat"><span class="stat-value">187</span><span class="stat-label">CPM</span></div>
+      <div class="hud-stat"><span class="stat-value is-red">2</span><span class="stat-label">Fouten</span></div>
+      <div class="hud-stat"><span class="stat-value is-green">96%</span><span class="stat-label">Nauwkeurig</span></div>
+    </div>
+  </div>
+  <p class="sg-caption">Floating above the machine in a row (gap 20px). Panel = theme hue at 60% + <b>1px hairline border</b>, radius 6. Value Orbitron 700 in orange; red for mistakes, green for good accuracy. Label muted uppercase 600.</p>
+
+  <h3>Briefing card</h3>
+  <div class="theme t-lockpick">
+    <div class="sg-stage" style="background:radial-gradient(circle at center, rgba(18,5,5,0.95) 0%, rgba(4,4,11,0.98) 100%); ">
+      <div class="briefing-panel">
+        <div class="briefing-panel-header">
+          <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+          <div class="briefing-pagination"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+        </div>
+        <h2 class="briefing-slide-title">Pick het slot door de juiste letters te typen</h2>
+        <div class="briefing-slide-graphic">
+          <div class="lock-cylinder-demo" style="padding:10px 12px 14px;">
+            <div class="shear-line-indicator" style="top:40px;"></div>
+            <div class="lock-cylinder-row" style="gap:4px;">
+              <div class="pin-chamber decrypted" style="width:32px; height:95px;"><div class="spring-visual" style="height:12px;"></div><div class="driver-pin" style="height:24px; width:20px;"></div><div class="key-pin" style="height:30px; width:20px;"><span class="pin-char" style="font-size:0.7rem;">a</span></div></div>
+              <div class="pin-chamber active-chamber" style="width:32px; height:95px;"><div class="spring-visual" style="height:8px;"></div><div class="driver-pin" style="height:30px; width:20px;"></div><div class="key-pin" style="height:26px; width:20px;"><span class="pin-char" style="font-size:0.7rem;">s</span></div></div>
+              <div class="pin-chamber" style="width:32px; height:95px;"><div class="spring-visual" style="height:10px;"></div><div class="driver-pin" style="height:26px; width:20px;"></div><div class="key-pin" style="height:28px; width:20px;"><span class="pin-char" style="font-size:0.7rem;">d</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="briefing-footer">
+          <p class="spacebar-instruction">Druk op de spatiebalk om te beginnen</p>
+          <span class="spacebar-btn-visual"><span class="spacebar-icon-line"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Max-width 580px, theme hue at 40% + <b>blur(12px)</b>, a 1.5px border in the theme border color. Header row: orange eyebrow + green pagination dots (active = filled + glow). Body: Orbitron instruction + <b>a miniature version of the machine</b>. Footer above a hairline divider: pulsing instruction + spacebar visual (presses down 2.5px while held).</p>
+
+  <h3>Buttons &amp; prompts</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="sg-item"><span class="primary-button">START MISSIE</span><span class="sg-tag">primary button — orange fill</span></div>
+      <div class="sg-item"><span class="ghost-button">HERSTART</span><span class="sg-tag">ghost button — theme border, orange on hover</span></div>
+      <div class="sg-item"><span class="dropdown-header">Niveau: Basis <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span><span class="sg-tag">level dropdown</span></div>
+      <div class="sg-item"><span class="spacebar-btn-visual"><span class="spacebar-icon-line"></span></span><span class="sg-tag">spacebar key — press me</span></div>
+    </div>
+  </div>
+  <p class="sg-caption">All buttons: Orbitron 700 ≈0.72rem, radius 6, min-height ≈34–42px. Disabled = 40% opacity, not clickable. The spacebar visual keeps a 3px "key depth" shadow (<b>0 3px 0 #202359</b>) that collapses when pressed.</p>
+</section>
+
+<!-- ═══════════════ 07 TYPING & INPUT STATES ═══════════════ -->
+<section class="sg-section" id="inputs">
+  <p class="sg-kicker">07 — Where the player types</p>
+  <h2>Typing &amp; input states</h2>
+  <p class="sg-lead">
+    Two input primitives repeat across all games: <strong>code slots</strong> on screens,
+    and <strong>keypad keys</strong> on device panels. Both use the exact same state
+    grammar: grey = waiting, orange = type this now, green = correct, red = wrong.
+  </p>
+
+  <h3>Code slots</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="sg-item"><span class="char-box">k</span><span class="sg-tag">neutral</span></div>
+      <div class="sg-item"><span class="char-box current">k</span><span class="sg-tag">current — pulses</span></div>
+      <div class="sg-item"><span class="char-box correct">k</span><span class="sg-tag">correct</span></div>
+      <div class="sg-item"><span class="char-box wrong">x</span><span class="sg-tag">wrong</span></div>
+      <div class="sg-item"><span class="char-box faded">k</span><span class="sg-tag">faded — not yet reachable</span></div>
+    </div>
+  </div>
+  <p class="sg-caption">Slot recipe: ~40×52px box, 40%-black background, 2px border at 10% white, radius 6, inner shadow, letter in Roboto Mono 700 uppercase. States recolor <b>border + letter + glow together</b>: current = orange with a 1s breathing pulse · correct = green with an outer and inner glow · wrong = red, same treatment · unreachable letters sit at 60% opacity.</p>
+
+  <h3>Keypad keys</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="sg-item"><span class="keypad-btn" style="width:64px;"><span class="btn-num">5</span><span class="btn-char">g</span></span><span class="sg-tag">neutral</span></div>
+      <div class="sg-item"><span class="keypad-btn active-target" style="width:64px;"><span class="btn-num">5</span><span class="btn-char">g</span></span><span class="sg-tag">active target</span></div>
+      <div class="sg-item"><span class="keypad-btn hacked-green" style="width:64px;"><span class="btn-num">5</span><span class="btn-char">g</span></span><span class="sg-tag">hacked (correct)</span></div>
+      <div class="sg-item"><span class="keypad-btn error-flash" style="width:64px;"><span class="btn-num">5</span><span class="btn-char">g</span></span><span class="sg-tag">error flash</span></div>
+    </div>
+  </div>
+  <p class="sg-caption">Square keys: <b>rgba(255,255,255,0.04) bg + 1.5px rgba(255,255,255,0.08) border</b>, radius 8. Small corner digit = Roboto Mono at 35% white; big central letter = Orbitron 700 at 90% white with emboss shadow. The active key letter scales 1→1.08 in a slow pulse.</p>
+
+  <h3>Terminal console</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="terminal-panel">
+        <div class="terminal-header">
+          <div><span class="terminal-title">DECRYPTIE CONSOLE</span><span class="terminal-ping">● VERBINDING ACTIEF</span></div>
+          <div class="terminal-win-controls"><span class="control-btn"></span><span class="control-btn"></span><span class="control-btn"></span></div>
+        </div>
+        <div style="position:relative; padding:16px 12px; text-align:center;">
+          <span class="door-screen-label" style="display:block; margin-bottom:8px;">TOEGANGSCODE:</span>
+          <div class="code-text">
+            <span class="char-box correct">b</span><span class="char-box correct">y</span><span class="char-box current">p</span><span class="char-box faded">a</span><span class="char-box faded">s</span><span class="char-box faded">s</span>
+          </div>
+          <div class="screen-scanlines"></div>
+        </div>
+        <div class="terminal-logs">
+          <span class="log-line info">&gt; verbinding met slot-node 7 stabiel...</span>
+          <span class="log-line warning">&gt; firewall vertraagt decryptie</span>
+          <span class="log-line success">&gt; segment 02 gekraakt [OK]</span>
+          <span class="log-line danger">&gt; FOUT: onjuiste toets — alarmniveau +1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Terminal = header (title + green ping + window buttons) / screen body with scanlines / <b>log feed</b> (Roboto Mono ≈0.6rem, color-coded info·warning·success·danger, new lines fade in 0.15s).</p>
+</section>
+
+<!-- ═══════════════ 08 RESULT SCREEN ═══════════════ -->
+<section class="sg-section" id="results">
+  <p class="sg-kicker">08 — System report</p>
+  <h2>Result screen</h2>
+  <p class="sg-lead">
+    Full-frame view on <code>rgba(4,8,20,0.985)</code>. Everything is centered and enters staggered:
+    header fades down, rank bar fades up, cards pop in one by one (0.22s → 0.52s), actions last.
+  </p>
+  <div class="theme t-keypad">
+    <div class="sg-stage" style="flex-direction:column; background:rgba(4,8,20,0.985); gap:18px; padding:36px 24px;">
+      <div style="text-align:center;">
+        <p class="result-eyebrow">MISSIE RAPPORT // KEYPAD_BREAKER</p>
+        <h2 class="result-heading" style="margin-bottom:10px;">TOEGANG VERLEEND</h2>
+        <span class="result-rank-bar">RANG: <span class="rank-badge-text">AGENT ELITE</span></span>
+      </div>
+      <div class="result-dashboard-grid">
+        <div class="dashboard-card"><span class="card-title">Tijd</span><span class="card-main-value">38.2s</span><span class="card-footer-label">Doel: 45s</span></div>
+        <div class="dashboard-card"><span class="card-title">Nauwkeurigheid</span><span class="card-main-value highlight-green">96%</span><span class="card-footer-label">24/25 correct</span></div>
+        <div class="dashboard-card"><span class="card-title">Fouten</span><span class="card-main-value highlight-red">1</span><span class="card-footer-label">max 3</span></div>
+        <div class="dashboard-card"><span class="card-title">CPM</span><span class="card-main-value">182</span><span class="card-footer-label">tekens per minuut</span></div>
+        <div class="dashboard-card"><span class="card-title">Status</span><span style="margin:14px 0;"><span class="status-success-badge">GESLAAGD</span></span><span class="card-footer-label">missie voltooid</span></div>
+        <div class="dashboard-card highlight-glow"><span class="card-title">Credits</span><span class="card-main-value" style="color:var(--orange); text-shadow:0 0 10px rgba(228,142,53,0.3);">+120</span><span class="card-footer-reward">🪙 bonus +20</span></div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+        <p class="spacebar-instruction">Druk op de spatiebalk voor de volgende missie</p>
+        <span class="spacebar-btn-visual"><span class="spacebar-icon-line"></span></span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">3×2 stat card grid (max 760px wide). Card = 135° gradient panel + 1px theme border, radius 12. One card may be highlighted (orange border + warm gradient) for the reward. Status stamp rotates -3° and lands like a real stamp (scale 2.4→1). Failure variant: heading + stamp in red (<b>MISLUKT</b>).</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="sg-item"><span class="status-success-badge">GESLAAGD</span><span class="sg-tag">success stamp</span></div>
+      <div class="sg-item"><span class="status-failed-badge">MISLUKT</span><span class="sg-tag">failure stamp</span></div>
+      <div class="sg-item"><span class="result-rank-bar">RANG: <span class="rank-badge-text">AGENT ELITE</span></span><span class="sg-tag">rank pill</span></div>
+    </div>
+  </div>
+
+  <h3>In-machine overlays (before the report)</h3>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="sg-item">
+        <div class="code-overlay-demo overlay-complete">TOEGANG VERLEEND<span class="finish-space-hint">DRUK OP SPATIE VOOR RAPPORT</span></div>
+        <span class="sg-tag">success overlay</span>
+      </div>
+      <div class="sg-item">
+        <div class="code-overlay-demo overlay-failed">SYSTEEM VERGRENDELD<span class="finish-space-hint">DRUK OP SPATIE VOOR RAPPORT</span></div>
+        <span class="sg-tag">failure overlay</span>
+      </div>
+      <div class="sg-item">
+        <div class="success-panel-right">
+          <svg class="success-panel-icon" width="40" height="40" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0"/></svg>
+          <h4 class="success-panel-title" style="margin-top:0;">Afdruk succesvol gekloond!</h4>
+          <p class="spacebar-instruction" style="font-size:0.62rem; margin-bottom:8px;">Druk op de spatiebalk om de uitslag te bekijken</p>
+          <span class="spacebar-btn-visual" style="width:100px; height:26px;"><span class="spacebar-icon-line"></span></span>
+        </div>
+        <span class="sg-tag">success side panel — win layout</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">In the door games the win state also <b>re-arranges the machine</b>: the device panel slides left and this dark side panel (2px border in green at 20%) fades in on the right with an open-lock icon, a green title and the spacebar prompt — the machine stays visible in its green completed state behind it.</p>
+</section>
+
+<!-- ═══════════════ 09 GAME OBJECT LIBRARY ═══════════════ -->
+<section class="sg-section" id="objects">
+  <p class="sg-kicker">09 — One machine per game</p>
+  <h2>Game object library</h2>
+  <p class="sg-lead">
+    Each game swaps its own input object into layer L4 of the stack. These are the exact looks, each shown in its
+    own game theme.
+  </p>
+
+  <h3>Lockpicking — pin chambers</h3>
+  <p class="sg-note">Six vertical chambers inside a dark cylinder housing. Each chamber holds, top to bottom: a silver <strong>coil spring</strong>, a grey metal <strong>driver pin</strong> and an orange <strong>key pin</strong> carrying the letter. A dashed orange <strong>shear line</strong> crosses the housing as an alignment guide. Typing the letter lifts the pin pair so the seam between driver and key pin meets the shear line; the picked pin turns brighter orange, a fully solved pin turns green, and the spring stays compressed. Pin heights differ per chamber — the lock looks mechanical, not uniform.</p>
+  <div class="theme t-lockpick">
+    <div class="sg-stage">
+      <div class="lock-cylinder-demo">
+        <div class="shear-line-indicator"></div>
+        <div class="lock-cylinder-row">
+          <div class="pin-chamber decrypted"><div class="spring-container-demo" style="height:30px;"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><path class="spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/><path class="spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5"/></svg></div><div class="driver-pin" style="height:36px;"></div><div class="key-pin" style="height:52px;"><span class="pin-char">a</span></div></div>
+          <div class="pin-chamber decrypted"><div class="spring-container-demo" style="height:20px;"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><path class="spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/><path class="spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5"/></svg></div><div class="driver-pin spool" style="height:47px;"></div><div class="key-pin" style="height:63px;"><span class="pin-char">s</span></div></div>
+          <div class="pin-chamber active-chamber"><div class="spring-container-demo" style="height:38px;"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><path class="spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/><path class="spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5"/></svg></div><div class="driver-pin" style="height:55px;"></div><div class="key-pin" style="height:54px;"><span class="pin-char">d</span></div></div>
+          <div class="pin-chamber"><div class="spring-container-demo" style="height:42px;"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><path class="spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/><path class="spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5"/></svg></div><div class="driver-pin serrated" style="height:60px;"></div><div class="key-pin" style="height:44px;"><span class="pin-char">f</span></div></div>
+          <div class="pin-chamber"><div class="spring-container-demo" style="height:32px;"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><path class="spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/><path class="spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5"/></svg></div><div class="driver-pin" style="height:43px;"></div><div class="key-pin" style="height:66px;"><span class="pin-char">g</span></div></div>
+          <div class="pin-chamber"><div class="spring-container-demo" style="height:36px;"><svg class="spring-coil" viewBox="0 0 18 42" preserveAspectRatio="none"><path class="spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/><path class="spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5"/></svg></div><div class="driver-pin spool" style="height:58px;"></div><div class="key-pin" style="height:50px;"><span class="pin-char">h</span></div></div>
+        </div>
+      </div>
+      <div class="sg-item">
+        <div class="tension-meter-demo"><span></span></div>
+        <span class="sg-tag">tension meter</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Values: driver pin = vertical gradient <b>#414852 → #2a3038</b> with a faint silver border · key pin = <b>#d48735 → #8f4d18</b>, rounded bottom, letter in Roboto Mono 700 near-black · picked = <b>#f5b05f → #a95e18</b> + orange glow · solved = <b>#9ad744 → #527f18</b>. Springs are silver coil drawings (a dark back stroke behind a bright gradient front stroke) that compress when the pin sets. Shear line = dashed orange 4px-on/6px-off with glow at 65% opacity.</p>
+  <p class="sg-note">Driver pins come in <strong>three security types</strong>, all visible above: <strong>standard</strong> (plain cylinder), <strong>spool</strong> (hourglass — thin waist with wide caps, chambers 2 &amp; 6) and <strong>serrated</strong> (horizontal grooves, chamber 4).</p>
+  <div class="theme t-lockpick">
+    <div class="sg-stage">
+      <div class="sg-item">
+        <div class="lock-id-plate">
+          <span class="plate-eyebrow">DOELWIT</span>
+          <strong>MERCUR-6 SLOT</strong>
+          <span class="plate-footer">SERIE 6-PINS // KLASSE B</span>
+        </div>
+        <span class="sg-tag">lock ID plate — crimson name on etched chip</span>
+      </div>
+      <div class="sg-item">
+        <div class="pin-progress-row">
+          <span class="pin-progress-node set">PIN 1</span>
+          <span class="pin-progress-node set">PIN 2</span>
+          <span class="pin-progress-node active">PIN 3</span>
+          <span class="pin-progress-node fault">PIN 4</span>
+          <span class="pin-progress-node">PIN 5</span>
+          <span class="pin-progress-node">PIN 6</span>
+        </div>
+        <span class="sg-tag">pin progress strip — set · active (crimson) · fault · waiting</span>
+      </div>
+      <div class="sg-item" style="width:100%; max-width:440px;">
+        <svg class="lockpick-svg-demo" viewBox="0 0 600 60">
+          <path d="M455 31 H528 C545 31 556 26 573 12" fill="none" stroke="rgba(0,0,0,0.65)" stroke-width="12" stroke-linecap="round"/>
+          <path d="M455 30 H528 C544 30 555 25 571 11" fill="none" stroke="url(#pickMetalGrad)" stroke-width="7" stroke-linecap="round"/>
+          <rect x="0" y="20" width="460" height="20" rx="6" fill="url(#handleMetalGrad)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        </svg>
+        <span class="sg-tag">lockpick tool — brushed metal handle + upturned blade, slides under the active pin</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">The side column of the workbench stacks: this ID plate (crimson <b>#e43535</b> target name, tiny etched labels) · the tension meter (22px wide, red→orange→green fill with tick marks). Under the screen sits the pin progress strip; the horizontal lockpick tool sits at pin height and shifts one chamber to the right per solved pin.</p>
+
+  <h3>Fingerprint — biometric scanner</h3>
+  <p class="sg-note">A tall rounded bezel with an 8px yellow-tinted micro-grid, a grey fingerprint ridge graphic, <strong>numbered scan nodes (01–06)</strong> pinned to fixed points on the print, and a <strong>yellow laser line</strong> (with a wide soft glow band) sweeping top-to-bottom in 3s. The letters themselves are typed on the device panel's screen above the scanner — the label reads <strong>BIOMETRIC SEQUENCE:</strong> — and each correct letter activates the next node. Completed ridges flood green from the top (a wipe that follows progress).</p>
+  <div class="theme t-fingerprint">
+    <div class="sg-stage">
+      <div class="scanner-bezel">
+        <div class="laser-scanner-line"></div>
+        <div class="laser-scanner-glow"></div>
+        <div class="fingerprint-vector-wrapper">
+          <svg class="fingerprint-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ridge Group 1: Outer/Bottom ridges (Lights up on char 1 & 2) -->
+            <g class="ridge-group outer-ridges cracked" id="demoRidgeGroup1">
+              <path class="ridge-line" d="M390.42,75.28a10.45,10.45,0,0,1-5.32-1.44C340.72,50.08,302.35,40,256.35,40c-45.77,0-89.23,11.28-128.76,33.84C122,77,115.11,74.8,111.87,69a12.4,12.4,0,0,1,4.63-16.32A281.81,281.81,0,0,1,256.35,16c49.23,0,92.23,11.28,139.39,36.48a12,12,0,0,1,4.85,16.08A11.3,11.3,0,0,1,390.42,75.28Z" />
+              <path class="ridge-line" d="M59.63,201.28a11.73,11.73,0,0,1-6.7-2.16,12.26,12.26,0,0,1-2.78-16.8c22.89-33.6,52-60,86.69-78.48C209.42,65,302.35,64.72,375.16,103.6c34.68,18.48,63.8,44.64,86.69,78a12.29,12.29,0,0,1-2.78,16.8,11.26,11.26,0,0,1-16.18-2.88c-20.8-30.24-47.15-54-78.36-70.56-66.34-35.28-151.18-35.28-217.29.24-31.44,16.8-57.79,40.8-78.59,71A10,10,0,0,1,59.63,201.28Z" />
+            </g>
+
+            <!-- Ridge Group 2: Middle ridges (Lights up on char 3 & 4) -->
+            <g class="ridge-group middle-ridges active" id="demoRidgeGroup2">
+              <path class="ridge-line" d="M204.1,491a10.66,10.66,0,0,1-8.09-3.6C175.9,466.48,165,453,149.55,424c-16-29.52-24.27-65.52-24.27-104.16,0-71.28,58.71-129.36,130.84-129.36S387,248.56,387,319.84a11.56,11.56,0,1,1-23.11,0c0-58.08-48.32-105.36-107.72-105.36S148.4,261.76,148.4,319.84c0,34.56,7.39,66.48,21.49,92.4,14.8,27.6,25,39.36,42.77,58.08a12.67,12.67,0,0,1,0,17A12.44,12.44,0,0,1,204.1,491Z" />
+              <path class="ridge-line" d="M369.85,446.56c-27.51,0-51.78-7.2-71.66-21.36a129.1,129.1,0,0,1-55-105.36,11.57,11.57,0,1,1,23.12,0,104.28,104.28,0,0,0,44.84,85.44c16.41,11.52,35.6,17,58.72,17a147.41,147.41,0,0,0,24-2.4c6.24-1.2,12.25,3.12,13.4,9.84a11.92,11.92,0,0,1-9.47,13.92A152.28,152.28,0,0,1,369.85,446.56Z" />
+            </g>
+
+            <!-- Ridge Group 3: Inner/Core ridges (Lights up on char 5 & 6) -->
+            <g class="ridge-group inner-ridges" id="demoRidgeGroup3">
+              <path class="ridge-line" d="M323.38,496a13,13,0,0,1-3-.48c-36.76-10.56-60.8-24.72-86-50.4-32.37-33.36-50.16-77.76-50.16-125.28,0-38.88,31.9-70.56,71.19-70.56s71.19,31.68,71.19,70.56c0,25.68,21.5,46.56,48.08,46.56s48.08-20.88,48.08-46.56c0-90.48-75.13-163.92-167.59-163.92-65.65,0-125.75,37.92-152.79,96.72-9,19.44-13.64,42.24-13.64,67.2,0,18.72,1.61,48.24,15.48,86.64,2.32,6.24-.69,13.2-6.7,15.36a11.34,11.34,0,0,1-14.79-7,276.39,276.39,0,0,1-16.88-95c0-28.8,5.32-55,15.72-77.76,30.75-67,98.94-110.4,173.6-110.4,105.18,0,190.71,84.24,190.71,187.92,0,38.88-31.9,70.56-71.2,70.56s-71.2-31.68-71.2-70.56C303.5,293.92,282,273,255.42,273s-48.08,20.88-48.08,46.56c0,41,15.26,79.44,43.23,108.24,22,22.56,43,35,75.59,44.4,6.24,1.68,9.71,8.4,8.09,14.64A11.39,11.39,0,0,1,323.38,496Z" />
+            </g>
+          </svg>
+          <div class="scan-nodes-overlay">
+            <div class="scan-node-marker correct-node" style="left: 16%; top: 43%;"><span class="node-label">01</span></div>
+            <div class="scan-node-marker correct-node" style="left: 84%; top: 43%;"><span class="node-label">02</span></div>
+            <div class="scan-node-marker active-node" style="left: 29%; top: 62.5%;"><span class="pulse-ring"></span><span class="node-label">03</span></div>
+            <div class="scan-node-marker" style="left: 75.5%; top: 62.5%;"><span class="node-label">04</span></div>
+            <div class="scan-node-marker" style="left: 50%; top: 84%;"><span class="node-label">05</span></div>
+            <div class="scan-node-marker" style="left: 50%; top: 53%;"><span class="node-label">06</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sg-item">
+        <div class="door-screen" style="max-width:250px;">
+          <span class="system-tag-left">SYS_RECOVERY</span>
+          <span class="system-tag-right">PORT_02</span>
+          <span class="door-screen-label">BIOMETRIC SEQUENCE:</span>
+          <div class="code-text" style="margin-top:4px;">
+            <span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">s</span>
+            <span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">c</span>
+            <span class="char-box current" style="width:30px;height:38px;font-size:1rem;">a</span>
+            <span class="char-box faded" style="width:30px;height:38px;font-size:1rem;">n</span>
+          </div>
+          <div class="screen-scanlines"></div>
+        </div>
+        <span class="sg-tag">the sequence is typed here, on the panel screen</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Bezel: <b>rgba(15,16,20,0.85)</b>, 2px theme hairline border, radius 16, deep inset shadow. Ridges idle at <b>12% white</b>, scanned = green + glow. Nodes: 18px dark circles with 7px monospace <b>numbers</b> — the active node scales 1.15×, gets a yellow border and an expanding <b>pulse ring</b>; hit nodes keep a yellow fill at 25%. The yellow is <b>#ffcc00</b>. On full completion the whole print pulses green and scales 1.08× once.</p>
+
+  <h3>File redacting — classified document</h3>
+  <p class="sg-note">The only game with a <strong>split arena</strong>: left half is the purple-themed <strong>decryption console</strong> (stat cards + terminal where the code key is typed, label "DOELWIT #1 CODESLEUTEL:"), right half is the <strong>document viewport</strong> — a darkroom with pixel rulers on its top and left edges, four green HUD corner brackets, a slow green scan laser, and the manila folder pinned in the middle. The only light surface in the system: typewriter paper. Words are hidden under black redaction bars; the current target flickers to <strong>orange</strong> with a glitchy lock-on, typed words glow green while decrypting, then become plain readable text.</p>
+  <div class="theme t-redact">
+    <div class="sg-stage">
+      <div class="manila-folder">
+        <span class="folder-tab">DOSSIER #7741-C</span>
+        <div class="folder-paper">
+          <div class="paper-header">
+            <span class="paper-meta">MEMO 7741-C — <span>STRIKT GEHEIM</span></span>
+            <span class="paper-stamp">Classified</span>
+          </div>
+          <p>Het doelwit gebruikt de schuilnaam <span class="redacted-word">nachtuil</span> en opereert vanuit
+          <span class="redacted-word active-redaction">rotterdam</span>. De overdracht vindt plaats om
+          <span class="redacted-word decrypting-glow">23:40</span> uur bij de <span class="redacted-word decrypted">haven</span>.</p>
+          <p>Agenten worden verzocht <span class="redacted-word">radiostilte</span> te bewaren tot nader order.</p>
+          <div class="paper-progress">
+            <span class="p-title">Ontcijfering:</span>
+            <span class="p-track"><span class="p-fill" style="display:block;"></span></span>
+            <span class="p-value">3/5 gekraakt</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Folder <b>#dca75e</b> with tab, paper <b>#fdfbf4</b> in Courier New bold, double-line header rule, red <b>Classified</b> stamp (rotates to green "Unlocked" on completion). Redaction bar states: idle <b>#111</b> → target <b>orange + glow</b> → decrypting <b>dark green bg, green text</b> → decrypted <b>plain ink</b>. The paper footer carries a beige progress pill that fills green per cracked word.</p>
+  <div class="theme t-redact">
+    <div class="sg-stage">
+      <div class="viewport-demo">
+        <div class="ruler-h"></div><div class="ruler-v"></div><div class="ruler-corner"></div>
+        <div class="hud-corners"><div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div></div>
+        <div class="scan-laser-line"></div>
+        <div class="reticle-target" style="left:38%; top:44%; width:120px; height:30px;">
+          <span class="reticle-label">Target locked</span>
+        </div>
+      </div>
+      <div class="sg-item">
+        <div class="terminal-panel" style="max-width:250px;">
+          <div class="terminal-header">
+            <span class="terminal-title">DECRYPTION CONSOLE</span>
+            <span class="terminal-ping">SECURE LINK // 42ms</span>
+          </div>
+          <div style="position:relative; padding:12px 10px; text-align:center;">
+            <span class="door-screen-label" style="display:block; margin-bottom:6px;">DOELWIT #1 CODESLEUTEL:</span>
+            <div class="code-text" style="gap:4px;">
+              <span class="char-box correct" style="width:26px;height:34px;font-size:0.95rem;">g</span>
+              <span class="char-box current" style="width:26px;height:34px;font-size:0.95rem;">e</span>
+              <span class="char-box faded" style="width:26px;height:34px;font-size:0.95rem;">i</span>
+              <span class="char-box faded" style="width:26px;height:34px;font-size:0.95rem;">m</span>
+            </div>
+            <div class="screen-scanlines"></div>
+          </div>
+        </div>
+        <span class="sg-tag">left half — the typing console</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">The document viewport's targeting HUD is <b>green</b>, not orange: 16px corner brackets (2.5px stroke), a 3px scan laser at 30% opacity sweeping every 4.5s, and the reticle box that jumps to the active word with a solid green "TARGET LOCKED" tag on top. Edge rulers are dark strips (<b>#18111d</b>) with faint white ticks. Only the word bar on the paper itself glows orange.</p>
+
+  <h3>Supercomputer defense — CPU, sector grid &amp; viruses</h3>
+  <p class="sg-note">The machine is a motherboard. Center: the CPU built from four nested layers — <strong>steel retention clamp → gold-edged substrate → brushed metal heat spreader → glowing silicon die</strong> — ringed by concentric PCB traces. Around it: a grid of letter <strong>sector cells</strong>, and <strong>viruses</strong> that crawl along circuit traces from the board edge toward the CPU. Typing a virus's letter fires a green data packet at it.</p>
+  <div class="theme t-super">
+    <div class="sg-stage">
+      <div class="pcb-board" style="min-width:300px; min-height:280px;">
+        <span class="core-ring" style="width:190px;"></span>
+        <span class="core-ring ring-two" style="width:225px;"></span>
+        <span class="core-ring ring-three" style="width:258px;"></span>
+        <div class="supercomputer-core">
+          <span class="cpu-notch tl"></span><span class="cpu-notch tr"></span><span class="cpu-notch bl"></span><span class="cpu-notch br"></span>
+          <span class="cpu-gold-edge-left"></span><span class="cpu-gold-edge-right"></span>
+          <span class="cpu-cap" style="top:12px; left:24px;"></span><span class="cpu-cap" style="top:12px; right:24px;"></span>
+          <span class="cpu-cap" style="bottom:12px; left:24px;"></span><span class="cpu-cap" style="bottom:12px; right:24px;"></span>
+          <div class="cpu-ihs">
+            <span class="cpu-serial">TM-QUANTUM X9-9000</span>
+            <div class="core-crystal"></div>
+            <span class="cpu-status-led"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">CPU layers: clamp = 135° steel gradient <b>#3f3f46→#09090b</b>, 3.5px <b>#52525b</b> border, extends 14px outside the substrate · substrate = near-black green with <b>gold border rgba(217,119,6,0.45)</b>, corner notches, dashed gold contact strips, four silver-capped SMD capacitors · heat spreader = brushed 135° gradient <b>#2d3139→#0d0f11</b>, 2.5px <b>#4a505a</b> border, etched serial (5.5px) + pulsing green LED · die = deep blue-black square with neon <b>#74d8ff "CPU"</b> label. Under attack, the substrate border and glow turn red.</p>
+  <div class="theme t-super">
+    <div class="sg-stage">
+      <div class="sg-item">
+        <div class="sector-grid-demo" style="grid-template-columns:repeat(4, 52px);">
+          <div class="sector-cell"><span class="cell-led"></span><span class="cell-letter">a</span></div>
+          <div class="sector-cell hacked"><span class="cell-led"></span><span class="cell-letter">s</span><span class="cell-fuse"></span></div>
+          <div class="sector-cell repaired"><span class="cell-led"></span><span class="cell-letter">d</span></div>
+          <div class="sector-cell crashed"><span class="cell-led"></span><span class="cell-letter">f</span></div>
+        </div>
+        <span class="sg-tag">sector cells: healthy · hacked (fuse timer) · repaired · crashed</span>
+      </div>
+      <div class="sg-item">
+        <svg class="virus-svg" width="90" height="90" viewBox="-24 -24 48 48">
+          <circle class="virus-outer-ring" r="19"/>
+          <g class="virus-graphic">
+            <line class="virus-spike-line" x1="0" y1="0" x2="12" y2="0"/><line class="virus-spike-line" x1="0" y1="0" x2="8.49" y2="8.49"/><line class="virus-spike-line" x1="0" y1="0" x2="0" y2="12"/><line class="virus-spike-line" x1="0" y1="0" x2="-8.49" y2="8.49"/><line class="virus-spike-line" x1="0" y1="0" x2="-12" y2="0"/><line class="virus-spike-line" x1="0" y1="0" x2="-8.49" y2="-8.49"/><line class="virus-spike-line" x1="0" y1="0" x2="0" y2="-12"/><line class="virus-spike-line" x1="0" y1="0" x2="8.49" y2="-8.49"/>
+            <circle class="virus-spike-head" cx="14.5" cy="0" r="2"/><circle class="virus-spike-head" cx="10.25" cy="10.25" r="2"/><circle class="virus-spike-head" cx="0" cy="14.5" r="2"/><circle class="virus-spike-head" cx="-10.25" cy="10.25" r="2"/><circle class="virus-spike-head" cx="-14.5" cy="0" r="2"/><circle class="virus-spike-head" cx="-10.25" cy="-10.25" r="2"/><circle class="virus-spike-head" cx="0" cy="-14.5" r="2"/><circle class="virus-spike-head" cx="10.25" cy="-10.25" r="2"/>
+            <circle class="virus-body-core" r="8"/>
+            <g>
+              <path d="M -5.5,-3.5 L -1.5,-2 C -1.5,-0.5 -3.5,0 -5.5,-1.5 Z" fill="#010502"/>
+              <circle cx="-3.5" cy="-2" r="0.8" fill="#fff"/>
+              <path d="M 5.5,-3.5 L 1.5,-2 C 1.5,-0.5 3.5,0 5.5,-1.5 Z" fill="#010502"/>
+              <circle cx="3.5" cy="-2" r="0.8" fill="#fff"/>
+              <path d="M -4.5,2.5 L -3,1 L -1.5,2.5 L 0,1 L 1.5,2.5 L 3,1 L 4.5,2.5" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </g>
+          <text class="virus-text" y="-26">S</text>
+        </svg>
+        <span class="sg-tag">virus — incoming (red)</span>
+      </div>
+      <div class="sg-item">
+        <svg class="virus-svg targeted" width="90" height="90" viewBox="-24 -24 48 48">
+          <circle class="virus-outer-ring" r="19"/>
+          <g class="virus-graphic">
+            <line class="virus-spike-line" x1="0" y1="0" x2="12" y2="0"/><line class="virus-spike-line" x1="0" y1="0" x2="8.49" y2="8.49"/><line class="virus-spike-line" x1="0" y1="0" x2="0" y2="12"/><line class="virus-spike-line" x1="0" y1="0" x2="-8.49" y2="8.49"/><line class="virus-spike-line" x1="0" y1="0" x2="-12" y2="0"/><line class="virus-spike-line" x1="0" y1="0" x2="-8.49" y2="-8.49"/><line class="virus-spike-line" x1="0" y1="0" x2="0" y2="-12"/><line class="virus-spike-line" x1="0" y1="0" x2="8.49" y2="-8.49"/>
+            <circle class="virus-spike-head" cx="14.5" cy="0" r="2"/><circle class="virus-spike-head" cx="10.25" cy="10.25" r="2"/><circle class="virus-spike-head" cx="0" cy="14.5" r="2"/><circle class="virus-spike-head" cx="-10.25" cy="10.25" r="2"/><circle class="virus-spike-head" cx="-14.5" cy="0" r="2"/><circle class="virus-spike-head" cx="-10.25" cy="-10.25" r="2"/><circle class="virus-spike-head" cx="0" cy="-14.5" r="2"/><circle class="virus-spike-head" cx="10.25" cy="-10.25" r="2"/>
+            <circle class="virus-body-core" r="8"/>
+            <g>
+              <polygon points="-5.5,-3 -1.5,-1.5 -2.5,-3.5" fill="#010502"/>
+              <polygon points="5.5,-3 1.5,-1.5 2.5,-3.5" fill="#010502"/>
+              <path d="M -4,2 Q -1.5,5 3,2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+            </g>
+          </g>
+          <text class="virus-text" y="-26">S</text>
+        </svg>
+        <span class="sg-tag">virus — targeted (orange)</span>
+      </div>
+      <div class="sg-item">
+        <svg class="trace-svg" width="220" height="80" viewBox="0 0 220 80">
+          <path class="circuit-trace-base" d="M10,60 L70,60 L95,35 L150,35 L165,20 L210,20"/>
+          <path class="circuit-trace" d="M10,60 L70,60 L95,35 L150,35 L165,20 L210,20"/>
+          <path class="circuit-trace-base" d="M10,20 L55,20 L80,45 L210,45"/>
+          <path class="circuit-trace compromised" d="M10,20 L55,20 L80,45 L210,45"/>
+          <circle class="pcb-reference-pad" cx="10" cy="60" r="4"/>
+          <circle class="pcb-reference-pad" cx="10" cy="20" r="4"/>
+          <g class="projectile-packet" transform="translate(150,45)"><circle r="7"/><text class="projectile-text" y="2.5">S</text></g>
+        </svg>
+        <span class="sg-tag">circuit traces: idle cyan · compromised red · green data packet</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Virus anatomy (SVG, generated in script): core circle r8 <b>#ff3b30</b> + 8 spikes ending in dot heads (r2 at 14.5) + a random cartoon face (9 variants, near-black + white shapes) + a dotted radar ring rotating 8s + the letter in white Orbitron 900 above. Everything glitches via a brightness/opacity flicker. When the player types its letter the whole virus recolors to orange. Traces: wide faint green base <b>rgba(68,215,117,~0.04)</b> under a thin cyan data line <b>rgba(116,216,255,0.15)</b>; a trace carrying a virus turns red.</p>
+  <h4>Supercomputer HUD — telemetry, shields &amp; infiltration bar</h4>
+  <p class="sg-note">This game replaces the floating stat cards with green-glass <strong>telemetry tiles</strong> (each has a diagonal glare sheen), swaps the three lock circles for <strong>shield nodes</strong> above the CPU, and adds an <strong>INFILTRATIE bar</strong> that fills as viruses reach the core — green, then orange from ~50%, then flashing red from ~80%.</p>
+  <div class="theme t-super">
+    <div class="sg-stage">
+      <div class="sg-item">
+        <div style="display:flex; gap:10px;">
+          <div class="hud-telemetry-item"><span class="tel-val">42.3</span><span class="tel-label">TIJD (S)</span></div>
+          <div class="hud-telemetry-item"><span class="tel-val">184</span><span class="tel-label">CPM</span></div>
+          <div class="hud-telemetry-item"><span class="tel-val is-red">2</span><span class="tel-label">FOUTEN</span></div>
+        </div>
+        <span class="sg-tag">telemetry tiles — green glass + glare sheen</span>
+      </div>
+      <div class="sg-item">
+        <div style="display:flex; gap:12px;">
+          <span class="shield-node"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+          <span class="shield-node"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+          <span class="shield-node lost"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+        </div>
+        <span class="sg-tag">shield nodes — the mistake budget above the CPU</span>
+      </div>
+      <div class="sg-item" style="width:100%; max-width:300px;">
+        <div class="hack-progress-demo">
+          <div class="hack-progress-meta"><span class="progress-title">INFILTRATIE NIVEAU</span><span class="progress-pct">18%</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill" style="width:18%;"></div></div>
+        </div>
+        <span class="sg-tag">safe</span>
+      </div>
+      <div class="sg-item" style="width:100%; max-width:300px;">
+        <div class="hack-progress-demo">
+          <div class="hack-progress-meta"><span class="progress-title">INFILTRATIE NIVEAU</span><span class="progress-pct warning">54%</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill warning" style="width:54%;"></div></div>
+        </div>
+        <span class="sg-tag">warning</span>
+      </div>
+      <div class="sg-item" style="width:100%; max-width:300px;">
+        <div class="hack-progress-demo">
+          <div class="hack-progress-meta"><span class="progress-title">INFILTRATIE NIVEAU</span><span class="progress-pct danger">86%</span></div>
+          <div class="progress-bar-track"><div class="progress-bar-fill danger" style="width:86%;"></div></div>
+        </div>
+        <span class="sg-tag">danger — text glitches</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Telemetry tile: 135° green-black gradient + a faint radial green top light, 1px border of green at 15%, value in Orbitron 900 white (red for mistakes). The percentage chip is a sunken screen: near-black fill, deep inset shadow, glowing value that recolors with the threat level. Bar track: dark green-tinted well with theme border; the fill keeps a glow in its own color.</p>
+
+  <h3>Type training — practice console</h3>
+  <p class="sg-note">The neutral grey game. Layout: two riveted glass <strong>wings</strong> ("PRESTATIES" / "EVALUATIE") holding stat cards, a live <strong>rhythm-wave analyzer</strong> and wireframe hand diagrams, around a central <strong>type console</strong>. The console types <strong>inline text</strong> — not code slots: the current letter is a blinking orange block cursor (like a real terminal), correct letters turn green, wrong letters turn red with a red underline. Below it sits a flat 3D <strong>keyboard</strong> whose next key lights up, and in "losse letters" mode a conveyor of letter blocks rides through an orange <strong>scanner gate</strong>.</p>
+  <div class="theme t-practice">
+    <div class="sg-stage">
+      <div class="sg-item" style="width:100%; max-width:460px;">
+        <div class="typing-line-demo"><span class="char correct">t</span><span class="char correct">y</span><span class="char correct">p</span><span class="char wrong">o</span><span class="char current">e</span><span class="char faded">f</span><span class="char faded">e</span><span class="char faded">n</span><span class="char faded">i</span><span class="char faded">n</span><span class="char faded">g</span></div>
+        <span class="sg-tag">inline typing — block cursor blinks 0.8s in terminal steps</span>
+      </div>
+      <div class="sg-item">
+        <div class="kbd-row">
+          <span class="kbd-key-demo">q</span>
+          <span class="kbd-key-demo">w</span>
+          <span class="kbd-key-demo active-target">e</span>
+          <span class="kbd-key-demo">r</span>
+          <span class="kbd-key-demo home">f</span>
+        </div>
+        <span class="sg-tag">keyboard keys — glass caps; next key pulses; home keys keep a brighter border</span>
+      </div>
+      <div class="sg-item">
+        <div class="scanner-gate-demo">
+          <div class="gate-bracket"></div>
+          <div class="gate-laser"></div>
+          <div class="gate-bracket"></div>
+        </div>
+        <span class="sg-tag">scanner gate — letter blocks pass through it</span>
+      </div>
+      <div class="sg-item">
+        <svg class="rhythm-wave-demo" viewBox="0 0 200 100" preserveAspectRatio="none">
+          <path d="M 0 50 Q 12 20, 25 50 T 50 50 Q 62 75, 75 50 T 100 50 Q 112 30, 125 50 T 150 50 Q 162 65, 175 50 T 200 50"/>
+        </svg>
+        <span class="sg-tag">rhythm analyzer — live wave drawn from keystroke timing</span>
+      </div>
+      <div class="sg-item">
+        <div style="position:relative; background:linear-gradient(135deg, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.45) 100%); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:22px 16px 14px; width:210px;">
+          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:5px; margin-bottom:10px;">
+            <span style="font-family:'Orbitron'; font-size:0.66rem; font-weight:700; color:var(--cyan); letter-spacing:1.2px; text-shadow:0 0 6px var(--cyan-glow);">PRESTATIES</span>
+            <span style="font-family:'Roboto Mono'; font-size:0.55rem; color:var(--green);">ACTIEF</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:6px; padding:12px; text-align:center;">
+            <span style="display:block; font-size:0.7rem; color:var(--muted); font-family:'Orbitron'; font-weight:700; letter-spacing:0.8px;">CPM</span>
+            <span style="font-family:'Orbitron'; font-size:1.9rem; font-weight:900; color:var(--text); text-shadow:0 0 10px var(--cyan-glow);">184</span>
+          </div>
+        </div>
+        <span class="sg-tag">stat wing — glass panel with the same rivets as the metal plate</span>
+      </div>
+    </div>
+  </div>
+  <p class="sg-caption">Inline letters: Roboto Mono 700, ~30px, wide letter spacing. Cursor = orange block with black letter, blinking in hard steps (no fade). Keys: 2%-white glass caps with 1.5px 5%-white borders, radius 6, a thin dark "key depth" shadow; the target key adopts the finger color assigned to it (the hand diagrams color each finger). Wings: grey glass gradient + blur, 1px 6%-white border, radius 10, riveted corners; wing titles glow orange. The wireframe hands are faint white silhouettes whose active finger lights up in its finger color.</p>
+
+
+  <h3>Typeoefening key deck</h3>
+  <div class="theme t-practice">
+    <div class="sg-stage">
+      <div class="practice-keyboard-scroll">
+        <div class="practice-keyboard-demo">
+          <div class="practice-keyboard-container">
+            <div class="practice-keyboard-row">
+              <span class="practice-key modifier"><span class="key-code">esc</span></span>
+              <span class="practice-key finger-lp"><span class="key-code">&amp;</span></span>
+              <span class="practice-key finger-lr"><span class="key-code">&Eacute;</span></span>
+              <span class="practice-key finger-lm"><span class="key-code">&quot;</span></span>
+              <span class="practice-key finger-li"><span class="key-code">'</span></span>
+              <span class="practice-key finger-li"><span class="key-code">(</span></span>
+              <span class="practice-key finger-ri"><span class="key-code">&sect;</span></span>
+              <span class="practice-key finger-ri"><span class="key-code">&Egrave;</span></span>
+              <span class="practice-key finger-rm"><span class="key-code">!</span></span>
+              <span class="practice-key finger-rr"><span class="key-code">&Ccedil;</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">&Agrave;</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">)</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">-</span></span>
+              <span class="practice-key key-wide-3"><span class="key-code">backspace</span></span>
+            </div>
+            <div class="practice-keyboard-row">
+              <span class="practice-key key-wide-2"><span class="key-code">tab</span></span>
+              <span class="practice-key finger-lp"><span class="key-code">A</span></span>
+              <span class="practice-key finger-lr"><span class="key-code">Z</span></span>
+              <span class="practice-key finger-lm"><span class="key-code">E</span></span>
+              <span class="practice-key finger-li"><span class="key-code">R</span></span>
+              <span class="practice-key finger-li"><span class="key-code">T</span></span>
+              <span class="practice-key finger-ri"><span class="key-code">Y</span></span>
+              <span class="practice-key finger-ri"><span class="key-code">U</span></span>
+              <span class="practice-key finger-rm"><span class="key-code">I</span></span>
+              <span class="practice-key finger-rr"><span class="key-code">O</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">P</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">^</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">$</span></span>
+              <span class="practice-key key-wide-3"><span class="key-code">enter</span></span>
+            </div>
+            <div class="practice-keyboard-row">
+              <span class="practice-key key-wide-2"><span class="key-code">caps</span></span>
+              <span class="practice-key finger-lp"><span class="key-code">Q</span></span>
+              <span class="practice-key finger-lr"><span class="key-code">S</span></span>
+              <span class="practice-key finger-lm"><span class="key-code">D</span></span>
+              <span class="practice-key finger-li left-home"><span class="key-code">F</span></span>
+              <span class="practice-key finger-li"><span class="key-code">G</span></span>
+              <span class="practice-key finger-ri"><span class="key-code">H</span></span>
+              <span class="practice-key finger-ri right-home"><span class="key-code">J</span></span>
+              <span class="practice-key finger-rm"><span class="key-code">K</span></span>
+              <span class="practice-key finger-rr"><span class="key-code">L</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">M</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">&Ugrave;</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">%</span></span>
+            </div>
+            <div class="practice-keyboard-row">
+              <span class="practice-key key-wide-3"><span class="key-code">shift</span></span>
+              <span class="practice-key finger-lp"><span class="key-code">&lt;</span></span>
+              <span class="practice-key finger-lp"><span class="key-code">W</span></span>
+              <span class="practice-key finger-lr"><span class="key-code">X</span></span>
+              <span class="practice-key finger-lm"><span class="key-code">C</span></span>
+              <span class="practice-key finger-li"><span class="key-code">V</span></span>
+              <span class="practice-key finger-li"><span class="key-code">B</span></span>
+              <span class="practice-key finger-ri"><span class="key-code">N</span></span>
+              <span class="practice-key finger-rm"><span class="key-code">,</span></span>
+              <span class="practice-key finger-rr"><span class="key-code">;</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">:</span></span>
+              <span class="practice-key finger-rp"><span class="key-code">=</span></span>
+              <span class="practice-key key-wide-4"><span class="key-code">shift</span></span>
+            </div>
+            <div class="practice-keyboard-row">
+              <span class="practice-key key-wide-1"><span class="key-code">ctrl</span></span>
+              <span class="practice-key key-wide-1"><span class="key-code">win</span></span>
+              <span class="practice-key key-wide-1"><span class="key-code">alt</span></span>
+              <span class="practice-key finger-t key-space"><span class="key-code">space</span></span>
+              <span class="practice-key key-wide-1"><span class="key-code">alt</span></span>
+              <span class="practice-key key-wide-1"><span class="key-code">fn</span></span>
+              <span class="practice-key key-wide-1"><span class="key-code">ctrl</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="sg-table">
+        <tr><th>Part</th><th>Rule</th></tr>
+        <tr><td>Deck</td><td>Five generated flex rows, <code>rotateX(24deg)</code>, radius <code>8px</code>, border <code>2px</code>, padding <code>6px 8px</code>.</td></tr>
+        <tr><td>Rows</td><td><code>gap: 5px</code> between keys and <code>4px</code> between rows; wide keys use flex weights.</td></tr>
+        <tr><td>Keys</td><td>Height <code>34-48px</code>, radius <code>6px</code>, border <code>1.5px</code>, translucent dark fill.</td></tr>
+        <tr><td>Finger map</td><td>Pinky gold, ring green, middle red, left index cyan, right index blue, thumbs purple.</td></tr>
+        <tr><td>Active</td><td>Finger color border/glow and <code>rgba(255,255,255,0.1)</code> fill; no layout shift.</td></tr>
+        <tr><td>Pressed</td><td>Move down about <code>1.2px</code> with a fast <code>0.04s</code> strike transition.</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="sg-caption">This is the static styleguide version of <code>typegame-typeoefening-losse-letters</code> AZERTY keyboard generation: same rows, same flex weights, same finger color mapping and same 3D deck angle.</p>
+</section>
+
+<!-- ═══════════════ 10 FEEDBACK & MOTION ═══════════════ -->
+<section class="sg-section" id="feedback">
+  <p class="sg-kicker">10 — Interaction grammar</p>
+  <h2>Feedback &amp; motion</h2>
+  <p class="sg-lead">Feedback is instant, local and color-coded. The same five moments exist in every game:</p>
+  <table class="sg-table">
+    <tr><th>Moment</th><th>What happens</th><th>Motion</th></tr>
+    <tr><td><strong style="color:#e48e35">Awaiting input</strong></td><td>Exactly one thing glows orange: the current slot, key, pin, node, word or virus. Everything else stays matte.</td><td>Slow breathing pulse on the target (≈1s), gentle 2s text pulse on prompts.</td></tr>
+    <tr><td><strong style="color:#9ad744">Correct input</strong></td><td>The typed part flips to green (border, text, glow) and stays green. Progress moves to the next target.</td><td>Brief success flash on the key (~0.4s), packet fired / pin lifted / word revealed.</td></tr>
+    <tr><td><strong style="color:#ff3b30">Wrong input</strong></td><td>The part flashes red, a mistake indicator turns red (lock orb, shield node, mistake stat), terminal logs a danger line.</td><td>Quick shake ≈0.3s, red flash ≈0.5s, then back to neutral.</td></tr>
+    <tr><td><strong style="color:#9ad744">Completion</strong></td><td>The whole machine turns green: metal plate border + glow, all inputs green, status label flips (VERGRENDELD → ONTGRENDELD), green overlay with "TOEGANG VERLEEND".</td><td>Green glitch-flash 0.6s, unlock icon pops in with overshoot, then calm glow.</td></tr>
+    <tr><td><strong style="color:#ff3b30">Failure</strong></td><td>Red lockout: machine border flashes red, red inset glow, overlay "SYSTEEM VERGRENDELD", then the red-stamped report.</td><td>Alarm flash ≈0.5s ×3, background flicker, report stamp slams in.</td></tr>
+  </table>
+  <h3>Animation examples</h3>
+  <p class="sg-note">Use animation to explain state, not to decorate. Loops stay short and readable; input feedback should be local to the object the player touched.</p>
+  <div class="theme t-keypad">
+    <div class="sg-stage">
+      <div class="animation-demo-grid">
+        <div class="animation-demo-card">
+          <div class="demo-leds"><span class="demo-led green"></span><span class="demo-led orange"></span></div>
+          <span class="animation-demo-label">LED pulse</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-signal-bars"><span></span><span></span><span></span><span></span><span></span></div>
+          <span class="animation-demo-label">Signal bars</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-scanner"></div>
+          <span class="animation-demo-label">Scanner sweep</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-active-key">R</div>
+          <span class="animation-demo-label">Active key</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-error-box"></div>
+          <span class="animation-demo-label">Error shake</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-lock-box"></div>
+          <span class="animation-demo-label">Target lock</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-packet-track"><span class="demo-packet"></span><span class="demo-packet-target"></span></div>
+          <span class="animation-demo-label">Packet hit</span>
+        </div>
+        <div class="animation-demo-card">
+          <div class="demo-metronome"><span class="play-symbol">PLAY</span></div>
+          <span class="animation-demo-label">Metronome</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="sg-table">
+    <tr><th>Rule</th><th>Use it for</th></tr>
+    <tr><td>Small repeated loops</td><td>Live hardware only: LEDs, signal bars, scanner lines, metronome rings.</td></tr>
+    <tr><td>Short one-shot feedback</td><td>Actual input: key press, typed character, slot fill, packet impact, error shake.</td></tr>
+    <tr><td>Strong color changes</td><td>Only success, danger or failure. The rest of the interface stays matte.</td></tr>
+  </table>
+
+  <h3>Animation timing reference</h3>
+  <table class="sg-table">
+    <tr><th>Name</th><th>Duration</th><th>Use</th></tr>
+    <tr><td>Scanline flicker</td><td>0.15s, endless</td><td>screen overlays — opacity wobbles 94–100%</td></tr>
+    <tr><td>Gentle pulse</td><td>2s back-and-forth</td><td>spacebar prompts, hint labels (opacity 0.4→1)</td></tr>
+    <tr><td>Target pulse</td><td>0.8–1s back-and-forth</td><td>current slot border glow / active key letter scale 1→1.08</td></tr>
+    <tr><td>LED blink / LED breathe</td><td>0.3s / 1.2s</td><td>panel LEDs (green flickers fast, orange breathes)</td></tr>
+    <tr><td>Voltage bars</td><td>0.8s, staggered delays</td><td>bars in panel footers grow and shrink</td></tr>
+    <tr><td>Error shake</td><td>≈0.3s, once</td><td>wrong input — key or whole terminal jolts sideways</td></tr>
+    <tr><td>Success flash / icon pop</td><td>0.6s / 0.5s, once</td><td>completion flash over the machine, unlock icon overshoots then settles</td></tr>
+    <tr><td>Laser sweep</td><td>3s, endless</td><td>fingerprint laser travels top↔bottom (document scan laser: 4.5s)</td></tr>
+    <tr><td>Node pulse ring</td><td>≈1.4s, endless</td><td>ring expands and fades around the active scan node</td></tr>
+    <tr><td>Block cursor blink</td><td>0.8s, hard steps</td><td>practice game inline cursor — no fade, terminal style</td></tr>
+    <tr><td>Status dot blink</td><td>1s back-and-forth</td><td>red dot next to VERGRENDELD; steady green when unlocked</td></tr>
+    <tr><td>Virus glitch / radar spin</td><td>1.5s / 8s, endless</td><td>virus brightness flicker / dotted ring rotation</td></tr>
+    <tr><td>CPU glow / CPU LED</td><td>2.5s / 1.2s back-and-forth</td><td>neon CPU label brightens and dims / status LED pulses</td></tr>
+    <tr><td>Target lock-on</td><td>0.25s, once</td><td>redaction bar flickers black↔orange when targeted</td></tr>
+    <tr><td>Report entry</td><td>0.5–0.6s, staggered</td><td>header fades down, cards pop in one by one (0.22s→0.52s), stamp slams last</td></tr>
+    <tr><td>Coin spin</td><td>3s, endless</td><td>credit coin rotates on its vertical axis</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════════ 11 THEME VARIANTS ═══════════════ -->
+<section class="sg-section" id="themes">
+  <p class="sg-kicker">11 — Same parts, six moods</p>
+  <h2>Theme variants</h2>
+  <p class="sg-lead">
+    Proof of the system: the identical stat card + code slots, re-rendered in each game's theme. Only the color
+    values change — the components don't.
+  </p>
+  <div class="sg-row">
+    <div class="theme t-lockpick sg-minw"><div class="sg-stage" style="flex-direction:column; gap:14px; background:var(--purple-dark); min-width:150px;">
+      <div class="hud-stat"><span class="stat-value">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="code-text" style="gap:4px;"><span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">a</span><span class="char-box current" style="width:30px;height:38px;font-size:1rem;">b</span><span class="char-box" style="width:30px;height:38px;font-size:1rem;">c</span></div>
+      <span style="font-family:'Orbitron'; font-size:0.55rem; color:var(--muted); letter-spacing:1px;">LOCKPICKING — RED/BROWN</span>
+    </div></div>
+    <div class="theme t-keypad sg-minw"><div class="sg-stage" style="flex-direction:column; gap:14px; background:var(--purple-dark); min-width:150px;">
+      <div class="hud-stat"><span class="stat-value">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="code-text" style="gap:4px;"><span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">a</span><span class="char-box current" style="width:30px;height:38px;font-size:1rem;">b</span><span class="char-box" style="width:30px;height:38px;font-size:1rem;">c</span></div>
+      <span style="font-family:'Orbitron'; font-size:0.55rem; color:var(--muted); letter-spacing:1px;">KEYPAD — INDIGO</span>
+    </div></div>
+    <div class="theme t-fingerprint sg-minw"><div class="sg-stage" style="flex-direction:column; gap:14px; background:var(--purple-dark); min-width:150px;">
+      <div class="hud-stat"><span class="stat-value" style="color:var(--cyan);">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="code-text" style="gap:4px;"><span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">a</span><span class="char-box current" style="width:30px;height:38px;font-size:1rem;">b</span><span class="char-box" style="width:30px;height:38px;font-size:1rem;">c</span></div>
+      <span style="font-family:'Orbitron'; font-size:0.55rem; color:var(--muted); letter-spacing:1px;">FINGERPRINT — AMBER</span>
+    </div></div>
+    <div class="theme t-redact sg-minw"><div class="sg-stage" style="flex-direction:column; gap:14px; background:var(--purple-dark); min-width:150px;">
+      <div class="hud-stat"><span class="stat-value">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="code-text" style="gap:4px;"><span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">a</span><span class="char-box current" style="width:30px;height:38px;font-size:1rem;">b</span><span class="char-box" style="width:30px;height:38px;font-size:1rem;">c</span></div>
+      <span style="font-family:'Orbitron'; font-size:0.55rem; color:var(--muted); letter-spacing:1px;">REDACTING — PURPLE</span>
+    </div></div>
+    <div class="theme t-practice sg-minw"><div class="sg-stage" style="flex-direction:column; gap:14px; background:var(--purple-dark); min-width:150px;">
+      <div class="hud-stat"><span class="stat-value">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="code-text" style="gap:4px;"><span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">a</span><span class="char-box current" style="width:30px;height:38px;font-size:1rem;">b</span><span class="char-box" style="width:30px;height:38px;font-size:1rem;">c</span></div>
+      <span style="font-family:'Orbitron'; font-size:0.55rem; color:var(--muted); letter-spacing:1px;">TYPE TRAINING — GREY</span>
+    </div></div>
+    <div class="theme t-super sg-minw"><div class="sg-stage" style="flex-direction:column; gap:14px; background:var(--purple-dark); min-width:150px;">
+      <div class="hud-stat"><span class="stat-value" style="color:var(--green);">42.3s</span><span class="stat-label">Tijd</span></div>
+      <div class="code-text" style="gap:4px;"><span class="char-box correct" style="width:30px;height:38px;font-size:1rem;">a</span><span class="char-box current" style="width:30px;height:38px;font-size:1rem;">b</span><span class="char-box" style="width:30px;height:38px;font-size:1rem;">c</span></div>
+      <span style="font-family:'Orbitron'; font-size:0.55rem; color:var(--muted); letter-spacing:1px;">SUPERCOMPUTER — GREEN</span>
+    </div></div>
+  </div>
+  <p class="sg-note">Accent exception per theme: fingerprint promotes its yellow (<code>#ffcc00</code>) to the stat/scan accent, and supercomputer uses its brighter green (<code>#44d775</code>) — everything else keeps orange as the active color.</p>
+</section>
+
+<!-- ═══════════════ 12 NEW GAME CHECKLIST ═══════════════ -->
+<section class="sg-section" id="css">
+  <p class="sg-kicker">12 — Building a new game</p>
+  <h2>New game checklist</h2>
+  <p class="sg-lead">The shortest path to a game that fits the set, in any tech stack:</p>
+  <table class="sg-table">
+    <tr><th>#</th><th>Step</th><th>Match against</th></tr>
+    <tr><td>1</td><td>Pick one unused background hue and derive the full tint set from it (panel, borders, hairlines, muted text, screen background — section 02 shows how each game did it).</td><td>Section 02</td></tr>
+    <tr><td>2</td><td>Set up the 16:9 frame with header (system label + <em>TYPEMISSION // NAME</em> title) and the three views: briefing → arena → results.</td><td>Sections 04, 06</td></tr>
+    <tr><td>3</td><td>Design the machine as the layer stack: grey metal plate with rivets + etched label + 3 mistake indicators, dark device panel with LEDs/ports, screen with scanlines, then your unique input object on top. Run green/orange/red cables behind it.</td><td>Section 05</td></tr>
+    <tr><td>4</td><td>Give the input object the four-state grammar: matte neutral, one orange active target, green locked-in, red flash on error.</td><td>Sections 07, 10</td></tr>
+    <tr><td>5</td><td>Write 2–3 briefing cards with a mini version of the machine, and reuse the standard result report (stats grid, stamp, credits, spacebar).</td><td>Sections 06, 08</td></tr>
+    <tr><td>6</td><td>Keep all text in the three-font system and all timings from the motion table.</td><td>Sections 03, 10</td></tr>
+  </table>
+  <p class="sg-note">Reference implementations: the keypad game is the cleanest example of the door stack; the supercomputer game shows how far a non-door machine can go while staying in-system. Hue claims so far — red/brown, indigo, amber, purple, grey, green. Still free: e.g. deep teal, cold steel-blue, magenta.</p>
+</section>
+
+
+</main>
+</div>
+</body>
+</html>
