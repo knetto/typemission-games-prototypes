@@ -1945,6 +1945,299 @@ table.sg-table {
   .lp-tool-in-cylinder { left: calc(50% - 538px); }
 }
 
+/* Fingerprint source specimen. The numbered node overlay is intentionally absent. */
+.fingerprint-specimen {
+  width: min(100%, 780px);
+  margin-inline: auto;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #090a0d;
+}
+.fp-game-panel {
+  width: min(100%, 520px);
+  margin-inline: auto;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: linear-gradient(135deg,#121318,#08090b);
+  box-shadow: inset 0 0 20px rgba(0,0,0,.9), 0 15px 35px rgba(0,0,0,.48);
+}
+.fp-panel-header,
+.fp-panel-footer {
+  width: 95%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fp-panel-header {
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid rgba(255,255,255,.08);
+  color: var(--muted);
+  font: 700 .62rem/1 "Orbitron", sans-serif;
+  letter-spacing: .8px;
+}
+.fp-leds { display: flex; gap: 6px; }
+.fp-leds i { display: block; width: 6px; height: 6px; border-radius: 50%; }
+.fp-leds i:first-child { background: var(--green); box-shadow: 0 0 6px var(--green); animation: fpLedBlink .3s infinite alternate; }
+.fp-leds i:last-child { background: var(--orange); box-shadow: 0 0 6px var(--orange); animation: fpSignalPulse 1.2s infinite ease-in-out; }
+.fp-door-screen {
+  position: relative;
+  width: 95%;
+  overflow: hidden;
+  padding: 8px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1.8px solid var(--purple-soft);
+  border-radius: 8px;
+  background: var(--terminal-bg);
+  box-shadow: inset 0 0 15px rgba(0,0,0,.95), 0 0 10px rgba(255,204,0,.15);
+}
+.fp-door-screen::after {
+  content: ""; position: absolute; inset: 0; z-index: 10; pointer-events: none;
+  background: linear-gradient(rgba(8,16,32,0) 50%, rgba(0,0,0,.25) 50%);
+  background-size: 100% 3px; animation: fpCrtFlicker .15s infinite;
+}
+.fp-screen-tags { position: absolute; z-index: 2; top: 4px; left: 8px; right: 8px; display: flex; justify-content: space-between; color: var(--line); font: 700 .42rem/1 "Roboto Mono", monospace; letter-spacing: .5px; }
+.fp-screen-label { position: relative; z-index: 2; color: var(--cyan); font: 700 .62rem/1.2 "Orbitron", sans-serif; letter-spacing: .8px; }
+.fp-code-row { position: relative; z-index: 2; width: 100%; display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
+.fp-code-row .char-box { width: 42px; height: 46px; margin: 0; flex: 0 1 42px; color: #fff; border: 2px solid var(--line); background: rgba(0,0,0,.5); font-size: 1.25rem; }
+.fp-code-row .char-box.correct { color: var(--cyan); border-color: var(--cyan); background: rgba(255,204,0,.15); box-shadow: none; text-shadow: 0 0 6px var(--cyan-glow); }
+.fp-code-row .char-box.current { color: #fff; border-color: var(--cyan); background: rgba(255,204,0,.05); box-shadow: 0 0 8px var(--cyan-glow); }
+.fp-code-row .char-box.faded { opacity: .2; color: #fff; border-color: rgba(255,255,255,.08); }
+.fp-scanner-stage { width: 95%; display: grid; place-items: center; padding: 2px 0; }
+.fp-scanner-bezel {
+  width: 210px;
+  height: 245px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: rgba(15,16,20,.85);
+  box-shadow: inset 0 0 25px rgba(0,0,0,.95), 0 10px 25px rgba(0,0,0,.55);
+}
+.fp-scanner-bezel::before {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(rgba(255,204,0,.015) 1px,transparent 1px), linear-gradient(90deg,rgba(255,204,0,.015) 1px,transparent 1px);
+  background-size: 8px 8px;
+}
+.fp-vector-wrapper { width: 170px; height: 205px; position: relative; display: flex; align-items: center; justify-content: center; }
+.fp-vector-wrapper svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 6; overflow: visible; }
+.fp-ridge { fill: rgba(255,255,255,.12); transition: fill .35s ease, filter .35s ease; }
+.fp-ridge.active { fill: var(--cyan); filter: drop-shadow(0 0 5px rgba(255,204,0,.75)); }
+.fp-green-layer { z-index: 7 !important; clip-path: inset(0 0 100% 0); pointer-events: none; }
+.fp-green-layer .fp-ridge { fill: var(--green); filter: drop-shadow(0 0 6px rgba(154,215,68,.85)); }
+.fp-laser-line,
+.fp-laser-glow { position: absolute; left: 0; z-index: 12; pointer-events: none; animation: fpLaserSweep 3s infinite ease-in-out; }
+.fp-laser-line { width: 100%; height: 3px; background: linear-gradient(90deg,transparent,var(--cyan),transparent); box-shadow: 0 0 8px var(--cyan),0 0 18px var(--cyan-glow); }
+.fp-laser-glow { z-index: 11; width: 100%; height: 60px; transform: translateY(-50%); mix-blend-mode: screen; background: linear-gradient(to bottom,transparent,rgba(255,204,0,.25) 35%,rgba(255,204,0,.6) 50%,rgba(255,204,0,.25) 65%,transparent); }
+.fp-panel-footer { padding-top: 8px; border-top: 1.5px solid rgba(255,255,255,.08); }
+.fp-signal-bars { display: flex; align-items: end; gap: 3px; height: 12px; }
+.fp-signal-bars i { width: 3px; border-radius: 1px; background: var(--orange); animation: fpBarGrowth .8s infinite ease-in-out alternate; }
+.fp-signal-bars i:nth-child(1){height:30%;animation-delay:.1s}.fp-signal-bars i:nth-child(2){height:50%;animation-delay:.3s}.fp-signal-bars i:nth-child(3){height:70%;animation-delay:.2s}.fp-signal-bars i:nth-child(4){height:90%;animation-delay:.5s}.fp-signal-bars i:nth-child(5){height:40%;animation-delay:.4s}
+.fp-ports { display: flex; gap: 6px; }
+.fp-ports i { width: 8px; height: 8px; display: block; border: 1.5px solid rgba(255,255,255,.15); border-radius: 50%; background: #02050b; box-shadow: inset 0 1px 2px rgba(0,0,0,.85); }
+.fp-state-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 16px; }
+.fp-state-card { min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 9px; background: var(--panel); }
+.fp-state-preview { height: 190px; display: grid; place-items: center; border-bottom: 1px solid var(--border); background: #08090c; }
+.fp-state-preview .fp-scanner-bezel { width: 145px; height: 168px; border-radius: 11px; }
+.fp-state-preview .fp-vector-wrapper { width: 116px; height: 140px; }
+.fp-state-copy { padding: 11px; }
+.fp-state-copy strong { display: block; color: var(--text); font: 700 .66rem/1.35 "Orbitron", sans-serif; letter-spacing: .5px; }
+.fp-state-copy span { display: block; margin-top: 5px; color: var(--muted); font: 500 .6rem/1.5 "Roboto Mono", monospace; }
+.fp-verification { display: grid; grid-template-columns: 250px 1fr; align-items: center; gap: 20px; margin-top: 16px; padding: 18px; border: 1px solid rgba(154,215,68,.2); border-radius: 10px; background: rgba(154,215,68,.035); }
+.fp-verification .fp-scanner-bezel { margin-inline: auto; }
+.fp-verification .fp-laser-line { background: linear-gradient(90deg,transparent,var(--green),transparent); box-shadow: 0 0 12px var(--green),0 0 25px var(--green-glow); animation: fpVerifySweep 2.45s linear infinite; }
+.fp-verification .fp-laser-glow { background: linear-gradient(to bottom,transparent,rgba(154,215,68,.3) 35%,rgba(154,215,68,.75) 50%,rgba(154,215,68,.3) 65%,transparent); animation: fpVerifySweep 2.45s linear infinite; }
+.fp-verification .fp-green-layer { animation: fpGreenReveal 2.45s linear infinite; }
+.fp-verification h4 { margin: 0 0 8px; }
+.fp-verification p { margin: 0; color: var(--dim); font-size: .8rem; line-height: 1.65; }
+.fp-spec-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 16px; }
+.fp-spec-grid span { padding: 10px; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font: 500 .62rem/1.5 "Roboto Mono", monospace; }
+.fp-current-note { margin-top: 16px; padding: 12px 14px; border: 1px solid rgba(255,204,0,.2); border-radius: 8px; color: var(--dim); background: rgba(255,204,0,.035); font-size: .76rem; line-height: 1.6; }
+.fp-current-note code { color: var(--cyan); }
+@keyframes fpLaserSweep { 0%{top:3%}50%{top:97%}100%{top:3%} }
+@keyframes fpVerifySweep { 0%,24.5%{top:3%}100%{top:97%} }
+@keyframes fpGreenReveal { 0%,24.5%{clip-path:inset(0 0 100% 0)}100%{clip-path:inset(0 0 0 0)} }
+@keyframes fpLedBlink { from{opacity:.3}to{opacity:1} }
+@keyframes fpSignalPulse { 0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.2);opacity:1} }
+@keyframes fpBarGrowth { from{transform:scaleY(.4);opacity:.5}to{transform:scaleY(1.2);opacity:1} }
+@keyframes fpCrtFlicker { 0%{opacity:.94}50%{opacity:1}100%{opacity:.96} }
+@media (max-width: 760px) {
+  .fingerprint-specimen { padding: 10px; }
+  .fp-game-panel { padding: 12px 10px; }
+  .fp-code-row { gap: min(1.5vw,8px); }
+  .fp-code-row .char-box { width: min(10vw,42px); height: min(12vw,46px); flex-basis: min(10vw,42px); font-size: clamp(.78rem,4vw,1.25rem); }
+  .fp-state-grid { grid-template-columns: repeat(2,1fr); }
+  .fp-verification, .fp-spec-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 460px) { .fp-state-grid { grid-template-columns: 1fr; } }
+
+/* File redacting source specimen: split arena, paper states and camera HUD. */
+.redact-specimen {
+  width: 100%;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #08070a;
+}
+.rs-arena {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 520px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.12fr .88fr;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--purple-dark);
+  box-shadow: 0 18px 45px rgba(0,0,0,.55);
+}
+.rs-console {
+  min-width: 0;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-right: 2px solid var(--purple-soft);
+  background: rgba(11,3,11,.4);
+}
+.rs-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.rs-stat { min-width: 0; padding: 8px 4px; text-align: center; border: 1px solid var(--line); border-radius: 6px; background: rgba(26,8,25,.6); }
+.rs-stat strong { display: block; color: var(--orange); font: 700 1rem/1 "Orbitron",sans-serif; }
+.rs-stat span { display: block; margin-top: 3px; color: var(--muted); font: 600 .5rem/1.2 "Roboto",sans-serif; text-transform: uppercase; }
+.rs-terminal {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--purple-soft);
+  border-radius: 8px;
+  background: var(--terminal-bg);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,.95),0 0 15px rgba(186,104,200,.12),0 4px 16px rgba(0,0,0,.6);
+}
+.rs-terminal-header { height: 38px; padding-left: 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: #09040c; }
+.rs-terminal-info { display: flex; align-items: center; gap: 12px; }
+.rs-terminal-title { color: var(--muted); font: 700 .65rem/1 "Orbitron",sans-serif; letter-spacing: .5px; }
+.rs-terminal-ping { padding: 2px 6px; border-radius: 3px; color: var(--green); background: rgba(154,215,68,.1); font: 600 .55rem/1 "Orbitron",sans-serif; letter-spacing: .5px; animation: rsBlinkText 1.5s infinite alternate; }
+.rs-window-controls { align-self: stretch; display: flex; }
+.rs-window-controls i { width: 36px; display: grid; place-items: center; color: var(--muted); font: 500 .65rem/1 "Roboto Mono",monospace; border-left: 1px solid rgba(255,255,255,.025); }
+.rs-terminal-body { position: relative; flex: 1; min-height: 0; padding: 20px; display: grid; place-items: center; overflow: hidden; }
+.rs-terminal-body::before { content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background: radial-gradient(circle at center,transparent 30%,rgba(9,4,12,.55)),repeating-linear-gradient(0deg,rgba(154,215,68,.02) 0 1px,transparent 1px 3px); }
+.rs-code-box { position: relative; z-index: 2; text-align: center; }
+.rs-code-label { color: var(--orange); font: 700 .85rem/1.3 "Orbitron",sans-serif; letter-spacing: .5px; }
+.rs-code-text { margin-top: 10px; color: #fff; font: 700 2rem/1.35 "Roboto Mono",monospace; letter-spacing: 3px; }
+.rs-code-text .correct { color: var(--green); text-shadow: 0 0 8px var(--green-glow); }
+.rs-code-text .current { color: var(--orange); border-bottom: 2px solid var(--orange); animation: rsCursorBlink .8s infinite steps(2,start); }
+.rs-code-text .wrong { color: #ff5555; border-radius: 2px; background: rgba(255,85,85,.15); text-shadow: 0 0 8px rgba(255,85,85,.4); }
+.rs-viewport { position: relative; min-width: 0; overflow: hidden; background: #080309; }
+.rs-viewport::before { content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background-image:linear-gradient(rgba(154,215,68,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(154,215,68,.08) 1px,transparent 1px); background-size:80px 80px; background-position:center; }
+.rs-ruler-h,.rs-ruler-v,.rs-ruler-corner { position:absolute; z-index:15; pointer-events:none; background-color:#18111d; }
+.rs-ruler-h { top:0; left:0; width:100%; height:16px; border-bottom:1px solid #2e2235; background-image:repeating-linear-gradient(90deg,transparent 0 9px,#503f59 9px 10px,transparent 10px 19px); }
+.rs-ruler-v { top:0; left:0; width:16px; height:100%; border-right:1px solid #2e2235; background-image:repeating-linear-gradient(0deg,transparent 0 9px,#503f59 9px 10px,transparent 10px 19px); }
+.rs-ruler-corner { top:0; left:0; width:16px; height:16px; z-index:16; border-right:1px solid #2e2235; border-bottom:1px solid #2e2235; background:#251a2d; }
+.rs-hud { position:absolute; inset:16px 0 0 16px; z-index:8; pointer-events:none; }
+.rs-corner { position:absolute; width:16px; height:16px; border:2.5px solid var(--green); opacity:.85; filter:drop-shadow(0 0 3px var(--green-glow)); animation:rsCornerTarget 4s infinite cubic-bezier(.25,1,.5,1); }
+.rs-corner.tl{top:12px;left:12px;border-right:0;border-bottom:0;--dx:-1;--dy:-1}.rs-corner.tr{top:12px;right:12px;border-left:0;border-bottom:0;--dx:1;--dy:-1}.rs-corner.bl{bottom:12px;left:12px;border-right:0;border-top:0;--dx:-1;--dy:1}.rs-corner.br{bottom:12px;right:12px;border-left:0;border-top:0;--dx:1;--dy:1}
+.rs-scan-laser { position:absolute; left:0; right:0; height:3px; z-index:5; opacity:.3; background:linear-gradient(90deg,transparent,var(--green),transparent); box-shadow:0 0 10px var(--green),0 0 20px var(--green); animation:rsLaserScan 4.5s infinite ease-in-out; }
+.rs-reticle { position:absolute; left:50%; top:50%; width:150px; height:40px; transform:translate(-50%,-50%); z-index:10; border:1.5px solid var(--green); border-radius:4px; box-shadow:0 0 15px rgba(154,215,68,.4),inset 0 0 10px rgba(154,215,68,.2); }
+.rs-reticle::before { content:""; position:absolute; inset:-6px; border:1.5px solid var(--orange); border-radius:6px; opacity:.7; clip-path:polygon(0 0,20% 0,20% 20%,0 20%,0 80%,20% 80%,20% 100%,0 100%,80% 100%,80% 80%,100% 80%,100% 100%,100% 0,80% 0,80% 20%,100% 20%); animation:rsReticlePulse 1.2s infinite ease-in-out alternate; }
+.rs-reticle-label { position:absolute; top:-16px; left:0; padding:1px 6px; border-radius:2px; color:var(--purple-dark); background:var(--green); font:900 .55rem/1.3 "Orbitron",sans-serif; letter-spacing:.5px; white-space:nowrap; }
+.rs-camera-paper { position:absolute; left:3%; top:4%; width:94%; height:92%; z-index:2; transform-origin:0 0; transform:translate(-48%,-3%) scale(2.1); }
+.rs-folder { position:relative; width:100%; height:100%; padding:10px; display:flex; flex-direction:column; border-radius:10px; background:var(--manila-bg); box-shadow:0 15px 35px rgba(0,0,0,.6); }
+.rs-folder-tab { position:absolute; bottom:100%; left:10px; margin-bottom:-1px; padding:4px 12px 1px; border-radius:6px 12px 0 0; color:rgba(30,9,29,.7); background:var(--manila-bg); font:700 .58rem/1 "Orbitron",sans-serif; }
+.rs-paper { flex:1; min-height:0; overflow:hidden; padding:14px 16px 10px; display:flex; flex-direction:column; border-radius:3px; color:#1a1a1a; background:#fdfbf4; box-shadow:0 3px 8px rgba(0,0,0,.18); font-family:"Courier New",Courier,monospace; }
+.rs-paper-header { display:flex; justify-content:space-between; align-items:center; flex-shrink:0; padding-bottom:4px; margin-bottom:8px; border-bottom:2px double #8f8579; }
+.rs-paper-meta { color:#7c7265; font-size:.58rem; font-weight:bold; letter-spacing:.5px; }.rs-paper-meta b{color:#a12b1e}
+.rs-stamp { padding:1px 5px; border:2px solid #a12b1e; border-radius:3px; color:#a12b1e; opacity:.85; transform:rotate(-3deg); font:900 .68rem/1.2 "Orbitron",sans-serif; }
+.rs-stamp.verified { color:var(--green); border-color:var(--green); transform:rotate(3deg); }
+.rs-paper h4 { margin:0 0 8px; padding-bottom:3px; border-bottom:1px solid #8f8579; color:#222; font:700 .74rem/1.3 "Courier New",monospace; }
+.rs-paper-copy { flex:1; min-height:0; overflow:hidden; }
+.rs-paper-copy p { margin:0 0 7px; color:#1a1a1a; font:400 .63rem/1.45 "Courier New",monospace; text-align:justify; }
+.rs-redacted { display:inline-block; padding:0 3px; border-radius:1.5px; color:transparent; background:#111; font-weight:bold; white-space:pre; user-select:none; }
+.rs-redacted.active { background:var(--orange); box-shadow:0 0 5px var(--orange); }
+.rs-redacted.decrypting { color:var(--green); background:#0d2b0d; text-shadow:0 0 5px var(--green-glow); box-shadow:0 0 8px var(--green-glow); }
+.rs-redacted.decrypted { color:#111; background:transparent; box-shadow:none; }
+.rs-paper-footer { margin-top:auto; padding-top:7px; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-shrink:0; border-top:1px dashed #8f8579; color:#7c7265; font:700 .58rem/1.2 "Courier New",monospace; }
+.rs-progress { display:flex; align-items:center; gap:5px; }.rs-progress-track{width:76px;height:7px;overflow:hidden;border-radius:99px;background:#e2dacd}.rs-progress-track i{display:block;width:20%;height:100%;border-radius:99px;background:var(--green)}
+.rs-signature { font:italic 700 .62rem/1 Georgia,serif; color:var(--purple-soft); }
+.rs-life-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:16px; }
+.rs-life-card { min-width:0; overflow:hidden; border:1px solid var(--border); border-radius:9px; background:var(--panel); }
+.rs-life-preview { height:105px; display:grid; place-items:center; padding:12px; border-bottom:1px solid #d8d0c5; background:#fdfbf4; }
+.rs-life-word { min-width:112px; min-height:26px; display:inline-flex; align-items:center; justify-content:center; padding:3px 8px; color:transparent; background:#111; border-radius:2px; font:700 .76rem/1 "Courier New",monospace; }
+.rs-life-word.active { background:var(--orange); box-shadow:0 0 7px var(--orange); animation:rsTargetLockOn 2.7s infinite; }
+.rs-life-word.scramble { color:var(--green); background:#0d2b0d; text-shadow:0 0 5px var(--green-glow); box-shadow:0 0 8px var(--green-glow); }
+.rs-life-word.scramble::after { content:"N1G#7H@WK"; animation:rsScrambleText 2.4s infinite steps(1,end); }
+.rs-life-word.decrypted { color:#111; background:#fdfbf4; box-shadow:inset 0 0 0 1px #d7cfc2; }
+.rs-life-copy { padding:11px; }.rs-life-copy strong{display:block;color:var(--text);font:700 .66rem/1.35 "Orbitron",sans-serif}.rs-life-copy span{display:block;margin-top:5px;color:var(--muted);font:500 .6rem/1.5 "Roboto Mono",monospace}
+.rs-motion { display:grid; grid-template-columns:1.05fr .95fr; gap:18px; align-items:center; margin-top:16px; padding:18px; border:1px solid rgba(154,215,68,.2); border-radius:10px; background:rgba(154,215,68,.035); }
+.rs-motion-viewport { position:relative; height:260px; overflow:hidden; border:1px solid #2e2235; border-radius:7px; background:#080309; }
+.rs-motion-viewport::before { content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(154,215,68,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(154,215,68,.08) 1px,transparent 1px); background-size:50px 50px; }
+.rs-motion-sheet { position:absolute; left:22%; top:16%; width:56%; height:68%; padding:14px; color:#1a1a1a; background:#fdfbf4; box-shadow:0 8px 18px rgba(0,0,0,.55); transform-origin:center; animation:rsCameraTour 7s infinite cubic-bezier(.65,0,.35,1); }
+.rs-motion-sheet i { display:block; height:5px; margin-bottom:9px; background:#bbb1a3; }.rs-motion-sheet i:nth-child(2){width:82%}.rs-motion-sheet i:nth-child(3){width:65%;background:#111}.rs-motion-sheet i:nth-child(4){width:90%}.rs-motion-sheet i:nth-child(5){width:48%;background:#111}
+.rs-motion .rs-reticle { width:120px; height:34px; }
+.rs-motion-copy h4 { margin:0 0 8px; }.rs-motion-copy p{margin:0;color:var(--dim);font-size:.8rem;line-height:1.65}.rs-motion-copy ol{margin:10px 0 0;padding-left:20px;color:var(--muted);font:500 .64rem/1.65 "Roboto Mono",monospace}
+.rs-complete { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(250px,.85fr); gap:18px; align-items:center; margin-top:16px; padding:18px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+.rs-complete .rs-folder { min-height:340px; }.rs-complete-copy h4{margin:0 0 8px}.rs-complete-copy p{margin:0;color:var(--dim);font-size:.8rem;line-height:1.65}.rs-complete-list{display:grid;gap:7px;margin-top:12px}.rs-complete-list span{padding:8px 10px;border:1px solid var(--border);border-radius:5px;color:var(--muted);font:500 .62rem/1.45 "Roboto Mono",monospace}
+.rs-motion-specs { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:16px; }.rs-motion-specs span{padding:10px;border:1px solid var(--border);border-radius:6px;color:var(--muted);font:500 .62rem/1.5 "Roboto Mono",monospace}
+@keyframes rsLaserScan{0%{top:0}50%{top:100%}100%{top:0}}
+@keyframes rsReticlePulse{from{transform:scale(1);opacity:.5}to{transform:scale(1.02);opacity:1}}
+@keyframes rsBlinkText{from{opacity:.2}to{opacity:1}}
+@keyframes rsCursorBlink{0%,100%{border-bottom-color:transparent}50%{border-bottom-color:var(--orange)}}
+@keyframes rsCornerTarget{0%,80%,100%{transform:translate(0);border-color:var(--green)}84%{transform:translate(calc(var(--dx)*12px),calc(var(--dy)*12px));border-color:var(--orange);filter:drop-shadow(0 0 8px var(--orange))}90%{transform:translate(calc(var(--dx)*-3px),calc(var(--dy)*-3px));border-color:var(--green)}96%{transform:translate(calc(var(--dx)*1px),calc(var(--dy)*1px))}}
+@keyframes rsTargetLockOn{0%,74%{background:#111;box-shadow:none;transform:none}78%{background:var(--orange);box-shadow:0 0 6px var(--orange);transform:translateX(-1px) skew(-1deg)}82%{background:#111;box-shadow:none;transform:translate(.5px,-.5px)}88%{background:var(--orange);box-shadow:0 0 8px var(--orange);transform:skew(-.5deg)}92%{background:#222;box-shadow:0 0 3px var(--orange)}96%,100%{background:var(--orange);box-shadow:0 0 5px var(--orange);transform:none}}
+@keyframes rsScrambleText{0%{content:"N1G#7H@WK"}12%{content:"NI4$7H?WK"}24%{content:"NIG8!H2WK"}36%{content:"NIGH7#9WK"}48%{content:"NIGHT%3WK"}60%{content:"NIGHTH@WK"}72%,100%{content:"NIGHTHAWK"}}
+@keyframes rsCameraTour{0%,14%{transform:translate(0) scale(.97)}28%,43%{transform:translate(34%,20%) scale(2.1)}55%{transform:translate(2%,-4%) scale(1.4)}70%,86%{transform:translate(-29%,-22%) scale(2.1)}100%{transform:translate(0) scale(.97)}}
+@media(max-width:900px){.rs-arena{aspect-ratio:auto;min-height:0;grid-template-columns:1fr}.rs-console{min-height:390px;border-right:0;border-bottom:2px solid var(--purple-soft)}.rs-viewport{min-height:430px}.rs-camera-paper{transform:translate(-48%,-3%) scale(2.1)}.rs-life-grid{grid-template-columns:repeat(2,1fr)}.rs-motion,.rs-complete{grid-template-columns:1fr}.rs-motion-specs{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.redact-specimen{padding:10px}.rs-console{padding:12px 10px;min-height:350px}.rs-stats{gap:4px}.rs-stat strong{font-size:.78rem}.rs-terminal-header{padding-left:10px}.rs-terminal-info{gap:5px}.rs-terminal-title{font-size:.5rem}.rs-terminal-ping{font-size:.42rem}.rs-window-controls i{width:24px}.rs-code-label{font-size:.65rem}.rs-code-text{font-size:1.4rem}.rs-life-grid,.rs-motion-specs{grid-template-columns:1fr}.rs-complete{padding:12px}.rs-complete .rs-folder{min-height:300px}.rs-paper-copy p{font-size:.56rem}}
+
+/* — Supercomputer defense: source-faithful board and component specimens — */
+.defense-specimen { --sd-green:#44d775; --sd-green-glow:rgba(68,215,117,.45); --sd-cyan:#74d8ff; --sd-orange:#e48e35; --sd-red:#ff3b30; --sd-red-glow:rgba(255,59,48,.5); margin-top:16px; }
+.sd-arena { position:relative; min-height:890px; overflow:hidden; padding:16px 20px; display:flex; flex-direction:column; gap:10px; border:1px solid rgba(68,215,117,.16); border-radius:12px; background:#030704; box-shadow:inset 0 0 42px #000,0 18px 42px rgba(0,0,0,.42); }
+.sd-telemetry { position:relative; z-index:8; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.sd-telemetry-card { position:relative; min-width:0; overflow:hidden; padding:9px 10px; display:grid; place-items:center; border:1px solid rgba(68,215,117,.15); border-radius:6px; background:linear-gradient(135deg,rgba(12,25,15,.85),rgba(5,8,6,.9)),radial-gradient(circle at 50% 0,rgba(68,215,117,.08),transparent 50%); box-shadow:inset 0 1px rgba(255,255,255,.04),0 6px 18px rgba(0,0,0,.45); }
+.sd-telemetry-card::before { content:""; position:absolute; inset:0 0 50%; background:linear-gradient(rgba(255,255,255,.05),transparent); pointer-events:none; }
+.sd-telemetry-card strong { color:#fff; font:900 1.25rem/1 "Orbitron",sans-serif; }.sd-telemetry-card strong.green{color:var(--sd-green);text-shadow:0 0 6px var(--sd-green-glow)}.sd-telemetry-card strong.red{color:var(--sd-red);text-shadow:0 0 8px var(--sd-red-glow)}
+.sd-telemetry-card span { margin-top:4px; color:rgba(213,238,220,.68); font:700 .52rem/1 "Orbitron",sans-serif; letter-spacing:.8px; }
+.sd-pressure { position:relative; z-index:8; display:grid; grid-template-columns:1fr auto; gap:5px 10px; align-items:center; padding:0 4px; }
+.sd-pressure-label { color:var(--muted); font:700 .56rem/1 "Orbitron",sans-serif; letter-spacing:.5px; }.sd-pressure-value{min-width:58px;padding:4px 9px;border:1.5px solid var(--purple-soft);border-radius:4px;color:var(--sd-orange);background:var(--terminal-bg);box-shadow:inset 0 2px 5px #000;text-align:center;font:900 .62rem/1 "Orbitron",sans-serif;text-shadow:0 0 5px rgba(228,142,53,.6)}
+.sd-pressure-track { grid-column:1/-1;height:10px;overflow:hidden;border:1.5px solid var(--purple-soft);border-radius:4px;background:rgba(12,45,18,.25);box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}.sd-pressure-fill{display:block;width:57%;height:100%;background:var(--sd-orange);box-shadow:0 0 8px rgba(228,142,53,.5)}
+.sd-board { position:relative; flex:1; min-height:710px; overflow:hidden; padding:12px 22px 14px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; border:2px solid rgba(255,255,255,.12); border-radius:8px; background:radial-gradient(circle at 50% 10%,rgba(116,216,255,.06),transparent 36%),linear-gradient(135deg,#0b1a0e,#050d07 52%,#020503); box-shadow:inset 0 0 24px rgba(0,0,0,.95),inset 0 1px rgba(255,255,255,.06),0 10px 26px rgba(0,0,0,.55); }
+.sd-board::after { content:""; position:absolute; inset:0; z-index:20; pointer-events:none; opacity:.25; background:linear-gradient(transparent 50%,rgba(0,0,0,.25) 50%);background-size:100% 4px; }
+.sd-pcb-svg { position:absolute; inset:0; width:100%; height:100%; z-index:1; overflow:visible; }
+.sd-pcb-ref { fill:none; stroke:rgba(116,216,255,.075); stroke-width:1.15; stroke-linecap:round; stroke-linejoin:round; }.sd-pcb-base{fill:none;stroke:rgba(68,215,117,.035);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}.sd-pcb-data{fill:none;stroke:rgba(116,216,255,.15);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px rgba(116,216,255,.25))}.sd-pcb-data.compromised{stroke:var(--sd-red);filter:drop-shadow(0 0 4px var(--sd-red-glow))}.sd-pcb-pad{fill:rgba(4,14,6,.9);stroke:rgba(116,216,255,.2);stroke-width:1.1}
+.sd-core-zone { position:absolute; z-index:6; left:50%; top:34%; width:430px; height:250px; transform:translate(-50%,-50%); display:grid; place-items:center; }
+.sd-core-ring { position:absolute; aspect-ratio:1;border:1.5px solid rgba(116,216,255,.14);border-radius:6px}.sd-core-ring.one{width:195px}.sd-core-ring.two{width:235px;border-style:dashed;border-color:rgba(116,216,255,.08)}.sd-core-ring.three{width:275px;border:1px dotted rgba(116,216,255,.04)}
+.sd-shields { position:absolute; top:0; left:50%; transform:translateX(-50%); z-index:10; display:flex; gap:16px; }.sd-shield{width:30px;height:30px;display:grid;place-items:center;border:2.5px solid var(--sd-green);border-radius:50%;background:rgba(68,215,117,.08);box-shadow:0 0 10px rgba(68,215,117,.15)}.sd-shield svg{width:18px;fill:none;stroke:var(--sd-green);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px var(--sd-green-glow))}.sd-shield.lost{border-color:var(--sd-red);background:rgba(255,59,48,.16);box-shadow:0 0 14px var(--sd-red-glow);animation:sdShieldLoss 3.5s infinite}.sd-shield.lost svg{stroke:var(--sd-red)}
+.sd-cpu { position:relative; z-index:3; width:150px; aspect-ratio:1; display:grid; place-items:center; border:2px solid rgba(217,119,6,.45); border-radius:6px; background:radial-gradient(circle,rgba(16,29,20,.98),#060c08),repeating-linear-gradient(45deg,rgba(68,215,117,.02) 0 1px,transparent 1px 4px); box-shadow:0 12px 32px rgba(0,0,0,.8),0 0 20px rgba(68,215,117,.05),inset 0 0 12px rgba(0,0,0,.9); }
+.sd-cpu::before { content:""; position:absolute; inset:-14px; z-index:-1; border:3.5px solid #52525b; border-radius:12px; background:linear-gradient(135deg,#3f3f46,#1e1b1b 50%,#09090b); box-shadow:0 8px 24px rgba(0,0,0,.85),inset 0 0 10px rgba(0,0,0,.95); }
+.sd-notch{position:absolute;width:8px;height:8px;border:1px solid rgba(217,119,6,.3);border-radius:50%;background:#020503}.sd-notch.tl{top:-4px;left:-4px}.sd-notch.tr{top:-4px;right:-4px}.sd-notch.bl{bottom:-4px;left:-4px}.sd-notch.br{bottom:-4px;right:-4px}
+.sd-gold{position:absolute;top:10%;width:5px;height:80%;opacity:.85;background:repeating-linear-gradient(to bottom,#d97706 0 3px,transparent 3px 6px)}.sd-gold.left{left:2px}.sd-gold.right{right:2px}.sd-cap{position:absolute;width:6px;height:4px;background:#475569;border-left:1.5px solid #cbd5e1;border-right:1.5px solid #cbd5e1;box-shadow:0 1px 3px rgba(0,0,0,.5)}.sd-cap.c1{top:12px;left:24px}.sd-cap.c2{top:12px;right:24px}.sd-cap.c3{bottom:12px;left:24px}.sd-cap.c4{right:24px;bottom:12px}
+.sd-ihs { position:relative; width:calc(100% - 32px);height:calc(100% - 32px);display:grid;place-items:center;border:2.5px solid #4a505a;border-radius:6px;background:linear-gradient(135deg,#2d3139,#1e2024 45%,#15171a 55%,#0d0f11);box-shadow:0 4px 10px rgba(0,0,0,.6),inset 0 1px 2px rgba(255,255,255,.15),inset 0 -2px 4px rgba(0,0,0,.7)}
+.sd-serial{position:absolute;top:6px;color:rgba(255,255,255,.25);font:700 5.5px/1 "Roboto Mono",monospace;letter-spacing:.5px}.sd-led{position:absolute;bottom:6px;width:5px;height:5px;border-radius:50%;background:var(--sd-green);box-shadow:0 0 6px var(--sd-green-glow);animation:sdLed 1.2s infinite alternate}.sd-die{width:58px;height:58px;display:grid;place-items:center;border:2px solid #233545;border-radius:4px;background:radial-gradient(circle,#05141e,#010408);box-shadow:0 0 10px rgba(116,216,255,.12),inset 0 0 8px rgba(0,0,0,.95);color:var(--sd-cyan);font:900 14px/1 "Orbitron",sans-serif;letter-spacing:1px;text-shadow:0 0 4px var(--sd-cyan),0 0 12px rgba(116,216,255,.6);animation:sdCpuText 2.5s infinite alternate}
+.sd-sector-panel { position:relative; z-index:8; width:96%; max-width:900px; padding:9px 11px 11px; border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(10,15,12,.95);box-shadow:0 8px 24px rgba(0,0,0,.5)}.sd-sector-head{display:flex;justify-content:space-between;padding-bottom:7px;margin-bottom:7px;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(213,238,220,.72);font:800 .56rem/1 "Orbitron",sans-serif;letter-spacing:1.5px}.sd-sector-head b{color:#f2a65a}.sd-sector-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:42px;gap:7px}
+.sd-cell { position:relative;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(116,216,255,.22);border-radius:4px;background:rgba(8,14,20,.92);color:rgba(205,235,255,.85);font:700 1.2rem/1 "Roboto Mono",monospace}.sd-cell i{position:absolute;top:6px;left:6px;width:5px;height:5px;border-radius:50%;background:var(--sd-green)}.sd-cell.hacked{border-color:var(--sd-red);background:rgba(255,59,48,.15);color:#fff}.sd-cell.hacked i{background:var(--sd-red)}.sd-cell.hacked::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:var(--sd-red);transform-origin:left;animation:sdFuse 4s infinite linear}.sd-cell.repaired{border-color:var(--sd-green);background:rgba(68,215,117,.22);color:#eafff0}.sd-cell.crashed{border-color:var(--sd-red);background:rgba(255,59,48,.25);color:rgba(205,235,255,.3)}.sd-cell.crashed i{background:#440a07}
+.sd-virus .ring{fill:none;stroke:rgba(255,59,48,.45);stroke-width:1.25;stroke-dasharray:4 2;transform-box:fill-box;transform-origin:center;animation:rotateRing 8s linear infinite}.sd-virus .core,.sd-virus .head{fill:var(--sd-red);stroke:var(--sd-red);filter:drop-shadow(0 0 5px rgba(255,59,48,.85))}.sd-virus .spike{fill:none;stroke:var(--sd-red);stroke-width:1.8;filter:drop-shadow(0 0 5px rgba(255,59,48,.85))}.sd-virus .graphic{animation:virusGlitch 1.5s infinite linear}.sd-virus .letter{fill:#fff;text-anchor:middle;font:900 11px "Orbitron",sans-serif}.sd-virus.targeted .ring{stroke:rgba(228,142,53,.45)}.sd-virus.targeted .core,.sd-virus.targeted .head{fill:var(--sd-orange);stroke:var(--sd-orange)}.sd-virus.targeted .spike{stroke:var(--sd-orange)}.sd-packet circle{fill:var(--sd-green);stroke:#fff;stroke-width:1;filter:drop-shadow(0 0 6px var(--sd-green))}.sd-packet text{fill:#000;text-anchor:middle;font:900 8px "Orbitron",sans-serif}
+.sd-anatomy-grid { margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.sd-anatomy-card{min-width:0;overflow:hidden;border:1px solid var(--border);border-radius:10px;background:var(--panel)}.sd-anatomy-preview{min-height:250px;padding:20px;display:grid;place-items:center;border-bottom:1px solid var(--border);background:#050807}.sd-anatomy-copy{padding:15px}.sd-anatomy-copy small{color:var(--orange);font:800 .55rem/1 "Roboto Mono",monospace;letter-spacing:1.2px}.sd-anatomy-copy h4{margin:8px 0 6px;color:#fff;font-size:.9rem}.sd-anatomy-copy p{margin:0;color:var(--muted);font-size:.76rem;line-height:1.55}.sd-token-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.sd-token-row code{padding:4px 7px;border:1px solid var(--border);border-radius:5px;background:#090b0d;color:var(--dim);font-size:.58rem}
+.sd-cpu-explode{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:center}.sd-layer{text-align:center}.sd-layer-visual{position:relative;height:100px;display:grid;place-items:center}.sd-layer-visual .clamp{width:74px;height:74px;border:5px solid #52525b;border-radius:10px;background:linear-gradient(135deg,#3f3f46,#09090b);box-shadow:inset 0 0 8px #000}.sd-layer-visual .substrate{width:72px;height:72px;border:2px solid rgba(217,119,6,.55);border-radius:5px;background:#060c08}.sd-layer-visual .ihs{width:68px;height:68px;border:2.5px solid #4a505a;border-radius:5px;background:linear-gradient(135deg,#2d3139,#0d0f11)}.sd-layer-visual .die{width:54px;height:54px;display:grid;place-items:center;border:2px solid #233545;border-radius:4px;background:#010408;color:var(--sd-cyan);font:900 11px "Orbitron";text-shadow:0 0 7px var(--sd-cyan)}.sd-layer b{display:block;color:#fff;font:700 .58rem/1.3 "Orbitron";letter-spacing:.4px}.sd-layer span{display:block;margin-top:4px;color:var(--dim);font:400 .53rem/1.35 "Roboto Mono"}
+.sd-state-row{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.sd-state{display:grid;gap:8px;text-align:center}.sd-state .sd-cell{height:62px}.sd-state small{color:var(--dim);font:500 .55rem/1.35 "Roboto Mono"}
+.sd-virus-lab{width:100%;display:flex;align-items:center;justify-content:space-around;gap:18px;flex-wrap:wrap}.sd-virus-caption{text-align:center;color:var(--dim);font:500 .55rem/1.4 "Roboto Mono"}.sd-virus-caption b{display:block;margin-bottom:5px;color:#fff;font:700 .62rem "Orbitron"}
+.sd-trace-lab{width:100%;max-width:440px}.sd-trace-lab svg{width:100%;height:auto}.sd-hud-lab{width:100%;display:grid;gap:12px}.sd-hud-lab .sd-telemetry{grid-template-columns:repeat(2,1fr)}
+.sd-variant-grid{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.sd-variant{padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--panel)}.sd-variant b{display:block;color:#fff;font:700 .7rem "Orbitron"}.sd-variant span{display:block;margin-top:6px;color:var(--muted);font-size:.7rem;line-height:1.45}.sd-variant code{color:var(--orange);font-size:.58rem}
+@keyframes sdLed{from{opacity:.4}to{opacity:1}}@keyframes sdCpuText{from{opacity:.8;filter:brightness(.9)}to{opacity:1;filter:brightness(1.25)}}@keyframes sdFuse{0%{transform:scaleX(1)}100%{transform:scaleX(0)}}@keyframes sdShieldLoss{0%,84%,100%{transform:scale(1)}88%{transform:scale(1.35)}92%{transform:scale(.9)}}
+@media(max-width:900px){.sd-arena{min-height:830px;padding:12px}.sd-board{min-height:670px;padding-inline:10px}.sd-core-zone{top:31%;transform:translate(-50%,-50%) scale(.82)}.sd-sector-grid{gap:5px}.sd-anatomy-grid{grid-template-columns:1fr}.sd-variant-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.sd-telemetry{gap:4px}.sd-telemetry-card{padding:7px 3px}.sd-telemetry-card strong{font-size:.82rem}.sd-telemetry-card span{font-size:.4rem}.sd-arena{min-height:760px;padding:9px}.sd-board{min-height:610px}.sd-core-zone{top:29%;transform:translate(-50%,-50%) scale(.68)}.sd-sector-panel{width:100%;padding:7px}.sd-sector-grid{grid-template-columns:repeat(6,1fr);grid-auto-rows:32px;gap:3px}.sd-cell{font-size:.72rem}.sd-cell i{top:3px;left:3px;width:3px;height:3px}.sd-cpu-explode,.sd-state-row{grid-template-columns:repeat(2,1fr);row-gap:18px}.sd-anatomy-preview{padding:14px}.sd-hud-lab .sd-telemetry{grid-template-columns:1fr 1fr}}
+
 /* — Fingerprint scan node pulse ring — */
 .scan-node-marker .pulse-ring {
   position: absolute;
@@ -4085,6 +4378,17 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </linearGradient>
   <path id="sg-spring-back" d="M 9 1 C 5 1, 2 2, 2 3 M 16 6 C 16 7, 2 8, 2 9 M 16 12 C 16 13, 2 14, 2 15 M 16 18 C 16 19, 2 20, 2 21 M 16 24 C 16 25, 2 26, 2 27 M 16 30 C 16 31, 2 32, 2 33 M 16 36 C 16 37, 2 38, 2 39 M 16 41.5 C 16 40.5, 2 40.5, 2 41.5"/>
   <path id="sg-spring-front" d="M 2 3 C 2 4, 16 5, 16 6 M 2 9 C 2 10, 16 11, 16 12 M 2 15 C 2 16, 16 17, 16 18 M 2 21 C 2 22, 16 23, 16 24 M 2 27 C 2 28, 16 29, 16 30 M 2 33 C 2 34, 16 35, 16 36 M 2 39 C 2 41, 16 41.5, 16 41.5 M 2 41.5 C 2 42.5, 16 42.5, 16 41.5"/>
+  <g id="sg-fingerprint-outer">
+    <path d="M390.42,75.28a10.45,10.45,0,0,1-5.32-1.44C340.72,50.08,302.35,40,256.35,40c-45.77,0-89.23,11.28-128.76,33.84C122,77,115.11,74.8,111.87,69a12.4,12.4,0,0,1,4.63-16.32A281.81,281.81,0,0,1,256.35,16c49.23,0,92.23,11.28,139.39,36.48a12,12,0,0,1,4.85,16.08A11.3,11.3,0,0,1,390.42,75.28Z"/>
+    <path d="M59.63,201.28a11.73,11.73,0,0,1-6.7-2.16,12.26,12.26,0,0,1-2.78-16.8c22.89-33.6,52-60,86.69-78.48C209.42,65,302.35,64.72,375.16,103.6c34.68,18.48,63.8,44.64,86.69,78a12.29,12.29,0,0,1-2.78,16.8,11.26,11.26,0,0,1-16.18-2.88c-20.8-30.24-47.15-54-78.36-70.56-66.34-35.28-151.18-35.28-217.29.24-31.44,16.8-57.79,40.8-78.59,71A10,10,0,0,1,59.63,201.28Z"/>
+  </g>
+  <g id="sg-fingerprint-middle">
+    <path d="M204.1,491a10.66,10.66,0,0,1-8.09-3.6C175.9,466.48,165,453,149.55,424c-16-29.52-24.27-65.52-24.27-104.16,0-71.28,58.71-129.36,130.84-129.36S387,248.56,387,319.84a11.56,11.56,0,1,1-23.11,0c0-58.08-48.32-105.36-107.72-105.36S148.4,261.76,148.4,319.84c0,34.56,7.39,66.48,21.49,92.4,14.8,27.6,25,39.36,42.77,58.08a12.67,12.67,0,0,1,0,17A12.44,12.44,0,0,1,204.1,491Z"/>
+    <path d="M369.85,446.56c-27.51,0-51.78-7.2-71.66-21.36a129.1,129.1,0,0,1-55-105.36,11.57,11.57,0,1,1,23.12,0,104.28,104.28,0,0,0,44.84,85.44c16.41,11.52,35.6,17,58.72,17a147.41,147.41,0,0,0,24-2.4c6.24-1.2,12.25,3.12,13.4,9.84a11.92,11.92,0,0,1-9.47,13.92A152.28,152.28,0,0,1,369.85,446.56Z"/>
+  </g>
+  <g id="sg-fingerprint-inner">
+    <path d="M323.38,496a13,13,0,0,1-3-.48c-36.76-10.56-60.8-24.72-86-50.4-32.37-33.36-50.16-77.76-50.16-125.28,0-38.88,31.9-70.56,71.19-70.56s71.19,31.68,71.19,70.56c0,25.68,21.5,46.56,48.08,46.56s48.08-20.88,48.08-46.56c0-90.48-75.13-163.92-167.59-163.92-65.65,0-125.75,37.92-152.79,96.72-9,19.44-13.64,42.24-13.64,67.2,0,18.72,1.61,48.24,15.48,86.64,2.32,6.24-.69,13.2-6.7,15.36a11.34,11.34,0,0,1-14.79-7,276.39,276.39,0,0,1-16.88-95c0-28.8,5.32-55,15.72-77.76,30.75-67,98.94-110.4,173.6-110.4,105.18,0,190.71,84.24,190.71,187.92,0,38.88-31.9,70.56-71.2,70.56s-71.2-31.68-71.2-70.56C303.5,293.92,282,273,255.42,273s-48.08,20.88-48.08,46.56c0,41,15.26,79.44,43.23,108.24,22,22.56,43,35,75.59,44.4,6.24,1.68,9.71,8.4,8.09,14.64A11.39,11.39,0,0,1,323.38,496Z"/>
+  </g>
 </defs></svg>
 
 <header class="sg-hero" id="top">
@@ -5789,7 +6093,94 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
   </div>
 
-  <h3>Fingerprint — biometric scanner</h3>
+  <h3>Fingerprint — biometric scan pipeline</h3>
+  <p class="sg-note">The visible game component is a complete <strong>SCAN INTEGRATION v2.00</strong> panel: six character slots above a tall scan bed, a three-group fingerprint below, and the hardware footer at the bottom. Yellow records input progress in pairs of letters; green appears only during the final verification sweep.</p>
+
+  <div class="theme t-fingerprint">
+    <div class="fingerprint-specimen">
+      <div class="fp-game-panel">
+        <div class="fp-panel-header">
+          <span>SCAN INTEGRATION v2.00</span>
+          <span class="fp-leds" aria-label="Datalink and signal active"><i></i><i></i></span>
+        </div>
+
+        <div class="fp-door-screen">
+          <span class="fp-screen-tags"><span>SYS_RECOVERY</span><span>PORT_02</span></span>
+          <span class="fp-screen-label">BIOMETRIC SEQUENCE:</span>
+          <div class="fp-code-row" aria-label="Four characters correct, fifth active, sixth waiting">
+            <span class="char-box correct">A</span><span class="char-box correct">S</span><span class="char-box correct">D</span><span class="char-box correct">F</span><span class="char-box current">J</span><span class="char-box faded">K</span>
+          </div>
+        </div>
+
+        <div class="fp-scanner-stage">
+          <div class="fp-scanner-bezel">
+            <div class="fp-laser-line"></div>
+            <div class="fp-laser-glow"></div>
+            <div class="fp-vector-wrapper">
+              <svg viewBox="0 0 512 512" aria-label="Fingerprint with outer and middle ridge groups active">
+                <use class="fp-ridge active" href="#sg-fingerprint-outer"/>
+                <use class="fp-ridge active" href="#sg-fingerprint-middle"/>
+                <use class="fp-ridge" href="#sg-fingerprint-inner"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="fp-panel-footer">
+          <span class="fp-signal-bars" aria-label="Animated voltage signal"><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="fp-ports" aria-label="Two bypass ports"><i></i><i></i></span>
+        </div>
+      </div>
+
+      <p class="sg-caption" style="margin:12px 0 0;">Assembled state at <b>4/6 correct</b>: four yellow screen slots, the next slot outlined in yellow, the outer and middle ridge groups lit, the inner group still grey, and the normal yellow laser continuing its three-second loop.</p>
+
+      <div class="fp-state-grid" aria-label="Fingerprint progress after every two correct letters">
+        <article class="fp-state-card">
+          <div class="fp-state-preview"><div class="fp-scanner-bezel"><div class="fp-vector-wrapper"><svg viewBox="0 0 512 512"><use class="fp-ridge" href="#sg-fingerprint-outer"/><use class="fp-ridge" href="#sg-fingerprint-middle"/><use class="fp-ridge" href="#sg-fingerprint-inner"/></svg></div></div></div>
+          <div class="fp-state-copy"><strong>0–1 / 6 · idle</strong><span>all three ridge groups = 12% white</span></div>
+        </article>
+        <article class="fp-state-card">
+          <div class="fp-state-preview"><div class="fp-scanner-bezel"><div class="fp-vector-wrapper"><svg viewBox="0 0 512 512"><use class="fp-ridge active" href="#sg-fingerprint-outer"/><use class="fp-ridge" href="#sg-fingerprint-middle"/><use class="fp-ridge" href="#sg-fingerprint-inner"/></svg></div></div></div>
+          <div class="fp-state-copy"><strong>2–3 / 6 · outer</strong><span>outer group becomes biometric yellow</span></div>
+        </article>
+        <article class="fp-state-card">
+          <div class="fp-state-preview"><div class="fp-scanner-bezel"><div class="fp-vector-wrapper"><svg viewBox="0 0 512 512"><use class="fp-ridge active" href="#sg-fingerprint-outer"/><use class="fp-ridge active" href="#sg-fingerprint-middle"/><use class="fp-ridge" href="#sg-fingerprint-inner"/></svg></div></div></div>
+          <div class="fp-state-copy"><strong>4–5 / 6 · middle</strong><span>outer + middle groups remain yellow</span></div>
+        </article>
+        <article class="fp-state-card">
+          <div class="fp-state-preview"><div class="fp-scanner-bezel"><div class="fp-vector-wrapper"><svg viewBox="0 0 512 512"><use class="fp-ridge active" href="#sg-fingerprint-outer"/><use class="fp-ridge active" href="#sg-fingerprint-middle"/><use class="fp-ridge active" href="#sg-fingerprint-inner"/></svg></div></div></div>
+          <div class="fp-state-copy"><strong>6 / 6 · captured</strong><span>all ridge groups yellow before verification</span></div>
+        </article>
+      </div>
+
+      <div class="fp-verification">
+        <div class="fp-scanner-bezel">
+          <div class="fp-laser-line"></div>
+          <div class="fp-laser-glow"></div>
+          <div class="fp-vector-wrapper">
+            <svg viewBox="0 0 512 512"><use class="fp-ridge active" href="#sg-fingerprint-outer"/><use class="fp-ridge active" href="#sg-fingerprint-middle"/><use class="fp-ridge active" href="#sg-fingerprint-inner"/></svg>
+            <svg class="fp-green-layer" viewBox="0 0 512 512"><use class="fp-ridge" href="#sg-fingerprint-outer"/><use class="fp-ridge" href="#sg-fingerprint-middle"/><use class="fp-ridge" href="#sg-fingerprint-inner"/></svg>
+          </div>
+        </div>
+        <div>
+          <h4>Final verification sweep</h4>
+          <p>After the sixth correct character, the regular yellow loop stops. The game pauses for <strong>600ms</strong>, changes the laser and glow to green, then moves once from 3% to 97% over <strong>1.85s</strong>. A second green fingerprint layer is revealed behind that line with <code>clip-path</code>; completion ends with a single 1.08× pulse. This guide loops the specimen only so the one-shot game transition remains inspectable.</p>
+        </div>
+      </div>
+
+      <div class="fp-spec-grid">
+        <span>panel chrome<br><b>radius 12 · border 2px</b></span>
+        <span>scanner bezel<br><b>180–210 × 210–245px</b></span>
+        <span>fingerprint field<br><b>140–170 × 170–205px</b></span>
+        <span>scan texture<br><b>8px grid · 3px laser</b></span>
+      </div>
+
+      <p class="fp-current-note"><strong>Current-build rule:</strong> numbered minutiae dots are not visible. The project keeps their old elements in the HTML for compatibility, but <code>.scan-nodes-overlay { display: none; }</code> and <code>updateActiveNodeHighlight()</code> intentionally does nothing. Do not include 01–06 circles or pulse rings in current gameplay examples.</p>
+      <p class="sg-caption" style="margin:12px 0 0;">Source: <b>typegame-door-fingerprint</b> · <code>.lock-panel</code>, <code>.door-screen</code>, <code>.fingerprint-scanner-container</code>, <code>.scanner-bezel</code>, the three <code>.ridge-group</code> elements and <code>#fingerprintSvgGreen</code>. Input progress activates one ridge group after every two correct characters; mistakes affect the active character box and the door’s three-error budget, not a visible scan node.</p>
+    </div>
+  </div>
+
+  <div hidden aria-hidden="true">
   <p class="sg-note">A tall rounded bezel with an 8px yellow-tinted micro-grid, a grey fingerprint ridge graphic, <strong>numbered scan nodes (01–06)</strong> pinned to fixed points on the print, and a <strong>yellow laser line</strong> (with a wide soft glow band) sweeping top-to-bottom in 3s. The letters themselves are typed on the device panel's screen above the scanner — the label reads <strong>BIOMETRIC SEQUENCE:</strong> — and each correct letter activates the next node. Completed ridges flood green from the top (a wipe that follows progress).</p>
   <div class="theme t-fingerprint">
     <div class="sg-stage">
@@ -5844,7 +6235,121 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </div>
   <p class="sg-caption">Bezel: <b>rgba(15,16,20,0.85)</b>, 2px theme hairline border, radius 16, deep inset shadow. Ridges idle at <b>12% white</b>, scanned = green + glow. Nodes: 18px dark circles with 7px monospace <b>numbers</b> — the active node scales 1.15×, gets a yellow border and an expanding <b>pulse ring</b>; hit nodes keep a yellow fill at 25%. The yellow is <b>#ffcc00</b>. On full completion the whole print pulses green and scales 1.08× once.</p>
 
-  <h3>File redacting — classified document</h3>
+  </div>
+
+  <h3>File redacting — complete split arena</h3>
+  <p class="sg-note">This game is not a folder next to a terminal. Its identity comes from the complete <strong>1.12fr / 0.88fr split arena</strong>: live statistics and an inline decryption console on the left; a camera-controlled document viewport with rulers, tracking HUD, moving reticle and the five-target dossier on the right.</p>
+
+  <div class="theme t-redact">
+    <div class="redact-specimen">
+      <div class="rs-arena">
+        <section class="rs-console" aria-label="Decryption console at target two">
+          <div class="rs-stats">
+            <div class="rs-stat"><strong>12.4</strong><span>tijd (s)</span></div>
+            <div class="rs-stat"><strong>84</strong><span>CPM</span></div>
+            <div class="rs-stat"><strong>1</strong><span>fouten</span></div>
+            <div class="rs-stat"><strong>96%</strong><span>precisie</span></div>
+          </div>
+          <div class="rs-terminal">
+            <div class="rs-terminal-header">
+              <div class="rs-terminal-info"><span class="rs-terminal-title">DECRYPTION CONSOLE</span><span class="rs-terminal-ping">SECURE LINK // 42ms</span></div>
+              <span class="rs-window-controls" aria-label="Window controls"><i>—</i><i>□</i><i>×</i></span>
+            </div>
+            <div class="rs-terminal-body">
+              <div class="rs-code-box">
+                <div class="rs-code-label">DOELWIT #2 CODESLEUTEL:</div>
+                <div class="rs-code-text"><span class="correct">a</span><span class="correct">s</span><span class="current">d</span><span>f</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="rs-viewport" aria-label="Zoomed document viewport tracking the second redaction">
+          <div class="rs-camera-paper">
+            <div class="rs-folder">
+              <span class="rs-folder-tab">FILE NO: BRUSSEL-24</span>
+              <div class="rs-paper">
+                <div class="rs-paper-header"><span class="rs-paper-meta">STATUS: <b>STRIKT VERTROUWELIJK</b></span><span class="rs-stamp">TOP SECRET</span></div>
+                <h4>INLICHTINGEN RAPPORT: PROJECT VAKANTIE</h4>
+                <div class="rs-paper-copy">
+                  <p>Op datum van 24 mei 2026 is er een geheime ontmoeting gedetecteerd in <span class="rs-redacted decrypted">BRUSSEL</span>.</p>
+                  <p>De infiltrant draagt de codenaam <span class="rs-redacted active">NIGHTHAWK</span> en opereert onder een valse identiteit.</p>
+                  <p>De vijandelijke spion probeert de centrale <span class="rs-redacted">DATABASE</span> te hacken om plannen te stelen.</p>
+                  <p>De documenten bevatten schema's van de nieuwe <span class="rs-redacted">SUPERCOMPUTER</span>.</p>
+                  <p>Er zijn zwaar bewapende <span class="rs-redacted">BEWAKERS</span> bij alle uitgangen.</p>
+                </div>
+                <div class="rs-paper-footer"><span class="rs-progress">Ontcijfering: <span class="rs-progress-track"><i></i></span> 1/5 gekraakt</span><span>Geautoriseerd: <b class="rs-signature">Miss J</b></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="rs-hud">
+            <i class="rs-corner tl"></i><i class="rs-corner tr"></i><i class="rs-corner bl"></i><i class="rs-corner br"></i>
+            <div class="rs-scan-laser"></div>
+            <div class="rs-reticle"><span class="rs-reticle-label">TARGET LOCKED</span></div>
+          </div>
+          <div class="rs-ruler-h"></div><div class="rs-ruler-v"></div><div class="rs-ruler-corner"></div>
+        </div>
+      </div>
+      <p class="sg-caption" style="margin:0;">Assembled gameplay state: target one is already plain text, target two is orange and camera-centered, targets three through five remain black. The reticle stays centered while the document itself pans and scales beneath it; the terminal simultaneously asks for the four-character key for <b>DOELWIT #2</b>.</p>
+
+      <div class="rs-life-grid" aria-label="The four redaction word states">
+        <article class="rs-life-card"><div class="rs-life-preview"><span class="rs-life-word">NIGHTHAWK</span></div><div class="rs-life-copy"><strong>01 · Redacted</strong><span>#111 bar · source word remains width-correct but invisible</span></div></article>
+        <article class="rs-life-card"><div class="rs-life-preview"><span class="rs-life-word active">NIGHTHAWK</span></div><div class="rs-life-copy"><strong>02 · Target locked</strong><span>0.25s black↔orange lock-on after the 900ms camera move</span></div></article>
+        <article class="rs-life-card"><div class="rs-life-preview"><span class="rs-life-word scramble" aria-label="Scrambling NIGHTHAWK"></span></div><div class="rs-life-copy"><strong>03 · Decrypting</strong><span>900ms glyph scramble · green glow · left-to-right reveal</span></div></article>
+        <article class="rs-life-card"><div class="rs-life-preview"><span class="rs-life-word decrypted">NIGHTHAWK</span></div><div class="rs-life-copy"><strong>04 · Decrypted</strong><span>transparent background · plain #111 Courier text</span></div></article>
+      </div>
+
+      <div class="rs-motion">
+        <div class="rs-motion-viewport" aria-label="Looped camera tour between two redaction targets">
+          <div class="rs-motion-sheet"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="rs-scan-laser"></div>
+          <div class="rs-reticle"><span class="rs-reticle-label">TARGET LOCKED</span></div>
+        </div>
+        <div class="rs-motion-copy">
+          <h4>Camera, rulers and target tracking</h4>
+          <p>The game never moves the reticle to a word. It calculates the word’s position, then moves the dossier underneath a fixed center target. Rulers are real canvases redrawn from the current camera translation and zoom, so their ticks change from 500-unit steps down to 20-unit steps as magnification increases.</p>
+          <ol><li>full dossier rests at 0.97×</li><li>active word moves to center at 2.1× over 900ms</li><li>target-to-target travel dips up to 0.7× in the middle</li><li>green corners run their 0.8s calibration response</li></ol>
+        </div>
+      </div>
+
+      <div class="rs-complete">
+        <div class="rs-folder">
+          <span class="rs-folder-tab">FILE NO: BRUSSEL-24</span>
+          <div class="rs-paper">
+            <div class="rs-paper-header"><span class="rs-paper-meta">STATUS: <b style="color:var(--green)">GEKRAAKT / VRIJGEGEVEN</b></span><span class="rs-stamp verified">VERIFIED</span></div>
+            <h4>INLICHTINGEN RAPPORT: PROJECT VAKANTIE</h4>
+            <div class="rs-paper-copy">
+              <p>Op datum van 24 mei 2026 is er een geheime ontmoeting gedetecteerd in <span class="rs-redacted decrypted">BRUSSEL</span>.</p>
+              <p>De infiltrant draagt de codenaam <span class="rs-redacted decrypted">NIGHTHAWK</span> en opereert onder een valse identiteit.</p>
+              <p>De vijandelijke spion probeert de centrale <span class="rs-redacted decrypted">DATABASE</span> te hacken om plannen te stelen.</p>
+              <p>De documenten bevatten schema's van de nieuwe <span class="rs-redacted decrypted">SUPERCOMPUTER</span>.</p>
+              <p>Er zijn zwaar bewapende <span class="rs-redacted decrypted">BEWAKERS</span> bij alle uitgangen.</p>
+            </div>
+            <div class="rs-paper-footer"><span class="rs-progress">Ontcijfering: <span class="rs-progress-track"><i style="width:100%"></i></span> 5/5 gekraakt</span><span>Geautoriseerd: <b class="rs-signature">Miss J</b></span></div>
+          </div>
+        </div>
+        <div class="rs-complete-copy">
+          <h4>The completed dossier is a distinct state</h4>
+          <p>After target five resolves, the camera returns to the full document. Every redaction becomes ordinary paper text, the status changes to <strong>GEKRAAKT / VRIJGEGEVEN</strong>, the red <strong>TOP SECRET</strong> stamp becomes the green, oppositely rotated <strong>VERIFIED</strong> stamp, and the terminal receives its green completion overlay.</p>
+          <div class="rs-complete-list"><span>folder shell · #dca75e · radius 10</span><span>paper · #fdfbf4 · radius 3</span><span>header · 2px double #8f8579</span><span>footer · dashed rule + progress + Miss J signature</span></div>
+        </div>
+      </div>
+
+      <div class="rs-motion-specs">
+        <span>ambient laser<br><b>4.5s · green · 30%</b></span>
+        <span>target camera<br><b>900ms · ease-in-out cubic</b></span>
+        <span>target lock-on<br><b>0.25s · black↔orange</b></span>
+        <span>glyph reveal<br><b>900ms + 1200ms hold</b></span>
+        <span>corner calibration<br><b>0.8s · green/orange</b></span>
+        <span>terminal error<br><b>0.4s shake + red edge</b></span>
+        <span>success feedback<br><b>0.4s shudder + 0.6s flash</b></span>
+        <span>secure-link ping<br><b>1.5s opacity blink</b></span>
+      </div>
+      <p class="sg-caption" style="margin:14px 0 0;">Source: <b>typegame-file-redacting</b> · <code>.dossier-game</code>, <code>.dossier-stats</code>, <code>.terminal-panel</code>, <code>.dossier-viewport</code>, <code>.scanner-hud</code>, <code>.classified-doc</code>, the four <code>.redacted-word</code> states, <code>animateCameraTo()</code> and <code>startDecryptionSequence()</code>. The looped specimens repeat one-shot events only to make their implementation visible in the guide.</p>
+    </div>
+  </div>
+
+  <div hidden aria-hidden="true">
   <p class="sg-note">The only game with a <strong>split arena</strong>: left half is the purple-themed <strong>decryption console</strong> (stat cards + terminal where the code key is typed, label "DOELWIT #1 CODESLEUTEL:"), right half is the <strong>document viewport</strong> — a darkroom with pixel rulers on its top and left edges, four green HUD corner brackets, a slow green scan laser, and the manila folder pinned in the middle. The only light surface in the system: typewriter paper. Words are hidden under black redaction bars; the current target flickers to <strong>orange</strong> with a glitchy lock-on, typed words glow green while decrypting, then become plain readable text.</p>
   <div class="theme t-redact">
     <div class="sg-stage">
@@ -5902,6 +6407,154 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </div>
   <p class="sg-caption">The document viewport's targeting HUD is <b>green</b>, not orange: 16px corner brackets (2.5px stroke), a 3px scan laser at 30% opacity sweeping every 4.5s, and the reticle box that jumps to the active word with a solid green "TARGET LOCKED" tag on top. Edge rulers are dark strips (<b>#18111d</b>) with faint white ticks. Only the word bar on the paper itself glows orange.</p>
 
+  </div>
+
+  <h3>Supercomputer defense — complete motherboard system</h3>
+  <p class="sg-note">The defense game is one connected system, not a CPU icon beside a few unrelated cells. The specimen below reconstructs the real hierarchy: four glass telemetry tiles, the compromise meter, a routed PCB arena, five firewall shields, the layered CPU socket, moving threats and packets, and the six-column sector tray. The examples underneath separate those same parts without changing their game proportions or states.</p>
+  <div class="defense-specimen">
+    <div class="sd-arena">
+      <div class="sd-telemetry">
+        <div class="sd-telemetry-card"><strong style="color:var(--sd-cyan)">24.8</strong><span>TIJD</span></div>
+        <div class="sd-telemetry-card"><strong>126</strong><span>REPAIRS (CPM)</span></div>
+        <div class="sd-telemetry-card"><strong class="green">96%</strong><span>ACCURACY</span></div>
+        <div class="sd-telemetry-card"><strong class="red">1/5</strong><span>FOUTEN</span></div>
+      </div>
+      <div class="sd-pressure">
+        <span class="sd-pressure-label">SYSTEM COMPROMISE STATUS</span><span class="sd-pressure-value">57%</span>
+        <div class="sd-pressure-track"><i class="sd-pressure-fill"></i></div>
+      </div>
+      <div class="sd-board">
+        <svg class="sd-pcb-svg" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+          <path class="sd-pcb-ref" d="M40 30H760M40 46H760M40 62H760M40 338H760M40 354H760"/>
+          <path class="sd-pcb-base" d="M22 112H160L244 176H332"/><path class="sd-pcb-data compromised" d="M22 112H160L244 176H332"/>
+          <path class="sd-pcb-base" d="M22 150H176L224 194H332"/><path class="sd-pcb-data" d="M22 150H176L224 194H332"/>
+          <path class="sd-pcb-base" d="M778 104H650L566 176H468"/><path class="sd-pcb-data" d="M778 104H650L566 176H468"/>
+          <path class="sd-pcb-base" d="M778 158H626L584 208H468"/><path class="sd-pcb-data compromised" d="M778 158H626L584 208H468"/>
+          <circle class="sd-pcb-pad" cx="22" cy="112" r="4"/><circle class="sd-pcb-pad" cx="22" cy="150" r="4"/><circle class="sd-pcb-pad" cx="778" cy="104" r="4"/><circle class="sd-pcb-pad" cx="778" cy="158" r="4"/>
+
+          <g class="sd-virus">
+            <circle class="ring" r="19"/><g class="graphic">
+              <path class="spike" d="M0 0H12M0 0L8.5 8.5M0 0V12M0 0L-8.5 8.5M0 0H-12M0 0L-8.5-8.5M0 0V-12M0 0L8.5-8.5"/>
+              <g class="head"><circle cx="14.5" cy="0" r="2"/><circle cx="10.25" cy="10.25" r="2"/><circle cx="0" cy="14.5" r="2"/><circle cx="-10.25" cy="10.25" r="2"/><circle cx="-14.5" cy="0" r="2"/><circle cx="-10.25" cy="-10.25" r="2"/><circle cx="0" cy="-14.5" r="2"/><circle cx="10.25" cy="-10.25" r="2"/></g>
+              <circle class="core" r="8"/><path d="M-5-2l3-1v3zm10 0l-3-1v3z" fill="#010502"/><path d="M-4 3l2-2 2 2 2-2 2 2" fill="none" stroke="#fff" stroke-width="1.2"/>
+            </g><text class="letter" y="-25">S</text>
+            <animateMotion dur="5.2s" repeatCount="indefinite" path="M22 112H160L244 176H322"/>
+          </g>
+          <g class="sd-virus targeted">
+            <circle class="ring" r="19"/><g class="graphic">
+              <path class="spike" d="M0 0H12M0 0L8.5 8.5M0 0V12M0 0L-8.5 8.5M0 0H-12M0 0L-8.5-8.5M0 0V-12M0 0L8.5-8.5"/>
+              <g class="head"><circle cx="14.5" cy="0" r="2"/><circle cx="10.25" cy="10.25" r="2"/><circle cx="0" cy="14.5" r="2"/><circle cx="-10.25" cy="10.25" r="2"/><circle cx="-14.5" cy="0" r="2"/><circle cx="-10.25" cy="-10.25" r="2"/><circle cx="0" cy="-14.5" r="2"/><circle cx="10.25" cy="-10.25" r="2"/></g>
+              <circle class="core" r="8"/><circle cx="-3" cy="-2" r="1" fill="#fff"/><circle cx="3" cy="-2" r="1" fill="#fff"/><path d="M-4 3Q0 6 4 3" fill="none" stroke="#fff" stroke-width="1.2"/>
+            </g><text class="letter" y="-25">K</text>
+            <animateMotion dur="6s" repeatCount="indefinite" path="M778 158H626L584 208H478"/>
+          </g>
+          <g class="sd-packet"><circle r="7"/><text y="2.5">K</text><animateMotion dur="1.35s" repeatCount="indefinite" path="M720 335L650 300L590 208H490"/></g>
+        </svg>
+
+        <div class="sd-core-zone">
+          <div class="sd-shields" aria-label="Five firewall shields, one lost">
+            <span class="sd-shield lost"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+            <span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+            <span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+            <span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+            <span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span>
+          </div>
+          <i class="sd-core-ring one"></i><i class="sd-core-ring two"></i><i class="sd-core-ring three"></i>
+          <div class="sd-cpu">
+            <i class="sd-notch tl"></i><i class="sd-notch tr"></i><i class="sd-notch bl"></i><i class="sd-notch br"></i><i class="sd-gold left"></i><i class="sd-gold right"></i><i class="sd-cap c1"></i><i class="sd-cap c2"></i><i class="sd-cap c3"></i><i class="sd-cap c4"></i>
+            <div class="sd-ihs"><span class="sd-serial">TM-QUANTUM X9-9000</span><div class="sd-die">CPU</div><i class="sd-led"></i></div>
+          </div>
+        </div>
+
+        <div class="sd-sector-panel">
+          <div class="sd-sector-head"><span>LIVE SECTOR MATRIX // 06 CHANNELS</span><b>WAVE 03</b></div>
+          <div class="sd-sector-grid">
+            <div class="sd-cell healthy"><i></i>A</div><div class="sd-cell hacked"><i></i>S</div><div class="sd-cell healthy"><i></i>D</div><div class="sd-cell repaired"><i></i>F</div><div class="sd-cell healthy"><i></i>J</div><div class="sd-cell hacked"><i></i>K</div>
+            <div class="sd-cell healthy"><i></i>L</div><div class="sd-cell healthy"><i></i>Q</div><div class="sd-cell healthy"><i></i>W</div><div class="sd-cell healthy"><i></i>E</div><div class="sd-cell healthy"><i></i>R</div><div class="sd-cell healthy"><i></i>T</div>
+            <div class="sd-cell healthy"><i></i>Y</div><div class="sd-cell healthy"><i></i>U</div><div class="sd-cell healthy"><i></i>I</div><div class="sd-cell healthy"><i></i>O</div><div class="sd-cell crashed"><i></i>P</div><div class="sd-cell healthy"><i></i>G</div>
+            <div class="sd-cell healthy"><i></i>H</div><div class="sd-cell healthy"><i></i>Z</div><div class="sd-cell healthy"><i></i>X</div><div class="sd-cell healthy"><i></i>C</div><div class="sd-cell healthy"><i></i>V</div><div class="sd-cell healthy"><i></i>B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="sg-caption">Assembled gameplay state: a red virus moves inward on its compromised red trace; typing the matching letter recolors the closest matching threat orange and launches a green, lettered packet from its sector. The CPU, shields and sector tray stay spatially fixed. The board scanlines, threat radar, virus glitch, fuse countdown and CPU status LED remain live here.</p>
+
+    <div class="sd-anatomy-grid">
+      <article class="sd-anatomy-card">
+        <div class="sd-anatomy-preview">
+          <div class="sd-cpu-explode">
+            <div class="sd-layer"><div class="sd-layer-visual"><i class="clamp"></i></div><b>Retention clamp</b><span>steel frame<br>inset −14px</span></div>
+            <div class="sd-layer"><div class="sd-layer-visual"><i class="substrate"></i></div><b>Substrate</b><span>green-black PCB<br>gold contacts</span></div>
+            <div class="sd-layer"><div class="sd-layer-visual"><i class="ihs"></i></div><b>Heat spreader</b><span>brushed metal<br>etched serial</span></div>
+            <div class="sd-layer"><div class="sd-layer-visual"><i class="die">CPU</i></div><b>Silicon die</b><span>blue-black well<br>cyan glow</span></div>
+          </div>
+        </div>
+        <div class="sd-anatomy-copy"><small>01 / CPU STACK</small><h4>Four physical layers, kept in order</h4><p>The clamp is larger than the substrate; the IHS sits inside it; the die is the only luminous center. Corner notches, gold edge contacts, four SMD capacitors and the green status LED belong to the substrate assembly.</p><div class="sd-token-row"><code>CPU 140–160px</code><code>clamp inset −14px</code><code>IHS inset 16px</code><code>die 52–62px</code></div></div>
+      </article>
+
+      <article class="sd-anatomy-card">
+        <div class="sd-anatomy-preview">
+          <div class="sd-state-row">
+            <div class="sd-state"><div class="sd-cell"><i></i>A</div><small>healthy</small></div>
+            <div class="sd-state"><div class="sd-cell hacked"><i></i>S</div><small>hacked + fuse</small></div>
+            <div class="sd-state"><div class="sd-cell repaired"><i></i>D</div><small>repaired</small></div>
+            <div class="sd-state"><div class="sd-cell crashed"><i></i>F</div><small>crashed</small></div>
+          </div>
+        </div>
+        <div class="sd-anatomy-copy"><small>02 / SECTOR LIFECYCLE</small><h4>The letter cell is state, launcher and timer</h4><p>A healthy cell has a green LED. A threat hacks it red and starts the 3px fuse shrinking along the bottom. Correct input briefly repairs it green, launches a packet and morphs the cell to a new letter; an expired fuse crashes it and costs one firewall shield.</p><div class="sd-token-row"><code>radius 4px</code><code>cell 42–52px</code><code>fuse 3px</code><code>6 columns</code></div></div>
+      </article>
+
+      <article class="sd-anatomy-card">
+        <div class="sd-anatomy-preview">
+          <div class="sd-virus-lab">
+            <div class="sd-virus-caption"><b>Incoming</b><svg class="sd-virus" width="110" height="110" viewBox="-32 -34 64 68"><circle class="ring" r="19"/><g class="graphic"><path class="spike" d="M0 0H12M0 0L8.5 8.5M0 0V12M0 0L-8.5 8.5M0 0H-12M0 0L-8.5-8.5M0 0V-12M0 0L8.5-8.5"/><g class="head"><circle cx="14.5" r="2"/><circle cx="10.25" cy="10.25" r="2"/><circle cy="14.5" r="2"/><circle cx="-10.25" cy="10.25" r="2"/><circle cx="-14.5" r="2"/><circle cx="-10.25" cy="-10.25" r="2"/><circle cy="-14.5" r="2"/><circle cx="10.25" cy="-10.25" r="2"/></g><circle class="core" r="8"/><path d="M-5-2l3-1v3zm10 0l-3-1v3z" fill="#010502"/><path d="M-4 3l2-2 2 2 2-2 2 2" fill="none" stroke="#fff"/></g><text class="letter" y="-25">S</text></svg><span>red threat</span></div>
+            <div class="sd-virus-caption"><b>Targeted</b><svg class="sd-virus targeted" width="110" height="110" viewBox="-32 -34 64 68"><circle class="ring" r="19"/><g class="graphic"><path class="spike" d="M0 0H12M0 0L8.5 8.5M0 0V12M0 0L-8.5 8.5M0 0H-12M0 0L-8.5-8.5M0 0V-12M0 0L8.5-8.5"/><g class="head"><circle cx="14.5" r="2"/><circle cx="10.25" cy="10.25" r="2"/><circle cy="14.5" r="2"/><circle cx="-10.25" cy="10.25" r="2"/><circle cx="-14.5" r="2"/><circle cx="-10.25" cy="-10.25" r="2"/><circle cy="-14.5" r="2"/><circle cx="10.25" cy="-10.25" r="2"/></g><circle class="core" r="8"/><circle cx="-3" cy="-2" r="1" fill="#fff"/><circle cx="3" cy="-2" r="1" fill="#fff"/><path d="M-4 3Q0 6 4 3" fill="none" stroke="#fff"/></g><text class="letter" y="-25">S</text></svg><span>orange lock</span></div>
+          </div>
+        </div>
+        <div class="sd-anatomy-copy"><small>03 / THREAT ANATOMY</small><h4>Script-built virus with randomized face</h4><p>Every threat uses the same r8 core, eight 12px spikes, r2 endpoint heads, rotating dashed radar and letter above it. The script randomly chooses one of nine near-black/white faces. Only targeting changes the threat family from red to orange; its geometry and 1.5s glitch stay unchanged.</p><div class="sd-token-row"><code>core r8</code><code>heads r2 @ 14.5</code><code>glitch 1.5s</code><code>radar 8s</code><code>9 faces</code></div></div>
+      </article>
+
+      <article class="sd-anatomy-card">
+        <div class="sd-anatomy-preview">
+          <div class="sd-trace-lab"><svg viewBox="0 0 440 180">
+            <path class="sd-pcb-base" d="M18 48H120L172 96H310L350 62H422"/><path class="sd-pcb-data compromised" d="M18 48H120L172 96H310L350 62H422"/>
+            <path class="sd-pcb-base" d="M18 132H132L170 112H422"/><path class="sd-pcb-data" d="M18 132H132L170 112H422"/>
+            <circle class="sd-pcb-pad" cx="18" cy="48" r="4"/><circle class="sd-pcb-pad" cx="18" cy="132" r="4"/>
+            <g class="sd-packet"><circle r="7"/><text y="2.5">S</text><animateMotion dur="1.4s" repeatCount="indefinite" path="M18 48H120L172 96H310L350 62H422"/></g>
+          </svg></div>
+        </div>
+        <div class="sd-anatomy-copy"><small>04 / ROUTING &amp; INTERCEPT</small><h4>Two strokes describe every circuit route</h4><p>A 4px, barely visible green copper base sits under a 1.5px cyan data line. A route turns red while its sector is hacked. Correct input spawns a green r7 packet carrying the typed character; script movement steers it toward the closest matching virus and resolves with a 300ms green ring.</p><div class="sd-token-row"><code>base 4px / 3.5%</code><code>data 1.5px</code><code>packet r7</code><code>speed 16/frame</code><code>impact 300ms</code></div></div>
+      </article>
+
+      <article class="sd-anatomy-card">
+        <div class="sd-anatomy-preview">
+          <div class="sd-hud-lab">
+            <div class="sd-telemetry"><div class="sd-telemetry-card"><strong style="color:var(--sd-cyan)">42.3</strong><span>TIJD</span></div><div class="sd-telemetry-card"><strong class="red">2/5</strong><span>FOUTEN</span></div></div>
+            <div class="sd-shields" style="position:static;transform:none;justify-self:center"><span class="sd-shield lost"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span></div>
+            <div class="sd-pressure"><span class="sd-pressure-label">SYSTEM COMPROMISE STATUS</span><span class="sd-pressure-value">57%</span><div class="sd-pressure-track"><i class="sd-pressure-fill"></i></div></div>
+          </div>
+        </div>
+        <div class="sd-anatomy-copy"><small>05 / TELEMETRY &amp; DAMAGE</small><h4>Stats, five shields and pressure are different systems</h4><p>The four tiles report time, repairs per minute, accuracy and mistakes. Exactly five shields visualize the 5-error budget above the CPU. Compromise pressure responds to live threats separately: green below 45%, orange from 45%, red and glitching from 80%, failure at 100%.</p><div class="sd-token-row"><code>4 telemetry tiles</code><code>5 shields</code><code>warning ≥45%</code><code>danger ≥80%</code></div></div>
+      </article>
+
+      <article class="sd-anatomy-card">
+        <div class="sd-anatomy-preview" style="align-content:center;gap:12px">
+          <div class="sd-token-row" style="justify-content:center"><code>CPU LED · 1.2s</code><code>virus glitch · 1.5s</code><code>radar · 8s</code><code>shield loss · .5s</code><code>board shake · .4s</code><code>impact · .3s</code></div>
+          <p style="max-width:430px;margin:0;text-align:center;color:var(--muted);font-size:.72rem;line-height:1.55">Persistent signals loop; gameplay events fire once. The guide repeats the shield-loss and packet examples only so their implementation can be inspected.</p>
+        </div>
+        <div class="sd-anatomy-copy"><small>06 / MOTION CONTRACT</small><h4>Animation communicates state, not decoration</h4><p>Radar and virus flicker identify a live threat; the shrinking fuse shows remaining rescue time; packet travel visualizes a typed interception. CPU damage, shield loss and board shake are short feedback events and never become ambient motion.</p></div>
+      </article>
+    </div>
+
+    <div class="sd-variant-grid">
+      <div class="sd-variant"><b>Defense grid</b><span>Full routed PCB arena, moving threats, CPU and sector tray.</span><code>typegame-supercomputer-defense-grid</code></div>
+      <div class="sd-variant"><b>No grid</b><span>Same defense identity with the background grid treatment removed.</span><code>typegame-supercomputer-defense-no-grid</code></div>
+      <div class="sd-variant"><b>Only grid</b><span>Grid-led variant; shared CPU, threat, sector and telemetry tokens remain unchanged.</span><code>typegame-supercomputer-defense-only-grid</code></div>
+    </div>
+    <p class="sg-caption" style="margin-top:12px">Source: <b>supercomputer-varianten/typegame-supercomputer-defense-grid</b> · <code>.hud-telemetry</code>, <code>.hack-progress-container</code>, <code>.keyboard-board-outer</code>, <code>.defense-core-visual</code>, <code>.supercomputer-core</code>, <code>.sector-panel</code>, <code>.virus-blob</code>, <code>.projectile-packet</code>, <code>spawnVirus()</code> and <code>handleKeystroke()</code>. Geometry, states, thresholds and timings above are taken from the project CSS and script.</p>
+  </div>
+
+  <div hidden aria-hidden="true">
   <h3>Supercomputer defense — CPU, sector grid &amp; viruses</h3>
   <p class="sg-note">The machine is a motherboard. Center: the CPU built from four nested layers — <strong>steel retention clamp → gold-edged substrate → brushed metal heat spreader → glowing silicon die</strong> — ringed by concentric PCB traces. Around it: a grid of letter <strong>sector cells</strong>, and <strong>viruses</strong> that crawl along circuit traces from the board edge toward the CPU. Typing a virus's letter fires a green data packet at it.</p>
   <div class="theme t-super">
@@ -6031,6 +6684,8 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     </div>
   </div>
   <p class="sg-caption">Telemetry tile: 135° green-black gradient + a faint radial green top light, 1px border of green at 15%, value in Orbitron 900 white (red for mistakes). The percentage chip is a sunken screen: near-black fill, deep inset shadow, glowing value that recolors with the threat level. Bar track: dark green-tinted well with theme border; the fill keeps a glow in its own color.</p>
+
+  </div>
 
   <h3>Type training — practice console</h3>
   <p class="sg-note">The neutral grey game. Layout: two riveted glass <strong>wings</strong> ("PRESTATIES" / "EVALUATIE") holding stat cards, a live <strong>rhythm-wave analyzer</strong> and wireframe hand diagrams, around a central <strong>type console</strong>. The console types <strong>inline text</strong> — not code slots: the current letter is a blinking orange block cursor (like a real terminal), correct letters turn green, wrong letters turn red with a red underline. Below it sits a flat 3D <strong>keyboard</strong> whose next key lights up, and in "losse letters" mode a conveyor of letter blocks rides through an orange <strong>scanner gate</strong>.</p>
@@ -6551,6 +7206,37 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       terminalObserver.observe(terminalViewport);
     } else {
       window.addEventListener('resize', fitTerminalFrame, { passive: true });
+    }
+  }
+
+  const redactionViewport = document.querySelector('.redact-specimen .rs-viewport');
+  const redactionPaper = redactionViewport && redactionViewport.querySelector('.rs-camera-paper');
+  const redactionWord = redactionPaper && redactionPaper.querySelector('.rs-redacted.active');
+  const redactionReticle = redactionViewport && redactionViewport.querySelector('.rs-reticle');
+  function focusRedactionSpecimen() {
+    if (!redactionViewport || !redactionPaper || !redactionWord || !redactionReticle) return;
+    const scale = 2.1;
+    redactionPaper.style.transform = 'none';
+    const viewportRect = redactionViewport.getBoundingClientRect();
+    const paperRect = redactionPaper.getBoundingClientRect();
+    const wordRect = redactionWord.getBoundingClientRect();
+    const wordX = wordRect.left - paperRect.left + wordRect.width / 2;
+    const wordY = wordRect.top - paperRect.top + wordRect.height / 2;
+    const focalX = (redactionViewport.clientWidth + 16) / 2;
+    const focalY = (redactionViewport.clientHeight + 16) / 2;
+    const translateX = focalX - (paperRect.left - viewportRect.left) - wordX * scale;
+    const translateY = focalY - (paperRect.top - viewportRect.top) - wordY * scale;
+    redactionPaper.style.transform = 'translate(' + translateX + 'px,' + translateY + 'px) scale(' + scale + ')';
+    redactionReticle.style.width = (wordRect.width * scale + 20) + 'px';
+    redactionReticle.style.height = (wordRect.height * scale + 14) + 'px';
+  }
+  if (redactionViewport) {
+    focusRedactionSpecimen();
+    if ('ResizeObserver' in window) {
+      const redactionObserver = new ResizeObserver(focusRedactionSpecimen);
+      redactionObserver.observe(redactionViewport);
+    } else {
+      window.addEventListener('resize', focusRedactionSpecimen, { passive: true });
     }
   }
 
