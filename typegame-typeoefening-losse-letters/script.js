@@ -576,23 +576,57 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const styleguidePreview = new URLSearchParams(window.location.search).has("styleguide-preview");
-  if (styleguidePreview) {
+  const styleguidePreviewMode = new URLSearchParams(window.location.search).get("styleguide-preview");
+  if (styleguidePreviewMode !== null) {
     soundEnabled = false;
     lettersVisible = true;
-    cursorIndex = 5;
-    typedStates = Array(currentTextLine.length).fill(null);
-    renderKeyboard();
-    renderPrompt();
+    if (styleguidePreviewMode === "loose-letters") {
+      currentVersion = "looseletters";
+      cursorIndex = 2;
+      typedStates = Array(currentTextLine.length).fill(null);
+      for (let i = 0; i < cursorIndex; i++) typedStates[i] = "correct";
+      updateLayout();
 
-    const pulsePreviewKey = () => {
-      const key = keyboardContainer.querySelector('[data-key="j"]');
-      if (!key) return;
-      key.classList.add("pressed");
-      window.setTimeout(() => key.classList.remove("pressed"), 180);
-    };
-    pulsePreviewKey();
-    window.setInterval(pulsePreviewKey, 1800);
+      let previewStep = 0;
+      window.setInterval(() => {
+        const maxPreviewIndex = Math.min(currentTextLine.length - 1, 9);
+        if (previewStep % 4 === 2) {
+          typedStates[cursorIndex] = "wrong";
+        } else {
+          cursorIndex = cursorIndex >= maxPreviewIndex ? 2 : cursorIndex + 1;
+          typedStates = Array(currentTextLine.length).fill(null);
+          for (let i = 0; i < cursorIndex; i++) typedStates[i] = "correct";
+        }
+        updateLooseLettersVisuals();
+        previewStep++;
+      }, 1350);
+    } else if (styleguidePreviewMode === "results") {
+      correctKeystrokes = 146;
+      totalKeystrokes = 151;
+      maxStreak = 38;
+      totalCoins = 240;
+      accumulatedTime = 54000;
+      lessonStartTime = Date.now();
+      window.setTimeout(finishLesson, 180);
+    } else {
+      cursorIndex = 5;
+      typedStates = Array(currentTextLine.length).fill(null);
+      renderKeyboard();
+      renderPrompt();
+
+      const pulsePreviewKey = () => {
+        const key = keyboardContainer.querySelector('[data-key="j"]');
+        if (!key) return;
+        key.classList.add("pressed");
+        window.setTimeout(() => key.classList.remove("pressed"), 180);
+      };
+      pulsePreviewKey();
+      window.setInterval(pulsePreviewKey, 1800);
+
+      if (styleguidePreviewMode === "left-wing" || styleguidePreviewMode === "right-wing") {
+        animateRhythmWave();
+      }
+    }
   } else {
     // Start subtle dotted wave background animation
     initDottedWaveBackground();

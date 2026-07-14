@@ -21,6 +21,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { background: var(--sg-bg); scroll-behavior: smooth; }
 
 body {
@@ -1945,6 +1946,17 @@ table.sg-table {
   .lp-tool-in-cylinder { left: calc(50% - 538px); }
 }
 
+/* Object-library cards isolate construction details; complete arenas stay in the live atlas. */
+.sg-object-parts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:16px; }
+.sg-object-part { min-width:0; overflow:hidden; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+.sg-object-part-preview { min-height:210px; padding:18px; display:grid; place-items:center; border-bottom:1px solid var(--border); background:#07090b; }
+.sg-object-part-copy { padding:14px; }
+.sg-object-part-copy small { color:var(--orange); font:800 .55rem/1 "Roboto Mono",monospace; letter-spacing:1.1px; }
+.sg-object-part-copy h4 { margin:8px 0 6px; color:#fff; font-size:.88rem; }
+.sg-object-part-copy p { margin:0; color:var(--muted); font-size:.74rem; line-height:1.55; }
+.sg-object-part-copy .sd-token-row { margin-top:10px; }
+@media(max-width:700px){.sg-object-parts{grid-template-columns:1fr}.sg-object-part-preview{min-height:190px;padding:12px}}
+
 /* Fingerprint source specimen. The numbered node overlay is intentionally absent. */
 .fingerprint-specimen {
   width: min(100%, 780px);
@@ -2226,17 +2238,34 @@ table.sg-table {
 .sd-ihs { position:relative; width:calc(100% - 32px);height:calc(100% - 32px);display:grid;place-items:center;border:2.5px solid #4a505a;border-radius:6px;background:linear-gradient(135deg,#2d3139,#1e2024 45%,#15171a 55%,#0d0f11);box-shadow:0 4px 10px rgba(0,0,0,.6),inset 0 1px 2px rgba(255,255,255,.15),inset 0 -2px 4px rgba(0,0,0,.7)}
 .sd-serial{position:absolute;top:6px;color:rgba(255,255,255,.25);font:700 5.5px/1 "Roboto Mono",monospace;letter-spacing:.5px}.sd-led{position:absolute;bottom:6px;width:5px;height:5px;border-radius:50%;background:var(--sd-green);box-shadow:0 0 6px var(--sd-green-glow);animation:sdLed 1.2s infinite alternate}.sd-die{width:58px;height:58px;display:grid;place-items:center;border:2px solid #233545;border-radius:4px;background:radial-gradient(circle,#05141e,#010408);box-shadow:0 0 10px rgba(116,216,255,.12),inset 0 0 8px rgba(0,0,0,.95);color:var(--sd-cyan);font:900 14px/1 "Orbitron",sans-serif;letter-spacing:1px;text-shadow:0 0 4px var(--sd-cyan),0 0 12px rgba(116,216,255,.6);animation:sdCpuText 2.5s infinite alternate}
 .sd-sector-panel { position:relative; z-index:8; width:96%; max-width:900px; padding:9px 11px 11px; border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(10,15,12,.95);box-shadow:0 8px 24px rgba(0,0,0,.5)}.sd-sector-head{display:flex;justify-content:space-between;padding-bottom:7px;margin-bottom:7px;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(213,238,220,.72);font:800 .56rem/1 "Orbitron",sans-serif;letter-spacing:1.5px}.sd-sector-head b{color:#f2a65a}.sd-sector-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:42px;gap:7px}
-.sd-cell { position:relative;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(116,216,255,.22);border-radius:4px;background:rgba(8,14,20,.92);color:rgba(205,235,255,.85);font:700 1.2rem/1 "Roboto Mono",monospace}.sd-cell i{position:absolute;top:6px;left:6px;width:5px;height:5px;border-radius:50%;background:var(--sd-green)}.sd-cell.hacked{border-color:var(--sd-red);background:rgba(255,59,48,.15);color:#fff}.sd-cell.hacked i{background:var(--sd-red)}.sd-cell.hacked::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:var(--sd-red);transform-origin:left;animation:sdFuse 4s infinite linear}.sd-cell.repaired{border-color:var(--sd-green);background:rgba(68,215,117,.22);color:#eafff0}.sd-cell.crashed{border-color:var(--sd-red);background:rgba(255,59,48,.25);color:rgba(205,235,255,.3)}.sd-cell.crashed i{background:#440a07}
+.sd-cell { position:relative;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(116,216,255,.22);border-radius:4px;background:rgba(8,14,20,.92);color:rgba(205,235,255,.85);font:700 1.2rem/1 "Roboto Mono",monospace}.sd-cell i{position:absolute;top:6px;left:6px;width:5px;height:5px;border-radius:50%;background:var(--sd-green)}.sd-cell.hacked{border-color:var(--sd-red);background:rgba(255,59,48,.15);color:#fff}.sd-cell.hacked i{background:var(--sd-red)}.sd-cell.hacked::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:var(--sd-red);transform:scaleX(1);transform-origin:left}.sd-cell.repaired{border-color:var(--sd-green);background:rgba(68,215,117,.22);color:#eafff0}.sd-cell.crashed{border-color:var(--sd-red);background:rgba(255,59,48,.25);color:rgba(205,235,255,.3)}.sd-cell.crashed i{background:#440a07}
 .sd-virus .ring{fill:none;stroke:rgba(255,59,48,.45);stroke-width:1.25;stroke-dasharray:4 2;transform-box:fill-box;transform-origin:center;animation:rotateRing 8s linear infinite}.sd-virus .core,.sd-virus .head{fill:var(--sd-red);stroke:var(--sd-red);filter:drop-shadow(0 0 5px rgba(255,59,48,.85))}.sd-virus .spike{fill:none;stroke:var(--sd-red);stroke-width:1.8;filter:drop-shadow(0 0 5px rgba(255,59,48,.85))}.sd-virus .graphic{animation:virusGlitch 1.5s infinite linear}.sd-virus .letter{fill:#fff;text-anchor:middle;font:900 11px "Orbitron",sans-serif}.sd-virus.targeted .ring{stroke:rgba(228,142,53,.45)}.sd-virus.targeted .core,.sd-virus.targeted .head{fill:var(--sd-orange);stroke:var(--sd-orange)}.sd-virus.targeted .spike{stroke:var(--sd-orange)}.sd-packet circle{fill:var(--sd-green);stroke:#fff;stroke-width:1;filter:drop-shadow(0 0 6px var(--sd-green))}.sd-packet text{fill:#000;text-anchor:middle;font:900 8px "Orbitron",sans-serif}
 .sd-anatomy-grid { margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.sd-anatomy-card{min-width:0;overflow:hidden;border:1px solid var(--border);border-radius:10px;background:var(--panel)}.sd-anatomy-preview{min-height:250px;padding:20px;display:grid;place-items:center;border-bottom:1px solid var(--border);background:#050807}.sd-anatomy-copy{padding:15px}.sd-anatomy-copy small{color:var(--orange);font:800 .55rem/1 "Roboto Mono",monospace;letter-spacing:1.2px}.sd-anatomy-copy h4{margin:8px 0 6px;color:#fff;font-size:.9rem}.sd-anatomy-copy p{margin:0;color:var(--muted);font-size:.76rem;line-height:1.55}.sd-token-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.sd-token-row code{padding:4px 7px;border:1px solid var(--border);border-radius:5px;background:#090b0d;color:var(--dim);font-size:.58rem}
 .sd-cpu-explode{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:center}.sd-layer{text-align:center}.sd-layer-visual{position:relative;height:100px;display:grid;place-items:center}.sd-layer-visual .clamp{width:74px;height:74px;border:5px solid #52525b;border-radius:10px;background:linear-gradient(135deg,#3f3f46,#09090b);box-shadow:inset 0 0 8px #000}.sd-layer-visual .substrate{width:72px;height:72px;border:2px solid rgba(217,119,6,.55);border-radius:5px;background:#060c08}.sd-layer-visual .ihs{width:68px;height:68px;border:2.5px solid #4a505a;border-radius:5px;background:linear-gradient(135deg,#2d3139,#0d0f11)}.sd-layer-visual .die{width:54px;height:54px;display:grid;place-items:center;border:2px solid #233545;border-radius:4px;background:#010408;color:var(--sd-cyan);font:900 11px "Orbitron";text-shadow:0 0 7px var(--sd-cyan)}.sd-layer b{display:block;color:#fff;font:700 .58rem/1.3 "Orbitron";letter-spacing:.4px}.sd-layer span{display:block;margin-top:4px;color:var(--dim);font:400 .53rem/1.35 "Roboto Mono"}
 .sd-state-row{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.sd-state{display:grid;gap:8px;text-align:center}.sd-state .sd-cell{height:62px}.sd-state small{color:var(--dim);font:500 .55rem/1.35 "Roboto Mono"}
 .sd-virus-lab{width:100%;display:flex;align-items:center;justify-content:space-around;gap:18px;flex-wrap:wrap}.sd-virus-caption{text-align:center;color:var(--dim);font:500 .55rem/1.4 "Roboto Mono"}.sd-virus-caption b{display:block;margin-bottom:5px;color:#fff;font:700 .62rem "Orbitron"}
 .sd-trace-lab{width:100%;max-width:440px}.sd-trace-lab svg{width:100%;height:auto}.sd-hud-lab{width:100%;display:grid;gap:12px}.sd-hud-lab .sd-telemetry{grid-template-columns:repeat(2,1fr)}
+.sd-cpu-card,.sd-sector-card{grid-column:1/-1}.sd-cpu-card .sd-anatomy-preview{min-height:410px}.sd-sector-card .sd-anatomy-preview{min-height:260px}
+.sd-cpu-build{width:100%;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.75fr);gap:24px;align-items:stretch}
+.sd-cpu-parts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;align-items:stretch}
+.sd-layer{min-width:0;padding:10px 7px 9px;border:1px solid rgba(116,216,255,.1);border-radius:7px;background:rgba(0,0,0,.22)}
+.sd-layer-visual{height:138px!important}.sd-layer-visual .clamp{width:102px!important;height:102px!important;border:3.5px solid #52525b!important;border-radius:12px!important;background:linear-gradient(135deg,#3f3f46,#1e1b1b 50%,#09090b)!important;box-shadow:0 8px 18px rgba(0,0,0,.72),inset 0 0 10px rgba(0,0,0,.95)!important}
+.sd-part-substrate{position:relative;width:96px;height:96px;border:2px solid rgba(217,119,6,.45);border-radius:6px;background:radial-gradient(circle,rgba(16,29,20,.98),#060c08);box-shadow:inset 0 0 12px rgba(0,0,0,.9)}
+.sd-part-substrate .sd-gold{top:10%;height:80%}.sd-part-substrate .sd-notch{width:7px;height:7px}.sd-part-substrate .sd-cap.c1{top:10px;left:18px}.sd-part-substrate .sd-cap.c2{top:10px;right:18px}.sd-part-substrate .sd-cap.c3{bottom:10px;left:18px}.sd-part-substrate .sd-cap.c4{right:18px;bottom:10px}
+.sd-part-ihs{position:relative;width:100px;height:100px;display:grid;place-items:center;border:2.5px solid #4a505a;border-radius:6px;background:linear-gradient(135deg,#2d3139,#1e2024 45%,#15171a 55%,#0d0f11);box-shadow:0 4px 10px rgba(0,0,0,.6),inset 0 1px 2px rgba(255,255,255,.15),inset 0 -2px 4px rgba(0,0,0,.7)}
+.sd-part-ihs .sd-serial{top:8px}.sd-part-ihs .sd-led{bottom:8px}
+.sd-part-die{width:62px;height:62px;display:grid;place-items:center;border:2px solid #233545;border-radius:4px;background:radial-gradient(circle,#05141e,#010408);box-shadow:0 0 10px rgba(116,216,255,.12),inset 0 0 8px rgba(0,0,0,.95);color:var(--sd-cyan);font:900 14px/1 "Orbitron";letter-spacing:1px;text-shadow:0 0 4px var(--sd-cyan),0 0 12px rgba(116,216,255,.6);animation:sdCpuText 2.5s infinite alternate}
+.sd-stack-panel{min-width:0;padding:12px;border:1px solid rgba(217,119,6,.2);border-radius:8px;background:radial-gradient(circle at 50% 46%,rgba(68,215,117,.06),transparent 50%),#030604;display:grid;grid-template-rows:auto 1fr auto;gap:8px}
+.sd-stack-label{color:var(--sd-orange);font:800 .55rem/1 "Roboto Mono";letter-spacing:1.2px}.sd-stack-stage{position:relative;min-height:225px;display:grid;place-items:center}.sd-stack-stage .sd-core-ring{left:50%;top:50%;transform:translate(-50%,-50%)}.sd-stack-stage .sd-core-ring.one{width:185px}.sd-stack-stage .sd-core-ring.two{width:220px}.sd-stack-stage .sd-core-ring.three{width:252px}.sd-stack-note{margin:0;color:var(--dim);font:500 .55rem/1.55 "Roboto Mono";text-align:center}
+.sd-state-flow{width:100%;display:grid;grid-template-columns:minmax(70px,1fr) 22px minmax(70px,1fr) 22px minmax(150px,1.45fr);gap:7px;align-items:center}.sd-flow-arrow{color:rgba(116,216,255,.5);font:700 1rem/1 "Roboto Mono";text-align:center}.sd-state-branch{display:grid;gap:8px}.sd-state-result{display:grid;grid-template-columns:84px 1fr;gap:8px;align-items:center;padding:7px;border:1px solid var(--border);border-radius:6px;background:rgba(0,0,0,.2)}.sd-state-result .sd-cell{height:48px}.sd-state-result p{margin:0;color:var(--dim);font:500 .53rem/1.45 "Roboto Mono"}.sd-state-result b{display:block;margin-bottom:2px;color:#fff;font:700 .53rem "Orbitron"}.sd-state-result.good{border-color:rgba(68,215,117,.2)}.sd-state-result.bad{border-color:rgba(255,59,48,.2)}
+.sd-route-demo{position:relative;width:100%;max-width:500px;min-height:290px;overflow:hidden;border:1px solid rgba(116,216,255,.08);border-radius:8px;background:radial-gradient(circle at 72% 34%,rgba(116,216,255,.035),transparent 26%),#030604}.sd-route-demo>svg{position:absolute;inset:0;display:block;width:100%;height:100%}.sd-route-cpu{position:absolute;left:72%;top:29%;width:64px;height:64px;transform:translate(-50%,-50%);display:grid;place-items:center;border:2px solid rgba(217,119,6,.45);border-radius:4px;background:#071009;color:var(--sd-cyan);font:900 .55rem "Orbitron";box-shadow:0 0 8px rgba(116,216,255,.12),inset 0 0 9px #000}.sd-route-sector-panel{position:absolute;z-index:3;left:16%;right:16%;bottom:10px;padding:7px 8px 8px;border:1px solid rgba(255,255,255,.08);border-radius:7px;background:rgba(10,15,12,.97);box-shadow:0 7px 18px rgba(0,0,0,.55)}.sd-route-sector-head{display:flex;justify-content:space-between;margin-bottom:6px;color:rgba(213,238,220,.7);font:800 .45rem/1 "Orbitron";letter-spacing:.7px}.sd-route-sector-head b{color:var(--sd-orange)}.sd-route-sector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.sd-route-sector-grid .sd-cell{height:38px;font-size:.8rem}.sd-route-note{position:absolute;z-index:4;color:var(--dim);font:500 .48rem/1 "Roboto Mono"}.sd-route-note.start{left:3%;top:20%}.sd-route-note.end{right:3%;top:20%}.sd-route-note.launch{left:50%;bottom:79px;transform:translateX(-50%);color:var(--sd-green)}
+.sd-hud-lab .sd-telemetry{grid-template-columns:repeat(4,1fr)}.sd-hud-lab .sd-telemetry-card{padding:9px 4px}.sd-hud-lab .sd-telemetry-card strong{font-size:1rem}.sd-hud-lab .sd-telemetry-card span{font-size:.44rem}.sd-tel-value{display:flex;align-items:baseline;justify-content:center;color:var(--sd-cyan)!important}.sd-tel-value em{margin-left:2px;color:var(--dim);font:500 .55rem/1 "Orbitron";font-style:normal;text-shadow:none}
+.sd-hud-object{display:grid;gap:6px}.sd-object-label{color:var(--dim);font:700 .48rem/1 "Roboto Mono";letter-spacing:.8px}.sd-hud-subobjects{display:grid;grid-template-columns:minmax(170px,.72fr) minmax(0,1.28fr);gap:10px;align-items:stretch}.sd-shield-object,.sd-pressure-object{min-width:0;padding:10px;border:1px solid rgba(255,255,255,.07);border-radius:7px;background:rgba(0,0,0,.22)}.sd-shield-object{display:grid;place-items:center;gap:8px}.sd-shield-object .sd-shields{gap:7px}.sd-shield-object .sd-shield{width:26px;height:26px}.sd-shield-object .sd-shield svg{width:15px}.sd-shield-anchor{display:grid;place-items:center}.sd-shield-cpu-edge{width:104px;height:17px;margin-top:9px;border:2px solid #52525b;border-bottom:0;border-radius:7px 7px 0 0;background:linear-gradient(135deg,#3f3f46,#09090b);color:rgba(255,255,255,.28);font:700 .38rem/17px "Roboto Mono";text-align:center}.sd-pressure-object{display:grid;align-content:center}.sd-pressure-object .sd-pressure{padding:0}.sd-pressure-object .sd-pressure-value{min-height:24px}
+.sd-motion-grid{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.sd-motion-sample{min-width:0;min-height:172px;padding:10px 7px;display:grid;grid-template-rows:1fr auto auto;place-items:center;border:1px solid rgba(116,216,255,.09);border-radius:7px;background:rgba(0,0,0,.22);text-align:center}.sd-motion-sample b{margin-top:7px;color:#fff;font:700 .52rem/1.2 "Orbitron"}.sd-motion-sample span{margin-top:4px;color:var(--dim);font:500 .47rem/1.35 "Roboto Mono"}.sd-motion-chip{position:relative;width:82px;height:82px;display:grid;place-items:center;border:2px solid #4a505a;border-radius:6px;background:linear-gradient(135deg,#2d3139,#0d0f11);box-shadow:inset 0 1px 2px rgba(255,255,255,.12),0 5px 12px #000}.sd-motion-chip::before{content:"TMS-8086";position:absolute;top:7px;color:rgba(255,255,255,.25);font:700 4.5px "Roboto Mono"}.sd-motion-chip i{width:34px;height:34px;display:grid;place-items:center;border:1.5px solid #233545;border-radius:3px;background:#010408;color:var(--sd-cyan);font:900 .48rem "Orbitron";text-shadow:0 0 5px var(--sd-cyan)}.sd-motion-chip::after{content:"";position:absolute;bottom:7px;width:5px;height:5px;border-radius:50%;background:var(--sd-green);box-shadow:0 0 6px var(--sd-green-glow);animation:sdLed 1.2s infinite alternate}.sd-motion-event{display:flex;align-items:center;justify-content:center;gap:18px}.sd-motion-event .sd-shield{position:relative;width:31px;height:31px}.sd-explosion{width:12px;height:12px;border:2px solid var(--sd-green);border-radius:50%;filter:drop-shadow(0 0 5px var(--sd-green));animation:sdInspectExplosion 2.2s infinite ease-out}
 .sd-variant-grid{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.sd-variant{padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--panel)}.sd-variant b{display:block;color:#fff;font:700 .7rem "Orbitron"}.sd-variant span{display:block;margin-top:6px;color:var(--muted);font-size:.7rem;line-height:1.45}.sd-variant code{color:var(--orange);font-size:.58rem}
-@keyframes sdLed{from{opacity:.4}to{opacity:1}}@keyframes sdCpuText{from{opacity:.8;filter:brightness(.9)}to{opacity:1;filter:brightness(1.25)}}@keyframes sdFuse{0%{transform:scaleX(1)}100%{transform:scaleX(0)}}@keyframes sdShieldLoss{0%,84%,100%{transform:scale(1)}88%{transform:scale(1.35)}92%{transform:scale(.9)}}
-@media(max-width:900px){.sd-arena{min-height:830px;padding:12px}.sd-board{min-height:670px;padding-inline:10px}.sd-core-zone{top:31%;transform:translate(-50%,-50%) scale(.82)}.sd-sector-grid{gap:5px}.sd-anatomy-grid{grid-template-columns:1fr}.sd-variant-grid{grid-template-columns:1fr}}
-@media(max-width:560px){.sd-telemetry{gap:4px}.sd-telemetry-card{padding:7px 3px}.sd-telemetry-card strong{font-size:.82rem}.sd-telemetry-card span{font-size:.4rem}.sd-arena{min-height:760px;padding:9px}.sd-board{min-height:610px}.sd-core-zone{top:29%;transform:translate(-50%,-50%) scale(.68)}.sd-sector-panel{width:100%;padding:7px}.sd-sector-grid{grid-template-columns:repeat(6,1fr);grid-auto-rows:32px;gap:3px}.sd-cell{font-size:.72rem}.sd-cell i{top:3px;left:3px;width:3px;height:3px}.sd-cpu-explode,.sd-state-row{grid-template-columns:repeat(2,1fr);row-gap:18px}.sd-anatomy-preview{padding:14px}.sd-hud-lab .sd-telemetry{grid-template-columns:1fr 1fr}}
+@keyframes sdLed{from{opacity:.4}to{opacity:1}}@keyframes sdCpuText{from{opacity:.8;filter:brightness(.9)}to{opacity:1;filter:brightness(1.25)}}@keyframes sdShieldLoss{0%,84%,100%{transform:scale(1)}88%{transform:scale(1.35)}92%{transform:scale(.9)}}@keyframes sdInspectExplosion{0%,72%{transform:scale(.4);opacity:0}76%{transform:scale(.4);opacity:1}90%,100%{transform:scale(3);opacity:0}}
+@media(max-width:900px){.sd-arena{min-height:830px;padding:12px}.sd-board{min-height:670px;padding-inline:10px}.sd-core-zone{top:31%;transform:translate(-50%,-50%) scale(.82)}.sd-sector-grid{gap:5px}.sd-anatomy-grid{grid-template-columns:1fr}.sd-cpu-card,.sd-sector-card{grid-column:auto}.sd-cpu-build{grid-template-columns:1fr}.sd-variant-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.sd-telemetry{gap:4px}.sd-telemetry-card{padding:7px 3px}.sd-telemetry-card strong{font-size:.82rem}.sd-telemetry-card span{font-size:.4rem}.sd-arena{min-height:760px;padding:9px}.sd-board{min-height:610px}.sd-core-zone{top:29%;transform:translate(-50%,-50%) scale(.68)}.sd-sector-panel{width:100%;padding:7px}.sd-sector-grid{grid-template-columns:repeat(6,1fr);grid-auto-rows:32px;gap:3px}.sd-cell{font-size:.72rem}.sd-cell i{top:3px;left:3px;width:3px;height:3px}.sd-cpu-parts{grid-template-columns:repeat(2,1fr)}.sd-cpu-card .sd-anatomy-preview{min-height:0}.sd-state-flow{grid-template-columns:1fr}.sd-flow-arrow{transform:rotate(90deg)}.sd-state-result{grid-template-columns:70px 1fr}.sd-anatomy-preview{padding:14px}.sd-hud-lab .sd-telemetry{grid-template-columns:1fr 1fr}.sd-hud-subobjects,.sd-motion-grid{grid-template-columns:1fr}.sd-route-sector-panel{left:8%;right:8%}.sd-route-note.launch{display:none}}
 
 /* — Fingerprint scan node pulse ring — */
 .scan-node-marker .pulse-ring {
@@ -2481,6 +2510,128 @@ table.sg-table {
 }
 .rhythm-wave-demo { width: 180px; height: 64px; }
 .rhythm-wave-demo path { fill: none; stroke: #e48e35; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(228, 142, 53, 0.35)); }
+
+/* Type Training component library. The large specimens are query-only crops
+   rendered by the actual game; the guide supplies only the card chrome. */
+.training-object-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.training-object-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 10px;
+  background: #0d0e12;
+}
+.training-object-card.wide { grid-column: 1 / -1; }
+.training-source-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid var(--sg-line);
+  background: #050609;
+}
+.training-source-viewport.terminal-crop {
+  aspect-ratio: 1000 / 360;
+  min-height: 250px;
+}
+.training-source-viewport.wing-crop {
+  height: clamp(420px, 48vw, 570px);
+}
+.training-source-viewport.center-crop {
+  aspect-ratio: 1000 / 620;
+  min-height: 390px;
+}
+.practice-source-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: none;
+  border: 0;
+  background: #050609;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.practice-source-frame.console-frame { width: 1000px; height: 620px; }
+.practice-source-frame.terminal-frame { width: 1000px; height: 360px; }
+.practice-source-frame.wing-frame { width: 420px; height: 620px; }
+.training-source-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 9px;
+  z-index: 2;
+  padding: 4px 7px;
+  border: 1px solid rgba(228, 142, 53, .2);
+  border-radius: 4px;
+  color: rgba(244, 173, 84, .82);
+  background: rgba(0, 0, 0, .78);
+  font: .47rem "Roboto Mono", monospace;
+  letter-spacing: .03em;
+}
+.training-object-copy { padding: 16px 18px 18px; }
+.training-object-copy h4 {
+  margin: 5px 0 8px;
+  color: #fff;
+  font-size: .88rem;
+}
+.training-object-copy p {
+  margin: 0;
+  color: #bbb8c2;
+  font-size: .76rem;
+  line-height: 1.55;
+}
+.training-object-number {
+  color: var(--orange);
+  font: 700 .53rem "Roboto Mono", monospace;
+  letter-spacing: 1.1px;
+}
+.training-measures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+.training-measures code {
+  padding: 5px 7px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, .3);
+  color: #bbb8c2;
+  font-size: .55rem;
+}
+.training-measures b { color: var(--orange-soft); }
+.training-state-key {
+  display: inline-block;
+  margin: 0 2px;
+  padding: 0 2px;
+  border-bottom: 3.5px solid transparent;
+  color: #fff;
+  font: 700 1rem "Roboto Mono", monospace;
+}
+.training-state-key.correct { color: #9ad744; text-shadow: 0 0 3px rgba(154, 215, 68, .4); }
+.training-state-key.current {
+  color: #000;
+  background: #e48e35;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(228, 142, 53, .35);
+  animation: cursorBlockBlink .8s infinite steps(2, start);
+}
+.training-state-key.wrong {
+  color: #ff3b30;
+  border-bottom-color: #ff3b30;
+  background: rgba(255, 59, 48, .18);
+  text-shadow: 0 0 3px rgba(255, 59, 48, .4);
+}
+@media (max-width: 760px) {
+  .training-object-grid { grid-template-columns: 1fr; }
+  .training-object-card.wide { grid-column: auto; }
+  .training-source-viewport.terminal-crop { min-height: 190px; }
+  .training-source-viewport.wing-crop { height: 500px; }
+  .training-source-viewport.center-crop { min-height: 300px; }
+}
 
 /* Briefing flow examples */
 .briefing-flow-grid {
@@ -3092,6 +3243,417 @@ table.sg-table {
 @keyframes demoMetronomeRing {
   0% { opacity: 0.75; transform: scale(0.72); }
   100% { opacity: 0; transform: scale(1.45); }
+}
+
+/* Purpose-led motion library */
+.motion-principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0 18px;
+}
+.motion-principle {
+  padding: 12px 14px;
+  border: 1px solid var(--sg-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .018);
+  color: var(--sg-muted);
+  font-size: .72rem;
+  line-height: 1.5;
+}
+.motion-principle b {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--sg-text);
+  font-family: "Orbitron", sans-serif;
+  font-size: .58rem;
+  letter-spacing: .65px;
+  text-transform: uppercase;
+}
+.motion-library {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.motion-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 10px;
+  background: #0f1014;
+}
+.motion-stage {
+  position: relative;
+  min-height: 230px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--sg-line);
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+    #07080b;
+  background-size: 28px 28px;
+}
+.motion-copy { padding: 16px 18px 18px; }
+.motion-kind {
+  color: var(--orange);
+  font: 700 .52rem "Roboto Mono", monospace;
+  letter-spacing: 1.15px;
+  text-transform: uppercase;
+}
+.motion-copy h3 {
+  margin: 6px 0 8px;
+  color: #fff;
+  font-size: .88rem;
+}
+.motion-copy p {
+  margin: 0;
+  color: #b9b6c0;
+  font-size: .75rem;
+  line-height: 1.58;
+}
+.motion-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px 10px;
+  margin: 13px 0 0;
+  font-size: .62rem;
+}
+.motion-facts dt {
+  color: var(--sg-subtle);
+  font-family: "Roboto Mono", monospace;
+  text-transform: uppercase;
+}
+.motion-facts dd { margin: 0; color: #dedbe3; }
+
+/* 01 — active input breath */
+.motion-focus-demo { display: flex; align-items: center; gap: 10px; }
+.motion-slot {
+  width: 58px;
+  height: 66px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255, 255, 255, .09);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, .55);
+  color: rgba(255, 255, 255, .38);
+  font: 800 1.35rem "Roboto Mono", monospace;
+  box-shadow: inset 0 8px 18px rgba(0, 0, 0, .7);
+}
+.motion-slot.done { border-color: #9ad744; color: #9ad744; }
+.motion-slot.active {
+  border-color: #e48e35;
+  color: #e48e35;
+  background: rgba(228, 142, 53, .09);
+  animation: motionTargetBreath 1s infinite alternate ease-in-out;
+}
+@keyframes motionTargetBreath {
+  from { transform: scale(1); box-shadow: inset 0 8px 18px rgba(0,0,0,.7), 0 0 5px rgba(228,142,53,.25); }
+  to { transform: scale(1.045); box-shadow: inset 0 8px 18px rgba(0,0,0,.7), 0 0 22px rgba(228,142,53,.58); }
+}
+
+/* 02 — fingerprint sensor travel */
+.motion-fingerprint {
+  position: relative;
+  width: 160px;
+  height: 180px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 204, 0, .34);
+  border-radius: 16px;
+  background:
+    linear-gradient(rgba(255,204,0,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,204,0,.025) 1px, transparent 1px),
+    #08090a;
+  background-size: 8px 8px;
+  box-shadow: inset 0 14px 28px #000, 0 0 18px rgba(255, 204, 0, .08);
+}
+.motion-fingerprint svg { position: absolute; inset: 22px 28px; width: 104px; height: 134px; }
+.motion-fingerprint path {
+  fill: none;
+  stroke: #ffcc00;
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: .85;
+  filter: drop-shadow(0 0 5px rgba(255,204,0,.35));
+}
+.motion-scan-laser {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 3%;
+  height: 3px;
+  background: #ffcc00;
+  box-shadow: 0 0 6px #ffcc00, 0 0 18px 7px rgba(255,204,0,.42);
+  animation: motionFingerprintSweep 3s infinite ease-in-out;
+}
+.motion-scan-node {
+  position: absolute;
+  z-index: 4;
+  left: 53px;
+  top: 76px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffcc00;
+  border-radius: 50%;
+  background: #15130a;
+  color: #fff;
+  font: 700 .43rem "Roboto Mono", monospace;
+}
+.motion-scan-node::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 1px solid #ffcc00;
+  border-radius: 50%;
+  animation: motionNodePulse 1.4s infinite ease-out;
+}
+@keyframes motionFingerprintSweep { 0%, 100% { top: 3%; } 50% { top: 97%; } }
+@keyframes motionNodePulse { from { opacity: .85; transform: scale(.8); } to { opacity: 0; transform: scale(2.15); } }
+
+/* 03 — lock pin response */
+.motion-pin-rig {
+  position: relative;
+  width: 250px;
+  height: 176px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #0e1013, #07080a);
+  box-shadow: inset 0 0 18px #000;
+}
+.motion-shear-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 86px;
+  border-top: 1px dashed rgba(228,142,53,.65);
+}
+.motion-pin-chamber {
+  position: absolute;
+  left: 94px;
+  top: 15px;
+  width: 62px;
+  height: 146px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 7px;
+  background: rgba(255,255,255,.015);
+}
+.motion-driver-pin {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  width: 32px;
+  height: 61px;
+  border: 1px solid #6e737b;
+  background: repeating-linear-gradient(180deg, #7e858e 0 5px, #32373d 5px 10px);
+  transform-origin: 50% 100%;
+  animation: motionPinSet 4s infinite cubic-bezier(.2,.75,.25,1);
+}
+.motion-key-pin {
+  position: absolute;
+  left: 17px;
+  top: 75px;
+  width: 26px;
+  height: 54px;
+  border-radius: 3px 3px 5px 5px;
+  background: linear-gradient(180deg, #e48e35, #a95613);
+  color: #111;
+  display: grid;
+  place-items: center;
+  font: 700 .85rem "Roboto Mono", monospace;
+  animation: motionKeyPinSet 4s infinite cubic-bezier(.2,.75,.25,1);
+}
+.motion-pick-tool {
+  position: absolute;
+  left: 17px;
+  top: 120px;
+  width: 112px;
+  height: 8px;
+  border-radius: 8px 2px 2px 8px;
+  background: linear-gradient(180deg, #d7dbe0, #50555d 55%, #22252a);
+  box-shadow: 0 2px 4px #000;
+  animation: motionPickTool 4s infinite cubic-bezier(.2,.75,.25,1);
+}
+@keyframes motionPinSet {
+  0%, 18% { transform: translateY(18px) rotate(0); }
+  34% { transform: translateY(0) rotate(0); }
+  42%, 82% { transform: translate(-3px, 0) rotate(-4deg); }
+  100% { transform: translateY(18px) rotate(0); }
+}
+@keyframes motionKeyPinSet {
+  0%, 18% { transform: translateY(18px); }
+  34%, 82% { transform: translateY(0); }
+  100% { transform: translateY(18px); }
+}
+@keyframes motionPickTool {
+  0%, 14% { transform: translateX(-55px); }
+  28%, 82% { transform: translateX(62px); }
+  100% { transform: translateX(-55px); }
+}
+
+/* 04 — document target acquisition */
+.motion-document {
+  position: relative;
+  width: 310px;
+  height: 142px;
+  overflow: hidden;
+  border: 10px solid #dca75e;
+  border-radius: 7px;
+  background: #fdfbf4;
+  color: #191919;
+  font: 700 .65rem "Courier New", monospace;
+  box-shadow: 0 12px 24px rgba(0,0,0,.5);
+}
+.motion-doc-line { position: absolute; left: 18px; right: 18px; white-space: nowrap; }
+.motion-doc-line.one { top: 28px; }
+.motion-doc-line.two { top: 70px; }
+.motion-redaction-bar {
+  display: inline-block;
+  width: 72px;
+  height: 18px;
+  margin: 0 5px -5px;
+  border-radius: 2px;
+  background: #111;
+  animation: motionWordAcquire 3.4s infinite cubic-bezier(.25,1,.5,1);
+}
+.motion-reticle {
+  position: absolute;
+  left: 119px;
+  top: 52px;
+  width: 94px;
+  height: 52px;
+  border: 1.5px solid #9ad744;
+  border-radius: 5px;
+  box-shadow: 0 0 12px rgba(154,215,68,.35);
+  animation: motionReticleAcquire 3.4s infinite cubic-bezier(.25,1,.5,1);
+}
+.motion-reticle b {
+  position: absolute;
+  left: -1px;
+  top: -17px;
+  padding: 2px 5px;
+  border-radius: 2px;
+  background: #9ad744;
+  color: #071004;
+  font: 900 .43rem "Orbitron", sans-serif;
+}
+@keyframes motionWordAcquire {
+  0%, 18% { background: #111; box-shadow: none; }
+  24%, 74% { background: #e48e35; box-shadow: 0 0 13px rgba(228,142,53,.65); }
+  82%, 100% { background: #111; box-shadow: none; }
+}
+@keyframes motionReticleAcquire {
+  0%, 16% { opacity: 0; transform: scale(1.35); }
+  24%, 74% { opacity: 1; transform: scale(1); }
+  82%, 100% { opacity: 0; transform: scale(.96); }
+}
+
+/* 05 — routed packet and impact */
+.motion-route {
+  position: relative;
+  width: 330px;
+  height: 154px;
+}
+.motion-route svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.motion-route-base { fill: none; stroke: rgba(68,215,117,.12); stroke-width: 5; }
+.motion-route-live { fill: none; stroke: #74d8ff; stroke-width: 2; filter: drop-shadow(0 0 4px rgba(116,216,255,.35)); }
+.motion-virus {
+  position: absolute;
+  right: 19px;
+  top: 36px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed #e48e35;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(228,142,53,.16);
+  font: 900 .9rem "Roboto Mono", monospace;
+  animation: motionVirusRadar 1.5s infinite linear;
+}
+.motion-packet-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #9ad744;
+  border-radius: 50%;
+  background: #071107;
+  color: #fff;
+  font: 800 .48rem "Roboto Mono", monospace;
+  box-shadow: 0 0 11px rgba(154,215,68,.7);
+  offset-path: path("M 24 116 L 106 116 L 146 77 L 268 77");
+  animation: motionPacketRoute 1.65s infinite cubic-bezier(.2,.7,.2,1);
+}
+@keyframes motionPacketRoute {
+  0% { offset-distance: 0%; opacity: 0; transform: scale(.75); }
+  12% { opacity: 1; }
+  76% { offset-distance: 100%; opacity: 1; transform: scale(1); }
+  88% { offset-distance: 100%; opacity: 1; transform: scale(1.8); }
+  100% { offset-distance: 100%; opacity: 0; transform: scale(.5); }
+}
+@keyframes motionVirusRadar {
+  0%, 92%, 100% { filter: brightness(1); transform: rotate(0); }
+  94% { filter: brightness(1.8); transform: rotate(-3deg); }
+  97% { filter: brightness(.7); transform: rotate(3deg); }
+}
+
+/* 06 — local error and machine-level resolution */
+.motion-resolution { display: flex; align-items: center; gap: 28px; }
+.motion-error-object,
+.motion-complete-object {
+  position: relative;
+  width: 132px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #101116;
+  color: #c8c6ce;
+  font: 800 .58rem "Orbitron", sans-serif;
+  letter-spacing: .6px;
+}
+.motion-error-object { animation: motionLocalError 3.6s infinite; }
+.motion-complete-object { animation: motionMachineComplete 4.8s infinite; }
+.motion-complete-object .locked,
+.motion-complete-object .unlocked { position: absolute; }
+.motion-complete-object .unlocked { color: #9ad744; opacity: 0; }
+.motion-complete-object .locked { color: #ff3b30; }
+.motion-complete-object .locked { animation: motionLockedLabel 4.8s infinite; }
+.motion-complete-object .unlocked { animation: motionUnlockedLabel 4.8s infinite; }
+@keyframes motionLocalError {
+  0%, 16%, 34%, 100% { transform: translateX(0); border-color: #333; box-shadow: none; }
+  19%, 25% { transform: translateX(-4px); }
+  22%, 28% { transform: translateX(4px); }
+  18%, 31% { border-color: #ff3b30; box-shadow: 0 0 18px rgba(255,59,48,.48), inset 0 0 12px rgba(255,59,48,.12); }
+}
+@keyframes motionMachineComplete {
+  0%, 25%, 100% { border-color: #333; box-shadow: none; }
+  36%, 82% { border-color: #9ad744; box-shadow: 0 0 22px rgba(154,215,68,.5), inset 0 0 14px rgba(154,215,68,.1); }
+}
+@keyframes motionLockedLabel { 0%, 25%, 100% { opacity: 1; } 34%, 82% { opacity: 0; } }
+@keyframes motionUnlockedLabel { 0%, 25%, 100% { opacity: 0; } 36%, 82% { opacity: 1; } }
+
+@media (max-width: 860px) {
+  .motion-library { grid-template-columns: 1fr; }
+  .motion-principles { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .motion-stage { min-height: 205px; }
+  .motion-document { transform: scale(.82); }
+  .motion-route { transform: scale(.88); }
+  .motion-resolution { gap: 12px; transform: scale(.88); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-card * { animation-play-state: paused !important; }
 }
 
 /* Guide-only demo helpers */
@@ -4246,6 +4808,21 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 .sg-measure { padding: 6px 8px; border: 1px solid rgba(255,255,255,.08); border-radius: 6px; color: #aaa7ad; background: rgba(0,0,0,.18); font: .57rem "Roboto Mono", monospace; }
 .sg-measure b { color: #e9a964; font-weight: 500; }
 
+/* This chapter keeps only cross-game measurements; component geometry lives in its owning chapter. */
+#anatomy .sg-blueprint-card:nth-child(n+2):nth-child(-n+10) { display: none; }
+.sg-spacing-specimen { display: flex; align-items: flex-end; justify-content: center; gap: 18px; min-height: 150px; }
+.sg-spacing-step { display: grid; place-items: center; border: 1px solid rgba(228,142,53,.34); border-radius: 5px; color: #f0aa61; background: rgba(228,142,53,.07); font: 700 .55rem "Roboto Mono", monospace; }
+.sg-spacing-step.s1 { width: 20px; height: 20px; }
+.sg-spacing-step.s2 { width: 32px; height: 32px; }
+.sg-spacing-step.s3 { width: 48px; height: 48px; }
+.sg-spacing-step.s4 { width: 72px; height: 72px; }
+.sg-spacing-step.s5 { width: 104px; height: 104px; }
+.sg-object-index { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; margin: 22px 0 34px; }
+.sg-object-index a { min-width: 0; padding: 12px; border: 1px solid var(--sg-line); border-radius: 8px; color: #c8c5cb; background: rgba(255,255,255,.018); text-decoration: none; font: 650 .6rem/1.35 "Orbitron", sans-serif; }
+.sg-object-index a span { display: block; margin-top: 5px; color: #77757d; font: .52rem/1.4 "Roboto Mono", monospace; }
+.sg-object-index a:hover { border-color: rgba(228,142,53,.4); color: #f2b16b; background: rgba(228,142,53,.05); }
+.sg-object-index a:focus-visible { outline: 2px solid #e48e35; outline-offset: 3px; }
+
 .sg-spec-list { padding: 22px; border: 1px solid var(--sg-line); border-radius: 16px; background: var(--sg-panel); }
 .sg-spec-list h3 { margin: 0 0 16px; font-size: .9rem; }
 .sg-spec-row { padding: 12px 0; display: grid; grid-template-columns: 120px 1fr; gap: 14px; border-top: 1px solid rgba(255,255,255,.065); }
@@ -4293,6 +4870,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   .sg-color-card { min-height: 160px; display: grid; grid-template-columns: 42% 58%; }
   .sg-color-field { min-height: 158px; }
   .sg-blueprint-grid { grid-template-columns: 1fr; }
+  .sg-object-index { grid-template-columns: 1fr 1fr; }
   .sg-font-card.core, .sg-font-card.document { grid-column: span 6; }
   .sg-type-spec-grid { grid-template-columns: 1fr; }
   .sg-preview-meta { grid-template-columns: 1fr 1fr; }
@@ -4306,6 +4884,111 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+/* Source-rendered motion section: only sequences not already covered by object anatomy. */
+#feedback > .motion-principles,
+#feedback > .motion-library,
+#feedback > .sg-caption:not(.motion-source-caption) {
+  display: none;
+}
+.motion-source-list {
+  display: grid;
+  gap: 22px;
+  margin-top: 20px;
+}
+.motion-source-card {
+  overflow: hidden;
+  border: 1px solid var(--sg-line);
+  border-radius: 12px;
+  background: var(--sg-panel);
+}
+.motion-source-viewport {
+  border-bottom: 1px solid var(--sg-line);
+  background:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px),
+    #050609;
+  background-size: 28px 28px;
+}
+.motion-source-viewport.loose-motion-crop {
+  height: clamp(280px, 34vw, 380px);
+}
+.motion-source-viewport.results-motion-crop {
+  height: clamp(500px, 58vw, 680px);
+}
+.practice-source-frame.loose-motion-frame { width: 1000px; height: 360px; }
+.practice-source-frame.results-motion-frame { width: 1000px; height: 760px; }
+.motion-source-copy {
+  display: grid;
+  grid-template-columns: minmax(170px, .42fr) minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px 20px 20px;
+}
+.motion-source-heading h3 {
+  margin: 6px 0 0;
+  color: #fff;
+  font-size: .92rem;
+  line-height: 1.35;
+}
+.motion-source-body > p {
+  margin: 0;
+  color: #bbb8c2;
+  font-size: .76rem;
+  line-height: 1.62;
+}
+.motion-source-specs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.motion-source-spec {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 7px;
+  background: rgba(0,0,0,.19);
+}
+.motion-source-spec b {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--sg-accent-soft);
+  font: 700 .49rem "Roboto Mono", monospace;
+  letter-spacing: .75px;
+  text-transform: uppercase;
+}
+.motion-source-spec span {
+  color: #d0cdd5;
+  font-size: .64rem;
+  line-height: 1.45;
+}
+.motion-replay-btn {
+  margin-top: 14px;
+  padding: 8px 12px;
+  border: 1px solid rgba(228,142,53,.38);
+  border-radius: 7px;
+  background: rgba(228,142,53,.08);
+  color: var(--sg-accent-soft);
+  font: 700 .56rem "Orbitron", sans-serif;
+  letter-spacing: .35px;
+  cursor: pointer;
+}
+.motion-replay-btn:hover { background: rgba(228,142,53,.14); }
+.motion-coverage-note {
+  margin: 18px 0 0;
+  padding: 13px 15px;
+  border-left: 2px solid var(--sg-accent);
+  background: rgba(228,142,53,.045);
+  color: var(--sg-muted);
+  font-size: .72rem;
+  line-height: 1.55;
+}
+.motion-coverage-note b { color: var(--sg-text); }
+@media (max-width: 760px) {
+  .motion-source-copy { grid-template-columns: 1fr; gap: 11px; }
+  .motion-source-specs { grid-template-columns: 1fr; }
+  .motion-source-viewport.loose-motion-crop { height: 230px; }
+  .motion-source-viewport.results-motion-crop { height: 340px; }
 }
 </style>
 </head>
@@ -4329,30 +5012,36 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       <input class="sg-nav-search" type="search" placeholder="Find a section..." aria-label="Filter guide sections">
     </div>
     <div class="sg-nav-group">
-      <p class="sg-nav-group-title">Start here</p>
+      <p class="sg-nav-group-title">Explore</p>
       <a href="#top"><span>00</span>Welcome</a>
       <a href="#atlas"><span>01</span>Live game atlas</a>
-      <a href="#identity"><span>02</span>Identity &amp; rules</a>
     </div>
     <div class="sg-nav-group">
       <p class="sg-nav-group-title">Foundations</p>
+      <a href="#identity"><span>02</span>Identity &amp; rules</a>
       <a href="#colors"><span>03</span>Color system</a>
       <a href="#type"><span>04</span>Typography</a>
-      <a href="#anatomy"><span>05</span>Measured anatomy</a>
+      <a href="#anatomy"><span>05</span>Geometry &amp; depth</a>
+    </div>
+    <div class="sg-nav-group">
+      <p class="sg-nav-group-title">Structure</p>
       <a href="#frame"><span>06</span>Frame &amp; flow</a>
       <a href="#layers"><span>07</span>Layer stack</a>
     </div>
     <div class="sg-nav-group">
-      <p class="sg-nav-group-title">Game UI</p>
+      <p class="sg-nav-group-title">Shared UI</p>
       <a href="#components"><span>08</span>Core components</a>
       <a href="#inputs"><span>09</span>Input states</a>
       <a href="#results"><span>10</span>Result report</a>
+    </div>
+    <div class="sg-nav-group">
+      <p class="sg-nav-group-title">Game systems</p>
       <a href="#objects"><span>11</span>Object library</a>
       <a href="#feedback"><span>12</span>Feedback &amp; motion</a>
     </div>
     <div class="sg-nav-group">
       <p class="sg-nav-group-title">Reference</p>
-      <a href="#themes"><span>13</span>Theme variants</a>
+      <a href="#quality"><span>13</span>Responsive &amp; access</a>
       <a href="#css"><span>14</span>New game checklist</a>
     </div>
     <div class="sg-nav-footer">
@@ -4515,14 +5204,6 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       <span class="sg-color-info"><span class="sg-color-role">Text white</span><span class="sg-color-value">#ffffff</span><span class="sg-color-use">Primary content; soften with opacity for secondary text.</span></span>
     </button>
   </div>
-  <table class="sg-table">
-    <tr><th></th><th>Role</th><th>Value</th><th>Used for</th></tr>
-    <tr><td><span class="sg-swatch" style="background:#e48e35"></span></td><td>Action orange</td><td><code>#e48e35</code></td><td>Active target: the letter/slot/word the player must type now. Also stat values, briefing eyebrows, screen labels.</td></tr>
-    <tr><td><span class="sg-swatch" style="background:#f5b05f"></span></td><td>Soft orange</td><td><code>#f5b05f</code></td><td>Hover states of orange, gradient tops of picked pins.</td></tr>
-    <tr><td><span class="sg-swatch" style="background:#9ad744"></span></td><td>Success green</td><td><code>#9ad744</code></td><td>Correct input, unlocked state, system-OK labels, briefing dots. Supercomputer uses <code>#44d775</code>.</td></tr>
-    <tr><td><span class="sg-swatch" style="background:#ff3b30"></span></td><td>Alarm red</td><td><code>#ff3b30</code></td><td>Mistakes, alarms, viruses, failed missions.</td></tr>
-    <tr><td><span class="sg-swatch" style="background:#ffffff"></span></td><td>Text white</td><td><code>#ffffff</code></td><td>Primary text.</td></tr>
-  </table>
   <p class="sg-note">Glows are always the accent color itself at roughly 30–50% opacity — green glow, red glow and orange glow are just softened versions of the accents above, never a different hue.</p>
 
   <h3>Per-game theme values</h3>
@@ -4856,11 +5537,11 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </details>
 </section>
 
-<!-- ═══════════════ 04 FRAME & FLOW ═══════════════ -->
+<!-- ═══════════════ 05 GEOMETRY & DEPTH ═══════════════ -->
 <section class="sg-section" id="anatomy">
-  <p class="sg-kicker">05 / Measured from the projects</p>
-  <h2>Measured anatomy</h2>
-  <p class="sg-lead">Use these as implementation recipes, not visual guesses. Values are taken from the current project CSS; when games intentionally differ, the source game is named instead of pretending the component is universal.</p>
+  <p class="sg-kicker">05 / Cross-game measurements</p>
+  <h2>Geometry &amp; depth</h2>
+  <p class="sg-lead">Only the measurements that truly repeat across the collection live here: canvas ratio, depth, radius and spacing. Header, briefing, input and game-object dimensions stay in their owning chapters, so the guide does not teach the same component twice.</p>
   <div class="sg-blueprint-grid">
     <article class="sg-blueprint-card">
       <span class="sg-blueprint-number">01 / MISSION CANVAS</span>
@@ -4898,7 +5579,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">shadow <b>0 20px 60px rgba(0,0,0,.8)</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">02 / MISSION HEADER</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-header theme t-keypad" aria-hidden="true">
         <header class="game-header">
@@ -4919,7 +5600,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">title <b>#fff &rarr; #e48e35</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">03 / BRIEFING PANEL</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-briefing theme t-keypad" aria-hidden="true">
         <div class="briefing-panel">
@@ -4952,7 +5633,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">blur <b>12px</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">04 / KEYPAD HARDWARE</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-device theme t-keypad" aria-hidden="true">
         <div class="device-panel">
@@ -4987,7 +5668,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">grid max <b>min(270px, 32vh)</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">05 / INPUT STATES</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-state-row theme t-keypad" aria-hidden="true">
         <div class="sg-a-state"><span class="char-box">A</span><span>idle</span></div>
@@ -5007,7 +5688,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">wrong <b>#ff3b30</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">06 / TERMINAL PANEL</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-terminal theme t-keypad" aria-hidden="true">
         <div class="terminal-panel">
@@ -5034,7 +5715,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">body inset <b>0 2px 10px rgba(0,0,0,.95)</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">07 / MISSION OBJECTS</span>
       <div class="sg-anatomy-visual sg-a-exact" aria-hidden="true">
         <div class="sg-a-hardware-row">
@@ -5078,7 +5759,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">scanner accent <b>#ffcc00</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">08 / DOCUMENT MATERIAL</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-document theme t-redact" aria-hidden="true">
         <div class="manila-folder">
@@ -5102,7 +5783,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">body <b>Courier New 700</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">09 / TYPE TRAINING</span>
       <div class="sg-anatomy-visual sg-a-exact sg-training-live theme t-practice" aria-hidden="true">
         <iframe class="sg-training-live-frame" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=console" title="Live Type Training console and keyboard specimen" width="1000" height="620" loading="lazy"></iframe>
@@ -5131,7 +5812,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">key radius <b>6px</b></span>
       </div>
     </article>
-    <article class="sg-blueprint-card">
+    <article class="sg-blueprint-card" hidden aria-hidden="true">
       <span class="sg-blueprint-number">10 / DEFENSE HARDWARE</span>
       <div class="sg-anatomy-visual sg-a-exact sg-a-defense theme t-super" aria-hidden="true">
         <div class="sg-a-defense-layout">
@@ -5160,7 +5841,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       </div>
     </article>
     <article class="sg-blueprint-card">
-      <span class="sg-blueprint-number">11 / DEPTH RECIPE</span>
+      <span class="sg-blueprint-number">02 / DEPTH RECIPE</span>
       <div class="sg-anatomy-visual sg-a-exact theme t-keypad" aria-hidden="true">
         <div class="sg-a-material-row">
           <div class="sg-a-material"><span class="sg-a-material-swatch shell">SHELL</span><span>frame depth</span></div>
@@ -5179,7 +5860,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       </div>
     </article>
     <article class="sg-blueprint-card">
-      <span class="sg-blueprint-number">12 / RADIUS SCALE</span>
+      <span class="sg-blueprint-number">03 / RADIUS SCALE</span>
       <div class="sg-anatomy-visual sg-a-exact sg-radius-specimen" aria-hidden="true">
         <div class="sg-radius-item"><span class="sg-radius-shape tag">TAG</span><span>3px</span></div>
         <div class="sg-radius-item"><span class="sg-radius-shape field">STAT</span><span>6px</span></div>
@@ -5198,8 +5879,30 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         <span class="sg-measure">game canvas <b>12px</b></span>
       </div>
     </article>
+    <article class="sg-blueprint-card">
+      <span class="sg-blueprint-number">04 / SPACING SCALE</span>
+      <div class="sg-anatomy-visual sg-a-exact" aria-hidden="true">
+        <div class="sg-spacing-specimen">
+          <span class="sg-spacing-step s1">4</span>
+          <span class="sg-spacing-step s2">8</span>
+          <span class="sg-spacing-step s3">12</span>
+          <span class="sg-spacing-step s4">16</span>
+          <span class="sg-spacing-step s5">24</span>
+        </div>
+      </div>
+      <div class="sg-anatomy-source"><code>shared gaps and panel insets across the project CSS</code></div>
+      <h3>Spacing follows a small repeatable scale</h3>
+      <p>Use tight values inside controls and larger values between functional groups. Responsive layouts may interpolate between these stops, but should not invent unrelated gaps for every component.</p>
+      <div class="sg-measures">
+        <span class="sg-measure">micro gap <b>4px</b></span>
+        <span class="sg-measure">control gap <b>8px</b></span>
+        <span class="sg-measure">component gap <b>12px</b></span>
+        <span class="sg-measure">panel inset <b>16px</b></span>
+        <span class="sg-measure">section inset <b>24px</b></span>
+      </div>
+    </article>
   </div>
-  <p class="sg-source-note"><strong>LIVE SOURCE CHECK:</strong> Shared shell measurements come from <code>typegame-door-keypad/styles.css</code>; every game-specific specimen names its own source and selector directly beneath the preview. The examples reuse the extracted component classes wherever the games share them.</p>
+  <p class="sg-source-note"><strong>OWNERSHIP:</strong> Continue to Frame &amp; flow for shell behavior, Layer stack for physical construction, Shared UI for reusable interface pieces and Object library for game-specific geometry.</p>
 </section>
 
 <section class="sg-section" id="frame">
@@ -5801,6 +6504,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </div>
   <p class="sg-caption">Floating above the machine in a row (gap 20px). Panel = theme hue at 60% + <b>1px hairline border</b>, radius 6. Value Orbitron 700 in orange; red for mistakes, green for good accuracy. Label muted uppercase 600.</p>
 
+  <div hidden aria-hidden="true">
   <h3>Briefing card</h3>
   <div class="theme t-lockpick">
     <div class="sg-stage" style="background:radial-gradient(circle at center, rgba(18,5,5,0.95) 0%, rgba(4,4,11,0.98) 100%); ">
@@ -5828,6 +6532,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     </div>
   </div>
   <p class="sg-caption">Max-width 580px, theme hue at 40% + <b>blur(12px)</b>, a 1.5px border in the theme border color. Header row: orange eyebrow + green pagination dots (active = filled + glow). Body: Orbitron instruction + <b>a miniature version of the machine</b>. Footer above a hairline divider: pulsing instruction + spacebar visual (presses down 2.5px while held).</p>
+  </div>
 
   <h3>Buttons &amp; prompts</h3>
   <div class="theme t-keypad">
@@ -5874,6 +6579,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   </div>
   <p class="sg-caption">Square keys: <b>rgba(255,255,255,0.04) bg + 1.5px rgba(255,255,255,0.08) border</b>, radius 8. Small corner digit = Roboto Mono at 35% white; big central letter = Orbitron 700 at 90% white with emboss shadow. The active key letter scales 1→1.08 in a slow pulse.</p>
 
+  <div hidden aria-hidden="true">
   <h3>Terminal console</h3>
   <div class="theme t-practice">
     <div class="sg-stage">
@@ -5884,6 +6590,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     </div>
   </div>
   <p class="sg-caption">Source: <b>typegame-typeoefening-losse-letters</b> · the real <code>.exercise-panel.terminal-panel</code>. It keeps the actual 36px black header, <code>TYPE CONSOLE</code> label, green connection pill, three functional window icons, line indicator, multi-line typing text, active cursor, scrollbar, scanlines and vignette. The previous keypad slots and invented log feed were not part of this game and have been removed.</p>
+  </div>
 </section>
 
 <!-- ═══════════════ 08 RESULT SCREEN ═══════════════ -->
@@ -5951,18 +6658,27 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
 <!-- ═══════════════ 09 GAME OBJECT LIBRARY ═══════════════ -->
 <section class="sg-section" id="objects">
-  <p class="sg-kicker">11 / One machine per game</p>
+  <p class="sg-kicker">11 / Object construction library</p>
   <h2>Game object library</h2>
   <p class="sg-lead">
-    Each game swaps its own input object into layer L4 of the stack. These are the exact looks, each shown in its
-    own game theme.
+    The live atlas already shows complete game screens. This library isolates the objects that build those screens,
+    so their layers, states, measurements and motion rules can be inspected without recreating the full arena.
   </p>
 
-  <h3>Lockpicking — randomized pin chambers</h3>
-  <p class="sg-note">This specimen uses the same six-slot construction, security-pin classes, height ranges, progress states and complete pick SVG as the lockpicking game. The arrangement below is <strong>one valid roll</strong>, not a fixed recipe: every reset assigns each chamber a new type and key-pin height.</p>
+  <nav class="sg-object-index" aria-label="Game object chapters">
+    <a href="#object-lockpicking">Lockpicking<span>pins, pick, binding</span></a>
+    <a href="#object-fingerprint">Fingerprint<span>screen, scanner, nodes</span></a>
+    <a href="#object-redacting">File redacting<span>console, paper, camera</span></a>
+    <a href="#supercomputer-defense">Supercomputer<span>CPU, sectors, threats</span></a>
+    <a href="#type-training-practice">Type training<span>console, keys, practice tools</span></a>
+  </nav>
+
+  <h3 id="object-lockpicking">Lockpicking — pins, pick and binding mechanics</h3>
+  <p class="sg-note">The workbench itself belongs in the live atlas. Here the three security-pin profiles, picked-state lean, shear-line relationship and the physical pick are separated so each object can be implemented without copying an entire gameplay screen.</p>
 
   <div class="theme t-lockpick">
     <div class="lockpick-specimen">
+      <div hidden aria-hidden="true">
       <div class="lp-rig-header">
         <span>MANUAL PICK RIG v2.10</span>
         <span class="lp-leds" aria-label="Datalink and signal active"><i></i><i></i></span>
@@ -5999,6 +6715,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         </div>
       </div>
       <p class="sg-caption" style="margin:0;">Live state recipe: pins <b>01–03</b> are set and lean left or right, <b>04</b> is active, and the pick tip sits below that active chamber. The type order shown here can change completely on the next reset.</p>
+      </div>
 
       <div class="lp-variant-grid" aria-label="All three driver-pin variants in their picked state">
         <article class="lp-variant-card">
@@ -6093,12 +6810,12 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
   </div>
 
-  <h3>Fingerprint — biometric scan pipeline</h3>
-  <p class="sg-note">The visible game component is a complete <strong>SCAN INTEGRATION v2.00</strong> panel: six character slots above a tall scan bed, a three-group fingerprint below, and the hardware footer at the bottom. Yellow records input progress in pairs of letters; green appears only during the final verification sweep.</p>
+  <h3 id="object-fingerprint">Fingerprint — screen, scan bed and verification states</h3>
+  <p class="sg-note">The complete scanner cabinet stays in the live atlas. This section separates its input display, hardware signals, ridge groups, laser field and one-shot verification wipe. Yellow records input progress in pairs of letters; green is reserved for final verification.</p>
 
   <div class="theme t-fingerprint">
     <div class="fingerprint-specimen">
-      <div class="fp-game-panel">
+      <div class="fp-game-panel" hidden aria-hidden="true">
         <div class="fp-panel-header">
           <span>SCAN INTEGRATION v2.00</span>
           <span class="fp-leds" aria-label="Datalink and signal active"><i></i><i></i></span>
@@ -6132,7 +6849,29 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         </div>
       </div>
 
-      <p class="sg-caption" style="margin:12px 0 0;">Assembled state at <b>4/6 correct</b>: four yellow screen slots, the next slot outlined in yellow, the outer and middle ridge groups lit, the inner group still grey, and the normal yellow laser continuing its three-second loop.</p>
+      <p class="sg-caption" style="display:none" aria-hidden="true">Assembled state at <b>4/6 correct</b>: four yellow screen slots, the next slot outlined in yellow, the outer and middle ridge groups lit, the inner group still grey, and the normal yellow laser continuing its three-second loop.</p>
+
+      <div class="sg-object-parts">
+        <article class="sg-object-part">
+          <div class="sg-object-part-preview">
+            <div class="fp-door-screen" style="width:min(100%,460px)">
+              <span class="fp-screen-tags"><span>SYS_RECOVERY</span><span>PORT_02</span></span>
+              <span class="fp-screen-label">BIOMETRIC SEQUENCE:</span>
+              <div class="fp-code-row"><span class="char-box correct">A</span><span class="char-box correct">S</span><span class="char-box correct">D</span><span class="char-box correct">F</span><span class="char-box current">J</span><span class="char-box faded">K</span></div>
+            </div>
+          </div>
+          <div class="sg-object-part-copy"><small>01 / INPUT DISPLAY</small><h4>Six character slots on a recessed CRT field</h4><p>The corner tags sit 4px from the top. Correct slots use biometric yellow, the current slot keeps a yellow outline and waiting slots fall to 20% opacity. A 3px scanline overlay flickers at 150ms.</p><div class="sd-token-row"><code>border 1.8px</code><code>radius 8px</code><code>slot 42×46px</code><code>gap 8px</code></div></div>
+        </article>
+        <article class="sg-object-part">
+          <div class="sg-object-part-preview">
+            <div style="width:min(100%,430px);display:grid;gap:28px">
+              <div class="fp-panel-header"><span>SCAN INTEGRATION v2.00</span><span class="fp-leds"><i></i><i></i></span></div>
+              <div class="fp-panel-footer"><span class="fp-signal-bars"><i></i><i></i><i></i><i></i><i></i></span><span class="fp-ports"><i></i><i></i></span></div>
+            </div>
+          </div>
+          <div class="sg-object-part-copy"><small>02 / HARDWARE CHROME</small><h4>Header LEDs and the separate I/O rail</h4><p>The green datalink LED blinks at 300ms; the orange signal LED pulses over 1.2s. Five unequal bars animate in the footer while the two recessed ports remain static and nearly black.</p><div class="sd-token-row"><code>rule 1.5px</code><code>LED 6px</code><code>bars 3px</code><code>ports 8px</code></div></div>
+        </article>
+      </div>
 
       <div class="fp-state-grid" aria-label="Fingerprint progress after every two correct letters">
         <article class="fp-state-card">
@@ -6237,12 +6976,12 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
   </div>
 
-  <h3>File redacting — complete split arena</h3>
-  <p class="sg-note">This game is not a folder next to a terminal. Its identity comes from the complete <strong>1.12fr / 0.88fr split arena</strong>: live statistics and an inline decryption console on the left; a camera-controlled document viewport with rulers, tracking HUD, moving reticle and the five-target dossier on the right.</p>
+  <h3 id="object-redacting">File redacting — console, document and camera parts</h3>
+  <p class="sg-note">The split arena is already available in the live atlas. Here its objects are isolated: the inline decryption console, four word states, camera tracking layer, paper-and-folder construction and completed dossier state.</p>
 
   <div class="theme t-redact">
     <div class="redact-specimen">
-      <div class="rs-arena">
+      <div class="rs-arena" hidden aria-hidden="true">
         <section class="rs-console" aria-label="Decryption console at target two">
           <div class="rs-stats">
             <div class="rs-stat"><strong>12.4</strong><span>tijd (s)</span></div>
@@ -6290,7 +7029,22 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
           <div class="rs-ruler-h"></div><div class="rs-ruler-v"></div><div class="rs-ruler-corner"></div>
         </div>
       </div>
-      <p class="sg-caption" style="margin:0;">Assembled gameplay state: target one is already plain text, target two is orange and camera-centered, targets three through five remain black. The reticle stays centered while the document itself pans and scales beneath it; the terminal simultaneously asks for the four-character key for <b>DOELWIT #2</b>.</p>
+      <p class="sg-caption" style="display:none" aria-hidden="true">Assembled gameplay state: target one is already plain text, target two is orange and camera-centered, targets three through five remain black. The reticle stays centered while the document itself pans and scales beneath it; the terminal simultaneously asks for the four-character key for <b>DOELWIT #2</b>.</p>
+
+      <div class="sg-object-parts" style="grid-template-columns:1fr">
+        <article class="sg-object-part">
+          <div class="sg-object-part-preview">
+            <div class="rs-terminal" style="width:min(100%,680px);height:220px">
+              <div class="rs-terminal-header">
+                <div class="rs-terminal-info"><span class="rs-terminal-title">DECRYPTION CONSOLE</span><span class="rs-terminal-ping">SECURE LINK // 42ms</span></div>
+                <span class="rs-window-controls"><i>—</i><i>□</i><i>×</i></span>
+              </div>
+              <div class="rs-terminal-body"><div class="rs-code-box"><div class="rs-code-label">DOELWIT #2 CODESLEUTEL:</div><div class="rs-code-text"><span class="correct">a</span><span class="correct">s</span><span class="current">d</span><span>f</span></div></div></div>
+            </div>
+          </div>
+          <div class="sg-object-part-copy"><small>01 / DECRYPTION CONSOLE</small><h4>Window chrome and inline character feedback</h4><p>The header is 38px tall with a 2px purple edge, title and secure-link ping on the left and three 38px controls on the right. The body is a recessed CRT field: Roboto Mono characters stay inline rather than becoming separate key boxes.</p><div class="sd-token-row"><code>header 38px</code><code>radius 8px</code><code>border 2px</code><code>body inset 20px</code><code>cursor .8s</code></div></div>
+        </article>
+      </div>
 
       <div class="rs-life-grid" aria-label="The four redaction word states">
         <article class="rs-life-card"><div class="rs-life-preview"><span class="rs-life-word">NIGHTHAWK</span></div><div class="rs-life-copy"><strong>01 · Redacted</strong><span>#111 bar · source word remains width-correct but invisible</span></div></article>
@@ -6409,10 +7163,10 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
   </div>
 
-  <h3>Supercomputer defense — complete motherboard system</h3>
-  <p class="sg-note">The defense game is one connected system, not a CPU icon beside a few unrelated cells. The specimen below reconstructs the real hierarchy: four glass telemetry tiles, the compromise meter, a routed PCB arena, five firewall shields, the layered CPU socket, moving threats and packets, and the six-column sector tray. The examples underneath separate those same parts without changing their game proportions or states.</p>
+  <h3 id="supercomputer-defense" style="scroll-margin-top:24px">Supercomputer defense — motherboard component anatomy</h3>
+  <p class="sg-note">The full defense board stays in the live atlas. This library starts directly with its construction parts: the four-layer CPU, sector lifecycle, virus geometry, routed traces and packets, telemetry, firewall shields and motion contract.</p>
   <div class="defense-specimen">
-    <div class="sd-arena">
+    <div class="sd-arena" hidden aria-hidden="true">
       <div class="sd-telemetry">
         <div class="sd-telemetry-card"><strong style="color:var(--sd-cyan)">24.8</strong><span>TIJD</span></div>
         <div class="sd-telemetry-card"><strong>126</strong><span>REPAIRS (CPM)</span></div>
@@ -6477,31 +7231,48 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
         </div>
       </div>
     </div>
-    <p class="sg-caption">Assembled gameplay state: a red virus moves inward on its compromised red trace; typing the matching letter recolors the closest matching threat orange and launches a green, lettered packet from its sector. The CPU, shields and sector tray stay spatially fixed. The board scanlines, threat radar, virus glitch, fuse countdown and CPU status LED remain live here.</p>
+    <p class="sg-caption" style="display:none" aria-hidden="true">Assembled gameplay state: a red virus moves inward on its compromised red trace; typing the matching letter recolors the closest matching threat orange and launches a green, lettered packet from its sector. The CPU, shields and sector tray stay spatially fixed. The board scanlines, threat radar, virus glitch, fuse countdown and CPU status LED remain live here.</p>
 
     <div class="sd-anatomy-grid">
-      <article class="sd-anatomy-card">
+      <article class="sd-anatomy-card sd-cpu-card">
         <div class="sd-anatomy-preview">
-          <div class="sd-cpu-explode">
-            <div class="sd-layer"><div class="sd-layer-visual"><i class="clamp"></i></div><b>Retention clamp</b><span>steel frame<br>inset −14px</span></div>
-            <div class="sd-layer"><div class="sd-layer-visual"><i class="substrate"></i></div><b>Substrate</b><span>green-black PCB<br>gold contacts</span></div>
-            <div class="sd-layer"><div class="sd-layer-visual"><i class="ihs"></i></div><b>Heat spreader</b><span>brushed metal<br>etched serial</span></div>
-            <div class="sd-layer"><div class="sd-layer-visual"><i class="die">CPU</i></div><b>Silicon die</b><span>blue-black well<br>cyan glow</span></div>
+          <div class="sd-cpu-build">
+            <div class="sd-cpu-parts">
+              <div class="sd-layer"><div class="sd-layer-visual"><i class="clamp"></i></div><b>Retention clamp</b><span>135° steel backplate<br>3.5px #52525b edge</span></div>
+              <div class="sd-layer"><div class="sd-layer-visual"><div class="sd-part-substrate"><i class="sd-notch tl"></i><i class="sd-notch tr"></i><i class="sd-notch bl"></i><i class="sd-notch br"></i><i class="sd-gold left"></i><i class="sd-gold right"></i><i class="sd-cap c1"></i><i class="sd-cap c2"></i><i class="sd-cap c3"></i><i class="sd-cap c4"></i></div></div><b>Substrate</b><span>4 notches + 2 contact strips<br>4 silver-capped SMDs</span></div>
+              <div class="sd-layer"><div class="sd-layer-visual"><div class="sd-part-ihs"><span class="sd-serial">TM-QUANTUM X9-9000</span><i class="sd-led"></i></div></div><b>Heat spreader</b><span>brushed 135° metal<br>serial + green LED</span></div>
+              <div class="sd-layer"><div class="sd-layer-visual"><i class="sd-part-die">CPU</i></div><b>Silicon die</b><span>58px blue-black well<br>2px #233545 edge</span></div>
+            </div>
+            <div class="sd-stack-panel">
+              <span class="sd-stack-label">FULL STACK / ACTUAL NESTING</span>
+              <div class="sd-stack-stage">
+                <i class="sd-core-ring one"></i><i class="sd-core-ring two"></i><i class="sd-core-ring three"></i>
+                <div class="sd-cpu">
+                  <i class="sd-notch tl"></i><i class="sd-notch tr"></i><i class="sd-notch bl"></i><i class="sd-notch br"></i><i class="sd-gold left"></i><i class="sd-gold right"></i><i class="sd-cap c1"></i><i class="sd-cap c2"></i><i class="sd-cap c3"></i><i class="sd-cap c4"></i>
+                  <div class="sd-ihs"><span class="sd-serial">TM-QUANTUM X9-9000</span><div class="sd-die">CPU</div><i class="sd-led"></i></div>
+                </div>
+              </div>
+              <p class="sd-stack-note">The square rings are motherboard traces behind the socket, not a fifth CPU layer.</p>
+            </div>
           </div>
         </div>
-        <div class="sd-anatomy-copy"><small>01 / CPU STACK</small><h4>Four physical layers, kept in order</h4><p>The clamp is larger than the substrate; the IHS sits inside it; the die is the only luminous center. Corner notches, gold edge contacts, four SMD capacitors and the green status LED belong to the substrate assembly.</p><div class="sd-token-row"><code>CPU 140–160px</code><code>clamp inset −14px</code><code>IHS inset 16px</code><code>die 52–62px</code></div></div>
+        <div class="sd-anatomy-copy"><small>01 / CPU STACK</small><h4>Four construction layers, then the exact assembled socket</h4><p>The full example uses the same nesting as <code>.supercomputer-core</code>: the steel clamp extends 14px beyond the 140–160px substrate, the heat spreader is inset 16px on every side, and the 52–62px die is centered inside it. Notches, gold contacts and SMDs belong to the substrate; the etched serial and status LED belong to the heat spreader. During an attack only the assembled state changes to red and the die reads ERR.</p><div class="sd-token-row"><code>substrate 140–160px</code><code>clamp inset −14px</code><code>IHS inset 16px</code><code>die 52–62px</code><code>rings 155–265px</code></div></div>
       </article>
 
-      <article class="sd-anatomy-card">
+      <article class="sd-anatomy-card sd-sector-card">
         <div class="sd-anatomy-preview">
-          <div class="sd-state-row">
-            <div class="sd-state"><div class="sd-cell"><i></i>A</div><small>healthy</small></div>
-            <div class="sd-state"><div class="sd-cell hacked"><i></i>S</div><small>hacked + fuse</small></div>
-            <div class="sd-state"><div class="sd-cell repaired"><i></i>D</div><small>repaired</small></div>
-            <div class="sd-state"><div class="sd-cell crashed"><i></i>F</div><small>crashed</small></div>
+          <div class="sd-state-flow">
+            <div class="sd-state"><div class="sd-cell"><i></i>A</div><small>healthy / random pool</small></div>
+            <span class="sd-flow-arrow">→</span>
+            <div class="sd-state"><div class="sd-cell hacked"><i></i>S</div><small>virus assigned / route red</small></div>
+            <span class="sd-flow-arrow">→</span>
+            <div class="sd-state-branch">
+              <div class="sd-state-result good"><div class="sd-cell repaired"><i></i>D</div><p><b>MATCH TYPED</b>new letter immediately; green repair flash for 200ms</p></div>
+              <div class="sd-state-result bad"><div class="sd-cell crashed"><i></i>F</div><p><b>VIRUS REACHES CPU</b>new letter immediately; red crash flash for 200ms + strike</p></div>
+            </div>
           </div>
         </div>
-        <div class="sd-anatomy-copy"><small>02 / SECTOR LIFECYCLE</small><h4>The letter cell is state, launcher and timer</h4><p>A healthy cell has a green LED. A threat hacks it red and starts the 3px fuse shrinking along the bottom. Correct input briefly repairs it green, launches a packet and morphs the cell to a new letter; an expired fuse crashes it and costs one firewall shield.</p><div class="sd-token-row"><code>radius 4px</code><code>cell 42–52px</code><code>fuse 3px</code><code>6 columns</code></div></div>
+        <div class="sd-anatomy-copy"><small>02 / SECTOR LIFECYCLE</small><h4>The cell is the virus source and packet launcher</h4><p>A spawned threat assigns itself to one healthy cell: the cell, its LED and its route turn red. Typing the matching letter targets the nearest matching virus, launches a packet from that cell, swaps in a fresh random character and shows repaired green for 200ms. If the virus reaches the CPU, the same instant swap uses the 200ms crashed state and removes a shield. The 3px red bar is currently a full hacked-state marker in the shipped grid game; virus travel—not a shrinking CSS timer—is the real deadline.</p><div class="sd-token-row"><code>24 cells / 6 × 4</code><code>cell 42–52px</code><code>state flash 200ms</code><code>wrong key = strike</code></div></div>
       </article>
 
       <article class="sd-anatomy-card">
@@ -6516,40 +7287,54 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
       <article class="sd-anatomy-card">
         <div class="sd-anatomy-preview">
-          <div class="sd-trace-lab"><svg viewBox="0 0 440 180">
-            <path class="sd-pcb-base" d="M18 48H120L172 96H310L350 62H422"/><path class="sd-pcb-data compromised" d="M18 48H120L172 96H310L350 62H422"/>
-            <path class="sd-pcb-base" d="M18 132H132L170 112H422"/><path class="sd-pcb-data" d="M18 132H132L170 112H422"/>
-            <circle class="sd-pcb-pad" cx="18" cy="48" r="4"/><circle class="sd-pcb-pad" cx="18" cy="132" r="4"/>
-            <g class="sd-packet"><circle r="7"/><text y="2.5">S</text><animateMotion dur="1.4s" repeatCount="indefinite" path="M18 48H120L172 96H310L350 62H422"/></g>
-          </svg></div>
+          <div class="sd-route-demo">
+            <svg viewBox="0 0 480 290" aria-label="A virus moves from the board edge to the CPU while a separate packet launches upward from the sector panel">
+              <path class="sd-pcb-base" d="M18 72H126L184 112H336"/><path class="sd-pcb-data compromised" d="M18 72H126L184 112H336"/>
+              <path class="sd-pcb-base" d="M18 118H138L178 138H336"/><path class="sd-pcb-data" d="M18 118H138L178 138H336"/>
+              <circle class="sd-pcb-pad" cx="18" cy="72" r="4"/><circle class="sd-pcb-pad" cx="18" cy="118" r="4"/>
+              <path d="M240 238L240 184L252 112" fill="none" stroke="rgba(68,215,117,.24)" stroke-width="1.2" stroke-dasharray="3 4"/>
+              <g class="sd-virus targeted" transform="translate(252 112)">
+                <circle class="ring" r="19"/><g class="graphic"><path class="spike" d="M0 0H12M0 0L8.5 8.5M0 0V12M0 0L-8.5 8.5M0 0H-12M0 0L-8.5-8.5M0 0V-12M0 0L8.5-8.5"/><g class="head"><circle cx="14.5" r="2"/><circle cx="10.25" cy="10.25" r="2"/><circle cy="14.5" r="2"/><circle cx="-10.25" cy="10.25" r="2"/><circle cx="-14.5" r="2"/><circle cx="-10.25" cy="-10.25" r="2"/><circle cy="-14.5" r="2"/><circle cx="10.25" cy="-10.25" r="2"/></g><circle class="core" r="8"/><circle cx="-3" cy="-2" r="1" fill="#fff"/><circle cx="3" cy="-2" r="1" fill="#fff"/><path d="M-4 3Q0 6 4 3" fill="none" stroke="#fff"/></g><text class="letter" y="-25">S</text>
+              </g>
+              <g class="sd-packet"><circle r="7"/><text y="2.5">S</text><animateMotion dur="1.25s" repeatCount="indefinite" path="M240 238L240 184L252 112"/></g>
+            </svg>
+            <div class="sd-route-cpu">CPU</div>
+            <span class="sd-route-note start">VIRUS START / BOARD EDGE</span><span class="sd-route-note end">CPU PIN / ROUTE END</span><span class="sd-route-note launch">PACKET LAUNCHES FROM LINKED CELL</span>
+            <div class="sd-route-sector-panel"><div class="sd-route-sector-head"><span>FIREWALL SECTORS</span><b>WAVE 03</b></div><div class="sd-route-sector-grid"><div class="sd-cell"><i></i>A</div><div class="sd-cell hacked"><i></i>S</div><div class="sd-cell"><i></i>D</div></div></div>
+          </div>
         </div>
-        <div class="sd-anatomy-copy"><small>04 / ROUTING &amp; INTERCEPT</small><h4>Two strokes describe every circuit route</h4><p>A 4px, barely visible green copper base sits under a 1.5px cyan data line. A route turns red while its sector is hacked. Correct input spawns a green r7 packet carrying the typed character; script movement steers it toward the closest matching virus and resolves with a 300ms green ring.</p><div class="sd-token-row"><code>base 4px / 3.5%</code><code>data 1.5px</code><code>packet r7</code><code>speed 16/frame</code><code>impact 300ms</code></div></div>
+        <div class="sd-anatomy-copy"><small>04 / ROUTING &amp; INTERCEPT</small><h4>Virus and packet follow two different paths</h4><p>The virus starts at a board edge and follows its assigned PCB route toward a CPU pin; that route changes from cyan to red while compromised. A correct key marks the closest matching virus orange, then launches a green r7 packet from the linked sector cell. The packet does not follow the PCB route: every frame it steers directly toward the moving target at 16 SVG units, then produces the 300ms green impact ring.</p><div class="sd-token-row"><code>route base 4px / 3.5%</code><code>data 1.5px</code><code>packet r7</code><code>speed 16/frame</code><code>impact 300ms</code></div></div>
       </article>
 
       <article class="sd-anatomy-card">
         <div class="sd-anatomy-preview">
           <div class="sd-hud-lab">
-            <div class="sd-telemetry"><div class="sd-telemetry-card"><strong style="color:var(--sd-cyan)">42.3</strong><span>TIJD</span></div><div class="sd-telemetry-card"><strong class="red">2/5</strong><span>FOUTEN</span></div></div>
-            <div class="sd-shields" style="position:static;transform:none;justify-self:center"><span class="sd-shield lost"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></span></div>
-            <div class="sd-pressure"><span class="sd-pressure-label">SYSTEM COMPROMISE STATUS</span><span class="sd-pressure-value">57%</span><div class="sd-pressure-track"><i class="sd-pressure-fill"></i></div></div>
+            <div class="sd-hud-object"><span class="sd-object-label">ARENA TOP HUD / 4 EQUAL COLUMNS</span><div class="sd-telemetry"><div class="sd-telemetry-card"><strong class="sd-tel-value">42.3<em>s</em></strong><span>TIJD</span></div><div class="sd-telemetry-card"><strong>126</strong><span>REPAIRS (CPM)</span></div><div class="sd-telemetry-card"><strong class="green">96%</strong><span>ACCURACY</span></div><div class="sd-telemetry-card"><strong class="red">2/5</strong><span>FOUTEN</span></div></div></div>
+            <div class="sd-hud-subobjects">
+              <div class="sd-shield-object"><span class="sd-object-label">CPU SHIELD STATUS / TOP −38PX</span><div class="sd-shield-anchor"><div class="sd-shields" style="position:static;transform:none"><span class="sd-shield lost"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></span><span class="sd-shield"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></span></div><span class="sd-shield-cpu-edge">CPU SOCKET</span></div></div>
+              <div class="sd-pressure-object"><span class="sd-object-label">BETWEEN TOP HUD AND BOARD</span><div class="sd-pressure"><span class="sd-pressure-label">SYSTEM COMPROMISE STATUS</span><span class="sd-pressure-value">57%</span><div class="sd-pressure-track"><i class="sd-pressure-fill"></i></div></div></div>
+            </div>
           </div>
         </div>
-        <div class="sd-anatomy-copy"><small>05 / TELEMETRY &amp; DAMAGE</small><h4>Stats, five shields and pressure are different systems</h4><p>The four tiles report time, repairs per minute, accuracy and mistakes. Exactly five shields visualize the 5-error budget above the CPU. Compromise pressure responds to live threats separately: green below 45%, orange from 45%, red and glitching from 80%, failure at 100%.</p><div class="sd-token-row"><code>4 telemetry tiles</code><code>5 shields</code><code>warning ≥45%</code><code>danger ≥80%</code></div></div>
+        <div class="sd-anatomy-copy"><small>05 / TELEMETRY &amp; DAMAGE</small><h4>Three separate placements, reproduced from the arena</h4><p>The four equal telemetry tiles form the top HUD and the timer includes its small seconds unit. The compromise bar is the next object between that HUD and the board. The five circular mistake nodes are not part of either HUD row: they sit 38px above the CPU inside <code>.defense-core-visual</code>. A lost node stays red after its 500ms scale response. Pressure remains separate: green below 45%, orange from 45%, red from 80%, failure at 100%.</p><div class="sd-token-row"><code>HUD 4 × 1fr</code><code>node 26–32px</code><code>CPU offset −38px</code><code>warning ≥45%</code><code>danger ≥80%</code></div></div>
       </article>
 
       <article class="sd-anatomy-card">
-        <div class="sd-anatomy-preview" style="align-content:center;gap:12px">
-          <div class="sd-token-row" style="justify-content:center"><code>CPU LED · 1.2s</code><code>virus glitch · 1.5s</code><code>radar · 8s</code><code>shield loss · .5s</code><code>board shake · .4s</code><code>impact · .3s</code></div>
-          <p style="max-width:430px;margin:0;text-align:center;color:var(--muted);font-size:.72rem;line-height:1.55">Persistent signals loop; gameplay events fire once. The guide repeats the shield-loss and packet examples only so their implementation can be inspected.</p>
+        <div class="sd-anatomy-preview">
+          <div class="sd-motion-grid">
+            <div class="sd-motion-sample"><div class="sd-motion-chip"><i>CORE</i></div><b>CPU STATUS LED</b><span>1.2s alternate pulse<br>while stable</span></div>
+            <div class="sd-motion-sample"><svg class="sd-virus" width="86" height="86" viewBox="-32 -34 64 68"><circle class="ring" r="19"/><g class="graphic"><path class="spike" d="M0 0H12M0 0L8.5 8.5M0 0V12M0 0L-8.5 8.5M0 0H-12M0 0L-8.5-8.5M0 0V-12M0 0L8.5-8.5"/><g class="head"><circle cx="14.5" r="2"/><circle cx="10.25" cy="10.25" r="2"/><circle cy="14.5" r="2"/><circle cx="-10.25" cy="10.25" r="2"/><circle cx="-14.5" r="2"/><circle cx="-10.25" cy="-10.25" r="2"/><circle cy="-14.5" r="2"/><circle cx="10.25" cy="-10.25" r="2"/></g><circle class="core" r="8"/><path d="M-5-2l3-1v3zm10 0l-3-1v3z" fill="#010502"/><path d="M-4 3l2-2 2 2 2-2 2 2" fill="none" stroke="#fff"/></g></svg><b>LIVE THREAT</b><span>1.5s glitch<br>8s radar rotation</span></div>
+            <div class="sd-motion-sample"><div class="sd-motion-event"><span class="sd-shield lost"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg></span><i class="sd-explosion"></i></div><b>ONE-SHOT FEEDBACK</b><span>shield 500ms<br>impact ring 300ms</span></div>
+          </div>
         </div>
-        <div class="sd-anatomy-copy"><small>06 / MOTION CONTRACT</small><h4>Animation communicates state, not decoration</h4><p>Radar and virus flicker identify a live threat; the shrinking fuse shows remaining rescue time; packet travel visualizes a typed interception. CPU damage, shield loss and board shake are short feedback events and never become ambient motion.</p></div>
+        <div class="sd-anatomy-copy"><small>06 / MOTION CONTRACT</small><h4>The real animated objects, separated by lifetime</h4><p>The CPU LED, virus glitch and radar are persistent signals. Shield loss, the green impact ring, the 200ms repair/crash cell state and the 400ms board shake are one-shot responses. The specimens repeat only for inspection; implementation keeps the game timings and removes each temporary class or SVG after it finishes.</p><div class="sd-token-row"><code>LED 1.2s</code><code>glitch 1.5s</code><code>radar 8s</code><code>cell 200ms</code><code>impact 300ms</code><code>shake 400ms</code><code>shield 500ms</code></div></div>
       </article>
     </div>
 
     <div class="sd-variant-grid">
-      <div class="sd-variant"><b>Defense grid</b><span>Full routed PCB arena, moving threats, CPU and sector tray.</span><code>typegame-supercomputer-defense-grid</code></div>
-      <div class="sd-variant"><b>No grid</b><span>Same defense identity with the background grid treatment removed.</span><code>typegame-supercomputer-defense-no-grid</code></div>
-      <div class="sd-variant"><b>Only grid</b><span>Grid-led variant; shared CPU, threat, sector and telemetry tokens remain unchanged.</span><code>typegame-supercomputer-defense-only-grid</code></div>
+      <div class="sd-variant"><b>Defense grid</b><span>The combined build: 24-cell sector tray, routed PCB, CPU socket, moving viruses and packets in one board.</span><code>typegame-supercomputer-defense-grid</code></div>
+      <div class="sd-variant"><b>No grid</b><span>The motherboard-focused build: CPU, decorative board hardware and routed threats, without the 24-cell sector tray.</span><code>typegame-supercomputer-defense-no-grid</code></div>
+      <div class="sd-variant"><b>Only grid</b><span>The sector-focused build: the 6 × 4 live cell matrix carries the game; CPU socket, routed virus SVGs and projectiles are omitted.</span><code>typegame-supercomputer-defense-only-grid</code></div>
     </div>
     <p class="sg-caption" style="margin-top:12px">Source: <b>supercomputer-varianten/typegame-supercomputer-defense-grid</b> · <code>.hud-telemetry</code>, <code>.hack-progress-container</code>, <code>.keyboard-board-outer</code>, <code>.defense-core-visual</code>, <code>.supercomputer-core</code>, <code>.sector-panel</code>, <code>.virus-blob</code>, <code>.projectile-packet</code>, <code>spawnVirus()</code> and <code>handleKeystroke()</code>. Geometry, states, thresholds and timings above are taken from the project CSS and script.</p>
   </div>
@@ -6687,55 +7472,64 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 
   </div>
 
-  <h3>Type training — practice console</h3>
-  <p class="sg-note">The neutral grey game. Layout: two riveted glass <strong>wings</strong> ("PRESTATIES" / "EVALUATIE") holding stat cards, a live <strong>rhythm-wave analyzer</strong> and wireframe hand diagrams, around a central <strong>type console</strong>. The console types <strong>inline text</strong> — not code slots: the current letter is a blinking orange block cursor (like a real terminal), correct letters turn green, wrong letters turn red with a red underline. Below it sits a flat 3D <strong>keyboard</strong> whose next key lights up, and in "losse letters" mode a conveyor of letter blocks rides through an orange <strong>scanner gate</strong>.</p>
+  <h3 id="type-training-practice">Type training — practice console</h3>
+  <p class="sg-note">This library separates the real practice view into its construction parts. The console, both telemetry wings, hand scanners and assembled center stack below are rendered directly by <code>typegame-typeoefening-losse-letters</code>. The loose-letter conveyor is a different game mode and is deliberately not mixed into this practice example.</p>
   <div class="theme t-practice">
-    <div class="sg-stage">
-      <div class="sg-item" style="width:100%; max-width:460px;">
-        <div class="typing-line-demo"><span class="char correct">t</span><span class="char correct">y</span><span class="char correct">p</span><span class="char wrong">o</span><span class="char current">e</span><span class="char faded">f</span><span class="char faded">e</span><span class="char faded">n</span><span class="char faded">i</span><span class="char faded">n</span><span class="char faded">g</span></div>
-        <span class="sg-tag">inline typing — block cursor blinks 0.8s in terminal steps</span>
-      </div>
-      <div class="sg-item">
-        <div class="kbd-row">
-          <span class="kbd-key-demo">q</span>
-          <span class="kbd-key-demo">w</span>
-          <span class="kbd-key-demo active-target">e</span>
-          <span class="kbd-key-demo">r</span>
-          <span class="kbd-key-demo home">f</span>
+    <div class="training-object-grid">
+      <article class="training-object-card wide">
+        <div class="training-source-viewport terminal-crop">
+          <iframe class="practice-source-frame terminal-frame" data-canvas-width="1000" data-canvas-height="360" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=terminal" title="Live Type Training typing console" width="1000" height="360" loading="lazy"></iframe>
+          <span class="training-source-badge">LIVE SOURCE · TYPE CONSOLE</span>
         </div>
-        <span class="sg-tag">keyboard keys — glass caps; next key pulses; home keys keep a brighter border</span>
-      </div>
-      <div class="sg-item">
-        <div class="scanner-gate-demo">
-          <div class="gate-bracket"></div>
-          <div class="gate-laser"></div>
-          <div class="gate-bracket"></div>
+        <div class="training-object-copy">
+          <span class="training-object-number">01 / EXERCISE PANEL</span>
+          <h4>Window chrome, inline text and feedback stay one object</h4>
+          <p>The real 36px header carries the title, live connection pill and three window controls. Inside, the line counter sits above a scrollable CRT field. Typed characters remain inline: <span class="training-state-key correct">a</span> correct, <span class="training-state-key current">s</span> current and <span class="training-state-key wrong">d</span> wrong.</p>
+          <div class="training-measures"><code>surface <b>#141418</b></code><code>border <b>2px #333</b></code><code>radius <b>8px</b></code><code>text <b>Roboto Mono 700 / 30px</b></code><code>cursor <b>.8s steps(2)</b></code></div>
         </div>
-        <span class="sg-tag">scanner gate — letter blocks pass through it</span>
-      </div>
-      <div class="sg-item">
-        <svg class="rhythm-wave-demo" viewBox="0 0 200 100" preserveAspectRatio="none">
-          <path d="M 0 50 Q 12 20, 25 50 T 50 50 Q 62 75, 75 50 T 100 50 Q 112 30, 125 50 T 150 50 Q 162 65, 175 50 T 200 50"/>
-        </svg>
-        <span class="sg-tag">rhythm analyzer — live wave drawn from keystroke timing</span>
-      </div>
-      <div class="sg-item">
-        <div style="position:relative; background:linear-gradient(135deg, rgba(20,20,20,0.6) 0%, rgba(10,10,10,0.45) 100%); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:22px 16px 14px; width:210px;">
-          <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:5px; margin-bottom:10px;">
-            <span style="font-family:'Orbitron'; font-size:0.66rem; font-weight:700; color:var(--cyan); letter-spacing:1.2px; text-shadow:0 0 6px var(--cyan-glow);">PRESTATIES</span>
-            <span style="font-family:'Roboto Mono'; font-size:0.55rem; color:var(--green);">ACTIEF</span>
-          </div>
-          <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); border-radius:6px; padding:12px; text-align:center;">
-            <span style="display:block; font-size:0.7rem; color:var(--muted); font-family:'Orbitron'; font-weight:700; letter-spacing:0.8px;">CPM</span>
-            <span style="font-family:'Orbitron'; font-size:1.9rem; font-weight:900; color:var(--text); text-shadow:0 0 10px var(--cyan-glow);">184</span>
-          </div>
+      </article>
+
+      <article class="training-object-card">
+        <div class="training-source-viewport wing-crop">
+          <iframe class="practice-source-frame wing-frame" data-canvas-width="420" data-canvas-height="620" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=left-wing" title="Live Type Training performance wing" width="420" height="620" loading="lazy"></iframe>
+          <span class="training-source-badge">LIVE SOURCE · LEFT WING</span>
         </div>
-        <span class="sg-tag">stat wing — glass panel with the same rivets as the metal plate</span>
-      </div>
+        <div class="training-object-copy">
+          <span class="training-object-number">02 / PERFORMANCE WING</span>
+          <h4>Time, CPM, rhythm and the left-hand map</h4>
+          <p>The two stat cards remain a pair. The orange waveform is generated from keystroke timing, while the wireframe hand highlights the finger assigned to the next key. The game hides its old decorative rivets; the panel is intentionally clean glass.</p>
+          <div class="training-measures"><code>glass <b>135° / 60→45%</b></code><code>edge <b>1px / 6% white</b></code><code>radius <b>10px</b></code><code>wave <b>3px round</b></code></div>
+        </div>
+      </article>
+
+      <article class="training-object-card">
+        <div class="training-source-viewport wing-crop">
+          <iframe class="practice-source-frame wing-frame" data-canvas-width="420" data-canvas-height="620" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=right-wing" title="Live Type Training evaluation wing" width="420" height="620" loading="lazy"></iframe>
+          <span class="training-source-badge">LIVE SOURCE · RIGHT WING</span>
+        </div>
+        <div class="training-object-copy">
+          <span class="training-object-number">03 / EVALUATION WING</span>
+          <h4>Accuracy, mistakes, target scanner and right-hand map</h4>
+          <p>Accuracy stays green; mistakes use the compact red counter from the game. The target letter sits inside a 60px inner ring and a 68px dashed ring rotating over 12 seconds. The right-hand scanner mirrors the physical finger assignment.</p>
+          <div class="training-measures"><code>scanner <b>60 / 68px</b></code><code>rotation <b>12s linear</b></code><code>mistake chip <b>30px</b></code><code>target <b>Roboto Mono 700</b></code></div>
+        </div>
+      </article>
+
+      <article class="training-object-card wide">
+        <div class="training-source-viewport center-crop">
+          <iframe class="practice-source-frame console-frame" data-canvas-width="1000" data-canvas-height="620" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=console" title="Live Type Training console and key deck" width="1000" height="620" loading="lazy"></iframe>
+          <span class="training-source-badge">LIVE SOURCE · ASSEMBLED CENTER STACK</span>
+        </div>
+        <div class="training-object-copy">
+          <span class="training-object-number">04 / ASSEMBLED EXAMPLE</span>
+          <h4>The console and keyboard share one vertical center column</h4>
+          <p>This is the complete game-owned center object—not the full game. The exercise panel keeps its fixed working height; the 3D AZERTY deck sits below it and scales as one unit. The next physical key uses its finger color, while F and J remain the permanent home anchors.</p>
+          <div class="training-measures"><code>center ratio <b>2.4fr</b></code><code>console <b>240–320px</b></code><code>deck <b>rotateX(24deg)</b></code><code>max deck <b>820px</b></code></div>
+        </div>
+      </article>
     </div>
   </div>
-  <p class="sg-caption">Inline letters: Roboto Mono 700, ~30px, wide letter spacing. Cursor = orange block with black letter, blinking in hard steps (no fade). Keys: 2%-white glass caps with 1.5px 5%-white borders, radius 6, a thin dark "key depth" shadow; the target key adopts the finger color assigned to it (the hand diagrams color each finger). Wings: grey glass gradient + blur, 1px 6%-white border, radius 10, riveted corners; wing titles glow orange. The wireframe hands are faint white silhouettes whose active finger lights up in its finger color.</p>
+  <p class="sg-caption"><b>Source of truth:</b> the four previews above load the game HTML, CSS, SVG hand diagrams and animation code directly. The styleguide only scales their canvases to fit these cards, so changes in the game remain visible here.</p>
 
 
   <h3>Typeoefening key deck</h3>
@@ -6784,7 +7578,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
               <span class="practice-key finger-li left-home"><span class="key-code">F</span></span>
               <span class="practice-key finger-li"><span class="key-code">G</span></span>
               <span class="practice-key finger-ri"><span class="key-code">H</span></span>
-              <span class="practice-key finger-ri right-home"><span class="key-code">J</span></span>
+              <span class="practice-key finger-ri right-home active-target"><span class="key-code">J</span></span>
               <span class="practice-key finger-rm"><span class="key-code">K</span></span>
               <span class="practice-key finger-rr"><span class="key-code">L</span></span>
               <span class="practice-key finger-rp"><span class="key-code">M</span></span>
@@ -6836,86 +7630,170 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
 <section class="sg-section" id="feedback">
   <p class="sg-kicker">12 / Interaction grammar</p>
   <h2>Feedback &amp; motion</h2>
-  <p class="sg-lead">Feedback is instant, local and color-coded. The same five moments exist in every game:</p>
-  <table class="sg-table">
-    <tr><th>Moment</th><th>What happens</th><th>Motion</th></tr>
-    <tr><td><strong style="color:#e48e35">Awaiting input</strong></td><td>Exactly one thing glows orange: the current slot, key, pin, node, word or virus. Everything else stays matte.</td><td>Slow breathing pulse on the target (≈1s), gentle 2s text pulse on prompts.</td></tr>
-    <tr><td><strong style="color:#9ad744">Correct input</strong></td><td>The typed part flips to green (border, text, glow) and stays green. Progress moves to the next target.</td><td>Brief success flash on the key (~0.4s), packet fired / pin lifted / word revealed.</td></tr>
-    <tr><td><strong style="color:#ff3b30">Wrong input</strong></td><td>The part flashes red, a mistake indicator turns red (lock orb, shield node, mistake stat), terminal logs a danger line.</td><td>Quick shake ≈0.3s, red flash ≈0.5s, then back to neutral.</td></tr>
-    <tr><td><strong style="color:#9ad744">Completion</strong></td><td>The whole machine turns green: metal plate border + glow, all inputs green, status label flips (VERGRENDELD → ONTGRENDELD), green overlay with "TOEGANG VERLEEND".</td><td>Green glitch-flash 0.6s, unlock icon pops in with overshoot, then calm glow.</td></tr>
-    <tr><td><strong style="color:#ff3b30">Failure</strong></td><td>Red lockout: machine border flashes red, red inset glow, overlay "SYSTEEM VERGRENDELD", then the red-stamped report.</td><td>Alarm flash ≈0.5s ×3, background flicker, report stamp slams in.</td></tr>
-  </table>
-  <h3>Animation examples</h3>
-  <p class="sg-note">Use animation to explain state, not to decorate. Loops stay short and readable; input feedback should be local to the object the player touched.</p>
-  <div class="theme t-keypad">
-    <div class="sg-stage">
-      <div class="animation-demo-grid">
-        <div class="animation-demo-card">
-          <div class="demo-leds"><span class="demo-led green"></span><span class="demo-led orange"></span></div>
-          <span class="animation-demo-label">LED pulse</span>
+  <p class="sg-lead">This section now fills two gaps instead of repeating object demonstrations. Both specimens are rendered by the real Type Training project: the loose-letter input pipeline and the end-of-mission report entry.</p>
+
+  <p class="motion-coverage-note"><b>Already documented where it belongs:</b> fingerprint laser and nodes, lockpick lift and set, file-redaction camera lock, supercomputer threats and packets, terminal cursor, key press, LEDs and scanlines all remain in the Game object library. They are not redrawn here.</p>
+
+  <div class="motion-source-list">
+    <article class="motion-source-card">
+      <div class="training-source-viewport motion-source-viewport loose-motion-crop">
+        <iframe class="practice-source-frame loose-motion-frame" data-canvas-width="1000" data-canvas-height="360" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=loose-letters" title="Live Type Training loose-letter conveyor" width="1000" height="360" loading="lazy"></iframe>
+        <span class="training-source-badge">LIVE SOURCE · LOOSE-LETTER PIPELINE</span>
+      </div>
+      <div class="motion-source-copy">
+        <div class="motion-source-heading">
+          <span class="training-object-number">01 / CONTINUOUS INPUT LOOP</span>
+          <h3>Conveyor, scan gate and local feedback</h3>
         </div>
-        <div class="animation-demo-card">
-          <div class="demo-signal-bars"><span></span><span></span><span></span><span></span><span></span></div>
-          <span class="animation-demo-label">Signal bars</span>
-        </div>
-        <div class="animation-demo-card">
-          <div class="demo-scanner"></div>
-          <span class="animation-demo-label">Scanner sweep</span>
-        </div>
-        <div class="animation-demo-card">
-          <div class="demo-active-key">R</div>
-          <span class="animation-demo-label">Active key</span>
-        </div>
-        <div class="animation-demo-card">
-          <div class="demo-error-box"></div>
-          <span class="animation-demo-label">Error shake</span>
-        </div>
-        <div class="animation-demo-card">
-          <div class="demo-lock-box"></div>
-          <span class="animation-demo-label">Target lock</span>
-        </div>
-        <div class="animation-demo-card">
-          <div class="demo-packet-track"><span class="demo-packet"></span><span class="demo-packet-target"></span></div>
-          <span class="animation-demo-label">Packet hit</span>
-        </div>
-        <div class="animation-demo-card">
-          <div class="demo-metronome"><span class="play-symbol">PLAY</span></div>
-          <span class="animation-demo-label">Metronome</span>
+        <div class="motion-source-body">
+          <p>The track moves the next real letter block into the stationary center gate. Its finger color identifies the correct hand assignment; a correct input turns green and leaves the gate, while a wrong input flashes red and shakes without advancing. The guide cycles those same game states automatically.</p>
+          <div class="motion-source-specs">
+            <div class="motion-source-spec"><b>Track</b><span>98px per character; 0.25s cubic-bezier transition.</span></div>
+            <div class="motion-source-spec"><b>Live signal</b><span>Gate laser travels for 4.5s; active LED pulses every 0.8s.</span></div>
+            <div class="motion-source-spec"><b>Input result</b><span>Correct lifts 8px; error uses the real 0.25s block shake.</span></div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <table class="sg-table">
-    <tr><th>Rule</th><th>Use it for</th></tr>
-    <tr><td>Small repeated loops</td><td>Live hardware only: LEDs, signal bars, scanner lines, metronome rings.</td></tr>
-    <tr><td>Short one-shot feedback</td><td>Actual input: key press, typed character, slot fill, packet impact, error shake.</td></tr>
-    <tr><td>Strong color changes</td><td>Only success, danger or failure. The rest of the interface stays matte.</td></tr>
-  </table>
+    </article>
 
-  <h3>Animation timing reference</h3>
-  <table class="sg-table">
-    <tr><th>Name</th><th>Duration</th><th>Use</th></tr>
-    <tr><td>Scanline flicker</td><td>0.15s, endless</td><td>screen overlays — opacity wobbles 94–100%</td></tr>
-    <tr><td>Gentle pulse</td><td>2s back-and-forth</td><td>spacebar prompts, hint labels (opacity 0.4→1)</td></tr>
-    <tr><td>Target pulse</td><td>0.8–1s back-and-forth</td><td>current slot border glow / active key letter scale 1→1.08</td></tr>
-    <tr><td>LED blink / LED breathe</td><td>0.3s / 1.2s</td><td>panel LEDs (green flickers fast, orange breathes)</td></tr>
-    <tr><td>Voltage bars</td><td>0.8s, staggered delays</td><td>bars in panel footers grow and shrink</td></tr>
-    <tr><td>Error shake</td><td>≈0.3s, once</td><td>wrong input — key or whole terminal jolts sideways</td></tr>
-    <tr><td>Success flash / icon pop</td><td>0.6s / 0.5s, once</td><td>completion flash over the machine, unlock icon overshoots then settles</td></tr>
-    <tr><td>Laser sweep</td><td>3s, endless</td><td>fingerprint laser travels top↔bottom (document scan laser: 4.5s)</td></tr>
-    <tr><td>Node pulse ring</td><td>≈1.4s, endless</td><td>ring expands and fades around the active scan node</td></tr>
-    <tr><td>Block cursor blink</td><td>0.8s, hard steps</td><td>practice game inline cursor — no fade, terminal style</td></tr>
-    <tr><td>Status dot blink</td><td>1s back-and-forth</td><td>red dot next to VERGRENDELD; steady green when unlocked</td></tr>
-    <tr><td>Virus glitch / radar spin</td><td>1.5s / 8s, endless</td><td>virus brightness flicker / dotted ring rotation</td></tr>
-    <tr><td>CPU glow / CPU LED</td><td>2.5s / 1.2s back-and-forth</td><td>neon CPU label brightens and dims / status LED pulses</td></tr>
-    <tr><td>Target lock-on</td><td>0.25s, once</td><td>redaction bar flickers black↔orange when targeted</td></tr>
-    <tr><td>Report entry</td><td>0.5–0.6s, staggered</td><td>header fades down, cards pop in one by one (0.22s→0.52s), stamp slams last</td></tr>
-    <tr><td>Coin spin</td><td>3s, endless</td><td>credit coin rotates on its vertical axis</td></tr>
-  </table>
+    <article class="motion-source-card">
+      <div class="training-source-viewport motion-source-viewport results-motion-crop">
+        <iframe id="motion-results-frame" class="practice-source-frame results-motion-frame" data-canvas-width="1000" data-canvas-height="760" src="typegame-typeoefening-losse-letters/index.html?styleguide-preview=results" title="Live Type Training result report entry" width="1000" height="760" loading="lazy"></iframe>
+        <span class="training-source-badge">LIVE SOURCE · RESULT ENTRY</span>
+      </div>
+      <div class="motion-source-copy">
+        <div class="motion-source-heading">
+          <span class="training-object-number">02 / ONE-SHOT RESOLUTION</span>
+          <h3>Report reveal, count-up and reward tally</h3>
+        </div>
+        <div class="motion-source-body">
+          <p>This is the real report overlay, not the static reconstruction from the Result screen chapter. Header and rank enter first, the six cards follow in order, the status stamp lands, then CPM, accuracy, streak and credits count to their final values. It plays once because it represents one completed mission.</p>
+          <div class="motion-source-specs">
+            <div class="motion-source-spec"><b>Entry order</b><span>Header 0s, rank 0.15s, cards 0.22–0.52s, actions 0.65s.</span></div>
+            <div class="motion-source-spec"><b>Values</b><span>Number count-up starts after 0.4s and resolves over 1s.</span></div>
+            <div class="motion-source-spec"><b>Reward</b><span>Coin rows tally sequentially in 0.6s steps; status uses the real stamp easing.</span></div>
+          </div>
+          <button class="motion-replay-btn" type="button" data-replay-frame="motion-results-frame">Replay result entry</button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <p class="sg-caption motion-source-caption"><b>Motion rule:</b> loop only while a process is still live; keep input feedback on the object that received the input; play completion sequences once. Decorative flicker may add texture, but it does not need its own specimen.</p>
+
+  <div class="motion-principles">
+    <div class="motion-principle"><b>Loop only while alive</b>Scanners, threats and active targets may repeat because their underlying process is still running.</div>
+    <div class="motion-principle"><b>React where input happened</b>A key, pin, word or sector moves first. The whole machine reacts only on completion or failure.</div>
+    <div class="motion-principle"><b>Repeat here for inspection</b>One-shot examples replay with a pause in this guide; inside a game they fire once per event.</div>
+  </div>
+
+  <div class="motion-library">
+    <article class="motion-card">
+      <div class="motion-stage">
+        <div class="motion-focus-demo" aria-label="One active input slot pulses between completed and waiting slots">
+          <span class="motion-slot done">K</span>
+          <span class="motion-slot active">R</span>
+          <span class="motion-slot">A</span>
+        </div>
+      </div>
+      <div class="motion-copy">
+        <span class="motion-kind">01 / Continuous · all games</span>
+        <h3>Active target breath</h3>
+        <p>Only the next actionable object breathes. The small scale and glow change pulls the eye without moving surrounding geometry or making the whole interface flash.</p>
+        <dl class="motion-facts"><dt>Purpose</dt><dd>Show exactly where the next input goes.</dd><dt>Trigger</dt><dd>While an input is awaiting the player.</dd><dt>Timing</dt><dd>0.8–1s, alternate ease-in-out.</dd></dl>
+      </div>
+    </article>
+
+    <article class="motion-card">
+      <div class="motion-stage">
+        <div class="motion-fingerprint" aria-label="Fingerprint laser and active scan node animate">
+          <svg viewBox="0 0 100 130" aria-hidden="true">
+            <path d="M18 35 Q49 9 80 35"/><path d="M10 54 Q49 18 90 54"/><path d="M18 74 Q49 38 80 74"/><path d="M29 93 Q49 56 68 91"/><path d="M46 111 Q35 85 49 70 Q64 55 71 76 Q75 93 88 96"/>
+          </svg>
+          <span class="motion-scan-laser"></span>
+          <span class="motion-scan-node">03</span>
+        </div>
+      </div>
+      <div class="motion-copy">
+        <span class="motion-kind">02 / Continuous · fingerprint</span>
+        <h3>Sensor travel and node pulse</h3>
+        <p>The laser proves that the scanner is sampling the complete print; the expanding ring identifies the current numbered ridge node. They communicate different information and therefore belong together.</p>
+        <dl class="motion-facts"><dt>Purpose</dt><dd>Show sensor coverage and current progress.</dd><dt>Trigger</dt><dd>While biometric scanning is active.</dd><dt>Timing</dt><dd>Laser 3s; node ring approximately 1.4s.</dd></dl>
+      </div>
+    </article>
+
+    <article class="motion-card">
+      <div class="motion-stage">
+        <div class="motion-pin-rig" aria-label="Lockpick enters a chamber and a picked pin rises and leans at the shear line">
+          <span class="motion-shear-line"></span>
+          <span class="motion-pick-tool"></span>
+          <span class="motion-pin-chamber"><span class="motion-driver-pin"></span><span class="motion-key-pin">J</span></span>
+        </div>
+      </div>
+      <div class="motion-copy">
+        <span class="motion-kind">03 / Input response · lockpicking</span>
+        <h3>Pin lift, set and lean</h3>
+        <p>The pick moves under the active chamber, lifts the pin pair to the shear line and leaves the driver pin leaning against the plug edge. That held angle explains that binding tension keeps a solved pin set.</p>
+        <dl class="motion-facts"><dt>Purpose</dt><dd>Turn a correct letter into a physical lock action.</dd><dt>Trigger</dt><dd>Once after a correct pin input.</dd><dt>Timing</dt><dd>0.16s contact response; held until reset.</dd></dl>
+      </div>
+    </article>
+
+    <article class="motion-card">
+      <div class="motion-stage">
+        <div class="motion-document" aria-label="Document target reticle acquires an orange redaction word">
+          <span class="motion-doc-line one">PROJECT VAKANTIE / VERTROUWELIJK</span>
+          <span class="motion-doc-line two">codenaam <span class="motion-redaction-bar"></span> is bevestigd</span>
+          <span class="motion-reticle"><b>TARGET LOCKED</b></span>
+        </div>
+      </div>
+      <div class="motion-copy">
+        <span class="motion-kind">04 / Acquisition · file redacting</span>
+        <h3>Camera lock on the active word</h3>
+        <p>The document moves beneath a fixed camera HUD. When a word reaches the reticle, its bar flickers from black to orange and the green lock frame snaps into place—so the player can connect terminal target and paper target.</p>
+        <dl class="motion-facts"><dt>Purpose</dt><dd>Identify which hidden word is being decrypted.</dd><dt>Trigger</dt><dd>When the next document target is centered.</dd><dt>Timing</dt><dd>0.25s lock-on; document scan travel 4.5s.</dd></dl>
+      </div>
+    </article>
+
+    <article class="motion-card">
+      <div class="motion-stage">
+        <div class="motion-route" aria-label="Green data packet follows a circuit trace and impacts an orange virus">
+          <svg viewBox="0 0 330 154" aria-hidden="true">
+            <path class="motion-route-base" d="M24 116 H106 L146 77 H268"/>
+            <path class="motion-route-live" d="M24 116 H106 L146 77 H268"/>
+          </svg>
+          <span class="motion-packet-dot">S</span>
+          <span class="motion-virus">S</span>
+        </div>
+      </div>
+      <div class="motion-copy">
+        <span class="motion-kind">05 / Travel · supercomputer</span>
+        <h3>Routed packet and impact</h3>
+        <p>The packet follows the same circuit trace used by the threat, carries the typed letter and blooms only at the matching virus. Direction, ownership and the successful intercept remain visible in one movement.</p>
+        <dl class="motion-facts"><dt>Purpose</dt><dd>Connect sector input to the moving threat it repairs.</dd><dt>Trigger</dt><dd>After a matching sector key is typed.</dd><dt>Timing</dt><dd>Approximately 0.5s travel plus 0.3s impact.</dd></dl>
+      </div>
+    </article>
+
+    <article class="motion-card">
+      <div class="motion-stage">
+        <div class="motion-resolution" aria-label="Local error shakes while machine completion changes the whole panel to green">
+          <span class="motion-error-object">WRONG KEY</span>
+          <span class="motion-complete-object"><span class="locked">VERGRENDELD</span><span class="unlocked">ONTGRENDELD</span></span>
+        </div>
+      </div>
+      <div class="motion-copy">
+        <span class="motion-kind">06 / One-shot · shared resolution</span>
+        <h3>Local error, machine-level completion</h3>
+        <p>A wrong input shakes and flashes only the touched object. Completion is deliberately larger: the enclosing machine border turns green and its status label flips. This difference preserves hierarchy.</p>
+        <dl class="motion-facts"><dt>Purpose</dt><dd>Separate recoverable input feedback from final state.</dd><dt>Trigger</dt><dd>Wrong key versus completed objective.</dd><dt>Timing</dt><dd>Error about 0.3s; completion 0.5–0.6s.</dd></dl>
+      </div>
+    </article>
+  </div>
+
+  <p class="sg-caption"><b>Motion budget:</b> one continuous focal animation per local object; additional movement must represent a different process such as travel, acquisition or impact. Ambient LEDs, CRT flicker and signal bars may remain in the games, but they no longer need separate showcase cards because they do not explain player action.</p>
 </section>
 
 <!-- ═══════════════ 11 THEME VARIANTS ═══════════════ -->
-<section class="sg-section" id="themes">
+<section class="sg-section" id="themes" hidden aria-hidden="true">
   <p class="sg-kicker">13 / Same parts, six moods</p>
   <h2>Theme variants</h2>
   <p class="sg-lead">
@@ -6957,19 +7835,47 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   <p class="sg-note">Accent exception per theme: fingerprint promotes its yellow (<code>#ffcc00</code>) to the stat/scan accent, and supercomputer uses its brighter green (<code>#44d775</code>) — everything else keeps orange as the active color.</p>
 </section>
 
-<!-- ═══════════════ 12 NEW GAME CHECKLIST ═══════════════ -->
+<!-- ═══════════════ 13 RESPONSIVE & ACCESS ═══════════════ -->
+<section class="sg-section" id="quality">
+  <p class="sg-kicker">13 / Quality contract</p>
+  <h2>Responsive &amp; accessible behavior</h2>
+  <p class="sg-lead">A specimen is only accurate when it keeps its proportions, remains operable and communicates state without relying on color alone. These rules apply to the games and to every example embedded in this guide.</p>
+
+  <div class="sg-rules">
+    <div class="sg-rule"><b>Preserve the game canvas</b>Keep the complete arena at <strong>16:9</strong> and scale it as one unit. Never crop the machine, stretch the center object or independently resize its internal axes.</div>
+    <div class="sg-rule"><b>Reflow the page around it</b>Navigation, captions and comparison grids may stack. Game objects retain their own aspect ratio; the documentation stage supplies the available space.</div>
+    <div class="sg-rule"><b>Keep input intentional</b>Guide previews start non-interactive. When interaction is enabled, every real control remains keyboard reachable and receives a visible focus indicator.</div>
+    <div class="sg-rule"><b>Pair color with another cue</b>Orange, green and red also change a label, border, icon, underline or position. A player should be able to distinguish current, correct and wrong states without hue alone.</div>
+    <div class="sg-rule"><b>Respect reduced motion</b>When reduced motion is requested, decorative and repeating movement stops. State changes remain readable through their final color, copy and geometry.</div>
+    <div class="sg-rule"><b>Keep text legible</b>Documentation copy reflows instead of scaling down. Tiny machine tags belong only inside specimens; instructions and controls stay readable at compact widths.</div>
+  </div>
+
+  <h3>Release checks</h3>
+  <table class="sg-table">
+    <tr><th>Check</th><th>Expected result</th><th>Where to verify</th></tr>
+    <tr><td>Wide and compact viewport</td><td>The whole 16:9 arena remains visible; no center panel or object is clipped or stretched.</td><td>Live game atlas + full-size view</td></tr>
+    <tr><td>Keyboard only</td><td>Tabs, interaction toggle, game controls and prompts have a logical order and visible focus.</td><td>Guide shell + enabled preview</td></tr>
+    <tr><td>Reduced motion</td><td>Loops settle immediately while state labels, borders and final positions still explain the outcome.</td><td>Guide motion examples + each game</td></tr>
+    <tr><td>Color-independent state</td><td>Current, correct, wrong and completed can also be read from copy, shape, icon or placement.</td><td>Input states + object library</td></tr>
+    <tr><td>Source parity</td><td>An isolated specimen uses the same proportions, layers, states and timing as its live project.</td><td>Object library against atlas</td></tr>
+  </table>
+  <p class="sg-source-note"><strong>TEST AT THE EDGES:</strong> Verify the guide at narrow mobile width, a short laptop viewport and a wide desktop. The responsive contract is “fit the whole game consistently,” not “make every internal object fluid.”</p>
+</section>
+
+<!-- ═══════════════ 14 NEW GAME CHECKLIST ═══════════════ -->
 <section class="sg-section" id="css">
   <p class="sg-kicker">14 / Building a new game</p>
   <h2>New game checklist</h2>
   <p class="sg-lead">The shortest path to a game that fits the set, in any tech stack:</p>
   <table class="sg-table">
     <tr><th>#</th><th>Step</th><th>Match against</th></tr>
-    <tr><td>1</td><td>Pick one unused background hue and derive the full tint set from it (panel, borders, hairlines, muted text, screen background — section 02 shows how each game did it).</td><td>Section 02</td></tr>
-    <tr><td>2</td><td>Set up the 16:9 frame with header (system label + <em>TYPEMISSION // NAME</em> title) and the three views: briefing → arena → results.</td><td>Sections 04, 06</td></tr>
-    <tr><td>3</td><td>Design the machine as the layer stack: grey metal plate with rivets + etched label + 3 mistake indicators, dark device panel with LEDs/ports, screen with scanlines, then your unique input object on top. Run green/orange/red cables behind it.</td><td>Section 05</td></tr>
-    <tr><td>4</td><td>Give the input object the four-state grammar: matte neutral, one orange active target, green locked-in, red flash on error.</td><td>Sections 07, 10</td></tr>
-    <tr><td>5</td><td>Write 2–3 briefing cards with a mini version of the machine, and reuse the standard result report (stats grid, stamp, credits, spacebar).</td><td>Sections 06, 08</td></tr>
-    <tr><td>6</td><td>Keep all text in the three-font system and all timings from the motion table.</td><td>Sections 03, 10</td></tr>
+    <tr><td>1</td><td>Choose a theme hue and fill the complete palette roles: page, panel, edge, surface, muted text and light accent. Keep the five semantic colors shared.</td><td>Section 03</td></tr>
+    <tr><td>2</td><td>Set up the responsive 16:9 shell, mission header and the three views: briefing → arena → results.</td><td>Sections 05–06</td></tr>
+    <tr><td>3</td><td>Build physical hierarchy in order: metal carrier, cables, device panel, screen and finally the game-specific input object.</td><td>Section 07</td></tr>
+    <tr><td>4</td><td>Add shared header, stats and controls, then give every input the neutral, current, correct and wrong grammar.</td><td>Sections 08–09</td></tr>
+    <tr><td>5</td><td>Create the result report once, then document the unique object as isolated layers, states and an assembled specimen.</td><td>Sections 10–11</td></tr>
+    <tr><td>6</td><td>Apply the font roles and only the motion patterns that explain a real process or player action.</td><td>Sections 04, 12</td></tr>
+    <tr><td>7</td><td>Run the responsive, keyboard, reduced-motion, color-independent and source-parity checks before adding the game to the atlas.</td><td>Section 13</td></tr>
   </table>
   <p class="sg-note">Reference implementations: the keypad game is the cleanest example of the door stack; the supercomputer game shows how far a non-door machine can go while staying in-system. Hue claims so far — red/brown, indigo, amber, purple, grey, green. Still free: e.g. deep teal, cold steel-blue, magenta.</p>
 </section>
@@ -7184,6 +8090,44 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
     }
   }
 
+  const practiceSourceFrames = document.querySelectorAll('.practice-source-frame');
+  function fitPracticeSourceFrame(frame) {
+    const viewport = frame.closest('.training-source-viewport');
+    if (!viewport) return;
+    const canvasWidth = Number(frame.dataset.canvasWidth) || Number(frame.getAttribute('width')) || 1000;
+    const canvasHeight = Number(frame.dataset.canvasHeight) || Number(frame.getAttribute('height')) || 620;
+    const inset = 12;
+    const scale = Math.min(
+      (viewport.clientWidth - inset * 2) / canvasWidth,
+      (viewport.clientHeight - inset * 2) / canvasHeight
+    );
+    frame.style.transform = 'scale(' + scale + ')';
+    frame.style.left = ((viewport.clientWidth - canvasWidth * scale) / 2) + 'px';
+    frame.style.top = ((viewport.clientHeight - canvasHeight * scale) / 2) + 'px';
+  }
+  practiceSourceFrames.forEach(frame => {
+    const viewport = frame.closest('.training-source-viewport');
+    frame.addEventListener('load', () => fitPracticeSourceFrame(frame));
+    fitPracticeSourceFrame(frame);
+    if ('ResizeObserver' in window && viewport) {
+      const observer = new ResizeObserver(() => fitPracticeSourceFrame(frame));
+      observer.observe(viewport);
+    }
+  });
+  if (!('ResizeObserver' in window) && practiceSourceFrames.length) {
+    window.addEventListener('resize', () => practiceSourceFrames.forEach(fitPracticeSourceFrame), { passive: true });
+  }
+
+  document.querySelectorAll('[data-replay-frame]').forEach(button => {
+    button.addEventListener('click', () => {
+      const frame = document.getElementById(button.dataset.replayFrame);
+      if (!frame) return;
+      const source = frame.getAttribute('src');
+      frame.setAttribute('src', 'about:blank');
+      window.requestAnimationFrame(() => frame.setAttribute('src', source));
+    });
+  });
+
   const terminalFrame = document.querySelector('.terminal-live-frame');
   const terminalViewport = terminalFrame && terminalFrame.closest('.terminal-live-viewport');
   function fitTerminalFrame() {
@@ -7206,37 +8150,6 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
       terminalObserver.observe(terminalViewport);
     } else {
       window.addEventListener('resize', fitTerminalFrame, { passive: true });
-    }
-  }
-
-  const redactionViewport = document.querySelector('.redact-specimen .rs-viewport');
-  const redactionPaper = redactionViewport && redactionViewport.querySelector('.rs-camera-paper');
-  const redactionWord = redactionPaper && redactionPaper.querySelector('.rs-redacted.active');
-  const redactionReticle = redactionViewport && redactionViewport.querySelector('.rs-reticle');
-  function focusRedactionSpecimen() {
-    if (!redactionViewport || !redactionPaper || !redactionWord || !redactionReticle) return;
-    const scale = 2.1;
-    redactionPaper.style.transform = 'none';
-    const viewportRect = redactionViewport.getBoundingClientRect();
-    const paperRect = redactionPaper.getBoundingClientRect();
-    const wordRect = redactionWord.getBoundingClientRect();
-    const wordX = wordRect.left - paperRect.left + wordRect.width / 2;
-    const wordY = wordRect.top - paperRect.top + wordRect.height / 2;
-    const focalX = (redactionViewport.clientWidth + 16) / 2;
-    const focalY = (redactionViewport.clientHeight + 16) / 2;
-    const translateX = focalX - (paperRect.left - viewportRect.left) - wordX * scale;
-    const translateY = focalY - (paperRect.top - viewportRect.top) - wordY * scale;
-    redactionPaper.style.transform = 'translate(' + translateX + 'px,' + translateY + 'px) scale(' + scale + ')';
-    redactionReticle.style.width = (wordRect.width * scale + 20) + 'px';
-    redactionReticle.style.height = (wordRect.height * scale + 14) + 'px';
-  }
-  if (redactionViewport) {
-    focusRedactionSpecimen();
-    if ('ResizeObserver' in window) {
-      const redactionObserver = new ResizeObserver(focusRedactionSpecimen);
-      redactionObserver.observe(redactionViewport);
-    } else {
-      window.addEventListener('resize', focusRedactionSpecimen, { passive: true });
     }
   }
 
@@ -7313,7 +8226,7 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   });
 
   const colorTables = Array.from(document.querySelectorAll('#colors > table.sg-table'));
-  const tableLabels = ['Open compact accent matrix', 'Open full cross-game token matrix', 'Open game-specific token list'];
+  const tableLabels = ['Open full cross-game token matrix', 'Open game-specific token list'];
   colorTables.forEach((table, index) => {
     const details = document.createElement('details');
     details.className = 'sg-details';
@@ -7324,10 +8237,12 @@ a.sg-preview-action { display: inline-flex; align-items: center; }
   });
 
   if (window.location.hash) {
-    window.setTimeout(() => {
-      const target = document.querySelector(window.location.hash);
+    const restoreHashPosition = () => {
+      const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
       if (target) target.scrollIntoView({ block: 'start' });
-    }, 80);
+    };
+    window.requestAnimationFrame(() => window.requestAnimationFrame(restoreHashPosition));
+    window.addEventListener('load', restoreHashPosition, { once: true });
   }
 }());
 </script>

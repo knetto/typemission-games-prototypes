@@ -12,6 +12,15 @@
     if (styleguidePreviewMode === 'terminal') {
       document.documentElement.classList.add('terminal-specimen');
     }
+    if (styleguidePreviewMode === 'left-wing' || styleguidePreviewMode === 'right-wing') {
+      document.documentElement.classList.add('wing-specimen', `${styleguidePreviewMode}-specimen`);
+    }
+    if (styleguidePreviewMode === 'loose-letters') {
+      document.documentElement.classList.add('loose-letters-specimen');
+    }
+    if (styleguidePreviewMode === 'results') {
+      document.documentElement.classList.add('results-specimen');
+    }
   </script>
   <title>TypeMission — Typetraining</title>
   <meta name="description" content="Typetraining om blind te leren typen in de TypeMission stijl.">

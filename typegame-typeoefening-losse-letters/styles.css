@@ -3131,3 +3131,64 @@ html.training-specimen.terminal-specimen .input-deck-section,
 html.training-specimen.terminal-specimen .loose-letters-stage {
   display: none !important;
 }
+
+/* Side-wing crops used by the visual style guide. These query-only modes keep
+   the real telemetry, scanner and hand SVGs while removing the rest of the game. */
+html.training-specimen.wing-specimen .practice-layout {
+  padding: 14px;
+}
+
+html.training-specimen.wing-specimen .practice-main-workspace {
+  align-items: stretch;
+}
+
+html.training-specimen.wing-specimen .hud-center-console {
+  display: none !important;
+}
+
+html.training-specimen.wing-specimen .hud-wing {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  flex: none;
+}
+
+html.training-specimen.left-wing-specimen .left-wing,
+html.training-specimen.right-wing-specimen .right-wing {
+  display: flex !important;
+}
+
+html.training-specimen.left-wing-specimen .right-wing,
+html.training-specimen.right-wing-specimen .left-wing {
+  display: none !important;
+}
+
+/* Live loose-letter conveyor crop for the motion reference. */
+html.training-specimen.loose-letters-specimen .practice-layout {
+  padding: 18px 24px;
+}
+
+html.training-specimen.loose-letters-specimen .hud-center-console {
+  width: 100%;
+  max-width: 952px;
+  height: 100%;
+}
+
+html.training-specimen.loose-letters-specimen .exercise-panel,
+html.training-specimen.loose-letters-specimen .input-deck-section {
+  display: none !important;
+}
+
+html.training-specimen.loose-letters-specimen .loose-letters-stage {
+  display: flex !important;
+  min-height: 0;
+  max-height: none;
+  height: 100%;
+  flex: 1;
+}
+
+/* Keep the real results overlay full-frame inside its style-guide canvas. */
+html.training-specimen.results-specimen .results-overlay {
+  position: absolute;
+  inset: 0;
+}
