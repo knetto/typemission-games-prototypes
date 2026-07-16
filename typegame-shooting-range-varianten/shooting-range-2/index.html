@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="nl-BE">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeMission — Reaction Shooting Range</title>
+  <meta name="description" content="Typetraining reactiespel. Typ op het juiste moment om de laser op de roos te schieten.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- matrix code canvas background (subtle and dimmed) -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- Centered 16:9 Cyber Console Game Container -->
+  <div class="game-container" id="gameContainer">
+    <div class="viewport-content">
+
+      <!-- Top Header Panel -->
+      <header class="game-header">
+        <div class="game-branding">
+          <div class="branding-text">
+            <span class="brand-system">SYSTEM: RANGE_REACTION_V2.0</span>
+            <h1 class="brand-title">TYPEMISSION // TIMING RANGE</h1>
+          </div>
+        </div>
+
+        <div class="header-status">
+          <div class="status-indicator">
+            <span class="pulse-dot"></span>
+            <span id="headerStatusText">LOBBY_ONLINE</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Stage Window -->
+      <div class="mission-stage" id="missionStage">
+        <span class="stage-glow" aria-hidden="true"></span>
+        <div class="morph-flash" id="morphFlash" aria-hidden="true"></div>
+
+        <!-- 3D Environment Wrapper -->
+        <div class="range-3d-wrapper" id="rangeWrapper">
+          <div class="range-3d-env" id="rangeEnv">
+            
+            <!-- Ceiling with Circular Lights -->
+            <div class="room-ceiling">
+              <div class="ceiling-light light-1"></div>
+              <div class="ceiling-light light-2"></div>
+              <div class="ceiling-light light-3"></div>
+            </div>
+
+            <!-- Floor -->
+            <div class="room-floor">
+              <div class="floor-grid"></div>
+              <div class="floor-lane-track track-1"></div>
+              <div class="floor-lane-track track-2"></div>
+              <div class="floor-lane-track track-3"></div>
+              <div class="floor-lane-track track-4"></div>
+            </div>
+
+            <!-- Back Wall (Shared wall containing neon signage per lane) -->
+            <div class="room-wall wall-back">
+              <div class="wall-panels"></div>
+              <div class="lab-title">TYPEMISSION LABS</div>
+            </div>
+
+            <!-- Left and Right Side Walls -->
+            <div class="room-wall wall-left"><div class="wall-panels"></div></div>
+            <div class="room-wall wall-right"><div class="wall-panels"></div></div>
+
+            <!-- Lane Dividers (Cyber Glass Partitions) -->
+            <div class="lane-divider divider-1"></div>
+            <div class="lane-divider divider-2"></div>
+            <div class="lane-divider divider-3"></div>
+
+            <!-- ==================== 4 LANES ==================== -->
+            <!-- LANE 1 -->
+            <div class="lane" id="lane-1" data-lane-id="1">
+              <div class="lane-number-sign">1</div>
+              <div class="target-container">
+                <div class="laser-target">
+                  <svg class="target-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" class="ring-7" />
+                    <circle cx="50" cy="50" r="38" class="ring-8" />
+                    <circle cx="50" cy="50" r="28" class="ring-9" />
+                    <circle cx="50" cy="50" r="16" class="ring-10" />
+                    <circle cx="50" cy="50" r="4" class="bullseye" />
+                  </svg>
+                  <div class="laser-dot"></div>
+                  <div class="laser-dot-preview"></div>
+                  <div class="hole-borders-container" aria-hidden="true"></div>
+                  <div class="hole-centers-container" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="console-podium">
+                <div class="console-screen">
+                  <div class="screen-text">LANE 01</div>
+                  <div class="screen-sub">EASY (1 LETTER) // HORIZONTAL</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LANE 2 -->
+            <div class="lane" id="lane-2" data-lane-id="2">
+              <div class="lane-number-sign">2</div>
+              <div class="target-container">
+                <div class="laser-target">
+                  <svg class="target-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" class="ring-7" />
+                    <circle cx="50" cy="50" r="38" class="ring-8" />
+                    <circle cx="50" cy="50" r="28" class="ring-9" />
+                    <circle cx="50" cy="50" r="16" class="ring-10" />
+                    <circle cx="50" cy="50" r="4" class="bullseye" />
+                  </svg>
+                  <div class="laser-dot"></div>
+                  <div class="laser-dot-preview"></div>
+                  <div class="hole-borders-container" aria-hidden="true"></div>
+                  <div class="hole-centers-container" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="console-podium">
+                <div class="console-screen">
+                  <div class="screen-text">LANE 02</div>
+                  <div class="screen-sub">MEDIUM (2 KEYS) // DIAGONAL</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LANE 3 -->
+            <div class="lane" id="lane-3" data-lane-id="3">
+              <div class="lane-number-sign">3</div>
+              <div class="target-container">
+                <div class="laser-target">
+                  <svg class="target-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" class="ring-7" />
+                    <circle cx="50" cy="50" r="38" class="ring-8" />
+                    <circle cx="50" cy="50" r="28" class="ring-9" />
+                    <circle cx="50" cy="50" r="16" class="ring-10" />
+                    <circle cx="50" cy="50" r="4" class="bullseye" />
+                  </svg>
+                  <div class="laser-dot"></div>
+                  <div class="laser-dot-preview"></div>
+                  <div class="hole-borders-container" aria-hidden="true"></div>
+                  <div class="hole-centers-container" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="console-podium">
+                <div class="console-screen">
+                  <div class="screen-text">LANE 03</div>
+                  <div class="screen-sub">HARD (4 KEYS) // CIRCULAR</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- LANE 4 -->
+            <div class="lane" id="lane-4" data-lane-id="4">
+              <div class="lane-number-sign">4</div>
+              <div class="target-container">
+                <div class="laser-target">
+                  <svg class="target-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" class="ring-7" />
+                    <circle cx="50" cy="50" r="38" class="ring-8" />
+                    <circle cx="50" cy="50" r="28" class="ring-9" />
+                    <circle cx="50" cy="50" r="16" class="ring-10" />
+                    <circle cx="50" cy="50" r="4" class="bullseye" />
+                  </svg>
+                  <div class="laser-dot"></div>
+                  <div class="laser-dot-preview"></div>
+                  <div class="hole-borders-container" aria-hidden="true"></div>
+                  <div class="hole-centers-container" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="console-podium">
+                <div class="console-screen">
+                  <div class="screen-text">LANE 04</div>
+                  <div class="screen-sub">EXPERT (RANDOM) // JITTERY</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Laser Beam element -->
+        <div class="laser-beam-container" id="laserBeamContainer">
+          <div class="laser-beam" id="laserBeam"></div>
+        </div>
+
+        <!-- Foreground weapon desk, shared with Shooting Range 1 -->
+        <div class="range-armory-desk" id="rangeArmoryDesk" aria-hidden="true">
+          <div class="armory-desk-label">RANGE CONTROL // REACTION CANNON</div>
+          <div class="armory-desk-lights"><span></span><span></span><span></span></div>
+
+          <div class="cannon-3d-container">
+            <div class="cannon-turret" id="gunTurret">
+              <div class="cannon-base">
+                <div class="base-plate plate-bottom"></div>
+                <div class="base-plate plate-middle"></div>
+                <div class="base-plate plate-top"></div>
+              </div>
+              <div class="cannon-yoke">
+                <div class="yoke-arm arm-left"><div class="yoke-cap"></div><div class="yoke-back"></div></div>
+                <div class="yoke-arm arm-right"><div class="yoke-cap"></div><div class="yoke-back"></div></div>
+                <div class="cannon-barrel-group">
+                  <div class="cannon-barrel">
+                    <div class="barrel-side side-left"></div><div class="barrel-side side-right"></div>
+                    <div class="barrel-side side-top"></div><div class="barrel-side side-bottom"></div><div class="barrel-side side-back"></div>
+                    <div class="cannon-muzzle" id="turretMuzzle">
+                      <div class="muzzle-aperture"></div><div class="muzzle-flash" id="muzzleFlash"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Effects Overlay (Particles & Shakes) -->
+        <div class="effects-overlay" id="effectsOverlay"></div>
+
+        <!-- ==================== GAMEPLAY HUD OVERLAY ==================== -->
+        <div class="gameplay-hud" id="gameplayHud" style="display: none;">
+          <!-- Top Left Score Card -->
+          <div class="hud-panel panel-left">
+            <div class="hud-row">
+              <span class="hud-label">SCORE</span>
+              <span class="hud-value neon-blue" id="hudScore">0</span>
+            </div>
+            <div class="hud-row">
+              <span class="hud-label">BEST</span>
+              <span class="hud-value" id="hudBest">0</span>
+            </div>
+          </div>
+
+          <!-- Top Right Combo / Streak Card -->
+          <div class="hud-panel panel-right">
+            <div class="hud-row">
+              <span class="hud-label">COMBO</span>
+              <span class="hud-value neon-purple" id="hudCombo">x0</span>
+            </div>
+            <div class="streak-badge-container">
+              <span class="streak-badge" id="hudStreakBadge">STREAK INACTIVE</span>
+            </div>
+          </div>
+
+          <!-- Top Center: Shot Counter / Progress -->
+          <div class="hud-center-top">
+            <div class="shot-counter">SHOT <span id="hudCurrentShot">1</span>/10</div>
+            <div class="shot-progress-bar">
+              <div class="shot-progress-fill" id="hudShotProgress" style="width: 10%;"></div>
+            </div>
+          </div>
+
+          <!-- Mid Lower Center: Immediate Hit Feedback -->
+          <div class="hit-feedback-container" id="hitFeedbackContainer">
+            <!-- Dynamically populated: e.g. <div class="feedback-popup perfect">PERFECT HIT +100</div> -->
+          </div>
+
+          <!-- Bottom Center: Press Key Action Prompt -->
+          <div class="hud-input-prompt" id="hudInputPrompt">
+            <span class="prompt-label">PRESS</span>
+            <div class="prompt-key-badge" id="promptKeyBadge">A</div>
+          </div>
+        </div>
+
+        <!-- ==================== STORY / ENTRY BRIEFING OVERLAY ==================== -->
+        <section class="mission-view mission-briefing-card active" id="briefingOverlay" aria-labelledby="storyTitle">
+          <div class="briefing-top-banner"></div>
+          <div class="briefing-panel briefing-intro-panel">
+            <div class="briefing-panel-header">
+              <span class="briefing-eyebrow">MISSIE INTRODUCTIE</span>
+              <div class="briefing-pagination" id="briefingPagination" aria-label="Briefing voortgang">
+                <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+              </div>
+            </div>
+
+            <div class="briefing-slides-container">
+              <div class="briefing-slide active" data-slide="0">
+                <h2 class="briefing-slide-title" id="storyTitle">Test je timing in de TypeMission-reactieschietbaan</h2>
+                <p class="briefing-slide-subtitle">Je schot volgt de rode laser: hoe dichter bij de bullseye, hoe hoger je score.</p>
+                <div class="briefing-slide-graphic">
+                  <div class="briefing-target-demo timing-demo" aria-hidden="true">
+                    <span class="demo-ring ring-a"></span><span class="demo-ring ring-b"></span><span class="demo-ring ring-c"></span>
+                    <span class="demo-bullseye"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="briefing-slide" data-slide="1">
+                <h2 class="briefing-slide-title">Plaats je handen in de basispositie (Home Position)</h2>
+                <div class="briefing-slide-graphic">
+                  <svg viewBox="0 0 580 220" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    class="keyboard-svg" style="max-width: 440px; width: 100%; height: auto;" aria-label="Toetsenbord vingerplaatsing diagram">
+                                    <defs>
+                                      <linearGradient id="handGradientLeft" x1="0" y1="0.3" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="rgba(240, 240, 240, 0.22)" />
+                                        <stop offset="50%" stop-color="rgba(240, 240, 240, 0.12)" />
+                                        <stop offset="100%" stop-color="rgba(240, 240, 240, 0.0)" />
+                                      </linearGradient>
+                                      <linearGradient id="handGradientRight" x1="0" y1="0.3" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="rgba(240, 240, 240, 0.22)" />
+                                        <stop offset="50%" stop-color="rgba(240, 240, 240, 0.12)" />
+                                        <stop offset="100%" stop-color="rgba(240, 240, 240, 0.0)" />
+                                      </linearGradient>
+                                    </defs>
+                                    <!-- Keyboard base -->
+                                    <rect x="10" y="10" width="560" height="200" rx="8" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"
+                                      fill="rgba(9, 17, 36, 0.6)" />
+                  
+                                    <!-- Row 1 -->
+                                    <!-- ~ -->
+                                    <rect x="20" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="36" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">`</text>
+                  
+                                    <!-- 1 -->
+                                    <rect x="56" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="72" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">1</text>
+                  
+                                    <!-- 2 -->
+                                    <rect x="92" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="108" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">2</text>
+                  
+                                    <!-- 3 -->
+                                    <rect x="128" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="144" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">3</text>
+                  
+                                    <!-- 4 -->
+                                    <rect x="164" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="180" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">4</text>
+                  
+                                    <!-- 5 -->
+                                    <rect x="200" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="216" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">5</text>
+                  
+                                    <!-- 6 -->
+                                    <rect x="236" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="252" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">6</text>
+                  
+                                    <!-- 7 -->
+                                    <rect x="272" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="288" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">7</text>
+                  
+                                    <!-- 8 -->
+                                    <rect x="308" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="324" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">8</text>
+                  
+                                    <!-- 9 -->
+                                    <rect x="344" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="360" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">9</text>
+                  
+                                    <!-- 0 -->
+                                    <rect x="380" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="396" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">0</text>
+                  
+                                    <!-- - -->
+                                    <rect x="416" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="432" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">-</text>
+                  
+                                    <!-- = -->
+                                    <rect x="452" y="20" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="468" y="41" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">=</text>
+                  
+                                    <!-- backspace -->
+                                    <rect x="488" y="20" width="72" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="524" y="39" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">backspace</text>
+                  
+                                    <!-- Row 2 -->
+                                    <!-- tab -->
+                                    <rect x="20" y="56" width="48" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="44" y="75" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">tab</text>
+                  
+                                    <!-- Q -->
+                                    <rect x="72" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="88" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">Q</text>
+                  
+                                    <!-- W -->
+                                    <rect x="108" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="124" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">W</text>
+                  
+                                    <!-- E -->
+                                    <rect x="144" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="160" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">E</text>
+                  
+                                    <!-- R -->
+                                    <rect x="180" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="196" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">R</text>
+                  
+                                    <!-- T -->
+                                    <rect x="216" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="232" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">T</text>
+                  
+                                    <!-- Y -->
+                                    <rect x="252" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="268" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">Y</text>
+                  
+                                    <!-- U -->
+                                    <rect x="288" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="304" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">U</text>
+                  
+                                    <!-- I -->
+                                    <rect x="324" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="340" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">I</text>
+                  
+                                    <!-- O -->
+                                    <rect x="360" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="376" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">O</text>
+                  
+                                    <!-- P -->
+                                    <rect x="396" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="412" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">P</text>
+                  
+                                    <!-- [ -->
+                                    <rect x="432" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="448" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">[</text>
+                  
+                                    <!-- ] -->
+                                    <rect x="468" y="56" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="484" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">]</text>
+                  
+                                    <!-- \ -->
+                                    <rect x="504" y="56" width="56" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="532" y="77" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">\</text>
+                  
+                                    <!-- Row 3 -->
+                                    <!-- caps lock -->
+                                    <rect x="20" y="92" width="58" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="49" y="111" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">caps lock</text>
+                  
+                                    <!-- A -->
+                                    <rect x="82" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="98" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">A</text>
+                  
+                                    <!-- S -->
+                                    <rect x="118" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="134" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">S</text>
+                  
+                                    <!-- D -->
+                                    <rect x="154" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="170" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">D</text>
+                  
+                                    <!-- F (Home Key - Highlighted Green) -->
+                                    <rect x="190" y="92" width="32" height="32" rx="4" stroke="var(--green)" stroke-width="1.5" fill="rgba(154, 215, 68, 0.12)" />
+                                    <text x="206" y="113" fill="var(--green)" font-family="Roboto, sans-serif" font-size="10" font-weight="700" text-anchor="middle">F</text>
+                  
+                                    <!-- G -->
+                                    <rect x="226" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="242" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">G</text>
+                  
+                                    <!-- H -->
+                                    <rect x="262" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="278" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">H</text>
+                  
+                                    <!-- J (Home Key - Highlighted Green) -->
+                                    <rect x="298" y="92" width="32" height="32" rx="4" stroke="var(--green)" stroke-width="1.5" fill="rgba(154, 215, 68, 0.12)" />
+                                    <text x="314" y="113" fill="var(--green)" font-family="Roboto, sans-serif" font-size="10" font-weight="700" text-anchor="middle">J</text>
+                  
+                                    <!-- K -->
+                                    <rect x="334" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="350" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">K</text>
+                  
+                                    <!-- L -->
+                                    <rect x="370" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="386" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">L</text>
+                  
+                                    <!-- ; -->
+                                    <rect x="406" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="422" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">;</text>
+                  
+                                    <!-- ' -->
+                                    <rect x="442" y="92" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="458" y="113" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">'</text>
+                  
+                                    <!-- enter -->
+                                    <rect x="478" y="92" width="82" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="519" y="111" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">enter</text>
+                  
+                                    <!-- Row 4 -->
+                                    <!-- left shift -->
+                                    <rect x="20" y="128" width="72" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="56" y="147" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">shift</text>
+                  
+                                    <!-- Z -->
+                                    <rect x="96" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="112" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">Z</text>
+                  
+                                    <!-- X -->
+                                    <rect x="132" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="148" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">X</text>
+                  
+                                    <!-- C -->
+                                    <rect x="168" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="184" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">C</text>
+                  
+                                    <!-- V -->
+                                    <rect x="204" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="220" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">V</text>
+                  
+                                    <!-- B -->
+                                    <rect x="240" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="256" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">B</text>
+                  
+                                    <!-- N -->
+                                    <rect x="276" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="292" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">N</text>
+                  
+                                    <!-- M -->
+                                    <rect x="312" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="328" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">M</text>
+                  
+                                    <!-- , -->
+                                    <rect x="348" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="364" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">,</text>
+                  
+                                    <!-- . -->
+                                    <rect x="384" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="400" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">.</text>
+                  
+                                    <!-- / -->
+                                    <rect x="420" y="128" width="32" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="436" y="149" fill="rgba(255,255,255,0.45)" font-family="Roboto, sans-serif" font-size="10" font-weight="500" text-anchor="middle">/</text>
+                  
+                                    <!-- right shift -->
+                                    <rect x="456" y="128" width="104" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="508" y="147" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">shift</text>
+                  
+                                    <!-- Row 5 -->
+                                    <!-- left ctrl -->
+                                    <rect x="20" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="42" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">ctrl</text>
+                  
+                                    <!-- left win -->
+                                    <rect x="68" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="90" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">win</text>
+                  
+                                    <!-- left alt -->
+                                    <rect x="116" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="138" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">alt</text>
+                  
+                                    <!-- spacebar -->
+                                    <rect x="164" y="164" width="232" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  
+                                    <!-- right alt -->
+                                    <rect x="400" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="422" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">alt</text>
+                  
+                                    <!-- blank key / fn -->
+                                    <rect x="448" y="164" width="44" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                  
+                                    <!-- right ctrl -->
+                                    <rect x="496" y="164" width="64" height="32" rx="4" stroke="rgba(255,255,255,0.08)" fill="rgba(255,255,255,0.03)" />
+                                    <text x="528" y="183" fill="rgba(255,255,255,0.3)" font-family="Roboto, sans-serif" font-size="8" font-weight="500" text-anchor="middle">ctrl</text>
+                  
+                                    <!-- Left Hand silhouette overlay -->
+                                    <path
+                                      d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z"
+                                      transform="translate(15, 80) scale(1.1, 1.1)"
+                                      fill="url(#handGradientLeft)" />
+                  
+                                    <!-- Right Hand silhouette overlay -->
+                                    <path
+                                      d="M0 107.5C2.16667 100.167 5.5 85 6 82C6.58124 78.5126 15 51.5 22 45.5C29 39.5 34 28.5 38.5 27.5C43 26.5 56 17.5 56.5 14C56.9 11.2 61.3333 10.1667 63.5 10L69.5 11L79.5 7L87.5 5L96.5 6L102.5 4L112.5 0L122 1L129 3.5L138.5 4.5L143.5 8V15.5L141.5 21.5L134.5 24.5H129.5L128 23L108.5 35.5L107.5 39.5L107 45.5L103.5 56L99 65.5L93.5 73.5V80L97 84.5C97.8333 84.6667 99.6 85 100 85C100.4 85 102.833 82.6667 104 81.5L108 73.5L112.5 65L117.5 56C119.167 53.1667 122.6 47.4 123 47C123.4 46.6 127.833 42.5 130 40.5L147 27.5L157 21.5L159.5 21L163 19L166.5 16.5L170.5 15L176 16.5L180 21.5L179.5 28L175.5 34.5L168 45C166.667 46.6667 163.9 50.1 163.5 50.5C163 51 156.5 58 156 58.5C155.5 59 153 63.5 153 64C153 64.4 151.333 68.8333 150.5 71L149 75.5L145 82.5C144 84.1667 141.9 87.7 141.5 88.5C141 89.5 137.5 93 137 94.5C136.5 96 133.5 99.5 133.5 101C133.5 102.5 133 106 133 106.5C133 106.9 133.457 107.948 133.79 108.615L151.384 108.762C153.05 105.428 155.5 98.9 155.5 98.5C155.5 98 158 91 159 90.5C159.8 90.1 164.143 86.6667 166.214 85L171.5 83.5L177.5 85.5L182 89.5L181.5 95.5C181 97.6667 179.9 102.2 179.5 103C179.1 103.8 179.333 106.667 179.5 108L180 109L151.384 108.762L133.79 108.615L0 107.5Z"
+                                      transform="translate(505, 80) scale(-1.1, 1.1)"
+                                      fill="url(#handGradientRight)" />
+                                  </svg>
+                </div>
+              </div>
+
+              <div class="briefing-slide" data-slide="2">
+                <h2 class="briefing-slide-title">Volg de laser en typ exact op het juiste moment</h2>
+                <p class="briefing-slide-subtitle">Wacht tot de laser de roos bereikt en druk dan op de getoonde letter.</p>
+                <div class="briefing-slide-graphic">
+                  <div class="briefing-action-demo timing-action animated-action-demo" aria-hidden="true">
+                    <div class="briefing-action-key">A</div><div class="briefing-action-arrow">→</div>
+                    <div class="briefing-action-target"><span class="timing-laser"></span></div><div class="briefing-action-flash">PERFECT +100</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="briefing-footer">
+              <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
+              <button class="spacebar-btn-visual" id="spacebarAdvanceBtn" type="button" aria-label="Volgende briefingstap"><span class="spacebar-icon-line" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== GAME OVER / RESULTS OVERLAY ==================== -->
+        <section class="mission-view mission-results-card" id="resultsOverlay" aria-hidden="true" style="display: none;">
+          <div class="briefing-top-banner"></div>
+          <div class="briefing-panel">
+            <div class="briefing-panel-header">
+              <span class="briefing-eyebrow">MISSIE VOLTOOID // RAPPORT</span>
+              <span class="briefing-code" id="resultsCode">STATUS: GEVERIFIEERD</span>
+            </div>
+            <div class="briefing-content">
+              <div class="results-hero">
+                <div class="results-rank" id="resultsRank">B</div>
+                <div>
+                  <h2 class="briefing-slide-title" id="resultsGradeText">MISSIE GESLAAGD</h2>
+                  <p class="results-subtitle" id="resultsSubtitle">Lane voltooid • 10 schoten geregistreerd</p>
+                </div>
+              </div>
+
+              <div class="results-stats-grid">
+                <div class="result-stat-card">
+                  <span class="res-label">EINDSCORE</span>
+                  <span class="res-val neon-blue" id="resScore">0</span>
+                </div>
+                <div class="result-stat-card">
+                  <span class="res-label">BESTE SCORE</span>
+                  <span class="res-val" id="resBest">0</span>
+                </div>
+                <div class="result-stat-card">
+                  <span class="res-label">NAUWKEURIGHEID</span>
+                  <span class="res-val neon-purple" id="resAccuracy">0%</span>
+                </div>
+                <div class="result-stat-card">
+                  <span class="res-label">HOOGSTE COMBO</span>
+                  <span class="res-val" id="resMaxCombo">x0</span>
+                </div>
+                <div class="result-stat-card">
+                  <span class="res-label">PERFECTE TREFFERS</span>
+                  <span class="res-val" id="resPerfect">0/10</span>
+                </div>
+                <div class="result-stat-card reward-card">
+                  <span class="res-label">CREDITS VERDIEND</span>
+                  <span class="res-val text-green" id="resCoins">+0</span>
+                </div>
+              </div>
+
+              <div class="results-breakdown">
+                <div class="breakdown-item">
+                  <span>Scorebeloning</span>
+                  <span><strong id="breakdownBaseCoins">0</strong> credits</span>
+                </div>
+                <div class="breakdown-item">
+                  <span>Perfect-bonus</span>
+                  <span><strong id="breakdownPerfectBonus">0</strong> credits</span>
+                </div>
+              </div>
+
+              <div class="briefing-actions">
+                <button class="cyber-btn" id="retryLaneBtn">OPNIEUW SPELEN</button>
+                <button class="cyber-btn secondary" id="exitRangeBtn">ANDERE BAAN</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
