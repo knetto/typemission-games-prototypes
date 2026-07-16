@@ -610,64 +610,56 @@
         </section>
 
         <!-- ==================== GAME OVER / RESULTS OVERLAY ==================== -->
-        <section class="mission-view mission-results-card" id="resultsOverlay" aria-hidden="true" style="display: none;">
-          <div class="briefing-top-banner"></div>
-          <div class="briefing-panel">
-            <div class="briefing-panel-header">
-              <span class="briefing-eyebrow">MISSIE VOLTOOID // RAPPORT</span>
-              <span class="briefing-code" id="resultsCode">STATUS: GEVERIFIEERD</span>
+        <section class="mission-view mission-results-card" id="resultsOverlay" aria-live="polite" aria-hidden="true" style="display: none;">
+          <div class="result-container">
+            <header class="result-header">
+              <p class="result-eyebrow">SHOOTING RANGE EVALUATIE // SYSTEM REPORT</p>
+              <h2 id="resultsGradeText">MISSIE GESLAAGD!</h2>
+              <div class="result-rank-bar">
+                <span>EVALUATIE RANG:</span>
+                <strong class="rank-badge-text" id="resultsRank">AGENT</strong>
+              </div>
+            </header>
+
+            <div class="result-dashboard-grid">
+              <div class="dashboard-card">
+                <span class="card-title">EINDSCORE</span>
+                <div class="card-value-container"><span class="card-main-value" id="resScore">0</span></div>
+                <span class="card-footer-label">TOTALE PUNTEN</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">BESTE SCORE</span>
+                <div class="card-value-container"><span class="card-main-value" id="resBest">0</span></div>
+                <span class="card-footer-label" id="resultsRecordLabel">PERSOONLIJK RECORD</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">NAUWKEURIGHEID</span>
+                <div class="card-value-container"><span class="card-main-value highlight-green" id="resAccuracy">0%</span></div>
+                <span class="card-footer-label">CORRECTE AANSLAGEN</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">FLAWLESS STREAK</span>
+                <div class="card-value-container"><span class="streak-circle-value" id="resMaxCombo">0</span></div>
+                <span class="card-footer-label">HOOGSTE COMBO</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">MISSION STATUS</span>
+                <div class="card-value-container"><span class="status-success-badge">GESLAAGD</span></div>
+                <span class="card-footer-label"><strong id="resPerfect">0/10</strong> PERFECTE TREFFERS</span>
+              </div>
+              <div class="dashboard-card highlight-glow">
+                <span class="card-title">TOTAL CREDITS</span>
+                <div class="card-value-container credits-container">
+                  <span class="credit-mark" aria-hidden="true">C</span>
+                  <span class="card-main-value" id="resCoins">0</span>
+                </div>
+                <span class="card-footer-label">SUPER SPY SCHOOL MUNTEN</span>
+              </div>
             </div>
-            <div class="briefing-content">
-              <div class="results-hero">
-                <div class="results-rank" id="resultsRank">B</div>
-                <div>
-                  <h2 class="briefing-slide-title" id="resultsGradeText">MISSIE GESLAAGD</h2>
-                  <p class="results-subtitle" id="resultsSubtitle">Lane voltooid • 10 schoten geregistreerd</p>
-                </div>
-              </div>
 
-              <div class="results-stats-grid">
-                <div class="result-stat-card">
-                  <span class="res-label">EINDSCORE</span>
-                  <span class="res-val neon-blue" id="resScore">0</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">BESTE SCORE</span>
-                  <span class="res-val" id="resBest">0</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">NAUWKEURIGHEID</span>
-                  <span class="res-val neon-purple" id="resAccuracy">0%</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">HOOGSTE COMBO</span>
-                  <span class="res-val" id="resMaxCombo">x0</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">PERFECTE TREFFERS</span>
-                  <span class="res-val" id="resPerfect">0/10</span>
-                </div>
-                <div class="result-stat-card reward-card">
-                  <span class="res-label">CREDITS VERDIEND</span>
-                  <span class="res-val text-green" id="resCoins">+0</span>
-                </div>
-              </div>
-
-              <div class="results-breakdown">
-                <div class="breakdown-item">
-                  <span>Scorebeloning</span>
-                  <span><strong id="breakdownBaseCoins">0</strong> credits</span>
-                </div>
-                <div class="breakdown-item">
-                  <span>Perfect-bonus</span>
-                  <span><strong id="breakdownPerfectBonus">0</strong> credits</span>
-                </div>
-              </div>
-
-              <div class="briefing-actions">
-                <button class="cyber-btn" id="retryLaneBtn">OPNIEUW SPELEN</button>
-                <button class="cyber-btn secondary" id="exitRangeBtn">ANDERE BAAN</button>
-              </div>
+            <div class="results-actions results-actions-split">
+              <button class="result-action-button secondary" id="exitRangeBtn" type="button">ANDERE BAAN</button>
+              <button class="result-action-button primary" id="retryLaneBtn" type="button">OPNIEUW SPELEN</button>
             </div>
           </div>
         </section>

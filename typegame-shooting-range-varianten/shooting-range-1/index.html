@@ -614,38 +614,55 @@
         </section>
 
         <!-- ── GAME OVER / RESULTS OVERLAY ── -->
-        <section class="mission-view mission-results-card" id="resultsOverlay" aria-hidden="true" style="display: none;">
-          <div class="briefing-top-banner error-banner"></div>
-          <div class="briefing-panel">
-            <div class="briefing-panel-header">
-              <span class="briefing-eyebrow">MISSIE VOLTOOID // RAPPORT</span>
-              <span class="briefing-code" id="resultsCode">STATUS: SUCCES</span>
+        <section class="mission-view mission-results-card" id="resultsOverlay" aria-live="polite" aria-hidden="true" style="display: none;">
+          <div class="result-container">
+            <header class="result-header">
+              <p class="result-eyebrow">SHOOTING RANGE EVALUATIE // SYSTEM REPORT</p>
+              <h2>TRAINING VOLTOOID!</h2>
+              <div class="result-rank-bar">
+                <span>EVALUATIE RANG:</span>
+                <strong class="rank-badge-text" id="resultsRank">AGENT</strong>
+              </div>
+            </header>
+
+            <div class="result-dashboard-grid">
+              <div class="dashboard-card">
+                <span class="card-title">CHARACTERS PER MINUTE</span>
+                <div class="card-value-container"><span class="card-main-value" id="resCpm">0</span></div>
+                <span class="card-footer-label">TYPESNELHEID</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">EINDSCORE</span>
+                <div class="card-value-container"><span class="card-main-value" id="resScore">0000</span></div>
+                <span class="card-footer-label">TOTALE PUNTEN</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">NAUWKEURIGHEID</span>
+                <div class="card-value-container"><span class="card-main-value highlight-green" id="resAccuracy">0%</span></div>
+                <span class="card-footer-label">CORRECTE AANSLAGEN</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">FLAWLESS STREAK</span>
+                <div class="card-value-container"><span class="streak-circle-value" id="resMaxCombo">0</span></div>
+                <span class="card-footer-label">HOOGSTE COMBO</span>
+              </div>
+              <div class="dashboard-card">
+                <span class="card-title">MISSION STATUS</span>
+                <div class="card-value-container"><span class="status-success-badge">GESLAAGD</span></div>
+                <span class="card-footer-label">MISSIE VOLTOOID</span>
+              </div>
+              <div class="dashboard-card highlight-glow">
+                <span class="card-title">TREFFERS</span>
+                <div class="card-value-container"><span class="card-main-value" id="resHits">0</span></div>
+                <span class="card-footer-label">DOELEN UITGESCHAKELD</span>
+              </div>
             </div>
-            <div class="briefing-content">
-              <h2 class="briefing-slide-title">Prestatie Analyse</h2>
 
-              <div class="results-stats-grid">
-                <div class="result-stat-card">
-                  <span class="res-label">EIND SCORE</span>
-                  <span class="res-val text-green" id="resScore">0000</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">NAUWKEURIGHEID</span>
-                  <span class="res-val text-green" id="resAccuracy">0%</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">MAX COMBO</span>
-                  <span class="res-val text-green" id="resMaxCombo">x0</span>
-                </div>
-                <div class="result-stat-card">
-                  <span class="res-label">SNELHEID (CPM)</span>
-                  <span class="res-val text-green" id="resCpm">0</span>
-                </div>
-              </div>
-
-              <div class="briefing-actions">
-                <button class="cyber-btn" id="restartMissionBtn">HERSTART TESTMISSIE</button>
-              </div>
+            <div class="results-actions">
+              <p class="spacebar-instruction">Druk op de spatiebalk om opnieuw te proberen</p>
+              <button class="spacebar-btn-visual" id="restartMissionBtn" type="button" aria-label="Missie opnieuw proberen">
+                <span class="spacebar-icon-line" aria-hidden="true"></span>
+              </button>
             </div>
           </div>
         </section>

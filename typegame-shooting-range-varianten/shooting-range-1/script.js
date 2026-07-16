@@ -200,42 +200,136 @@ class SoundManager {
 
 const sounds = new SoundManager();
 
-// Setup Matrix Rain Background
+// Shared interactive dotted-wave background
 function setupMatrix() {
   const canvas = document.getElementById('matrix-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+  const dotSpacing = 28;
+  let cols = Math.floor(width / dotSpacing) + 1;
+  let rows = Math.floor(height / dotSpacing) + 1;
+  let time = 0;
+  let animationFrameId = null;
+  let lastFrameTime = 0;
+
+  const mouse = {
+    x: -9999,
+    y: -9999,
+    targetX: -9999,
+    targetY: -9999,
+    active: false
+  };
+
+  function activatePointer(x, y) {
+    mouse.targetX = x;
+    mouse.targetY = y;
+    mouse.active = true;
+    if (!animationFrameId) draw();
   }
-  resize();
-  window.addEventListener('resize', resize);
-  
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789;:-=+*';
-  const fontSize = 14;
-  let colsCount = Math.floor(canvas.width / fontSize) + 1;
-  const drops = Array(colsCount).fill(1);
-  
+
+  window.addEventListener('mousemove', (event) => {
+    activatePointer(event.clientX, event.clientY);
+  });
+
+  window.addEventListener('mouseleave', () => {
+    mouse.active = false;
+    if (!animationFrameId) draw();
+  });
+
+  window.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    if (touch) activatePointer(touch.clientX, touch.clientY);
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.active = false;
+    if (!animationFrameId) draw();
+  });
+
   function draw() {
-    ctx.fillStyle = 'rgba(5, 2, 7, 0.08)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.fillStyle = 'rgba(154, 215, 68, 0.15)'; // green glow color
-    ctx.font = fontSize + 'px monospace';
-    
-    for (let i = 0; i < drops.length; i++) {
-      const char = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-      
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
+    ctx.fillStyle = '#050206';
+    ctx.fillRect(0, 0, width, height);
+    time += 0.02;
+
+    if (mouse.active) {
+      if (mouse.x === -9999) {
+        mouse.x = mouse.targetX;
+        mouse.y = mouse.targetY;
+      } else {
+        mouse.x += (mouse.targetX - mouse.x) * 0.15;
+        mouse.y += (mouse.targetY - mouse.y) * 0.15;
       }
-      drops[i]++;
+    } else if (mouse.x !== -9999) {
+      mouse.x += (-9999 - mouse.x) * 0.1;
+      mouse.y += (-9999 - mouse.y) * 0.1;
+      if (Math.abs(mouse.x + 9999) < 1) {
+        mouse.x = -9999;
+        mouse.y = -9999;
+      }
+    }
+
+    for (let col = 0; col < cols; col++) {
+      for (let row = 0; row < rows; row++) {
+        const phase = col * 0.15 + row * 0.15 - time;
+        const wave = Math.sin(phase);
+        let x = col * dotSpacing + Math.cos(phase) * 3;
+        let y = row * dotSpacing + wave * 6;
+        let radius = 2;
+        let opacity = 0.14 + (wave + 1) * 0.05;
+
+        if (mouse.x !== -9999) {
+          const deltaX = x - mouse.x;
+          const deltaY = y - mouse.y;
+          const distance = Math.hypot(deltaX, deltaY);
+          const interactionRadius = 150;
+
+          if (distance < interactionRadius) {
+            const force = (interactionRadius - distance) / interactionRadius;
+            const angle = Math.atan2(deltaY, deltaX);
+            const pushDistance = force * 24;
+            x += Math.cos(angle) * pushDistance;
+            y += Math.sin(angle) * pushDistance;
+            radius += force * 1.5;
+            opacity += force * 0.35;
+          }
+        }
+
+        ctx.fillStyle = `rgba(154, 215, 68, ${opacity})`;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
   }
-  setInterval(draw, 35);
+
+  function animate(now) {
+    animationFrameId = requestAnimationFrame(animate);
+    const frameInterval = 1000 / 30;
+    const delta = now - lastFrameTime;
+
+    if (delta > frameInterval) {
+      lastFrameTime = now - (delta % frameInterval);
+      draw();
+    }
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    draw();
+  } else {
+    animationFrameId = requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    cols = Math.floor(width / dotSpacing) + 1;
+    rows = Math.floor(height / dotSpacing) + 1;
+
+    if (!animationFrameId) draw();
+  });
 }
 
 // Spawns a target at a random percentage location on the back wall
@@ -674,11 +768,14 @@ function finishMission() {
   const accuracy = totalKeysPressed > 0 ? Math.round((correctKeysPressed / totalKeysPressed) * 100) : 100;
   const elapsedSeconds = (Date.now() - startTime) / 1000;
   const cpmValue = elapsedSeconds > 0 ? Math.round((correctKeysPressed / elapsedSeconds) * 60) : 0;
+  const rank = maxCombo >= 15 ? 'AGENT ELITE' : maxCombo >= 8 ? 'VELDAGENT' : 'AGENT';
 
   document.getElementById('resScore').textContent = String(score).padStart(4, '0');
   document.getElementById('resAccuracy').textContent = `${accuracy}%`;
-  document.getElementById('resMaxCombo').textContent = `x${maxCombo}`;
+  document.getElementById('resMaxCombo').textContent = maxCombo;
   document.getElementById('resCpm').textContent = cpmValue;
+  document.getElementById('resHits').textContent = correctKeysPressed;
+  document.getElementById('resultsRank').textContent = rank;
 
   document.getElementById('resultsOverlay').style.display = 'flex';
   document.getElementById('resultsOverlay').setAttribute('aria-hidden', 'false');
@@ -749,6 +846,14 @@ document.getElementById('spacebarAdvanceBtn').addEventListener('click', advanceB
 
 window.addEventListener('keydown', (event) => {
   if (event.code !== 'Space' || isPlaying) return;
+
+  const results = document.getElementById('resultsOverlay');
+  if (results?.getAttribute('aria-hidden') === 'false') {
+    event.preventDefault();
+    startMission();
+    return;
+  }
+
   const briefing = document.getElementById('briefingOverlay');
   if (briefing && briefing.style.display !== 'none') {
     event.preventDefault();
