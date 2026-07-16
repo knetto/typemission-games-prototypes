@@ -119,7 +119,7 @@ function sampleLane4Motion(motion, now, speedScale = 1) {
 }
 
 // Game state variables
-let gameState = "briefing"; // briefing, lobby, transitioning, playing, results
+let gameState = "briefing"; // briefing, lobby, transitioning, playing, complete, results
 let activeLaneId = null;
 let currentShot = 1;
 const maxShots = 10;
@@ -135,6 +135,8 @@ let laserX = 50; // percentage inside target
 let laserY = 50; // percentage inside target
 let laserAnimationId = null;
 let lobbyPreviewAnimationId = null;
+let laneTransitionTimeout = null;
+let nextShotTimeout = null;
 let currentKeyPrompt = "";
 let isShotResolving = false;
 let startTime = null;
@@ -944,7 +946,8 @@ function selectLane(laneId) {
   document.getElementById('headerStatusText').textContent = `ZOOMING_LANE_0${laneId}`;
 
   // Complete transition after CSS animation finishes (1.2s)
-  setTimeout(() => {
+  laneTransitionTimeout = setTimeout(() => {
+    laneTransitionTimeout = null;
     briefingOverlay.style.display = "none";
     briefingOverlay.style.opacity = 1;
     startPlaying();
@@ -953,6 +956,8 @@ function selectLane(laneId) {
 
 // Start Gameplay Loop
 function startPlaying() {
+  if (!activeLaneId) return;
+
   gameState = "playing";
   currentShot = 1;
   score = 0;
@@ -977,6 +982,9 @@ function startPlaying() {
   // Update UI Elements
   document.getElementById('headerStatusText').textContent = "WEAPON_ONLINE";
   document.getElementById('gameplayHud').style.display = "flex";
+  document.getElementById('missionCompletePrompt').hidden = true;
+  document.getElementById('resultsOverlay').style.display = "none";
+  document.getElementById('resultsOverlay').setAttribute('aria-hidden', 'true');
   
   // Load Best Score from localStorage
   const savedBest = localStorage.getItem(`typegame_range2_best_lane_${activeLaneId}`) || 0;
@@ -1155,7 +1163,10 @@ function resolveShot(pressedKey) {
     
     // Advance shot count after delay
     currentShot++;
-    setTimeout(nextShot, 800);
+    nextShotTimeout = setTimeout(() => {
+      nextShotTimeout = null;
+      if (gameState === "playing") nextShot();
+    }, 800);
     return;
   }
 
@@ -1230,7 +1241,10 @@ function resolveShot(pressedKey) {
   updateHud();
 
   currentShot++;
-  setTimeout(nextShot, 800);
+  nextShotTimeout = setTimeout(() => {
+    nextShotTimeout = null;
+    if (gameState === "playing") nextShot();
+  }, 800);
 }
 
 // Spawn sparks inside target board relative to laser percentage location
@@ -1310,7 +1324,7 @@ function updateHud() {
 
 // End game and show results overlay
 function finishGame() {
-  gameState = "results";
+  gameState = "complete";
   sounds.stopHum();
   sounds.playMilestone();
   document.getElementById('headerStatusText').textContent = "MISSION_COMPLETE";
@@ -1374,7 +1388,15 @@ function finishGame() {
     document.getElementById('resultsRecordLabel').textContent = "PERSOONLIJK RECORD";
   }
 
-  // Display results view
+  // Keep the completed lane visible until the player requests the report.
+  document.getElementById('missionCompletePrompt').hidden = false;
+}
+
+function showResultsReport() {
+  if (gameState !== "complete") return;
+
+  gameState = "results";
+  document.getElementById('missionCompletePrompt').hidden = true;
   const resultsOverlay = document.getElementById('resultsOverlay');
   resultsOverlay.style.display = "flex";
   resultsOverlay.setAttribute('aria-hidden', 'false');
@@ -1382,6 +1404,26 @@ function finishGame() {
 
 // Exit results back to main lobby selection
 function exitToLobby() {
+  if (laneTransitionTimeout) {
+    clearTimeout(laneTransitionTimeout);
+    laneTransitionTimeout = null;
+  }
+  if (nextShotTimeout) {
+    clearTimeout(nextShotTimeout);
+    nextShotTimeout = null;
+  }
+  if (laserAnimationId) {
+    cancelAnimationFrame(laserAnimationId);
+    laserAnimationId = null;
+  }
+
+  sounds.stopHum();
+  document.getElementById('gameplayHud').style.display = "none";
+  document.getElementById('missionCompletePrompt').hidden = true;
+  document.querySelectorAll('.lane.playing-active').forEach(lane => {
+    lane.classList.remove('playing-active');
+  });
+
   gameState = "lobby";
   document.getElementById('rangeWrapper')?.classList.remove('gameplay-lane-active');
   document.getElementById('gameplayTunnel')?.classList.remove('active');
@@ -1434,10 +1476,30 @@ document.getElementById('exitRangeBtn').addEventListener('click', () => {
   exitToLobby();
 });
 
+document.getElementById('cancelLaneBtn').addEventListener('click', () => {
+  if (gameState === "playing" || gameState === "transitioning") exitToLobby();
+});
+
 document.getElementById('spacebarAdvanceBtn').addEventListener('click', advanceBriefingSlide);
+document.getElementById('viewResultsBtn').addEventListener('click', showResultsReport);
 
 window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && (gameState === "playing" || gameState === "transitioning")) {
+    event.preventDefault();
+    exitToLobby();
+    return;
+  }
+
   if (event.code !== 'Space') return;
+
+  if (gameState === "complete") {
+    event.preventDefault();
+    const viewResultsButton = document.getElementById('viewResultsBtn');
+    viewResultsButton.classList.add('pressed');
+    setTimeout(() => viewResultsButton.classList.remove('pressed'), 100);
+    showResultsReport();
+    return;
+  }
 
   if (gameState === "results") {
     event.preventDefault();

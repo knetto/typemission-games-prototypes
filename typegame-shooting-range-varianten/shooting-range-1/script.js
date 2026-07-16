@@ -35,6 +35,7 @@ let maxCombo = 0;
 let totalKeysPressed = 0;
 let correctKeysPressed = 0;
 let isPlaying = false;
+let resultsAwaiting = false;
 let startTime = null;
 let gameTimerInterval = null;
 let activeBriefingSlide = 0;
@@ -739,6 +740,7 @@ function advanceBriefingSlide() {
 function startMission() {
   sounds.init();
   isPlaying = true;
+  resultsAwaiting = false;
   score = 0;
   combo = 0;
   maxCombo = 0;
@@ -751,6 +753,7 @@ function startMission() {
   document.getElementById('briefingOverlay').setAttribute('aria-hidden', 'true');
   document.getElementById('resultsOverlay').style.display = 'none';
   document.getElementById('resultsOverlay').setAttribute('aria-hidden', 'true');
+  document.getElementById('missionCompletePrompt').hidden = true;
 
   if (targetAimTimeout) clearTimeout(targetAimTimeout);
   resetCannonAim();
@@ -777,6 +780,15 @@ function finishMission() {
   document.getElementById('resHits').textContent = correctKeysPressed;
   document.getElementById('resultsRank').textContent = rank;
 
+  resultsAwaiting = true;
+  document.getElementById('missionCompletePrompt').hidden = false;
+}
+
+function showResultsReport() {
+  if (!resultsAwaiting) return;
+
+  resultsAwaiting = false;
+  document.getElementById('missionCompletePrompt').hidden = true;
   document.getElementById('resultsOverlay').style.display = 'flex';
   document.getElementById('resultsOverlay').setAttribute('aria-hidden', 'false');
 }
@@ -843,9 +855,19 @@ function setupLessonDropdown() {
 
 // Wire buttons
 document.getElementById('spacebarAdvanceBtn').addEventListener('click', advanceBriefingSlide);
+document.getElementById('viewResultsBtn').addEventListener('click', showResultsReport);
 
 window.addEventListener('keydown', (event) => {
   if (event.code !== 'Space' || isPlaying) return;
+
+  if (resultsAwaiting) {
+    event.preventDefault();
+    const viewResultsButton = document.getElementById('viewResultsBtn');
+    viewResultsButton.classList.add('pressed');
+    setTimeout(() => viewResultsButton.classList.remove('pressed'), 100);
+    showResultsReport();
+    return;
+  }
 
   const results = document.getElementById('resultsOverlay');
   if (results?.getAttribute('aria-hidden') === 'false') {

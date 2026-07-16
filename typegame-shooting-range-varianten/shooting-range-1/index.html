@@ -293,6 +293,17 @@
         </div>
 
         <!-- ── STORY / BRIEFING OVERLAY ── -->
+        <div class="mission-complete-prompt" id="missionCompletePrompt" hidden aria-live="polite">
+          <div class="mission-complete-panel">
+            <span class="mission-complete-icon" aria-hidden="true">✓</span>
+            <strong>MISSIE VOLTOOID</strong>
+            <p>Druk op de spatiebalk om de uitslag te bekijken</p>
+            <button class="spacebar-btn-visual" id="viewResultsBtn" type="button" aria-label="Bekijk uitslag">
+              <span class="spacebar-icon-line" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
         <section class="mission-view mission-briefing-card active" id="briefingOverlay" aria-labelledby="storyTitle">
           <div class="briefing-top-banner"></div>
           <div class="briefing-panel briefing-intro-panel">
@@ -648,7 +659,7 @@
               </div>
               <div class="dashboard-card">
                 <span class="card-title">MISSION STATUS</span>
-                <div class="card-value-container"><span class="status-success-badge">GESLAAGD</span></div>
+                <div class="card-value-container"><span class="status-success-badge" id="missionBadge">GESLAAGD</span></div>
                 <span class="card-footer-label">MISSIE VOLTOOID</span>
               </div>
               <div class="dashboard-card highlight-glow">

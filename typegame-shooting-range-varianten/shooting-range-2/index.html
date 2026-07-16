@@ -245,6 +245,11 @@
 
         <!-- ==================== GAMEPLAY HUD OVERLAY ==================== -->
         <div class="gameplay-hud" id="gameplayHud" style="display: none;">
+          <button class="cancel-lane-button" id="cancelLaneBtn" type="button" aria-label="Actieve baan annuleren en teruggaan naar het baanoverzicht">
+            <span aria-hidden="true">←</span>
+            <span>BAAN ANNULEREN</span>
+          </button>
+
           <!-- Top Left Score Card -->
           <div class="hud-panel panel-left">
             <div class="hud-row">
@@ -289,6 +294,17 @@
         </div>
 
         <!-- ==================== STORY / ENTRY BRIEFING OVERLAY ==================== -->
+        <div class="mission-complete-prompt" id="missionCompletePrompt" hidden aria-live="polite">
+          <div class="mission-complete-panel">
+            <span class="mission-complete-icon" aria-hidden="true">✓</span>
+            <strong>MISSIE VOLTOOID</strong>
+            <p>Druk op de spatiebalk om de uitslag te bekijken</p>
+            <button class="spacebar-btn-visual" id="viewResultsBtn" type="button" aria-label="Bekijk uitslag">
+              <span class="spacebar-icon-line" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
         <section class="mission-view mission-briefing-card active" id="briefingOverlay" aria-labelledby="storyTitle">
           <div class="briefing-top-banner"></div>
           <div class="briefing-panel briefing-intro-panel">
@@ -644,7 +660,7 @@
               </div>
               <div class="dashboard-card">
                 <span class="card-title">MISSION STATUS</span>
-                <div class="card-value-container"><span class="status-success-badge">GESLAAGD</span></div>
+                <div class="card-value-container"><span class="status-success-badge" id="missionBadge">GESLAAGD</span></div>
                 <span class="card-footer-label"><strong id="resPerfect">0/10</strong> PERFECTE TREFFERS</span>
               </div>
               <div class="dashboard-card highlight-glow">

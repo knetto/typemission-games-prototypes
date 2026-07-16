@@ -856,16 +856,17 @@ body::before {
 /* Target Movement Preview Dot */
 .laser-dot-preview {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   background: var(--neon-cyan);
   border-radius: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 
-    0 0 6px var(--neon-cyan),
-    0 0 12px var(--neon-cyan);
+    0 0 7px var(--neon-cyan),
+    0 0 15px var(--neon-cyan),
+    0 0 22px var(--neon-cyan-glow);
   pointer-events: none;
   z-index: 10;
   opacity: 0.65;
@@ -1027,8 +1028,8 @@ body::before {
 /* The Moving Laser Dot */
 .laser-dot {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   background: #ff3b30;
   border-radius: 50%;
   top: 50%;
@@ -1037,9 +1038,9 @@ body::before {
      physically in front of those layers as well as above them by z-index. */
   transform: translate(-50%, -50%) translateZ(8px);
   box-shadow: 
-    0 0 8px #ff3b30,
-    0 0 16px #ff3b30,
-    0 0 24px #ff3b30;
+    0 0 9px #ff3b30,
+    0 0 19px #ff3b30,
+    0 0 30px #ff3b30;
   pointer-events: none;
   z-index: 30;
   display: none; /* Only visible when zoomed in / active */
@@ -1380,6 +1381,48 @@ body::before {
   justify-content: space-between;
   padding: 24px;
   animation: hud-fade-in 0.8s ease-out forwards;
+}
+
+.cancel-lane-button {
+  position: absolute;
+  left: 24px;
+  top: 108px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.86);
+  background: rgba(10, 8, 18, 0.88);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  font: 800 0.65rem "Orbitron", sans-serif;
+  letter-spacing: 0.7px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.cancel-lane-button span:first-child {
+  color: var(--neon-cyan);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.cancel-lane-button:hover,
+.cancel-lane-button:focus-visible {
+  color: #fff;
+  border-color: var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.09);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.cancel-lane-button:active {
+  transform: translateY(0);
 }
 
 @keyframes hud-fade-in {
@@ -2040,6 +2083,14 @@ body::before {
 
   .gameplay-hud {
     padding: 14px;
+  }
+
+  .cancel-lane-button {
+    left: 14px;
+    top: 82px;
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 0.52rem;
   }
 
   .hud-panel {
@@ -3085,8 +3136,9 @@ body::before {
 }
 
 .gameplay-hud .hud-input-prompt {
-  left: 22%;
-  bottom: 20px;
+  left: 50%;
+  bottom: 12px;
+  z-index: 96;
 }
 
 .gameplay-hud .hit-feedback-container {
@@ -3671,6 +3723,123 @@ body::before {
   .mission-results-card[aria-hidden="false"] .status-success-badge,
   .mission-results-card[aria-hidden="false"] .results-actions {
     opacity: 1;
+    animation: none;
+  }
+}
+
+/* Completion gate shown before the full result report */
+.mission-complete-prompt {
+  position: absolute;
+  inset: 0;
+  z-index: 145;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  pointer-events: auto;
+  background: radial-gradient(circle at center, rgba(5, 2, 7, 0.18), rgba(5, 2, 7, 0.62));
+  backdrop-filter: blur(2px);
+}
+
+.mission-complete-prompt[hidden] {
+  display: none !important;
+}
+
+.mission-complete-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: min(90%, 360px);
+  padding: clamp(18px, 3vh, 26px);
+  border: 2px solid #9ad744;
+  border-radius: 10px;
+  color: #9ad744;
+  background: rgba(4, 8, 12, 0.94);
+  box-shadow: inset 0 0 30px rgba(154, 215, 68, 0.12), 0 15px 45px rgba(0, 0, 0, 0.72);
+  text-align: center;
+  animation: missionCompleteEntry 0.45s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.mission-complete-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font: 900 1.65rem/1 "Orbitron", sans-serif;
+  filter: drop-shadow(0 0 8px rgba(154, 215, 68, 0.45));
+}
+
+.mission-complete-panel strong {
+  font: 900 clamp(1rem, 2.6vh, 1.35rem) "Orbitron", sans-serif;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 9px rgba(154, 215, 68, 0.45);
+}
+
+.mission-complete-panel p {
+  margin: 10px 0;
+  color: rgba(255, 255, 255, 0.82);
+  font: 700 clamp(0.65rem, 1.4vh, 0.78rem) "Orbitron", sans-serif;
+}
+
+.mission-complete-panel .spacebar-icon-line {
+  background: #9ad744;
+  box-shadow: 0 0 5px #9ad744;
+}
+
+.mission-complete-prompt.is-failed .mission-complete-panel {
+  border-color: #ff3b30;
+  color: #ff3b30;
+  box-shadow: inset 0 0 30px rgba(255, 59, 48, 0.12), 0 15px 45px rgba(0, 0, 0, 0.72);
+}
+
+.mission-complete-prompt.is-failed .mission-complete-icon {
+  filter: drop-shadow(0 0 8px rgba(255, 59, 48, 0.45));
+}
+
+.mission-complete-prompt.is-failed .mission-complete-panel strong {
+  text-shadow: 0 0 9px rgba(255, 59, 48, 0.45);
+}
+
+.mission-complete-prompt.is-failed .spacebar-icon-line {
+  background: #ff3b30;
+  box-shadow: 0 0 5px #ff3b30;
+}
+
+/* Status stamps always use semantic colors, independent of the game accent. */
+.mission-results-card .status-success-badge {
+  border-color: #9ad744;
+  color: #9ad744;
+  box-shadow: inset 0 0 8px rgba(154, 215, 68, 0.18), 0 0 8px rgba(154, 215, 68, 0.25);
+}
+
+.mission-results-card .status-failed-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border: 2px solid #ff3b30;
+  border-radius: 4px;
+  color: #ff3b30;
+  font: 900 clamp(0.82rem, 2vh, 1.15rem) "Orbitron", sans-serif;
+  letter-spacing: 1px;
+  box-shadow: inset 0 0 8px rgba(255, 59, 48, 0.18), 0 0 8px rgba(255, 59, 48, 0.25);
+}
+
+.mission-results-card[aria-hidden="false"] .status-failed-badge {
+  animation: shootingResultStamp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.25) 0.6s both;
+}
+
+@keyframes missionCompleteEntry {
+  from { opacity: 0; transform: translateY(18px) scale(0.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-complete-panel {
+    animation: none;
+  }
+
+  .mission-results-card[aria-hidden="false"] .status-failed-badge {
     animation: none;
   }
 }
