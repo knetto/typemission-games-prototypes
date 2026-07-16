@@ -11,7 +11,7 @@ const laneConfigs = {
     speedIncreasePerShot: 0.08,
     jitterAmount: 0,
     movementType: "horizontal",
-    rangeX: 38,
+    rangeX: 62,
     rangeY: 0
   },
   2: {
@@ -22,7 +22,7 @@ const laneConfigs = {
     jitterAmount: 0,
     movementType: "vertical",
     rangeX: 0,
-    rangeY: 38
+    rangeY: 62
   },
   3: {
     name: "Lane 3: Hard",
@@ -31,8 +31,8 @@ const laneConfigs = {
     speedIncreasePerShot: 0.10,
     jitterAmount: 0.5,
     movementType: "diagonal",
-    rangeX: 38,
-    rangeY: 25
+    rangeX: 60,
+    rangeY: 46
   },
   4: {
     name: "Lane 4: Expert",
@@ -41,16 +41,16 @@ const laneConfigs = {
     speedIncreasePerShot: 0.12,
     jitterAmount: 0,
     movementType: "randomWaypoints",
-    rangeX: 40,
-    rangeY: 40,
+    rangeX: 65,
+    rangeY: 65,
     waypointDurationMin: 900,
     waypointDurationMax: 1250,
     centerEvery: 3
   }
 };
 
-// Lane 4 travels between smooth random points inside the round target. Every
-// few legs deliberately lead through the bullseye so center shots stay viable.
+// Lane 4 travels across the complete firing area, including positions beyond
+// the paper. Every few legs still passes the bullseye so center shots stay viable.
 function createLane4Waypoint(nearCenter = false) {
   if (nearCenter) {
     return {
@@ -60,7 +60,7 @@ function createLane4Waypoint(nearCenter = false) {
   }
 
   const angle = Math.random() * Math.PI * 2;
-  const radius = 16 + Math.sqrt(Math.random()) * 24;
+  const radius = 20 + Math.sqrt(Math.random()) * 45;
   return {
     x: 50 + Math.cos(angle) * radius,
     y: 50 + Math.sin(angle) * radius
@@ -597,13 +597,18 @@ function fireLaserBeamAndHole(pctX, pctY, ringHit) {
   const activeLaneEl = document.getElementById(`lane-${activeLaneId}`);
   const targetEl = activeLaneEl.querySelector('.laser-target');
 
-  // Create damage layout (new hole) on active target
-  createImpactVariation(targetEl, pctX, pctY);
+  // A complete miss lands on the back wall and must not tear the paper.
+  const boardDistance = Math.hypot(pctX - 50, pctY - 50);
+  if (boardDistance <= 48) {
+    createImpactVariation(targetEl, pctX, pctY);
+  }
 
-  // Trigger pulse scale animation on targetEl
+  // Only pulse the physical board when the projectile actually touches it.
   targetEl.classList.remove('target-pulse');
-  void targetEl.offsetWidth; // force reflow
-  targetEl.classList.add('target-pulse');
+  if (boardDistance <= 48) {
+    void targetEl.offsetWidth; // force reflow
+    targetEl.classList.add('target-pulse');
+  }
 
   // Snap turret aim to hit point
   aimCannonAtLaserDot(pctX / 100, pctY / 100, true);
@@ -758,7 +763,7 @@ function frameSelectedLane(laneId) {
   const cameraZ = 0;
   const targetDepth = 750;
   const projectedScale = perspective / (perspective + targetDepth - cameraZ);
-  const desiredTargetSize = Math.min(430, stageWidth * 0.315, stageHeight * 0.43);
+  const desiredTargetSize = Math.min(380, stageWidth * 0.28, stageHeight * 0.38);
   const targetWorldSize = desiredTargetSize / projectedScale;
 
   // Keep this in sync with the responsive lane percentages in styles.css.
@@ -980,9 +985,9 @@ function startLaserMovement() {
       laserY = point.y;
     }
 
-    // Keep laser inbounds 5% to 95%
-    laserX = Math.max(5, Math.min(95, laserX));
-    laserY = Math.max(5, Math.min(95, laserY));
+    // The firing area extends beyond the paper for genuine complete misses.
+    laserX = Math.max(-18, Math.min(118, laserX));
+    laserY = Math.max(-18, Math.min(118, laserY));
 
     // Update laser element visual position
     laserDotEl.style.left = `${laserX}%`;
