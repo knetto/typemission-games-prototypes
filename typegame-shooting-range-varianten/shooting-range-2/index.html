@@ -42,6 +42,16 @@
         <span class="stage-glow" aria-hidden="true"></span>
         <div class="morph-flash" id="morphFlash" aria-hidden="true"></div>
 
+        <!-- Fixed gameplay room: this is deliberately outside the moving lane
+             camera so its 3D planes can never be sorted in front of the target. -->
+        <div class="gameplay-tunnel" id="gameplayTunnel" aria-hidden="true">
+          <div class="gameplay-tunnel-plane tunnel-ceiling"></div>
+          <div class="gameplay-tunnel-plane tunnel-floor"></div>
+          <div class="gameplay-tunnel-plane tunnel-wall tunnel-wall-left"></div>
+          <div class="gameplay-tunnel-plane tunnel-wall tunnel-wall-right"></div>
+          <div class="gameplay-tunnel-plane tunnel-back-wall"></div>
+        </div>
+
         <!-- 3D Environment Wrapper -->
         <div class="range-3d-wrapper" id="rangeWrapper">
           <div class="range-3d-env" id="rangeEnv">
@@ -51,6 +61,13 @@
               <div class="ceiling-light light-1"></div>
               <div class="ceiling-light light-2"></div>
               <div class="ceiling-light light-3"></div>
+            </div>
+
+            <div class="lane-bay-walls" aria-hidden="true">
+              <div class="lane-bay-wall bay-1"><span>01</span><i></i></div>
+              <div class="lane-bay-wall bay-2"><span>02</span><i></i></div>
+              <div class="lane-bay-wall bay-3"><span>03</span><i></i></div>
+              <div class="lane-bay-wall bay-4"><span>04</span><i></i></div>
             </div>
 
             <!-- Floor -->
@@ -79,7 +96,7 @@
 
             <!-- ==================== 4 LANES ==================== -->
             <!-- LANE 1 -->
-            <div class="lane" id="lane-1" data-lane-id="1">
+            <div class="lane" id="lane-1" data-lane-id="1" role="button" tabindex="0" aria-label="Kies baan 1: makkelijk, 1 letter, horizontaal">
               <div class="lane-number-sign">1</div>
               <div class="target-container">
                 <div class="laser-target">
@@ -100,12 +117,13 @@
                 <div class="console-screen">
                   <div class="screen-text">LANE 01</div>
                   <div class="screen-sub">EASY (1 LETTER) // HORIZONTAL</div>
+                  <div class="screen-action">KLIK OF DRUK 1</div>
                 </div>
               </div>
             </div>
 
             <!-- LANE 2 -->
-            <div class="lane" id="lane-2" data-lane-id="2">
+            <div class="lane" id="lane-2" data-lane-id="2" role="button" tabindex="0" aria-label="Kies baan 2: gemiddeld, 2 toetsen, verticaal">
               <div class="lane-number-sign">2</div>
               <div class="target-container">
                 <div class="laser-target">
@@ -125,13 +143,14 @@
               <div class="console-podium">
                 <div class="console-screen">
                   <div class="screen-text">LANE 02</div>
-                  <div class="screen-sub">MEDIUM (2 KEYS) // DIAGONAL</div>
+                  <div class="screen-sub">MEDIUM (2 KEYS) // VERTICAL</div>
+                  <div class="screen-action">KLIK OF DRUK 2</div>
                 </div>
               </div>
             </div>
 
             <!-- LANE 3 -->
-            <div class="lane" id="lane-3" data-lane-id="3">
+            <div class="lane" id="lane-3" data-lane-id="3" role="button" tabindex="0" aria-label="Kies baan 3: moeilijk, 4 toetsen, diagonaal">
               <div class="lane-number-sign">3</div>
               <div class="target-container">
                 <div class="laser-target">
@@ -151,13 +170,14 @@
               <div class="console-podium">
                 <div class="console-screen">
                   <div class="screen-text">LANE 03</div>
-                  <div class="screen-sub">HARD (4 KEYS) // CIRCULAR</div>
+                  <div class="screen-sub">HARD (4 KEYS) // DIAGONAL</div>
+                  <div class="screen-action">KLIK OF DRUK 3</div>
                 </div>
               </div>
             </div>
 
             <!-- LANE 4 -->
-            <div class="lane" id="lane-4" data-lane-id="4">
+            <div class="lane" id="lane-4" data-lane-id="4" role="button" tabindex="0" aria-label="Kies baan 4: expert, willekeurig, onvoorspelbaar">
               <div class="lane-number-sign">4</div>
               <div class="target-container">
                 <div class="laser-target">
@@ -177,7 +197,8 @@
               <div class="console-podium">
                 <div class="console-screen">
                   <div class="screen-text">LANE 04</div>
-                  <div class="screen-sub">EXPERT (RANDOM) // JITTERY</div>
+                  <div class="screen-sub">EXPERT (RANDOM) // FREE ROAM</div>
+                  <div class="screen-action">KLIK OF DRUK 4</div>
                 </div>
               </div>
             </div>

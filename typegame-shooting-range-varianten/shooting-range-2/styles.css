@@ -247,6 +247,145 @@ body {
   pointer-events: none;
 }
 
+/* The selected target still uses the moving lane camera, but the room does not.
+   Keeping the room in its own fixed perspective scene prevents its large planes
+   from crossing the camera while retaining genuine 3D depth. */
+.range-3d-wrapper.gameplay-lane-active {
+  background: transparent;
+  box-shadow:
+    inset 0 0 110px rgba(0,0,0,0.78),
+    inset 0 -3px 0 rgba(0,240,255,0.12);
+}
+
+.gameplay-tunnel {
+  --gameplay-room-depth: clamp(560px, 62vw, 920px);
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  perspective: 1000px;
+  perspective-origin: 50% 48%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 0.45s ease;
+}
+
+.gameplay-tunnel.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gameplay-tunnel-plane {
+  position: absolute;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.tunnel-back-wall {
+  inset: 0;
+  transform: translateZ(calc(var(--gameplay-room-depth) * -1));
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(27, 63, 75, 0.72), transparent 55%),
+    repeating-linear-gradient(0deg, transparent 0 52px, rgba(83, 123, 139, 0.2) 52px 55px),
+    repeating-linear-gradient(90deg, transparent 0 92px, rgba(255,255,255,0.025) 92px 94px),
+    linear-gradient(90deg, #070c11, #14252e 50%, #070c11);
+  border: 5px solid #26343d;
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.74);
+}
+
+.tunnel-back-wall::before {
+  content: "";
+  position: absolute;
+  inset: 8% 8% auto;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(201, 253, 255, 0.72);
+  box-shadow: 0 0 16px rgba(0,240,255,0.8), 0 22px 48px rgba(0,240,255,0.16);
+}
+
+.tunnel-floor,
+.tunnel-ceiling {
+  left: 0;
+  width: 100%;
+  height: var(--gameplay-room-depth);
+}
+
+.tunnel-floor {
+  bottom: 0;
+  transform-origin: center bottom;
+  transform: rotateX(90deg);
+  background:
+    linear-gradient(rgba(0,240,255,0.09) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(0,240,255,0.1) 2px, transparent 2px),
+    radial-gradient(ellipse at 50% 30%, rgba(24, 65, 77, 0.9), #070b10 72%);
+  background-size: 74px 74px, 74px 74px, 100% 100%;
+  background-position: center bottom;
+  border-top: 5px solid #334852;
+  box-shadow: inset 0 40px 120px rgba(0,0,0,0.56);
+}
+
+.tunnel-ceiling {
+  top: 0;
+  transform-origin: center top;
+  transform: rotateX(-90deg);
+  background:
+    radial-gradient(ellipse 54px 16px at 22% 34%, #d9feff 0 12%, rgba(0,240,255,0.52) 28%, transparent 70%),
+    radial-gradient(ellipse 54px 16px at 50% 34%, #d9feff 0 12%, rgba(0,240,255,0.52) 28%, transparent 70%),
+    radial-gradient(ellipse 54px 16px at 78% 34%, #d9feff 0 12%, rgba(0,240,255,0.52) 28%, transparent 70%),
+    repeating-linear-gradient(0deg, #121820 0 42px, #080b10 42px 84px);
+  border-bottom: 4px solid #020305;
+  box-shadow: inset 0 -70px 150px rgba(0,0,0,0.86);
+}
+
+.tunnel-wall {
+  top: 0;
+  width: var(--gameplay-room-depth);
+  height: 100%;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 78px, rgba(89,112,124,0.16) 78px 81px),
+    linear-gradient(90deg, #18242d, #070b10 78%);
+  box-shadow: inset 0 0 130px rgba(0,0,0,0.62);
+}
+
+.tunnel-wall-left {
+  left: 0;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  border-right: 5px solid #020407;
+}
+
+.tunnel-wall-right {
+  right: 0;
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+  border-left: 5px solid #020407;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 78px, rgba(89,112,124,0.16) 78px 81px),
+    linear-gradient(-90deg, #18242d, #070b10 78%);
+}
+
+.range-3d-wrapper.gameplay-lane-active .range-3d-env {
+  z-index: 1;
+}
+
+/* The stable background replaces every room-sized 3D plane once selected.
+   Keeping the ceiling or floor inside the translated camera makes those
+   elements cross the perspective plane and expand into viewport-sized slabs. */
+.range-3d-env[class*="zoom-lane-"] .room-ceiling,
+.range-3d-env[class*="zoom-lane-"] .room-floor,
+.range-3d-env[class*="zoom-lane-"] .room-wall,
+.range-3d-env[class*="zoom-lane-"] .lane-bay-walls,
+.range-3d-env[class*="zoom-lane-"] .lane-divider {
+  display: none !important;
+}
+
+.range-3d-env[class*="zoom-lane-"] .console-podium,
+.range-3d-env[class*="zoom-lane-"] .lane-number-sign,
+.range-3d-env.gameplay-active .console-podium {
+  display: none !important;
+}
+
 /* ROOM ELEMENTS COMMON */
 .room-ceiling,
 .room-floor,
@@ -365,6 +504,97 @@ body {
   display: none;
 }
 
+/* Lobby building shell. During gameplay this folds away so the existing
+   single-target camera and timing mechanics keep their original framing. */
+.lane-bay-walls {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.range-3d-env.lobby-active .lane-bay-walls {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lane-bay-walls {
+  position: absolute;
+  z-index: 1;
+  top: 15%;
+  left: 3.5%;
+  right: 3.5%;
+  height: 45%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 3px solid #292d38;
+  border-top-width: 9px;
+  background: #05070b;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.85);
+}
+
+.lane-bay-wall {
+  position: relative;
+  overflow: hidden;
+  border-right: 6px solid #252934;
+  background:
+    radial-gradient(ellipse at 50% 62%, rgba(25, 46, 60, 0.62), transparent 52%),
+    linear-gradient(90deg, rgba(255,255,255,0.025), transparent 18%, transparent 82%, rgba(255,255,255,0.025)),
+    repeating-linear-gradient(0deg, #090b11 0 38px, #0e1119 38px 40px);
+  box-shadow: inset 0 0 55px rgba(0,0,0,0.72);
+  transition: background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.lane-bay-wall:last-child { border-right: 0; }
+
+.lane-bay-wall::before {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 10px;
+  height: 5px;
+  border-radius: 50%;
+  background: #bdfcff;
+  box-shadow: 0 0 12px #00f0ff, 0 15px 30px rgba(0, 240, 255, 0.18);
+  opacity: 0.52;
+}
+
+.lane-bay-wall span {
+  position: absolute;
+  top: 23px;
+  right: 15px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: rgba(176, 188, 209, 0.32);
+}
+
+.lane-bay-wall i {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  height: 18px;
+  border-top: 2px solid #343946;
+  background: linear-gradient(180deg, #171b23, #080a0e);
+}
+
+.range-3d-env.lobby-active:has(#lane-1:hover) .bay-1,
+.range-3d-env.lobby-active:has(#lane-2:hover) .bay-2,
+.range-3d-env.lobby-active:has(#lane-3:hover) .bay-3,
+.range-3d-env.lobby-active:has(#lane-4:hover) .bay-4,
+.range-3d-env.lobby-active:has(#lane-1:focus-visible) .bay-1,
+.range-3d-env.lobby-active:has(#lane-2:focus-visible) .bay-2,
+.range-3d-env.lobby-active:has(#lane-3:focus-visible) .bay-3,
+.range-3d-env.lobby-active:has(#lane-4:focus-visible) .bay-4 {
+  background:
+    radial-gradient(ellipse at 50% 58%, rgba(0, 240, 255, 0.15), transparent 58%),
+    linear-gradient(90deg, rgba(0,240,255,0.04), transparent 20%, transparent 80%, rgba(0,240,255,0.04)),
+    repeating-linear-gradient(0deg, #0a1117 0 38px, #10202a 38px 40px);
+  box-shadow: inset 0 0 40px rgba(0,240,255,0.12), 0 0 28px rgba(0,240,255,0.12);
+}
+
 .lab-title {
   position: absolute;
   top: 35px;
@@ -389,24 +619,29 @@ body {
   cursor: default;
   transition: filter 0.4s ease;
   pointer-events: none; /* Ignore clicks on empty spaces between lanes */
+  outline: none;
 }
 
-.range-3d-env.lobby-active .lane-number-sign,
-.range-3d-env.lobby-active .target-container,
-.range-3d-env.lobby-active .console-podium {
-  pointer-events: auto; /* Clicks are captured on physical components */
+.range-3d-env.lobby-active .lane {
+  width: 25%;
+  transform: translateX(-50%);
+  pointer-events: auto;
   cursor: pointer;
+  z-index: 5;
+  outline: none;
 }
 
 /* Responsive, symmetrical placement keeps all four lanes inside the viewport. */
-#lane-1 { left: 8%; transform: translateX(-50%) translateZ(-400px); }
-#lane-2 { left: 36%; transform: translateX(-50%) translateZ(-400px); }
-#lane-3 { left: 64%; transform: translateX(-50%) translateZ(-400px); }
-#lane-4 { left: 92%; transform: translateX(-50%) translateZ(-400px); }
+#lane-1 { left: 12.5%; transform: translateX(-50%) translateZ(-400px); }
+#lane-2 { left: 37.5%; transform: translateX(-50%) translateZ(-400px); }
+#lane-3 { left: 62.5%; transform: translateX(-50%) translateZ(-400px); }
+#lane-4 { left: 87.5%; transform: translateX(-50%) translateZ(-400px); }
 
 /* Highlight lane on hover (in overview state) */
 .range-3d-env.lobby-active .lane:hover {
-  filter: brightness(1.25);
+  /* A filter on the whole 3D lane creates a new flattened compositor layer,
+     which makes its foreground console appear to jump. Highlight children only. */
+  filter: none;
 }
 
 .range-3d-env.lobby-active .lane:hover .lane-number-sign {
@@ -422,7 +657,20 @@ body {
 
 .range-3d-env.lobby-active .lane:hover .laser-target {
   border-color: var(--neon-cyan);
-  box-shadow: 0 0 15px var(--neon-cyan-glow);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.82), 0 0 24px var(--neon-cyan-glow);
+  transform: scale(1.035);
+}
+
+.range-3d-env.lobby-active .lane:focus-visible .lane-number-sign {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px var(--neon-cyan-glow);
+  border-color: var(--neon-cyan);
+}
+
+.range-3d-env.lobby-active .lane:focus-visible .console-screen,
+.range-3d-env.lobby-active .lane:focus-visible .laser-target {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-cyan-glow);
 }
 
 /* Lane Divider Partition Walls (Cyber Glass) */
@@ -447,6 +695,23 @@ body {
 .divider-2 { left: 50%; transform: translateZ(-400px) rotateY(90deg); }
 .divider-3 { left: 78%; transform: translateZ(-400px) rotateY(90deg); }
 
+.range-3d-env.lobby-active .lane-divider {
+  z-index: 4;
+  top: 15%;
+  bottom: 0;
+  width: 18px;
+  height: auto;
+  border: 0;
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  background: linear-gradient(90deg, rgba(9,11,16,0.92), #343946 46%, #10131a 54%, rgba(5,7,10,0.95));
+  box-shadow: 0 0 12px rgba(0,240,255,0.12);
+  transform: translateX(-50%);
+}
+
+.range-3d-env.lobby-active .divider-1 { left: 25%; }
+.range-3d-env.lobby-active .divider-2 { left: 50%; }
+.range-3d-env.lobby-active .divider-3 { left: 75%; }
+
 /* Floor lane tracks (Bowling alley style) */
 .floor-lane-track {
   position: absolute;
@@ -470,10 +735,62 @@ body {
   opacity: 0.85;
 }
 
-.track-1 { left: 0%; width: 22%; }
-.track-2 { left: 22%; width: 28%; }
-.track-3 { left: 50%; width: 28%; }
-.track-4 { left: 78%; width: 22%; }
+.track-1 { left: 0%; width: 25%; }
+.track-2 { left: 25%; width: 25%; }
+.track-3 { left: 50%; width: 25%; }
+.track-4 { left: 75%; width: 25%; }
+
+.range-3d-env.lobby-active .room-ceiling {
+  z-index: 0;
+  height: 22%;
+  clip-path: none;
+  border-bottom: 0;
+  background:
+    linear-gradient(180deg, rgba(4,5,8,0.98), rgba(11,13,18,0.94)),
+    repeating-linear-gradient(90deg, transparent 0 8%, rgba(255,255,255,0.025) 8% 8.15%);
+}
+
+.range-3d-env.lobby-active .room-floor {
+  z-index: 2;
+  height: 50%;
+  clip-path: none;
+  border-top: 5px solid #303541;
+  background:
+    linear-gradient(180deg, rgba(8,11,16,0.96), rgba(3,4,7,0.99)),
+    repeating-linear-gradient(90deg, transparent 0 70px, rgba(255,255,255,0.018) 70px 71px);
+  box-shadow: inset 0 22px 45px rgba(0,0,0,0.72);
+}
+
+.range-3d-env.lobby-active .floor-grid {
+  opacity: 0.35;
+  background-size: 48px 48px;
+}
+
+.range-3d-env.lobby-active .floor-lane-track {
+  clip-path: polygon(17% 0, 83% 0, 100% 100%, 0 100%);
+  border: 0;
+  background:
+    linear-gradient(90deg, rgba(6,12,17,0.95), rgba(22,42,52,0.68) 50%, rgba(6,12,17,0.95)),
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(255,255,255,0.026) 14px 15px);
+  box-shadow: inset 13px 0 0 rgba(0,0,0,0.35), inset -13px 0 0 rgba(0,0,0,0.35);
+}
+
+.range-3d-env.lobby-active .floor-lane-track::after {
+  position: absolute;
+  top: 24%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: rgba(160, 238, 246, 0.13);
+  text-shadow: 0 0 16px rgba(0, 240, 255, 0.1);
+}
+.range-3d-env.lobby-active .track-1::after { content: "01"; }
+.range-3d-env.lobby-active .track-2::after { content: "02"; }
+.range-3d-env.lobby-active .track-3::after { content: "03"; }
+.range-3d-env.lobby-active .track-4::after { content: "04"; }
 
 /* Highlight floor track on hover in lobby or during active zoom/gameplay */
 .range-3d-env.lobby-active:has(#lane-1:hover) .track-1,
@@ -569,6 +886,32 @@ body {
   transition: all 0.3s ease;
 }
 
+.range-3d-env.lobby-active .lane-number-sign {
+  top: 18.5%;
+  width: 58px;
+  height: 39px;
+  transform: translateX(-50%);
+  border: 2px solid rgba(0, 240, 255, 0.34);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(18,25,32,0.98), rgba(4,7,10,0.98));
+  color: #d6fbff;
+  font-size: 1.3rem;
+  text-shadow: 0 0 10px rgba(0,240,255,0.3);
+  box-shadow: 0 7px 16px rgba(0,0,0,0.68), inset 0 0 12px rgba(0,240,255,0.06);
+}
+
+.range-3d-env.lobby-active .lane-number-sign::before,
+.range-3d-env.lobby-active .lane-number-sign::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3));
+}
+.range-3d-env.lobby-active .lane-number-sign::before { right: 100%; }
+.range-3d-env.lobby-active .lane-number-sign::after { left: 100%; transform: rotate(180deg); }
+
 /* Target positioning inside the lane */
 .lane .target-container {
   position: absolute;
@@ -578,6 +921,13 @@ body {
   width: 260px;
   height: 260px;
   transform-style: preserve-3d;
+}
+
+.range-3d-env.lobby-active .lane .target-container {
+  top: 27%;
+  width: clamp(90px, 10.5vw, 160px);
+  height: clamp(90px, 10.5vw, 160px);
+  transform: translateX(-50%);
 }
 
 /*
@@ -665,13 +1015,15 @@ body {
   border-radius: 50%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /* Impact holes use real translateZ layers. Keep the live aiming point
+     physically in front of those layers as well as above them by z-index. */
+  transform: translate(-50%, -50%) translateZ(8px);
   box-shadow: 
     0 0 8px #ff3b30,
     0 0 16px #ff3b30,
     0 0 24px #ff3b30;
   pointer-events: none;
-  z-index: 10;
+  z-index: 30;
   display: none; /* Only visible when zoomed in / active */
 }
 
@@ -724,6 +1076,21 @@ body {
   transition: all 0.3s ease;
 }
 
+.range-3d-env.lobby-active .console-podium {
+  bottom: 4%;
+  width: calc(100% - 38px);
+  max-width: 265px;
+  height: 82px;
+  padding: 7px;
+  transform: translateX(-50%);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  border: 2px solid #3b414e;
+  border-top-color: rgba(0,240,255,0.42);
+  border-radius: 5px;
+  background: linear-gradient(160deg, #1a1f28, #090b10 70%);
+  box-shadow: 0 14px 25px rgba(0,0,0,0.82), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
 .console-screen {
   width: 100%;
   height: 100%;
@@ -736,7 +1103,7 @@ body {
   justify-content: center;
   padding: 6px;
   box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
 }
 
 .screen-text {
@@ -753,6 +1120,235 @@ body {
   font-size: 0.55rem;
   color: var(--muted);
   text-align: center;
+}
+
+.screen-action {
+  display: none;
+}
+
+.range-3d-env.lobby-active .screen-text {
+  margin-bottom: 2px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.range-3d-env.lobby-active .screen-sub {
+  font-size: clamp(0.44rem, 0.58vw, 0.58rem);
+  line-height: 1.25;
+}
+
+.range-3d-env.lobby-active .screen-action {
+  display: block;
+  margin-top: 6px;
+  padding-top: 4px;
+  width: 100%;
+  border-top: 1px solid rgba(0,240,255,0.14);
+  font-family: "Roboto Mono", monospace;
+  font-size: clamp(0.42rem, 0.55vw, 0.55rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: rgba(198,248,252,0.7);
+}
+
+.range-3d-env.lobby-active .lane:hover .screen-action,
+.range-3d-env.lobby-active .lane:focus-visible .screen-action {
+  color: #ffffff;
+  text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* True room-depth treatment for the four-lane selector. This uses the same
+   rotated floor/ceiling and translated back wall language as Shooting Range 1. */
+.range-3d-wrapper:has(.range-3d-env.lobby-active) {
+  perspective: 1000px;
+  perspective-origin: 50% 45%;
+}
+
+.range-3d-env.lobby-active .room-ceiling {
+  z-index: auto;
+  top: 0;
+  left: -22%;
+  width: 144%;
+  height: var(--room-depth);
+  transform-origin: center top;
+  transform: rotateX(-90deg);
+  clip-path: none;
+  background:
+    linear-gradient(rgba(2,4,8,0.82), rgba(2,4,8,0.94)),
+    repeating-linear-gradient(0deg, #181b22 0 34px, #0b0d12 34px 68px);
+  border-bottom: 3px solid #000;
+  box-shadow: inset 0 -45px 130px rgba(0,0,0,0.92);
+}
+
+.range-3d-env.lobby-active .room-floor {
+  z-index: auto;
+  bottom: 0;
+  left: -22%;
+  width: 144%;
+  height: var(--room-depth);
+  transform-origin: center bottom;
+  transform: rotateX(90deg);
+  clip-path: none;
+  border-top: 4px solid #05070a;
+  background:
+    radial-gradient(ellipse at 50% 58%, rgba(21,42,52,0.85), rgba(6,8,12,0.98) 68%),
+    #080a0e;
+  box-shadow: inset 0 35px 120px rgba(0,0,0,0.94);
+}
+
+.range-3d-env.lobby-active .room-wall.wall-left,
+.range-3d-env.lobby-active .room-wall.wall-right,
+.range-3d-env.lobby-active .room-wall.wall-back {
+  display: block;
+  z-index: auto;
+}
+
+.range-3d-env.lobby-active .room-wall.wall-left {
+  width: var(--room-depth);
+  left: -22%;
+  right: auto;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  background: linear-gradient(90deg, #181c24, #080a0f);
+  border-right: 4px solid #030407;
+}
+
+.range-3d-env.lobby-active .room-wall.wall-right {
+  width: var(--room-depth);
+  right: -22%;
+  left: auto;
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+  background: linear-gradient(-90deg, #181c24, #080a0f);
+  border-left: 4px solid #030407;
+}
+
+.range-3d-env.lobby-active .room-wall.wall-back {
+  width: 144%;
+  left: -22%;
+  transform: translateZ(calc(var(--room-depth) * -1));
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(31,44,54,0.9), rgba(7,9,13,0.98) 72%),
+    repeating-linear-gradient(90deg, transparent 0 12.4%, rgba(255,255,255,0.04) 12.4% 12.6%);
+  box-shadow: inset 0 0 130px rgba(0,0,0,0.9);
+}
+
+.range-3d-env.lobby-active .lane-bay-walls {
+  z-index: auto;
+  left: 2%;
+  right: auto;
+  width: 96%;
+  height: 52%;
+  transform: translateZ(-340px);
+  border-color: #333a46;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.86), inset 0 0 50px rgba(0,0,0,0.85);
+}
+
+.range-3d-env.lobby-active .lane {
+  z-index: 3;
+  width: 24%;
+  transform: translateX(-50%) translateZ(-300px);
+  transform-style: preserve-3d;
+}
+
+/* Match every lane object to the exact centers of the 2%-inset, 96%-wide
+   four-column back wall: 14%, 38%, 62% and 86% of the room. */
+.range-3d-env.lobby-active #lane-1 { left: 14%; }
+.range-3d-env.lobby-active #lane-2 { left: 38%; }
+.range-3d-env.lobby-active #lane-3 { left: 62%; }
+.range-3d-env.lobby-active #lane-4 { left: 86%; }
+
+.range-3d-env.lobby-active .lane .target-container {
+  top: 27%;
+  width: clamp(120px, 12vw, 184px);
+  height: clamp(120px, 12vw, 184px);
+  transform: translateX(-50%) translateZ(60px);
+  transition: transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1), left 0.34s ease;
+}
+
+/* Targets, number signs and consoles share the lane container's centerline. */
+.range-3d-env.lobby-active #lane-1 .target-container,
+.range-3d-env.lobby-active #lane-4 .target-container {
+  left: 50%;
+}
+
+/* Pull only the paper target toward the viewer. The lower lane console is a
+   separate sibling and intentionally receives no positional hover transform. */
+.range-3d-env.lobby-active .lane:hover .target-container,
+.range-3d-env.lobby-active .lane:focus-visible .target-container {
+  transform: translateX(-50%) translateZ(60px) scale(1.08);
+}
+
+.range-3d-env.lobby-active .lane-number-sign {
+  transform: translateX(-50%) translateZ(60px);
+}
+
+.range-3d-env.lobby-active .console-podium {
+  bottom: 108px;
+  transform: translateX(-50%) translateZ(60px) rotateX(-8deg);
+}
+
+/* The floor fans outward toward the viewer, so its visual lane centers are
+   wider than the parallel back-wall centers. Seat each lower sign over the
+   center of its floor strip while preserving a perfectly mirrored layout. */
+.range-3d-env.lobby-active #lane-1 .console-podium { left: 20%; }
+.range-3d-env.lobby-active #lane-2 .console-podium { left: 40%; }
+.range-3d-env.lobby-active #lane-3 .console-podium { left: 60%; }
+.range-3d-env.lobby-active #lane-4 .console-podium { left: 80%; }
+
+.range-3d-env.lobby-active .lane-divider {
+  display: block;
+  z-index: 2;
+  top: 22%;
+  width: clamp(340px, 31vw, 520px);
+  height: 43%;
+  transform-origin: left center;
+  transform: translateZ(-340px) rotateY(-90deg);
+  clip-path: none;
+  border: 1px solid rgba(0, 240, 255, 0.12);
+  border-right: 3px solid rgba(82, 241, 255, 0.48);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 76px, rgba(0,240,255,0.07) 76px 78px),
+    repeating-linear-gradient(0deg, transparent 0 52px, rgba(0,240,255,0.055) 52px 54px),
+    linear-gradient(90deg, rgba(0,240,255,0.025), rgba(0,240,255,0.09) 82%, rgba(0,240,255,0.16));
+  box-shadow:
+    inset 0 0 32px rgba(0,240,255,0.045),
+    0 0 14px rgba(0,240,255,0.14);
+  opacity: 0.68;
+}
+
+.range-3d-env.lobby-active .divider-1 { left: 26%; }
+.range-3d-env.lobby-active .divider-2 {
+  left: 50%;
+  width: 3px;
+  transform: translateX(-50%) translateZ(-280px);
+  border: 0;
+  background: linear-gradient(180deg, transparent, rgba(91, 246, 255, 0.86) 10% 88%, transparent);
+  box-shadow:
+    0 0 8px rgba(0, 240, 255, 0.72),
+    0 0 20px rgba(0, 240, 255, 0.32);
+  opacity: 0.82;
+}
+.range-3d-env.lobby-active .divider-3 { left: 74%; }
+
+.range-3d-env.lobby-active .floor-lane-track {
+  clip-path: none;
+  border-left: 5px solid rgba(0,240,255,0.12);
+  border-right: 5px solid rgba(0,240,255,0.12);
+  background:
+    linear-gradient(90deg, rgba(7,11,15,0.98), rgba(25,48,58,0.72) 50%, rgba(7,11,15,0.98)),
+    repeating-linear-gradient(90deg, transparent 0 18px, rgba(255,255,255,0.028) 18px 19px);
+  box-shadow: inset 20px 0 24px rgba(0,0,0,0.32), inset -20px 0 24px rgba(0,0,0,0.32);
+}
+
+.range-3d-env.lobby-active .laser-dot-preview {
+  display: block !important;
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+  background: #33f6ff;
+  border: 2px solid rgba(255,255,255,0.92);
+  box-shadow: 0 0 5px #fff, 0 0 11px #00f0ff, 0 0 22px #00f0ff;
 }
 
 /* ==================== GAMEPLAY HUD OVERLAY ==================== */
@@ -2011,6 +2607,7 @@ body {
   perspective: 1000px;
   perspective-origin: 50% -35%;
   transform-style: preserve-3d;
+  transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .range-armory-desk::after {
@@ -2514,6 +3111,8 @@ body {
   transform-origin: left center;
   opacity: 0;
   width: 0;
+  border: 0 !important;
+  outline: 0 !important;
 }
 
 .laser-beam.firing {

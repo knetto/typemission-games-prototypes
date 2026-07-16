@@ -19,32 +19,104 @@ const laneConfigs = {
     allowedKeys: ['A', 'F'],
     baseLaserSpeed: 1.5,
     speedIncreasePerShot: 0.10,
+    jitterAmount: 0,
+    movementType: "vertical",
+    rangeX: 0,
+    rangeY: 38
+  },
+  3: {
+    name: "Lane 3: Hard",
+    allowedKeys: ['A', 'F', 'J', 'K'],
+    baseLaserSpeed: 1.75,
+    speedIncreasePerShot: 0.10,
     jitterAmount: 0.5,
     movementType: "diagonal",
     rangeX: 38,
     rangeY: 25
   },
-  3: {
-    name: "Lane 3: Hard",
-    allowedKeys: ['A', 'F', 'J', 'K'],
-    baseLaserSpeed: 2.0,
-    speedIncreasePerShot: 0.12,
-    jitterAmount: 1.2,
-    movementType: "circular",
-    rangeX: 38,
-    rangeY: 35
-  },
   4: {
     name: "Lane 4: Expert",
     allowedKeys: ['A', 'F', 'J', 'K', 'D', 'S', 'L'],
-    baseLaserSpeed: 2.6,
-    speedIncreasePerShot: 0.15,
-    jitterAmount: 2.5,
-    movementType: "jittery",
+    baseLaserSpeed: 2.15,
+    speedIncreasePerShot: 0.12,
+    jitterAmount: 0,
+    movementType: "randomWaypoints",
     rangeX: 40,
-    rangeY: 40
+    rangeY: 40,
+    waypointDurationMin: 900,
+    waypointDurationMax: 1250,
+    centerEvery: 3
   }
 };
+
+// Lane 4 travels between smooth random points inside the round target. Every
+// few legs deliberately lead through the bullseye so center shots stay viable.
+function createLane4Waypoint(nearCenter = false) {
+  if (nearCenter) {
+    return {
+      x: 50 + (Math.random() - 0.5) * 4,
+      y: 50 + (Math.random() - 0.5) * 4
+    };
+  }
+
+  const angle = Math.random() * Math.PI * 2;
+  const radius = 16 + Math.sqrt(Math.random()) * 24;
+  return {
+    x: 50 + Math.cos(angle) * radius,
+    y: 50 + Math.sin(angle) * radius
+  };
+}
+
+function createLane4Motion(fromX = 50, fromY = 50, leg = 0, now = performance.now()) {
+  const config = laneConfigs[4];
+  const nextLeg = leg + 1;
+  const start = { x: fromX, y: fromY };
+  return {
+    // Four control points let Catmull-Rom continue through each waypoint
+    // without easing to zero or producing a visible pause.
+    p0: start,
+    p1: start,
+    p2: createLane4Waypoint(nextLeg % config.centerEvery === 0),
+    p3: createLane4Waypoint((nextLeg + 1) % config.centerEvery === 0),
+    leg: nextLeg,
+    startedAt: now,
+    duration: config.waypointDurationMin
+      + Math.random() * (config.waypointDurationMax - config.waypointDurationMin)
+  };
+}
+
+function sampleLane4Motion(motion, now, speedScale = 1) {
+  const config = laneConfigs[4];
+  let scaledDuration = motion.duration / speedScale;
+
+  // Shift the spline forward while preserving its tangent at every join.
+  while (now - motion.startedAt >= scaledDuration) {
+    motion.startedAt += scaledDuration;
+    motion.p0 = motion.p1;
+    motion.p1 = motion.p2;
+    motion.p2 = motion.p3;
+    motion.leg += 1;
+    motion.p3 = createLane4Waypoint((motion.leg + 1) % config.centerEvery === 0);
+    motion.duration = config.waypointDurationMin
+      + Math.random() * (config.waypointDurationMax - config.waypointDurationMin);
+    scaledDuration = motion.duration / speedScale;
+  }
+
+  const t = Math.min(1, (now - motion.startedAt) / scaledDuration);
+  const t2 = t * t;
+  const t3 = t2 * t;
+  const interpolate = (a, b, c, d) => 0.5 * (
+    (2 * b)
+    + (-a + c) * t
+    + (2 * a - 5 * b + 4 * c - d) * t2
+    + (-a + 3 * b - 3 * c + d) * t3
+  );
+
+  return {
+    x: interpolate(motion.p0.x, motion.p1.x, motion.p2.x, motion.p3.x),
+    y: interpolate(motion.p0.y, motion.p1.y, motion.p2.y, motion.p3.y)
+  };
+}
 
 // Game state variables
 let gameState = "briefing"; // briefing, lobby, transitioning, playing, results
@@ -309,15 +381,18 @@ function setupMatrix() {
 function setupLobby() {
   const lanes = document.querySelectorAll('.lane');
   lanes.forEach(lane => {
-    // Add click event to interactive components inside the lane
-    const interactiveElements = lane.querySelectorAll('.target-container, .console-podium, .lane-number-sign');
-    interactiveElements.forEach(el => {
-      el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (gameState !== "lobby") return;
-        const laneId = parseInt(lane.getAttribute('data-lane-id'), 10);
-        selectLane(laneId);
-      });
+    // The whole architectural bay is selectable, not only the target or sign.
+    lane.addEventListener('click', () => {
+      if (gameState !== "lobby") return;
+      const laneId = parseInt(lane.getAttribute('data-lane-id'), 10);
+      selectLane(laneId);
+    });
+
+    lane.addEventListener('keydown', (event) => {
+      if (gameState !== "lobby" || (event.key !== 'Enter' && event.key !== ' ')) return;
+      event.preventDefault();
+      const laneId = parseInt(lane.getAttribute('data-lane-id'), 10);
+      selectLane(laneId);
     });
 
     // Symmetrical gun hover aim
@@ -355,6 +430,7 @@ function startLobbyPreviews() {
   };
 
   const startTime = Date.now();
+  const lane4PreviewMotion = createLane4Motion(50, 50);
 
   function update() {
     if (gameState !== "lobby" && gameState !== "briefing") {
@@ -374,33 +450,32 @@ function startLobbyPreviews() {
       previewDots[1].style.display = 'block';
     }
 
-    // Lane 2: Diagonal (speed 1.5, rangeX 38, rangeY 25)
+    // Lane 2: Vertical, like lane 1 rotated 90 degrees
     if (previewDots[2]) {
-      const x = 50 + Math.sin(t * 1.5 * Math.PI) * 38;
-      const y = 50 + Math.cos(t * 1.5 * 0.7 * Math.PI) * 25;
-      previewDots[2].style.left = `${x}%`;
+      const y = 50 + Math.sin(t * 1.5 * Math.PI) * 38;
+      previewDots[2].style.left = `50%`;
       previewDots[2].style.top = `${y}%`;
       previewDots[2].style.display = 'block';
     }
 
-    // Lane 3: Circular (speed 2.0, rangeX 38, rangeY 35)
+    // Lane 3: The former lane 2 diagonal movement, slightly slowed down
     if (previewDots[3]) {
-      const x = 50 + Math.sin(t * 2.0 * Math.PI) * 38;
-      const y = 50 + Math.cos(t * 2.0 * Math.PI) * 35;
+      const x = 50 + Math.sin(t * 1.75 * Math.PI) * 38;
+      const y = 50 + Math.cos(t * 1.75 * 0.7 * Math.PI) * 25;
       previewDots[3].style.left = `${x}%`;
       previewDots[3].style.top = `${y}%`;
       previewDots[3].style.display = 'block';
     }
 
-    // Lane 4: Jittery/Chaotic (speed 2.6, rangeX 40, rangeY 40, jitter 2.5)
+    // Lane 4: slow, smooth random route with regular bullseye passages
     if (previewDots[4]) {
-      const variableSpeed = 2.6 * (1.0 + 0.35 * Math.sin(t * 1.5));
-      const jitterX = (Math.random() - 0.5) * 2.5;
-      const jitterY = (Math.random() - 0.5) * 2.5;
-      const x = 50 + Math.sin(t * variableSpeed * Math.PI) * 40 + jitterX;
-      const y = 50 + Math.cos(t * variableSpeed * 0.8 * Math.PI) * 40 + jitterY;
-      previewDots[4].style.left = `${Math.max(5, Math.min(95, x))}%`;
-      previewDots[4].style.top = `${Math.max(5, Math.min(95, y))}%`;
+      const point = sampleLane4Motion(
+        lane4PreviewMotion,
+        performance.now(),
+        laneConfigs[4].baseLaserSpeed
+      );
+      previewDots[4].style.left = `${point.x}%`;
+      previewDots[4].style.top = `${point.y}%`;
       previewDots[4].style.display = 'block';
     }
 
@@ -410,11 +485,11 @@ function startLobbyPreviews() {
   lobbyPreviewAnimationId = requestAnimationFrame(update);
 }
 
-// Aim the cannon turret dynamically at specific coordinates on the active target
-function aimCannonAtLaserDot(pctX, pctY, instant = false) {
-  const activeLaneEl = document.getElementById(`lane-${activeLaneId}`);
-  if (!activeLaneEl) return;
-  const target = activeLaneEl.querySelector('.laser-target');
+// Aim the cannon turret dynamically at specific coordinates on any lane target.
+function aimCannonAtTarget(laneId, pctX, pctY, instant = false) {
+  const laneEl = document.getElementById(`lane-${laneId}`);
+  if (!laneEl) return;
+  const target = laneEl.querySelector('.laser-target');
   const gunTurret = document.getElementById('gunTurret');
   const yoke = gunTurret?.querySelector('.cannon-yoke');
   const barrelGroup = gunTurret?.querySelector('.cannon-barrel-group');
@@ -442,13 +517,21 @@ function aimCannonAtLaserDot(pctX, pctY, instant = false) {
   // Calculate altazimuth angles (yaw direction corrected to follow left/right correctly)
   const yaw = -Math.atan2(dx, dz) * 180 / Math.PI;
   const slantRange = Math.sqrt(dx * dx + dz * dz);
-  const pitch = Math.atan2(slantRange, Math.abs(dy)) * 180 / Math.PI;
+  const rawPitch = Math.atan2(slantRange, Math.abs(dy)) * 180 / Math.PI;
+  // Near-90deg pitch makes the barrel's thin 3D side faces project as a huge
+  // rectangular outline. The physical mount cannot tilt that far anyway.
+  const pitch = Math.max(48, Math.min(70, rawPitch));
 
   yoke.style.transition = instant ? 'none' : 'transform 0.05s linear';
   barrelGroup.style.transition = instant ? 'none' : 'transform 0.05s linear';
 
   gunTurret.style.setProperty('--yaw', `${yaw}deg`);
   gunTurret.style.setProperty('--pitch', `${pitch}deg`);
+}
+
+function aimCannonAtLaserDot(pctX, pctY, instant = false) {
+  if (!activeLaneId) return;
+  aimCannonAtTarget(activeLaneId, pctX, pctY, instant);
 }
 
 // Generate organic random target damage and hole geometries
@@ -670,17 +753,21 @@ function frameSelectedLane(laneId) {
   if (!stageWidth || !stageHeight) return;
 
   const perspective = 1000;
-  const cameraZ = 520;
+  // Never drive the room planes through the perspective camera. The stable
+  // gameplay tunnel handles the architecture while the target is enlarged.
+  const cameraZ = 0;
   const targetDepth = 750;
   const projectedScale = perspective / (perspective + targetDepth - cameraZ);
-  const desiredTargetSize = Math.min(380, stageWidth * 0.30, stageHeight * 0.42);
+  const desiredTargetSize = Math.min(430, stageWidth * 0.315, stageHeight * 0.43);
   const targetWorldSize = desiredTargetSize / projectedScale;
 
   // Keep this in sync with the responsive lane percentages in styles.css.
-  const laneCenterRatios = { 1: 0.08, 2: 0.36, 3: 0.64, 4: 0.92 };
+  const laneCenterRatios = { 1: 0.125, 2: 0.375, 3: 0.625, 4: 0.875 };
   const perspectiveOriginY = stageHeight * 0.4;
   const desiredCenterY = stageHeight * 0.38;
   const targetCenterY = 310;
+  // The environment translation is projected by the same factor as its lane,
+  // so the unscaled world-space center difference gives an exact screen center.
   const cameraX = (stageWidth * 0.5) - (stageWidth * laneCenterRatios[laneId]);
   const cameraY = perspectiveOriginY
     + ((desiredCenterY - perspectiveOriginY) / projectedScale)
@@ -696,10 +783,19 @@ function aimRangeCannon(laneId = null) {
   const turret = document.getElementById('gunTurret');
   if (!turret) return;
 
-  // Swapped yaw signs: Lane 1 (far left) rotates POSITIVE yaw, Lane 4 (far right) rotates NEGATIVE yaw
-  const yawByLane = { 1: 13, 2: 5, 3: -5, 4: -13 };
-  turret.style.setProperty('--yaw', `${laneId ? yawByLane[laneId] : 0}deg`);
-  turret.style.setProperty('--pitch', laneId ? '62deg' : '58deg');
+  if (laneId) {
+    // Wait one frame so the hovered target's forward animation has started,
+    // then calculate its real screen position instead of using preset angles.
+    requestAnimationFrame(() => aimCannonAtTarget(laneId, 0.5, 0.5));
+    return;
+  }
+
+  const yoke = turret.querySelector('.cannon-yoke');
+  const barrelGroup = turret.querySelector('.cannon-barrel-group');
+  if (yoke) yoke.style.transition = 'transform 0.18s cubic-bezier(0.25, 0.8, 0.25, 1)';
+  if (barrelGroup) barrelGroup.style.transition = 'transform 0.18s cubic-bezier(0.25, 0.8, 0.25, 1)';
+  turret.style.setProperty('--yaw', '0deg');
+  turret.style.setProperty('--pitch', '58deg');
 }
 
 function fireRangeCannon() {
@@ -716,6 +812,10 @@ function selectLane(laneId) {
   if (gameState !== "lobby") return;
   gameState = "transitioning";
   activeLaneId = laneId;
+  const rangeWrapper = document.getElementById('rangeWrapper');
+  rangeWrapper?.classList.add('gameplay-lane-active');
+  if (rangeWrapper) rangeWrapper.dataset.lane = laneId;
+  document.getElementById('gameplayTunnel')?.classList.add('active');
 
   // Stop lobby preview dots and hide them
   if (lobbyPreviewAnimationId) {
@@ -849,6 +949,9 @@ function startLaserMovement() {
   const startTime = Date.now();
   const activeLaneEl = document.getElementById(`lane-${activeLaneId}`);
   const laserDotEl = activeLaneEl.querySelector('.laser-dot');
+  const lane4Motion = movementType === "randomWaypoints"
+    ? createLane4Motion(laserX, laserY, currentShot - 1)
+    : null;
   
   // Make active lane target active playing
   activeLaneEl.classList.add('playing-active');
@@ -862,19 +965,19 @@ function startLaserMovement() {
     if (movementType === "horizontal") {
       laserX = 50 + Math.sin(t * speed * Math.PI) * rangeX;
       laserY = 50;
+    } else if (movementType === "vertical") {
+      laserX = 50;
+      laserY = 50 + Math.sin(t * speed * Math.PI) * rangeY;
     } else if (movementType === "diagonal") {
       laserX = 50 + Math.sin(t * speed * Math.PI) * rangeX;
       laserY = 50 + Math.cos(t * speed * 0.7 * Math.PI) * rangeY;
     } else if (movementType === "circular") {
       laserX = 50 + Math.sin(t * speed * Math.PI) * rangeX;
       laserY = 50 + Math.cos(t * speed * Math.PI) * rangeY;
-    } else if (movementType === "jittery") {
-      // Jitter math
-      const jitterX = (Math.random() - 0.5) * jitterAmount;
-      const jitterY = (Math.random() - 0.5) * jitterAmount;
-      const variableSpeed = speed * (1.0 + 0.35 * Math.sin(t * 1.5));
-      laserX = 50 + Math.sin(t * variableSpeed * Math.PI) * rangeX + jitterX;
-      laserY = 50 + Math.cos(t * variableSpeed * 0.8 * Math.PI) * rangeY + jitterY;
+    } else if (movementType === "randomWaypoints") {
+      const point = sampleLane4Motion(lane4Motion, performance.now(), speed);
+      laserX = point.x;
+      laserY = point.y;
     }
 
     // Keep laser inbounds 5% to 95%
@@ -1177,6 +1280,8 @@ function finishGame() {
 // Exit results back to main lobby selection
 function exitToLobby() {
   gameState = "lobby";
+  document.getElementById('rangeWrapper')?.classList.remove('gameplay-lane-active');
+  document.getElementById('gameplayTunnel')?.classList.remove('active');
   
   // Hide results overlay
   const resultsOverlay = document.getElementById('resultsOverlay');
