@@ -29,6 +29,19 @@
           </div>
         </div>
 
+        <!-- Mode Selector -->
+        <div class="header-mode-select">
+          <label for="modeSelect" class="mode-select-label">MODUS:</label>
+          <div class="select-wrapper">
+            <select id="modeSelect" class="cyber-select">
+              <option value="standard">STANDARD</option>
+              <option value="drones">DRONE HOLOGRAM</option>
+              <option value="drones_charge">DRONE CHARGE</option>
+            </select>
+            <span class="select-arrow"></span>
+          </div>
+        </div>
+
         <div class="header-status">
           <div class="status-indicator">
             <span class="pulse-dot"></span>
@@ -107,10 +120,13 @@
                     <circle cx="50" cy="50" r="16" class="ring-10" />
                     <circle cx="50" cy="50" r="4" class="bullseye" />
                   </svg>
+                  <div class="drone-hologram-wrapper">
+                    <img class="drone-image" src="assets/drone.png" alt="Drone Hologram" aria-hidden="true">
+                    <div class="hole-borders-container" aria-hidden="true"></div>
+                    <div class="hole-centers-container" aria-hidden="true"></div>
+                  </div>
                   <div class="laser-dot"></div>
                   <div class="laser-dot-preview"></div>
-                  <div class="hole-borders-container" aria-hidden="true"></div>
-                  <div class="hole-centers-container" aria-hidden="true"></div>
                 </div>
               </div>
               <div class="console-podium">
@@ -134,10 +150,13 @@
                     <circle cx="50" cy="50" r="16" class="ring-10" />
                     <circle cx="50" cy="50" r="4" class="bullseye" />
                   </svg>
+                  <div class="drone-hologram-wrapper">
+                    <img class="drone-image" src="assets/drone.png" alt="Drone Hologram" aria-hidden="true">
+                    <div class="hole-borders-container" aria-hidden="true"></div>
+                    <div class="hole-centers-container" aria-hidden="true"></div>
+                  </div>
                   <div class="laser-dot"></div>
                   <div class="laser-dot-preview"></div>
-                  <div class="hole-borders-container" aria-hidden="true"></div>
-                  <div class="hole-centers-container" aria-hidden="true"></div>
                 </div>
               </div>
               <div class="console-podium">
@@ -161,10 +180,13 @@
                     <circle cx="50" cy="50" r="16" class="ring-10" />
                     <circle cx="50" cy="50" r="4" class="bullseye" />
                   </svg>
+                  <div class="drone-hologram-wrapper">
+                    <img class="drone-image" src="assets/drone.png" alt="Drone Hologram" aria-hidden="true">
+                    <div class="hole-borders-container" aria-hidden="true"></div>
+                    <div class="hole-centers-container" aria-hidden="true"></div>
+                  </div>
                   <div class="laser-dot"></div>
                   <div class="laser-dot-preview"></div>
-                  <div class="hole-borders-container" aria-hidden="true"></div>
-                  <div class="hole-centers-container" aria-hidden="true"></div>
                 </div>
               </div>
               <div class="console-podium">
@@ -188,10 +210,13 @@
                     <circle cx="50" cy="50" r="16" class="ring-10" />
                     <circle cx="50" cy="50" r="4" class="bullseye" />
                   </svg>
+                  <div class="drone-hologram-wrapper">
+                    <img class="drone-image" src="assets/drone.png" alt="Drone Hologram" aria-hidden="true">
+                    <div class="hole-borders-container" aria-hidden="true"></div>
+                    <div class="hole-centers-container" aria-hidden="true"></div>
+                  </div>
                   <div class="laser-dot"></div>
                   <div class="laser-dot-preview"></div>
-                  <div class="hole-borders-container" aria-hidden="true"></div>
-                  <div class="hole-centers-container" aria-hidden="true"></div>
                 </div>
               </div>
               <div class="console-podium">
@@ -290,6 +315,19 @@
           <div class="hud-input-prompt" id="hudInputPrompt">
             <span class="prompt-label">PRESS</span>
             <div class="prompt-key-badge" id="promptKeyBadge">A</div>
+          </div>
+
+          <!-- Vertical Laser Charge Gauge (visible in drones_charge mode) -->
+          <div class="hud-charge-gauge-wrapper" id="hudChargeGaugeWrapper" style="display: none;">
+            <div class="gauge-header">POWER</div>
+            <div class="gauge-track">
+              <div class="gauge-fill" id="hudChargeFill" style="height: 100%;"></div>
+              <div class="gauge-ticks">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="gauge-value" id="hudChargeVal">100%</div>
           </div>
         </div>
 
@@ -621,6 +659,60 @@
             <div class="briefing-footer">
               <p class="spacebar-instruction">Druk op de spatiebalk om verder te gaan</p>
               <button class="spacebar-btn-visual" id="spacebarAdvanceBtn" type="button" aria-label="Volgende briefingstap"><span class="spacebar-icon-line" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== LASER CHARGING OVERLAY ==================== -->
+        <section class="mission-view mission-charge-card" id="chargeOverlay" aria-live="polite" aria-hidden="true" style="display: none;">
+          <div class="charge-panel">
+            <div class="briefing-top-banner"></div>
+            <header class="charge-header">
+              <span class="charge-eyebrow">DE LASER IS LEEG</span>
+              <h2 class="charge-title">LAAD DE BATTERIJ OP!</h2>
+              <p class="charge-subtitle">Typ de letters die je op het scherm ziet om stroom te maken.</p>
+            </header>
+
+            <div class="reactor-charge-container">
+              <!-- Animated Cyber Reactor Core Visualization -->
+              <div class="reactor-visual-wrapper">
+                <div class="reactor-ring outer-ring"></div>
+                <div class="reactor-ring mid-ring"></div>
+                <div class="reactor-ring inner-ring"></div>
+                
+                <!-- Expanding Shockwave Ring -->
+                <div class="reactor-shockwave" id="reactorShockwave"></div>
+                
+                <!-- Central Accumulator Core -->
+                <div class="reactor-core-cell" id="reactorCoreCell">
+                  <div class="reactor-key-prompt" id="reactorKeyPrompt">F</div>
+                </div>
+              </div>
+
+              <!-- Power Grid / Battery Indicator -->
+              <div class="reactor-battery-gauge">
+                <div class="battery-label">STROOM NIVEAU</div>
+                <div class="battery-outer-shell">
+                  <div class="battery-cells-grid">
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                    <span class="battery-segment"></span>
+                  </div>
+                  <div class="battery-fluid-fill" id="reactorBatteryFill"></div>
+                </div>
+                <div class="battery-percentage-display" id="reactorBatteryPct">0%</div>
+              </div>
+            </div>
+
+            <div class="charge-status-message" id="chargeStatusMessage">
+              CORE STANDBY // DRUK OP DE GETOONDE TOETS OM TE STARTEN
             </div>
           </div>
         </section>

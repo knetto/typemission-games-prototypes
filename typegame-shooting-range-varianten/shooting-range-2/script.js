@@ -694,14 +694,15 @@ function fireLaserBeamAndHole(pctX, pctY, ringHit) {
   const targetEl = activeLaneEl.querySelector('.laser-target');
 
   // A complete miss lands on the back wall and must not tear the paper.
-  const boardDistance = Math.hypot(pctX - 50, pctY - 50);
-  if (boardDistance <= 48) {
+  const isDroneMode = document.getElementById('gameContainer')?.classList.contains('mode-drones');
+  const shouldImpact = isDroneMode ? (ringHit > 0) : (Math.hypot(pctX - 50, pctY - 50) <= 48);
+  if (shouldImpact) {
     createImpactVariation(targetEl, pctX, pctY);
   }
 
   // Only pulse the physical board when the projectile actually touches it.
   targetEl.classList.remove('target-pulse');
-  if (boardDistance <= 48) {
+  if (shouldImpact) {
     void targetEl.offsetWidth; // force reflow
     targetEl.classList.add('target-pulse');
   }
@@ -911,6 +912,10 @@ function fireRangeCannon() {
 // Select Lane and Zoom Transition
 function selectLane(laneId) {
   if (gameState !== "lobby") return;
+  
+  // Ensure mode selector is blurred to prevent keypress capturing
+  document.getElementById('modeSelect')?.blur();
+
   gameState = "transitioning";
   activeLaneId = laneId;
   const rangeWrapper = document.getElementById('rangeWrapper');
@@ -954,9 +959,324 @@ function selectLane(laneId) {
   }, 1200);
 }
 
+// Reactor Core Charging State Variables
+let reactorChargeLevel = 0;
+let activeReactorKey = "";
+const maxReactorSteps = 10;
+
+function spawnEnergyParticle(fromEl, toEl) {
+  const container = document.querySelector('.reactor-charge-container');
+  if (!container || !fromEl || !toEl) return;
+
+  const fromRect = fromEl.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+
+  const shellEl = document.querySelector('.battery-outer-shell');
+  if (!shellEl) return;
+  const shellRect = shellEl.getBoundingClientRect();
+  const shellPadding = 3;
+
+  const p = document.createElement('div');
+  p.className = 'energy-particle';
+  
+  const startDispX = (Math.random() - 0.5) * 20;
+  const startDispY = (Math.random() - 0.5) * 20;
+
+  const startX = fromRect.left + fromRect.width / 2 - containerRect.left + startDispX;
+  const startY = fromRect.top + fromRect.height / 2 - containerRect.top + startDispY;
+  p.style.left = `${startX}px`;
+  p.style.top = `${startY}px`;
+
+  const newPct = reactorChargeLevel * 10;
+  const usableWidth = shellRect.width - shellPadding * 2;
+  const fillEdgeX = shellRect.left + shellPadding + usableWidth * (newPct / 100);
+
+  const endDispX = (Math.random() - 0.5) * 8;
+  const endDispY = (Math.random() - 0.5) * 6;
+
+  const targetX = fillEdgeX - containerRect.left + endDispX;
+  const targetY = shellRect.top + shellRect.height / 2 - containerRect.top + endDispY;
+
+  const tx = targetX - startX;
+  const ty = targetY - startY;
+  p.style.setProperty('--tx', `${tx}px`);
+  p.style.setProperty('--ty', `${ty}px`);
+
+  // Randomized mid curve width swing
+  const midX = (Math.random() - 0.5) * 70;
+  p.style.setProperty('--mid-x', `${midX}px`);
+
+  // Randomized initial spark rotation
+  const rotation = Math.random() * 360;
+  p.style.setProperty('--rot', `${rotation}deg`);
+
+  // Staggered durations to make particles arrival dynamic
+  const duration = 0.7 + Math.random() * 0.25;
+  p.style.animationDuration = `${duration}s`;
+
+  container.appendChild(p);
+  p.addEventListener('animationend', () => p.remove(), { once: true });
+}
+
+function createLightningArc(fromEl, toEl) {
+  const container = document.querySelector('.reactor-charge-container');
+  if (!container || !fromEl || !toEl) return;
+  const containerRect = container.getBoundingClientRect();
+
+  const fromRect = fromEl.getBoundingClientRect();
+  const shellEl = document.querySelector('.battery-outer-shell');
+  if (!shellEl) return;
+  const shellRect = shellEl.getBoundingClientRect();
+  const shellPadding = 3;
+
+  const startX = fromRect.left + fromRect.width / 2 - containerRect.left;
+  const startY = fromRect.top + fromRect.height / 2 - containerRect.top;
+
+  const currentPct = reactorChargeLevel * 10;
+  const usableWidth = shellRect.width - shellPadding * 2;
+  const fillEdgeX = shellRect.left + shellPadding + usableWidth * (currentPct / 100);
+
+  const targetX = fillEdgeX - containerRect.left;
+  const targetY = shellRect.top + shellRect.height / 2 - containerRect.top;
+
+  let svg = document.getElementById('lightningSvg');
+  if (!svg) {
+    svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('id', 'lightningSvg');
+    svg.style.position = 'absolute';
+    svg.style.inset = '0';
+    svg.style.width = '100%';
+    svg.style.height = '100%';
+    svg.style.pointerEvents = 'none';
+    svg.style.zIndex = '1.5';
+    container.appendChild(svg);
+  }
+
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('class', 'lightning-bolt');
+
+  const segments = 8;
+  let d = `M ${startX} ${startY}`;
+  
+  const angle = Math.atan2(targetY - startY, targetX - startX);
+  const perpAngle = angle + Math.PI / 2;
+
+  for (let i = 1; i < segments; i++) {
+    const progress = i / segments;
+    const px = startX + (targetX - startX) * progress;
+    const py = startY + (targetY - startY) * progress;
+    
+    const offset = (Math.random() - 0.5) * 35;
+    const jx = px + Math.cos(perpAngle) * offset;
+    const jy = py + Math.sin(perpAngle) * offset;
+    d += ` L ${jx} ${jy}`;
+  }
+  d += ` L ${targetX} ${targetY}`;
+  path.setAttribute('d', d);
+
+  svg.appendChild(path);
+  setTimeout(() => {
+    path.remove();
+    if (svg.childNodes.length === 0) {
+      svg.remove();
+    }
+  }, 150);
+}
+
+function pickNextReactorKey() {
+  const allowedKeys = laneConfigs[activeLaneId].allowedKeys;
+  const oldKey = activeReactorKey;
+  let nextKey = allowedKeys[Math.floor(Math.random() * allowedKeys.length)];
+  if (allowedKeys.length > 1) {
+    while (nextKey === oldKey) {
+      nextKey = allowedKeys[Math.floor(Math.random() * allowedKeys.length)];
+    }
+  }
+  activeReactorKey = nextKey.toUpperCase();
+
+  const promptEl = document.getElementById('reactorKeyPrompt');
+  if (promptEl) {
+    promptEl.textContent = activeReactorKey;
+  }
+}
+
+function updateChargeGauge() {
+  const gaugeWrapper = document.getElementById('hudChargeGaugeWrapper');
+  const gaugeFill = document.getElementById('hudChargeFill');
+  const gaugeVal = document.getElementById('hudChargeVal');
+  if (!gaugeWrapper || !gaugeFill || !gaugeVal) return;
+
+  const selectedMode = localStorage.getItem('typegame_range2_mode') || 'standard';
+  if (selectedMode === 'drones_charge') {
+    gaugeWrapper.style.display = 'flex';
+    const chargeRemaining = Math.max(0, (maxShots - currentShot + 1) * 10);
+    gaugeFill.style.height = `${chargeRemaining}%`;
+    gaugeVal.textContent = `${chargeRemaining}%`;
+  } else {
+    gaugeWrapper.style.display = 'none';
+  }
+}
+
+function startChargingMinigame() {
+  gameState = "charging";
+  reactorChargeLevel = 0;
+
+  // Stop lobby preview dots and hide them (just in case)
+  if (lobbyPreviewAnimationId) {
+    cancelAnimationFrame(lobbyPreviewAnimationId);
+    lobbyPreviewAnimationId = null;
+  }
+  document.querySelectorAll('.laser-dot-preview').forEach(dot => dot.style.display = 'none');
+
+  // Hide HUD and other overlays
+  document.getElementById('gameplayHud').style.display = "none";
+  document.getElementById('missionCompletePrompt').hidden = true;
+  document.getElementById('resultsOverlay').style.display = "none";
+  document.getElementById('resultsOverlay').setAttribute('aria-hidden', 'true');
+
+  // Display Charge Overlay
+  const chargeOverlay = document.getElementById('chargeOverlay');
+  if (chargeOverlay) {
+    chargeOverlay.style.display = "flex";
+    chargeOverlay.setAttribute('aria-hidden', 'false');
+  }
+
+  // Set initial status text and battery fill
+  document.getElementById('reactorBatteryFill').style.width = "0%";
+  document.getElementById('reactorBatteryPct').textContent = "0%";
+  const statusMsg = document.getElementById('chargeStatusMessage');
+  statusMsg.textContent = "DRUK OP DE LETTER IN HET MIDDEN OM TE BEGINNEN!";
+  statusMsg.className = "charge-status-message";
+
+  sounds.startHum();
+  sounds.updateHumPitch(0.1);
+
+  pickNextReactorKey();
+}
+
+function handleChargingInput(event) {
+  if (event.ctrlKey || event.altKey || event.metaKey) return;
+  const pressedKey = event.key.toUpperCase();
+  if (pressedKey.length !== 1) return;
+
+  const statusMsg = document.getElementById('chargeStatusMessage');
+
+  if (pressedKey === activeReactorKey) {
+    reactorChargeLevel++;
+
+    // Core pulse scaling
+    const coreCell = document.getElementById('reactorCoreCell');
+    if (coreCell) {
+      coreCell.classList.add('pulse');
+      setTimeout(() => coreCell.classList.remove('pulse'), 150);
+    }
+
+    // Expand shockwave ring
+    const shockwave = document.getElementById('reactorShockwave');
+    if (shockwave) {
+      shockwave.classList.remove('trigger');
+      void shockwave.offsetWidth;
+      shockwave.classList.add('trigger');
+    }
+
+    // Flash the battery outer shell
+    const batteryShell = document.querySelector('.battery-outer-shell');
+    if (batteryShell) {
+      batteryShell.classList.remove('charge-pulse');
+      void batteryShell.offsetWidth; // Reflow
+      batteryShell.classList.add('charge-pulse');
+    }
+
+    // Spawn dynamic lightning shocks between core and battery
+    const batteryFill = document.getElementById('reactorBatteryFill');
+    if (coreCell && batteryFill) {
+      for (let b = 0; b < 3; b++) {
+        setTimeout(() => {
+          createLightningArc(coreCell, batteryFill);
+        }, b * 65);
+      }
+
+      // Spawn burst of spark particles
+      for (let k = 0; k < 10; k++) {
+        setTimeout(() => {
+          spawnEnergyParticle(coreCell, batteryFill);
+        }, k * 30);
+      }
+    }
+
+    const pct = Math.round((reactorChargeLevel / maxReactorSteps) * 100);
+    document.getElementById('reactorBatteryFill').style.width = `${pct}%`;
+    document.getElementById('reactorBatteryPct').textContent = `${pct}%`;
+
+    statusMsg.textContent = `GOED ZO! DE BATTERIJ LOOPT VOL... (${pct}%)`;
+    statusMsg.className = "charge-status-message active-status";
+
+    // Pitch up the laser hum
+    sounds.updateHumPitch(0.1 + (reactorChargeLevel * 0.1));
+
+    // Play click audio note
+    if (sounds.ctx) {
+      const now = sounds.ctx.currentTime;
+      const osc = sounds.ctx.createOscillator();
+      const gain = sounds.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440 + (reactorChargeLevel * 50), now);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      osc.connect(gain);
+      gain.connect(sounds.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.11);
+    }
+
+    if (reactorChargeLevel >= maxReactorSteps) {
+      // Reactor Fully Charged!
+      gameState = "charging_complete"; // lock inputs
+      sounds.playMilestone();
+
+      statusMsg.textContent = "GELUKT! DE LASER IS KLAAR VOOR GEBRUIK!";
+      statusMsg.className = "charge-status-message ready-status";
+
+      const flash = document.getElementById('morphFlash');
+      if (flash) {
+        flash.className = "morph-flash";
+        flash.classList.add('active');
+        setTimeout(() => flash.classList.remove('active'), 150);
+      }
+
+      setTimeout(() => {
+        const chargeOverlay = document.getElementById('chargeOverlay');
+        if (chargeOverlay) {
+          chargeOverlay.style.display = "none";
+          chargeOverlay.setAttribute('aria-hidden', 'true');
+        }
+        startPlaying(true);
+      }, 1500);
+    } else {
+      pickNextReactorKey();
+    }
+  } else {
+    sounds.playMissSound();
+
+    const panel = document.querySelector('.charge-panel');
+    if (panel) {
+      panel.classList.remove('charge-error-shake');
+      void panel.offsetWidth;
+      panel.classList.add('charge-error-shake');
+      setTimeout(() => panel.classList.remove('charge-error-shake'), 300);
+    }
+  }
+}
+
 // Start Gameplay Loop
-function startPlaying() {
+function startPlaying(bypassCharge = false) {
   if (!activeLaneId) return;
+
+  const selectedMode = localStorage.getItem('typegame_range2_mode') || 'standard';
+  if (selectedMode === 'drones_charge' && !bypassCharge) {
+    startChargingMinigame();
+    return;
+  }
 
   gameState = "playing";
   currentShot = 1;
@@ -992,6 +1312,7 @@ function startPlaying() {
 
   sounds.startHum();
   updateHud();
+  updateChargeGauge();
   nextShot();
 }
 
@@ -1106,10 +1427,14 @@ function startLaserMovement() {
 
 // Handle key press check
 window.addEventListener('keydown', (e) => {
-  if (gameState !== "playing" || isShotResolving) return;
-  
-  // Block system commands
   if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+  if (gameState === "charging") {
+    handleChargingInput(e);
+    return;
+  }
+
+  if (gameState !== "playing" || isShotResolving) return;
   
   const pressedKey = e.key.toUpperCase();
   
@@ -1163,6 +1488,7 @@ function resolveShot(pressedKey) {
     
     // Advance shot count after delay
     currentShot++;
+    updateChargeGauge();
     nextShotTimeout = setTimeout(() => {
       nextShotTimeout = null;
       if (gameState === "playing") nextShot();
@@ -1176,7 +1502,21 @@ function resolveShot(pressedKey) {
   // Distance from center (50, 50) on 100x100 grid scale
   const dx = laserX - 50;
   const dy = laserY - 50;
-  const dist = Math.sqrt(dx * dx + dy * dy);
+  
+  let dist;
+  const isDroneMode = document.getElementById('gameContainer')?.classList.contains('mode-drones');
+  if (isDroneMode) {
+    // The drone hologram is wide horizontally but thin vertically.
+    // Scale coordinate offsets: horizontal wings are hittable, but vertical misses
+    // (above/below the drone) quickly become a MISS.
+    // 2.2x vertical multiplier and 0.85x horizontal multiplier map the elliptical shape.
+    const stretchedDy = dy * 2.2;
+    const compressedDx = dx * 0.85;
+    dist = Math.sqrt(compressedDx * compressedDx + stretchedDy * stretchedDy);
+  } else {
+    // Standard circular distance
+    dist = Math.sqrt(dx * dx + dy * dy);
+  }
 
   let ringHit = 0; // 0, 7, 8, 9, 10
   let baseScore = 0;
@@ -1241,6 +1581,7 @@ function resolveShot(pressedKey) {
   updateHud();
 
   currentShot++;
+  updateChargeGauge();
   nextShotTimeout = setTimeout(() => {
     nextShotTimeout = null;
     if (gameState === "playing") nextShot();
@@ -1420,6 +1761,18 @@ function exitToLobby() {
   sounds.stopHum();
   document.getElementById('gameplayHud').style.display = "none";
   document.getElementById('missionCompletePrompt').hidden = true;
+
+  const chargeOverlay = document.getElementById('chargeOverlay');
+  if (chargeOverlay) {
+    chargeOverlay.style.display = "none";
+    chargeOverlay.setAttribute('aria-hidden', 'true');
+  }
+
+  const gaugeWrapper = document.getElementById('hudChargeGaugeWrapper');
+  if (gaugeWrapper) {
+    gaugeWrapper.style.display = "none";
+  }
+
   document.querySelectorAll('.lane.playing-active').forEach(lane => {
     lane.classList.remove('playing-active');
   });
@@ -1484,7 +1837,7 @@ document.getElementById('spacebarAdvanceBtn').addEventListener('click', advanceB
 document.getElementById('viewResultsBtn').addEventListener('click', showResultsReport);
 
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && (gameState === "playing" || gameState === "transitioning")) {
+  if (event.key === 'Escape' && (gameState === "playing" || gameState === "transitioning" || gameState === "charging" || gameState === "charging_complete")) {
     event.preventDefault();
     exitToLobby();
     return;
@@ -1515,7 +1868,35 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
+function setupModeSelector() {
+  const modeSelect = document.getElementById('modeSelect');
+  const gameContainer = document.getElementById('gameContainer');
+  if (!modeSelect || !gameContainer) return;
+
+  const savedMode = localStorage.getItem('typegame_range2_mode') || 'standard';
+  modeSelect.value = savedMode;
+  if (savedMode === 'drones' || savedMode === 'drones_charge') {
+    gameContainer.classList.add('mode-drones');
+  } else {
+    gameContainer.classList.remove('mode-drones');
+  }
+
+  modeSelect.addEventListener('change', (e) => {
+    const selectedMode = e.target.value;
+    localStorage.setItem('typegame_range2_mode', selectedMode);
+    if (selectedMode === 'drones' || selectedMode === 'drones_charge') {
+      gameContainer.classList.add('mode-drones');
+    } else {
+      gameContainer.classList.remove('mode-drones');
+    }
+    
+    // Blur selector so gameplay keys (Space, Letters) still register properly
+    modeSelect.blur();
+  });
+}
+
 // Initialize on Load
+setupModeSelector();
 setupMatrix();
 setupLobby();
 
