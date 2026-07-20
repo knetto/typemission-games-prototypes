@@ -3997,8 +3997,30 @@ body::before {
 
 .mode-drones .drone-image {
   display: block;
-  transform: translate(-50%, -50%) scale(1.22);
-  animation: drone-glow-pulse 3s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  /* Applying the custom breathing & chromatic aberration animation */
+  animation: drone-hologram-anim 4s infinite ease-in-out alternate;
+}
+
+/* Moving scanlines overlay covering the hologram bounding box area */
+.mode-drones .drone-hologram-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 2%;
+  width: 96%;
+  height: 70%;
+  border-radius: 8px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 240, 255, 0.12) 0px,
+    rgba(0, 240, 255, 0.12) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  z-index: 6; /* above the drone image which is z-index: 5 */
+  animation: scroll-hologram-lines 4s linear infinite;
 }
 
 /* Hologram horizontal digital bounding box targeting frame - resized to fit the drone */
@@ -4056,13 +4078,27 @@ body::before {
   }
 }
 
-/* Pulse glow: animates filters directly on the drone hologram image */
-@keyframes drone-glow-pulse {
+/* Custom CRT Hologram breathing and subtle glow pulse animation */
+@keyframes drone-hologram-anim {
   0% {
-    filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.35)) brightness(0.92);
+    transform: translate(-50%, -50%) scale(1.22);
+    filter: url(#hologram-crt) drop-shadow(0 0 4px rgba(0, 240, 255, 0.3)) brightness(0.92);
+    opacity: 0.82;
   }
   100% {
-    filter: drop-shadow(0 0 11px rgba(0, 240, 255, 0.65)) brightness(1.08);
+    transform: translate(-50%, -50%) scale(1.24);
+    filter: url(#hologram-crt) drop-shadow(0 0 10px rgba(0, 240, 255, 0.6)) brightness(1.08);
+    opacity: 0.92;
+  }
+}
+
+/* Scrolling background scanlines animation */
+@keyframes scroll-hologram-lines {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 80px;
   }
 }
 
